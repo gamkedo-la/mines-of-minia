@@ -17,6 +17,7 @@ class RenderSystem extends System {
         let cvsid = spec.cvsid || 'game.canvas';
         this.canvas = UxCanvas.getCanvas(cvsid);
         this.ctx = this.canvas.getContext('2d');
+        this.smoothing = spec.hasOwnProperty('smoothing') ? spec.smoothing : false;
         // -- bind event handlers
         this.onEntityUpdated = this.onEntityUpdated.bind(this);
         this.onRenderNeeded = this.onRenderNeeded.bind(this);
@@ -71,6 +72,8 @@ class RenderSystem extends System {
     }
 
     iterate(evt, e) {
+        // enable smoothing
+        this.ctx.imageSmoothingEnabled = this.smoothing;
         // ignore entities that are not a root
         if (e.parent) return;
         e.render(this.ctx);
