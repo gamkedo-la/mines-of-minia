@@ -55,7 +55,7 @@ import { FieryCharm } from './charms/fiery.js';
 
 class TestLevelState extends GameState {
     async ready() {
-        this.tileSize = 32;
+        //this.tileSize = 32;
 
         let bindings = new Bindings({
             bindings: [
@@ -97,14 +97,14 @@ class TestLevelState extends GameState {
                         UxPanel.xspec({
                             tag: 'slider',
                             sketch: Sketch.zero,
-                            x_xform: XForm.xspec({stretch: false, scalex: 2, scaley: 2, width: 50, height: 50}),
+                            x_xform: XForm.xspec({stretch: false, scalex: Config.scale, scaley: Config.scale, width: 50, height: 50}),
                             dbg: { xform: true },
                             //autocenter: true,
                             x_children: [
                                 Level.xspec({
                                     //dbg: { xform: true },
                                     tag: 'lvl',
-                                    tileSize: this.tileSize,
+                                    tileSize: Config.tileSize,
                                     x_xform: XForm.xspec({origx: 0, origy:0}),
                                 }),
                                 UxDbg.xspec({
@@ -191,7 +191,7 @@ class TestLevelState extends GameState {
             plvl.entities.push({
                 cls: 'Tile',
                 kind: 'wall',
-                tileSize: this.tileSize,
+                tileSize: Config.tileSize,
                 baseAssetTag: 'twall',
                 idx: idx,
                 z: 1,
@@ -239,7 +239,7 @@ class TestLevelState extends GameState {
             ctrlid: 1,
             z: 2,
             healthMax: 100,
-            losRange: this.tileSize*5,
+            losRange: Config.tileSize*5,
             team: 'player',
         });
         plvl.entities.push(x_player);
@@ -256,8 +256,8 @@ class TestLevelState extends GameState {
             maxSpeed: .25,
             ctrlid: 1,
             z: 2,
-            losRange: this.tileSize*8,
-            aggroRange: this.tileSize*5,
+            losRange: Config.tileSize*8,
+            aggroRange: Config.tileSize*5,
             resistances: { bonk: .25 },
         }));
 
@@ -268,8 +268,8 @@ class TestLevelState extends GameState {
             x_sketch: Assets.get('enemy'),
             maxSpeed: .15,
             z: 2,
-            losRange: this.tileSize*8,
-            aggroRange: this.tileSize*5,
+            losRange: Config.tileSize*8,
+            aggroRange: Config.tileSize*5,
         }));
 
         // -- pathfinding
@@ -337,8 +337,8 @@ class TestLevelState extends GameState {
 
         // resize UI elements for new level
         // -- resize slider/level to match level
-        let width = plvl.cols * this.tileSize;
-        let height = plvl.rows * this.tileSize;
+        let width = plvl.cols * Config.tileSize;
+        let height = plvl.rows * Config.tileSize;
         // -- resize scrollable area
         this.slider.resize(width, height, true);
 

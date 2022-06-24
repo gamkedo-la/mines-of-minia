@@ -10,7 +10,7 @@ import { Character } from './character.js';
 class Enemy extends Character {
     // default aggro range (in pixels)
     static dfltAggroRange = 80;
-    static dfltMeleeRange = 63;
+    static dfltMeleeRange = 31;
     static dfltAttackRating = 10;
     static dfltDefenseRating = 10;
     static dfltHealth = 1;

@@ -182,10 +182,12 @@ class Translate {
                 case 'wall':
                     fgKind = 'wall';
                     fgTag = tags[kind];
+                    /*
                     if (byFloor) {
                         mgKind = 'floor';
                         mgTag = floorTag;
                     }
+                    */
                     break;
                 case 'door':
                     // FIXME
@@ -196,10 +198,12 @@ class Translate {
                 case 'obs2':
                     fgKind = 'wall';
                     fgTag = tags[kind];
+                    /*
                     if (byFloor) {
                         mgKind = 'floor';
                         mgTag = floorTag;
                     }
+                    */
                     break;
                 case 'obs1b':
                 case 'obs2b':

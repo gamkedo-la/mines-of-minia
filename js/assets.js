@@ -31,10 +31,10 @@ let miniaAssets = [
     Rect.xspec({tag: 'floor', width: 32, height: 32, color: 'gray'}),
     Rect.xspec({tag: 'wall', width: 32, height: 32, color: 'blue'}),
     Rect.xspec({tag: 'door', width: 32, height: 32, color: 'red'}),
-    Rect.xspec({tag: 'pc', width: 24, height: 24, color: 'yellow'}),
-    Rect.xspec({tag: 'idle', width: 24, height: 24, color: 'green'}),
-    Rect.xspec({tag: 'melee', width: 24, height: 24, color: 'red'}),
-    Rect.xspec({tag: 'dying', width: 24, height: 24, color: 'black'}),
+    Rect.xspec({tag: 'pc', width: 12, height: 12, color: 'yellow'}),
+    Rect.xspec({tag: 'idle', width: 12, height: 12, color: 'green'}),
+    Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
+    Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
     Animator.xspec({
         tag: 'enemy',
         sketches: {

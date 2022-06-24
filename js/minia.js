@@ -49,8 +49,10 @@ class Minia extends Game {
             },
             keys: false,
         },
-        colSize: 16,
-        rowSize: 16,
+        //colSize: 16,
+        //rowSize: 16,
+        tileSize: 16,
+        scale: 4,
 
         template: new ProcTemplate({
             doyield: true,
@@ -59,7 +61,7 @@ class Minia extends Game {
             unitSize: 4,
             maxCols: 180,
             maxRows: 120,
-            tileSize: 32,
+            tileSize: 16,
             outline: {
                 hallWidth: 3,
                 colOverflow: 2,

@@ -8,8 +8,8 @@ import { VarSprite } from "./base/varSprite.js";
 class Template {
 
     static varsprite(file, tag, variations, spec={}) {
-        let width = spec.width || 16;
-        let height = spec.height || 16;
+        let width = spec.width || 8;
+        let height = spec.height || 8;
         return VarSprite.xspec({
             tag: tag,
             variations: variations.map(([i,j]) => new SheetRef({src: file, width: width, height: height, x: width*i, y: height*j})),
