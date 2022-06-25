@@ -75,14 +75,10 @@ class ProcTemplate {
         this.translate.floor = Util.getpath(spec, 'translate.floor', this.constructor.dfltFloor);
         this.translate.wall = Util.getpath(spec, 'translate.wall', this.constructor.dfltWall);
         this.translate.door = Util.getpath(spec, 'translate.door', this.constructor.dfltDoor);
-        this.translate.pit1 = Util.getpath(spec, 'translate.pit1');
-        this.translate.pit2 = Util.getpath(spec, 'translate.pit2');
-        this.translate.pit1b = Util.getpath(spec, 'translate.pit1b');
-        this.translate.pit2b = Util.getpath(spec, 'translate.pit2b');
-        this.translate.obs1 = Util.getpath(spec, 'translate.obs1');
-        this.translate.obs2 = Util.getpath(spec, 'translate.obs2');
-        this.translate.obs1b = Util.getpath(spec, 'translate.obs1b');
-        this.translate.obs2b = Util.getpath(spec, 'translate.obs2b');
+        this.translate.pit = Util.getpath(spec, 'translate.pit');
+        this.translate.pitb = Util.getpath(spec, 'translate.pitb');
+        this.translate.obs = Util.getpath(spec, 'translate.obs');
+        this.translate.obsb = Util.getpath(spec, 'translate.obsb');
         this.translate.doNoise = Util.getpath(spec, 'translate.doNoise', false);
 
 

@@ -121,16 +121,12 @@ class Translate {
         let floorTag = t_spec.hasOwnProperty('floor') ? t_spec['floor'] : 'floor';
         let tags = {
             floor: floorTag,
-            pit1: t_spec.hasOwnProperty('pit1') ? t_spec['pit1'] : 'pit',
-            pit2: t_spec.hasOwnProperty('pit2') ? t_spec['pit2'] : 'pit',
-            pit1b: t_spec.hasOwnProperty('pit1b') ? t_spec['pit1b'] : floorTag,
-            pit2b: t_spec.hasOwnProperty('pit2b') ? t_spec['pit2b'] : floorTag,
+            pit: t_spec.hasOwnProperty('pit') ? t_spec['pit'] : 'pit',
+            pitb: t_spec.hasOwnProperty('pitb') ? t_spec['pitb'] : floorTag,
             wall: t_spec.hasOwnProperty('wall') ? t_spec['wall'] : 'wall',
             door: t_spec.hasOwnProperty('door') ? t_spec['door'] : 'door',
-            obs1: t_spec.hasOwnProperty('obs1') ? t_spec['obs1'] : 'obs',
-            obs2: t_spec.hasOwnProperty('obs2') ? t_spec['obs2'] : 'obs',
-            obs1b: t_spec.hasOwnProperty('obs1b') ? t_spec['obs1b'] : floorTag,
-            obs2b: t_spec.hasOwnProperty('obs2b') ? t_spec['obs2b'] : floorTag,
+            obs: t_spec.hasOwnProperty('obs') ? t_spec['obs'] : 'obs',
+            obsb: t_spec.hasOwnProperty('obsb') ? t_spec['obsb'] : floorTag,
         };
         console.log(`-- tags: ${Fmt.ofmt(tags)}`);
 
@@ -153,8 +149,7 @@ class Translate {
             let mgTag, mgKind;
             let fgTag, fgKind;
             switch (kind) {
-                case 'pit1':
-                case 'pit2':
+                case 'pit':
                     bgKind = 'pit';
                     bgTag = tags[kind];
                     /*
@@ -164,9 +159,8 @@ class Translate {
                     }
                     */
                     break;
-                case 'pit1b':
-                case 'pit2b':
-                    bgKind = 'pit';
+                case 'pitb':
+                    bgKind = 'floor';
                     bgTag = tags[kind];
                     /*
                     if (byFloor && bgTag !== floorTag) {
@@ -194,8 +188,7 @@ class Translate {
                     mgKind = 'floor';
                     mgTag = t_spec.hasOwnProperty('floor') ? t_spec['floor'] : 'floor';
                     break;
-                case 'obs1':
-                case 'obs2':
+                case 'obs':
                     fgKind = 'wall';
                     fgTag = tags[kind];
                     /*
@@ -205,8 +198,7 @@ class Translate {
                     }
                     */
                     break;
-                case 'obs1b':
-                case 'obs2b':
+                case 'obsb':
                     mgKind = 'floor';
                     mgTag = tags[kind];
                     /*
