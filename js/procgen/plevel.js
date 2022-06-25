@@ -64,21 +64,15 @@ class ProcLevelOutline {
         return this._id++;
     }
     static blockSwap = {
-        'pit1': 'pit1b',
-        'pit2': 'pit2b',
-        'obs1': 'obs1b',
-        'obs2': 'obs2b',
+        'pit': 'pitb',
+        'obs': 'obsb',
     }
     static tiles = {
         'floor': 'green',
-        'pit1': 'black',
-        'pit1b': 'gray',
-        'pit2': 'rgba(0,0,50,1)',
-        'pit2b': 'rgba(0,0,150,1)',
-        'obs1': 'rgba(50,0,50,1)',
-        'obs1b': 'rgba(150,0,150,1)',
-        'obs2': 'rgba(50,50,0,1)',
-        'obs2b': 'rgba(150,150,0,1)',
+        'pit': 'black',
+        'pitb': 'gray',
+        'obs': 'rgba(50,0,50,1)',
+        'obsb': 'rgba(150,0,150,1)',
         'wall': 'blue',
         'door': 'red',
         'fill': 'rgba(45,45,45,.5)',

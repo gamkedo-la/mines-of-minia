@@ -48,24 +48,14 @@ class Outline {
         // -- default to standard floor
         let kind = 'floor';
 
-        if (sample2 < -.8) {
-            kind = 'obs1';
-        } else if (sample2 < -.6) {
-            kind = 'obs1b';
-        } else if (sample2 > .8) {
-            kind = 'obs2';
-        } else if (sample2 > .6) {
-            kind = 'obs2b';
-        }
-
         if (sample < -.8) {
-            kind = 'pit1';
+            kind = 'pit';
         } else if (sample < -.6) {
-            kind = 'pit1b';
+            kind = 'pitb';
         } else if (sample > .8) {
-            kind = 'pit2';
+            kind = 'obs';
         } else if (sample > .6) {
-            kind = 'pit2b';
+            kind = 'obsb';
         }
         return kind;
     }

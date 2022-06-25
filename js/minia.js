@@ -68,8 +68,9 @@ class Minia extends Game {
                 rowOverflow: 2,
             },
             translate: {
-                wall: 'twall',
-                pit1: 'lava',
+                floor: 'rock.floor',
+                wall: 'rock.wall',
+                pit1: 'rock.pit',
                 pit1b: 'lava.border',
                 pit2: 'water',
                 pit2b: 'water.border',
