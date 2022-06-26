@@ -65,7 +65,7 @@ let miniaAssets = [
     ...Template.walls('img/rock-walls.png', 'rock.wall'),
     ...Template.tiles('img/rock-floor.png', 'rock.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
     ...Template.tiles('img/rock-pit.png', 'rock.pit'),
-    ...Template.tiles('img/rock-pit-border.png', 'rock.pit.border'),
+    ...Template.tiles('img/rock-pit-border.png', 'rock.pit.border', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
     ...Template.walls('img/rock-outcrop.png', 'rock.outcrop'),
     ...Template.tiles('img/rock-outcrop-border.png', 'rock.outcrop.border'),
     //...Template.tiles('img/lavaBorder.png', 'lava.border'),

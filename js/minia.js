@@ -42,10 +42,12 @@ class Minia extends Game {
                 move: false,
                 aggro: true,
                 turn: false,
+                /*
                 los: {
                     visible: true,
                     blocked: true,
                 },
+                */
             },
             keys: false,
         },
