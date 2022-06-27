@@ -102,6 +102,8 @@ class TestLevelState extends GameState {
                             //autocenter: true,
                             x_children: [
                                 Level.xspec({
+                                    losEnabled: Config.losEnabled,
+                                    fowEnabled: Config.fowEnabled,
                                     //dbg: { xform: true },
                                     tag: 'lvl',
                                     tileSize: Config.tileSize,
@@ -129,8 +131,6 @@ class TestLevelState extends GameState {
         this.lvl = Hierarchy.find(this.view, (v) => v.tag === 'lvl');
         this.lvl.evt.listen(this.lvl.constructor.evtMouseClicked, this.onLevelClick);
         console.log(`this.lvl: ${this.lvl}`);
-        this.lvl.fowEnabled = false;
-        this.lvl.losEnabled = false;
         //this.lvl.grid.dbg = true;
 
 

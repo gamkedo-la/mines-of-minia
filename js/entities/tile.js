@@ -34,7 +34,7 @@ class Tile extends MiniaModel {
         this.xform.offy = (this.kind === 'wall') ? -(this.tileSize) : -(this.halfSize);
         this.xform.offx = -(this.halfSize);
         // -- update
-        if (this.kind === 'wall') {
+        if (this.kind === 'wall' || this.kind === 'pit') {
             this.blocks = this.constructor.block.all;
         } else {
             this.blocks = 0;

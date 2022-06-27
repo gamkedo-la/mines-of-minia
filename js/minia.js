@@ -51,8 +51,8 @@ class Minia extends Game {
             },
             keys: false,
         },
-        //colSize: 16,
-        //rowSize: 16,
+        losEnabled: true,
+        fowEnabled: true,
         tileSize: 16,
         scale: 4,
 
