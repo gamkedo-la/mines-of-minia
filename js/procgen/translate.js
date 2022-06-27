@@ -191,6 +191,8 @@ class Translate {
                 case 'obs':
                     fgKind = 'wall';
                     fgTag = tags[kind];
+                    //mgKind = 'floor';
+                    //mgTag = tags['obsb'];
                     /*
                     if (byFloor) {
                         mgKind = 'floor';
