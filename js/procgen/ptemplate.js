@@ -82,5 +82,10 @@ class ProcTemplate {
         this.translate.doNoise = Util.getpath(spec, 'translate.doNoise', false);
         this.translate.minCriticalPath = Util.getpath(spec, 'translate.minCriticalPath', 5);
 
+        // -- spawn
+        this.spawn = {};
+        this.spawn.stairsUp = Util.getpath(spec, 'spawn.stairsUp');
+        this.spawn.stairsDown = Util.getpath(spec, 'spawn.stairsDown');
+
     }
 }

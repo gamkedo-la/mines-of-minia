@@ -29,7 +29,7 @@ class Translate {
         // -- store data
         pstate.pnoise = pnoise;
         pstate.plvl = plvl;
-        // -- choose critical level path
+        // -- choose critical level path (spawn point, exit point, rooms in between)
         this.chooseCriticalPath(template, pstate);
         // -- keep track of translated idxs
         let transidxs = [];
@@ -43,9 +43,6 @@ class Translate {
             this.translateHall(template, pstate, phall, transidxs);
             //if (template.doyield) yield;
         }
-        // -- pick spawn point
-        let proom = Prng.choose(prooms);
-        plvl.spawnIdx = proom.cidx;
         // yield
         if (template.doyield) yield;
     }
@@ -94,8 +91,8 @@ class Translate {
             hall.critical = hall.connections.every((v)=>v.critical);
         }
         // choose starting index
-        plvl.spawnIdx = startRoom.cidx;
-        startRoom.pois.push(plvl.spawnIdx);
+        plvl.startIdx = startRoom.cidx;
+        startRoom.pois.push(plvl.startIdx);
         // choose ending index
         plvl.exitIdx = endRoom.cidx;
         endRoom.pois.push(plvl.exitIdx);

@@ -23,6 +23,27 @@ let miniaAssets = [
         color: 'gray',
         borderColor: 'red',
     }),
+    Shape.xspec({
+        tag: 'stairs.up',
+        fill: true,
+        verts: [ 
+            {x:8, y:2}, {x:14, y:8}, {x:14, y:14}, {x:2, y:14}, {x:2, y:8},
+        ],
+        border: 1,
+        color: 'gray',
+        borderColor: 'red',
+    }),
+    Shape.xspec({
+        tag: 'stairs.down',
+        fill: true,
+        verts: [ 
+            {x:14, y:2}, {x:2, y:8}, {x:2, y:2}, {x:14, y:2}, {x:14, y:8},
+        ],
+        border: 1,
+        color: 'gray',
+        borderColor: 'red',
+    }),
+
     Weapon.xspec({
         tag: 'hack.1',
         kind: 'hack',

@@ -130,12 +130,12 @@ class PlayState extends GameState {
             plvl = ProcGen.genLvl(this.template);
         } else {
             plvl = new ProcLevel({ cols: 32, rows: 32, })
-            plvl.spawnIdx = Array2D.idxfromij(16,12, 32, 32);
+            plvl.startIdx = Array2D.idxfromij(16,12, 32, 32);
         }
 
         let x_player = Player.xspec({
             tag: 'pc',
-            idx: plvl.spawnIdx,
+            idx: plvl.startIdx,
             //idx: Array2D.idxfromij(20,12, 32, 32),
             //xform: new XForm({x:x, y:y, stretch: false}),
             x_sketch: Assets.get('pc'),
@@ -150,31 +150,8 @@ class PlayState extends GameState {
         plvl.entities.push(x_player);
 
         plvl.entities.push(Object.assign(Assets.get('hack.1'), {
-            idx: Array2D.idxfromdir(plvl.spawnIdx, Direction.south, plvl.cols, plvl.rows),
+            idx: Array2D.idxfromdir(plvl.startIdx, Direction.south, plvl.cols, plvl.rows),
             z: 2,
-        }));
-
-        plvl.entities.push(Enemy.xspec({
-            tag: 'enemy',
-            idx: plvl.spawnIdx + 4,
-            x_sketch: Assets.get('enemy'),
-            maxSpeed: .25,
-            ctrlid: 1,
-            z: 2,
-            losRange: Config.tileSize*8,
-            aggroRange: Config.tileSize*5,
-            resistances: { bonk: .25 },
-        }));
-
-        plvl.entities.push(Enemy.xspec({
-            tag: 'enemy',
-            idx: plvl.spawnIdx + 4,
-            idx: Array2D.idxfromdir(plvl.spawnIdx+4, Direction.south, plvl.cols, plvl.rows),
-            x_sketch: Assets.get('enemy'),
-            maxSpeed: .15,
-            z: 2,
-            losRange: Config.tileSize*8,
-            aggroRange: Config.tileSize*5,
         }));
 
         // -- pathfinding

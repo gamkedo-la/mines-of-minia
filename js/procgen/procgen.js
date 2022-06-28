@@ -8,6 +8,7 @@ import { UxDbg } from '../base/uxDbg.js';
 import { Layout } from './layout.js';
 import { Outline } from './outline.js';
 import { ProcRoom } from './proom.js';
+import { Spawn } from './spawn.js';
 import { Translate } from './translate.js';
 
 class ProcGen {
@@ -59,6 +60,8 @@ class ProcGen {
         } while (!validLevel);
         // -- translate level outline to level data
         yield *Translate.generator(template, pstate);
+        // -- spawn non-tile entities
+        yield *Spawn.generator(template, pstate);
     }
 
     static dbgGenerateLevel(generator, pstate) {

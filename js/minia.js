@@ -20,6 +20,7 @@ import { Weapon } from "./entities/weapon.js";
 import { miniaAssets } from "./assets.js";
 import { Player } from "./entities/player.js";
 import { ProcTemplate } from "./procgen/ptemplate.js";
+import { Stairs } from "./entities/stairs.js";
 
 class Minia extends Game {
     static states = {
@@ -29,7 +30,7 @@ class Minia extends Game {
         'play': new PlayState(),
         'testnoise': new TestNoiseState(),
     }
-    static startStateTag = 'testproc';
+    static startStateTag = 'play';
     static assetRefs = miniaAssets;
 
     static config = {
@@ -88,6 +89,7 @@ class Minia extends Game {
             Enemy,
             Level,
             Player,
+            Stairs,
             Tile,
             Weapon,
         ]);

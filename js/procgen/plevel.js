@@ -8,11 +8,17 @@ import { UxDbg } from "../base/uxDbg.js";
 
 class ProcLevel {
     constructor(spec={}) {
+        // -- index
+        this.index = spec.index || 1;
         // -- max level rows
         this.rows = spec.rows || this.dfltRows;
         // -- max level columns
         this.cols = spec.cols || this.dfltCols;
-        // level entities
+        // -- start index
+        this.startIdx = -1;
+        // -- end index
+        this.endIdx = -1;
+        // -- level entities
         this.entities = [];
     }
 }
@@ -89,7 +95,7 @@ class ProcLevelOutline {
         // -- 2d data array
         this.data = spec.data || new Array2D({cols: this.cols, rows: this.rows});
         // -- spawn/exit index
-        this.spawnIdx;
+        this.startIdx;
         this.exitIdx;
         // -- pathfinder
         this.graph = new ProcLevelGraph({lvl: this});
