@@ -10,7 +10,7 @@ import { TitleState } from './titleState.js';
 import { FiddleState } from './fiddleState.js';
 import { Systems } from './base/system.js';
 import { TestProcState } from "./testProcState.js";
-import { TestLevelState } from "./testLevelState.js";
+import { PlayState } from "./playState.js";
 import { TestNoiseState } from "./testNoiseState.js";
 import { Tile } from "./entities/tile.js";
 import { Level } from "./level.js";
@@ -26,10 +26,10 @@ class Minia extends Game {
         'title': new TitleState(),
         'fiddle': new FiddleState(),
         'testproc': new TestProcState(),
-        'testlvl': new TestLevelState(),
+        'play': new PlayState(),
         'testnoise': new TestNoiseState(),
     }
-    static startStateTag = 'testlvl';
+    static startStateTag = 'play';
     static assetRefs = miniaAssets;
 
     static config = {

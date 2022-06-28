@@ -1,11 +1,9 @@
-export { TestLevelState };
+export { PlayState };
 
 import { MoveAction } from './base/actions/move.js';
-import { UpdateAction } from './base/actions/update.js';
 import { Array2D } from './base/array2d.js';
 import { Assets } from './base/assets.js';
 import { Bindings } from './base/bindings.js';
-import { Bounds } from './base/bounds.js';
 import { Camera } from './base/camera.js';
 import { Config } from './base/config.js';
 import { Direction } from './base/dir.js';
@@ -16,13 +14,10 @@ import { GameState } from './base/gameState.js';
 import { Generator } from './base/generator.js';
 import { Hierarchy } from './base/hierarchy.js';
 import { Keys } from './base/keys.js';
-import { Model } from './base/model.js';
 import { Pathfinder } from './base/pathfinder.js';
 import { Sketch } from './base/sketch.js';
 import { Stats } from './base/stats.js';
 import { Systems } from './base/system.js';
-import { ActionSystem } from './base/systems/actionSystem.js';
-import { CtrlSystem } from './base/systems/ctrlSystem.js';
 import { MoveSystem } from './base/systems/moveSystem.js';
 import { RenderSystem } from './base/systems/renderSystem.js';
 import { UpdateSystem } from './base/systems/updateSystem.js';
@@ -37,23 +32,16 @@ import { Level } from './level.js';
 import { LevelGraph } from './lvlGraph.js';
 import { ProcLevel } from './procgen/plevel.js';
 import { ProcGen } from './procgen/procgen.js';
-import { Mathf } from './base/math.js';
 import { LoSSystem } from './systems/losSystem.js';
-import { ProcTemplate } from './procgen/ptemplate.js';
 import { TurnSystem } from './systems/turnSystem.js';
 import { AggroSystem } from './systems/aggroSystem.js';
 import { Enemy } from './entities/enemy.js';
 import { WaitAction } from './base/actions/wait.js';
-import { EndTurnAction } from './actions/endTurn.js';
-import { Character } from './entities/character.js';
 import { MeleeAttackAction } from './actions/attack.js';
 import { Player } from './entities/player.js';
 import { FieryCharm } from './charms/fiery.js';
 
-
-
-
-class TestLevelState extends GameState {
+class PlayState extends GameState {
     async ready() {
         //this.tileSize = 32;
 
@@ -89,7 +77,6 @@ class TestLevelState extends GameState {
             tag: 'cvs.0',
             x_children: [
                 UxMask.xspec({
-                //UxPanel.xspec({
                     tag: 'viewport',
                     x_xform: XForm.xspec({border: .05, scalex: 1, scaley:1}),
                     dbg: { viewMask: true },
@@ -137,24 +124,6 @@ class TestLevelState extends GameState {
         Systems.get('los').lvl = this.lvl;
 
         this.template = Config.template;
-        /*
-        this.template = new ProcTemplate({
-            doyield: true,
-            seed: 2,
-            unitSize: 4,
-            maxCols: 180,
-            maxRows: 120,
-            tileSize: this.tileSize,
-            outline: {
-                hallWidth: 3,
-                colOverflow: 2,
-                rowOverflow: 2,
-            },
-            translate: {
-                wall: 'twall',
-            },
-        });
-        */
 
         let plvl;
         if (true) {
@@ -163,70 +132,6 @@ class TestLevelState extends GameState {
             plvl = new ProcLevel({ cols: 32, rows: 32, })
             plvl.spawnIdx = Array2D.idxfromij(16,12, 32, 32);
         }
-
-        for (const idx of [
-            Array2D.idxfromij(13,10, 32, 32),
-            Array2D.idxfromij(14,10, 32, 32),
-            Array2D.idxfromij(14,11, 32, 32),
-            Array2D.idxfromij(14,12, 32, 32),
-            Array2D.idxfromij(14,13, 32, 32),
-            Array2D.idxfromij(15,12, 32, 32),
-            /*
-            Array2D.idxfromij(10,12, 32, 32),
-            Array2D.idxfromij(10,13, 32, 32),
-            Array2D.idxfromij(11,12, 32, 32),
-            Array2D.idxfromij(12,12, 32, 32),
-            Array2D.idxfromij(13,12, 32, 32),
-            Array2D.idxfromij(14,12, 32, 32),
-            Array2D.idxfromij(14,13, 32, 32),
-            Array2D.idxfromij(10,15, 32, 32),
-            Array2D.idxfromij(10,16, 32, 32),
-            Array2D.idxfromij(11,16, 32, 32),
-            Array2D.idxfromij(14,15, 32, 32),
-            Array2D.idxfromij(13,16, 32, 32),
-            Array2D.idxfromij(14,16, 32, 32),
-            Array2D.idxfromij(14,11, 32, 32),
-            */
-        ]) {
-            plvl.entities.push({
-                cls: 'Tile',
-                kind: 'wall',
-                tileSize: Config.tileSize,
-                baseAssetTag: 'twall',
-                idx: idx,
-                z: 1,
-            });
-        }
-
-        /*
-        // -- test floor
-        for (const idx of [
-            Array2D.idxfromij(18,11, 32, 32),
-            Array2D.idxfromij(19,11, 32, 32),
-            Array2D.idxfromij(17,12, 32, 32),
-            Array2D.idxfromij(18,12, 32, 32),
-            Array2D.idxfromij(16,13, 32, 32),
-            Array2D.idxfromij(17,13, 32, 32),
-            Array2D.idxfromij(18,13, 32, 32),
-            Array2D.idxfromij(19,13, 32, 32),
-            Array2D.idxfromij(16,14, 32, 32),
-            Array2D.idxfromij(17,14, 32, 32),
-            Array2D.idxfromij(18,14, 32, 32),
-            Array2D.idxfromij(19,14, 32, 32),
-            Array2D.idxfromij(17,15, 32, 32),
-            Array2D.idxfromij(18,15, 32, 32),
-            Array2D.idxfromij(20,14, 32, 32),
-        ]) {
-            plvl.entities.push({
-                cls: 'Tile',
-                kind: 'ground',
-                tileSize: this.tileSize,
-                baseAssetTag: 'floor',
-                idx: idx,
-                z: 0,
-            });
-        }
-        */
 
         let x_player = Player.xspec({
             tag: 'pc',
@@ -300,30 +205,6 @@ class TestLevelState extends GameState {
         this.onLoSUpdate = this.onLoSUpdate.bind(this);
         Systems.get('los').evt.listen(Systems.get('los').constructor.evtUpdated, this.onLoSUpdate);
 
-
-        /*
-        console.log(`spawnidx: ${this.lvl.spawnIdx}`);
-
-        let spawnIdx = this.lvl.spawnIdx;
-        let x = this.lvl.data.ifromidx(spawnIdx) * 16;
-        let y = this.lvl.data.jfromidx(spawnIdx) * 16;
-        let x_player = Npc.xspec({
-            tag: 'pc',
-            xform: new XForm({x:x, y:y, stretch: false}),
-            sketch: Assets.get('pc', true),
-            //collider: new Collider({width: 20, height: 20}),
-            maxSpeed: .4,
-            ctrlid: 1,
-            z: 1,
-        });
-        console.log(`pos: ${x},${y} x_player: ${Fmt.ofmt(x_player)}`);
-        this.pidx = spawnIdx;
-        this.player = Generator.generate(x_player);
-        //console.log(`x_tile: ${Fmt.ofmt(x_tile)} tile: ${tile}}`);
-        this.grid0.adopt(this.player);
-        console.log(`player bounds: ${this.player.xform.getWorldBounds(false)}`);
-        console.log(`grid bounds: ${this.grid0.xform.bounds}`);
-        */
 
         this.camera = new Camera({view: this.slider, viewport: this.viewport, overflow: false, buffer: 0});
         this.camera.trackTarget(this.player);
