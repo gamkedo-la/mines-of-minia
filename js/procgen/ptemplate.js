@@ -80,24 +80,7 @@ class ProcTemplate {
         this.translate.obs = Util.getpath(spec, 'translate.obs');
         this.translate.obsb = Util.getpath(spec, 'translate.obsb');
         this.translate.doNoise = Util.getpath(spec, 'translate.doNoise', false);
+        this.translate.minCriticalPath = Util.getpath(spec, 'translate.minCriticalPath', 5);
 
-
-            /*
-            tileSize: 4,
-            tileWidth: 4,
-            tileHeight: 4,
-            origx: 500, 
-            origy: 400, 
-            radius: 200,
-            nodes: 9,
-            satellites: 3,
-            colOverflow: 3,
-            rowOverflow: 3,
-            hallWidth: 3,
-            doorWidth: 1,
-            minRoomDim: 6,
-            minRoomRadius: 20,
-            dbgTag: dbgTag,
-            */
     }
 }

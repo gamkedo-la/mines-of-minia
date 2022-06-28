@@ -29,7 +29,7 @@ class Minia extends Game {
         'play': new PlayState(),
         'testnoise': new TestNoiseState(),
     }
-    static startStateTag = 'play';
+    static startStateTag = 'testproc';
     static assetRefs = miniaAssets;
 
     static config = {
@@ -60,14 +60,14 @@ class Minia extends Game {
             doyield: true,
             //seed: 3,
             seed: 62183,
-            unitSize: 4,
-            maxCols: 180,
-            maxRows: 120,
+            unitSize: 6,
+            maxCols: 140,
+            maxRows: 100,
             tileSize: 16,
             outline: {
                 hallWidth: 3,
-                colOverflow: 2,
-                rowOverflow: 2,
+                colOverflow: 1,
+                rowOverflow: 1,
             },
             translate: {
                 floor: 'rock.floor',

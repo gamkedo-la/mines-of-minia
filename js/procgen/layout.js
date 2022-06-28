@@ -55,7 +55,7 @@ class Layout {
 
         // ## step 2
         // -- generate rooms from pie slices
-        let prooms = Layout.genRoomsFromPie(ppie, template);
+        let prooms = Layout.genRoomsFromPie(ppie, template, true);
         pstate.prooms = prooms;
         if (template.doyield) yield;
         delete pstate.grrpie;
@@ -119,7 +119,7 @@ class Layout {
         // ## step 5
         // -- generate rooms for satellites
         for (const psat of psats) {
-            let satrooms = Layout.genRoomsFromPie(psat, template);
+            let satrooms = Layout.genRoomsFromPie(psat, template, false);
             pstate.prooms = pstate.prooms.concat(satrooms);
         }
         if (template.doyield) yield;
@@ -140,7 +140,7 @@ class Layout {
 
     }
 
-    static genRoomsFromPie(pie, template={}) {
+    static genRoomsFromPie(pie, template={}, primary=false) {
         let minUnits = template.roomMinUnits || 5;
         let minRoomRadius = template.unitSize * minUnits;
         let rooms = [];
@@ -152,6 +152,7 @@ class Layout {
             let room = new ProcRoom({
                 x: Math.round(rorigx), 
                 y: Math.round(rorigy),
+                primary: primary,
                 radius: Math.round(roomRadius),
             });
             if (lastRoom) {

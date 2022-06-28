@@ -1,7 +1,5 @@
-export { ProcRoom, ProcRoomOutline }
+export { ProcRoom }
 
-import { Array2D } from '../base/array2d.js';
-import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
 import { UxDbg } from '../base/uxDbg.js';
 import { ProcModel } from './pmodel.js';
@@ -9,6 +7,43 @@ import { ProcModel } from './pmodel.js';
 class ProcRoom extends ProcModel {
     static dfltRoomColor = 'blue';
     static dfltConnColor = 'orange';
+
+    static findShortestPath(rooms, room1, room2) {
+        let roomMap = {};
+        for (const room of rooms) roomMap[room.cidx] = room;
+        let visited = [room1.cidx];
+        let q = [];
+        let solutions = [];
+        // build out initial queue of potential solutions
+        for (const conn of room1.connections) {
+            visited.push(conn.cidx);
+            q.push([conn, room1]);
+        }
+        // iterate through items in the solution queue
+        while (q.length) {
+            // pop item from queue
+            let candidate = q.shift();
+            if (candidate[0] === room2) {
+                solutions.push(candidate);
+                continue;
+            }
+            for (const conn of candidate[0].connections) {
+                if (!visited.includes(conn.cidx)) {
+                    visited.push(conn.cidx);
+                    q.push(new Array(conn, ...candidate));
+                }
+            }
+        }
+        // find best solution
+        let best;
+        for (const solution of solutions) {
+            if (!best || solution.length<best.length) {
+                best = solution;
+            }
+        }
+        return best;
+    }
+
     constructor(spec={}) {
         super(spec);
         this.x = spec.x || 0;
@@ -17,6 +52,8 @@ class ProcRoom extends ProcModel {
         this.connections = spec.connections || [];
         this.roomColor = spec.roomColor || this.constructor.dfltRoomColor;
         this.connColor = spec.connColor || this.constructor.dfltConnColor;
+        this.primary = spec.hasOwnProperty('primary') ? spec.primary : false;
+        this.critical = spec.hasOwnProperty('critical') ? spec.critical : false;
         // all tiles associated with this room
         this.idxs = [];
         // map of connected rooms and the overlapping indices
@@ -24,6 +61,7 @@ class ProcRoom extends ProcModel {
         // edge tiles
         this.edges = [];
         this.exits = [];
+        this.pois = [];
         // center index
         this.cidx = 0;
         // dimensions
@@ -48,6 +86,22 @@ class ProcRoom extends ProcModel {
         }
     }
 
+    setidx(idx, kind) {
+        if (!this.idxs.includes(idx)) this.idxs.push(idx);
+        if (kind === 'wall' && !this.edges.includes(idx)) this.edges.push(idx);
+        //if (kind === 'door' && !this.doors.includes(idx)) this.doors.push(idx);
+    }
+
+    clearidx(idx) {
+        let i;
+        i = this.idxs.indexOf(idx);
+        if (i !== -1) this.idxs.splice(i, 1);
+        i = this.edges.indexOf(idx);
+        if (i !== -1) this.edges.splice(i, 1);
+        i = this.exits.indexOf(idx);
+        if (i !== -1) this.exits.splice(i, 1);
+    }
+
     draw(tag) {
         // room bounds
         UxDbg.drawArc(this.x, this.y, this.radius, { color: this.roomColor, tag:tag });
@@ -59,59 +113,6 @@ class ProcRoom extends ProcModel {
     
     toString() {
         return Fmt.toString('Rsv', this.x, this.y, this.radius);
-    }
-
-}
-
-class ProcRoomOutline {
-    static dfltRows = 16;
-    static dfltCols = 16;
-    static _id = 1;
-    static get id() {
-        return this._id++;
-    }
-    static tiles = {
-        'floor': 'green',
-        'wall': 'blue',
-        'door': 'red',
-        'fill': 'rgba(45,45,45,.5)',
-    }
-    constructor(spec={}) {
-        this.x = spec.x || 0;
-        this.y = spec.y || 0;
-        this.tileWidth = spec.tileWidth || 1;
-        this.tileHeight = spec.tileHeight || 1;
-        this.id = this.constructor.id;
-        // -- max level rows
-        this.rows = spec.rows || this.dfltRows;
-        // -- max level columns
-        this.cols = spec.cols || this.dfltCols;
-        // -- 2d data array
-        this.data = spec.data || new Array2D({cols: this.cols, rows: this.rows});
-        this.exits = [];
-        this.edges = [];
-    }
-    toString() {
-        return Fmt.toString('Room', this.gid, this.x, this.y, this.cols, this.rows);
-    }
-
-    getEdgeDir(idx) {
-        let i = this.data.ifromidx(idx);
-        let j = this.data.jfromidx(idx);
-        for (const dir of Direction.cardinals) {
-            if (!this.data.getij(i+Direction.asX(dir), j+Direction.asY(dir))) return dir;
-        }
-        return 0;
-    }
-
-    draw(ctx) {
-        for (const [idx,v] of this.data.find((v=>v))) {
-            let i=this.data.ifromidx(idx);
-            let j=this.data.jfromidx(idx);
-            let color = this.constructor.tiles[v] || 'white';
-            ctx.fillStyle = color;
-            ctx.fillRect(this.x+i*this.tileWidth, this.y+j*this.tileHeight, this.tileWidth, this.tileHeight);
-        }
     }
 
 }

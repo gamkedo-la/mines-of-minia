@@ -5,8 +5,8 @@ import { Mathf } from '../base/math.js';
 import { Prng } from '../base/prng.js';
 import { Util } from '../base/util.js';
 import { UxDbg } from '../base/uxDbg.js';
-import { ProcHall } from './phall.js';
 import { ProcLevelOutline } from './plevel.js';
+import { ProcRoom } from './proom.js';
 
 class Outline {
 
@@ -233,13 +233,19 @@ class Outline {
         let ioverlap = Mathf.overlap(r1.mini, r1.maxi, r2.mini, r2.maxi);
         let joverlap = Mathf.overlap(r1.minj, r1.maxj, r2.minj, r2.maxj);
 
+        let x = (r1.x+r2.x)/2;
+        let y = (r1.y+r2.y)/2;
+
         let r1door = 'door';
         let r2door = 'door';
         let r1port, r1dir;
         let r2port, r2dir;
 
         // create proc hall instance
-        let phall = new ProcHall();
+        let phall = new ProcRoom({
+            x: x,
+            y: y,
+        });
         // halls are connected to rooms
         phall.addConnection(r1);
         phall.addConnection(r2);

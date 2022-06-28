@@ -6,7 +6,7 @@ import { SimpleNoise } from '../base/noise.js';
 import { Prng } from '../base/prng.js';
 import { UxDbg } from '../base/uxDbg.js';
 import { ProcLevel, ProcLevelOutline } from './plevel.js';
-
+import { ProcRoom } from './proom.js';
 
 class Translate {
     static *generator(template, pstate) {
@@ -29,6 +29,8 @@ class Translate {
         // -- store data
         pstate.pnoise = pnoise;
         pstate.plvl = plvl;
+        // -- choose critical level path
+        this.chooseCriticalPath(template, pstate);
         // -- keep track of translated idxs
         let transidxs = [];
         // -- translate rooms
@@ -48,6 +50,58 @@ class Translate {
         if (template.doyield) yield;
     }
 
+    static chooseCriticalPath(template, pstate) {
+        // -- pull data
+        let t_spec = template.translate || {};
+        let minCriticalPath = t_spec.minCriticalPath || 5;
+        let plvl = pstate.plvl;
+        let prooms = pstate.prooms || [];
+        let phalls = pstate.phalls || [];
+        // -- choose starting room
+        // -- starting room will be chosen from primary rooms (rooms in the inner circle)
+        let primary = [];
+        let secondary = [];
+        for (const proom of prooms) {
+            if (proom.primary) {
+                primary.push(proom);
+            } else {
+                secondary.push(proom);
+            }
+        }
+        let startRoom = Prng.choose(primary);
+        let endRoom;
+        // -- choose target room
+        // -- target room will be where the stairs up are
+        // -- chosen from a secondary room that is at minimum number of rooms away
+        let best;
+        for (let i=0; i<5; i++) {
+            endRoom = Prng.choose(secondary);
+            let path = ProcRoom.findShortestPath(prooms, startRoom, endRoom);
+            console.log(`try startRoom: ${startRoom} endRoom: ${endRoom} path: ${path}`);
+            if (path.length >= minCriticalPath) {
+                best = path;
+                break;
+            } else {
+                if (!best || path.length > best.length) best = path;
+            }
+        }
+        // mark rooms along path as critical
+        for (const room of best) {
+            room.critical = true;
+        }
+        // mark halls along path as critical
+        for (const hall of phalls) {
+            hall.critical = hall.connections.every((v)=>v.critical);
+        }
+        // choose starting index
+        plvl.spawnIdx = startRoom.cidx;
+        startRoom.pois.push(plvl.spawnIdx);
+        // choose ending index
+        plvl.exitIdx = endRoom.cidx;
+        endRoom.pois.push(plvl.exitIdx);
+        console.log(`critical path: ${best}`);
+    }
+
     static translateRoom(template, pstate, proom, transidxs) {
         // FIXME: handle different type of hall translators here...
         this.translateEmptyRoom(template, pstate, proom, transidxs);
@@ -62,7 +116,7 @@ class Translate {
         // pull state
         let plvlo = pstate.plvlo;
         // points of interest... all must be reachable
-        let poiIdxs = proom.exits;
+        let poiIdxs = new Array(...proom.exits, ...proom.pois);
         let swap = ProcLevelOutline.blockSwap;
 
         // ensure each point of interest has floor immediately around it
@@ -117,18 +171,38 @@ class Translate {
         let plvl = pstate.plvl || [];
 
         //console.log(`proom: ${proom.cidx}`);
-
+        let tags = {};
         let floorTag = t_spec.hasOwnProperty('floor') ? t_spec['floor'] : 'floor';
-        let tags = {
-            floor: floorTag,
-            pit: t_spec.hasOwnProperty('pit') ? t_spec['pit'] : 'pit',
-            pitb: t_spec.hasOwnProperty('pitb') ? t_spec['pitb'] : floorTag,
-            wall: t_spec.hasOwnProperty('wall') ? t_spec['wall'] : 'wall',
-            door: t_spec.hasOwnProperty('door') ? t_spec['door'] : 'door',
-            obs: t_spec.hasOwnProperty('obs') ? t_spec['obs'] : 'obs',
-            obsb: t_spec.hasOwnProperty('obsb') ? t_spec['obsb'] : floorTag,
-        };
-        console.log(`-- tags: ${Fmt.ofmt(tags)}`);
+        if (proom.critical) {
+            // FIXME
+            /*
+            for (const idx of proom.idxs) {
+                let kind = plvlo.data.getidx(idx);
+                if (kind !== 'wall') {
+                    plvlo.data.setidx(idx, 'obsb');
+                }
+            }
+            */
+            tags = {
+                floor: floorTag,
+                pit: t_spec.hasOwnProperty('pit') ? t_spec['pit'] : 'pit',
+                pitb: t_spec.hasOwnProperty('pitb') ? t_spec['pitb'] : floorTag,
+                wall: t_spec.hasOwnProperty('wall') ? t_spec['wall'] : 'wall',
+                door: t_spec.hasOwnProperty('door') ? t_spec['door'] : 'door',
+                obs: t_spec.hasOwnProperty('obs') ? t_spec['obs'] : 'obs',
+                obsb: t_spec.hasOwnProperty('obsb') ? t_spec['obsb'] : floorTag,
+            };
+        } else {
+            tags = {
+                floor: floorTag,
+                pit: t_spec.hasOwnProperty('pit') ? t_spec['pit'] : 'pit',
+                pitb: t_spec.hasOwnProperty('pitb') ? t_spec['pitb'] : floorTag,
+                wall: t_spec.hasOwnProperty('wall') ? t_spec['wall'] : 'wall',
+                door: t_spec.hasOwnProperty('door') ? t_spec['door'] : 'door',
+                obs: t_spec.hasOwnProperty('obs') ? t_spec['obs'] : 'obs',
+                obsb: t_spec.hasOwnProperty('obsb') ? t_spec['obsb'] : floorTag,
+            };
+        }
 
         // make sure room is viable
         this.makeRoomViable(template, pstate, proom);

@@ -88,8 +88,9 @@ class ProcLevelOutline {
         this.cols = spec.cols || this.dfltCols;
         // -- 2d data array
         this.data = spec.data || new Array2D({cols: this.cols, rows: this.rows});
-        // -- spawn index
+        // -- spawn/exit index
         this.spawnIdx;
+        this.exitIdx;
         // -- pathfinder
         this.graph = new ProcLevelGraph({lvl: this});
         this.pathfilter;
