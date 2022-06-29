@@ -37,7 +37,7 @@ class AggroSystem extends System {
     onEntityRemoved(evt) {
         let actor = evt.actor;
         if (!actor) return;
-        if (this.dbg) console.log(`${this} onEntityRemoved: ${Fmt.ofmt(evt)}`);
+        //if (this.dbg) console.log(`${this} onEntityRemoved: ${Fmt.ofmt(evt)}`);
         this.store.delete(actor.gid);
         actor.evt.ignore(actor.constructor.evtUpdated, this.onAggroTargetUpdate);
         if (actor.team) {

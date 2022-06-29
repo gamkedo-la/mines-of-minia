@@ -1,8 +1,8 @@
 export { Translate };
 
+import { Array2D } from '../base/array2d.js';
 import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
-import { SimpleNoise } from '../base/noise.js';
 import { Prng } from '../base/prng.js';
 import { UxDbg } from '../base/uxDbg.js';
 import { ProcLevel, ProcLevelOutline } from './plevel.js';
@@ -15,19 +15,13 @@ class Translate {
         let plvlo = pstate.plvlo;
         let prooms = pstate.prooms || [];
         let phalls = pstate.phalls || [];
-        // -- initialize noise generator
-        let pnoise = new SimpleNoise({
-            seed: template.seed,
-            scalex: t_spec.noiseXScale || .04,
-            scaley: t_spec.noiseYScale || .05,
-        });
         // -- generate the new level
         let plvl = new ProcLevel({
+            index: template.index,
             cols: plvlo.cols,
             rows: plvlo.rows,
         });
         // -- store data
-        pstate.pnoise = pnoise;
         pstate.plvl = plvl;
         // -- choose critical level path (spawn point, exit point, rooms in between)
         this.chooseCriticalPath(template, pstate);
@@ -74,7 +68,7 @@ class Translate {
         for (let i=0; i<5; i++) {
             endRoom = Prng.choose(secondary);
             let path = ProcRoom.findShortestPath(prooms, startRoom, endRoom);
-            console.log(`try startRoom: ${startRoom} endRoom: ${endRoom} path: ${path}`);
+            //console.log(`try startRoom: ${startRoom} endRoom: ${endRoom} path: ${path}`);
             if (path.length >= minCriticalPath) {
                 best = path;
                 break;
@@ -96,7 +90,13 @@ class Translate {
         // choose ending index
         plvl.exitIdx = endRoom.cidx;
         endRoom.pois.push(plvl.exitIdx);
-        console.log(`critical path: ${best}`);
+        //console.log(`critical path: ${best}`);
+
+        // FIXME: remove
+        let idx = Array2D.idxfromdir(plvl.startIdx, Direction.north, plvl.cols, plvl.rows);
+        idx = Array2D.idxfromdir(idx, Direction.north, plvl.cols, plvl.rows);
+        idx = Array2D.idxfromdir(idx, Direction.north, plvl.cols, plvl.rows);
+        plvl.exitIdx = idx;
     }
 
     static translateRoom(template, pstate, proom, transidxs) {

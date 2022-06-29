@@ -25,15 +25,12 @@ class ProcGen {
         blocked: 4,
     };
 
-    static init(seed=1) {
-        Prng.seed(seed);
-    }
-
     static *initGenerator(template, pstate) {
         if (!template.seed) template.seed = Random.rangeInt(1,100000);
-        Prng.seed(template.seed);
+        let seed = template.seed + template.index;
+        Prng.seed(seed);
         pstate.pnoise = new SimpleNoise({
-            seed: template.seed,
+            seed: seed,
             scalex: template.noiseXScale || .04,
             scaley: template.noiseYScale || .05,
         });

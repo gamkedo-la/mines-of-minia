@@ -106,7 +106,6 @@ class Outline {
         // pull level outline
         let lvl = pstate.plvlo;
         let noise = pstate.pnoise;
-        console.log(`rooms noise: ${noise}`);
         // pull rooms
         let prooms = pstate.prooms;
         for (const proom of prooms) {

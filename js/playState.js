@@ -40,6 +40,9 @@ import { WaitAction } from './base/actions/wait.js';
 import { MeleeAttackAction } from './actions/attack.js';
 import { Player } from './entities/player.js';
 import { FieryCharm } from './charms/fiery.js';
+import { Stairs } from './entities/stairs.js';
+import { LevelSystem } from './systems/levelSystem.js';
+import { TakeStairsAction } from './actions/takeStairs.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -70,8 +73,10 @@ class PlayState extends GameState {
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onTock = this.onTock.bind(this);
         this.onLevelClick = this.onLevelClick.bind(this);
+        this.onLevelLoaded = this.onLevelLoaded.bind(this);
         Events.listen(Keys.evtDown, this.onKeyDown);
         Events.listen(Game.evtTock, this.onTock);
+        Events.listen(LevelSystem.evtLoaded, this.onLevelLoaded);
         let x_view = UxCanvas.xspec({
             cvsid: 'game.canvas',
             tag: 'cvs.0',
@@ -116,6 +121,9 @@ class PlayState extends GameState {
 
         this.viewport = Hierarchy.find(this.view, (v) => v.tag === 'viewport');
         this.lvl = Hierarchy.find(this.view, (v) => v.tag === 'lvl');
+
+        Systems.add('level', new LevelSystem({ slider: this.slider, lvl: this.lvl, dbg: Util.getpath(Config, 'dbg.system.level')}));
+
         this.lvl.evt.listen(this.lvl.constructor.evtMouseClicked, this.onLevelClick);
         console.log(`this.lvl: ${this.lvl}`);
         //this.lvl.grid.dbg = true;
@@ -133,26 +141,28 @@ class PlayState extends GameState {
             plvl.startIdx = Array2D.idxfromij(16,12, 32, 32);
         }
 
-        let x_player = Player.xspec({
+
+        this.player = new Player({
             tag: 'pc',
-            idx: plvl.startIdx,
-            //idx: Array2D.idxfromij(20,12, 32, 32),
-            //xform: new XForm({x:x, y:y, stretch: false}),
-            x_sketch: Assets.get('pc'),
-            //collider: new Collider({width: 20, height: 20}),
+            idx: 0,
+            xform: new XForm({ stretch: false }),
+            sketch: Assets.get('pc', true),
             maxSpeed: .25,
-            ctrlid: 1,
             z: 2,
             healthMax: 100,
             losRange: Config.tileSize*5,
             team: 'player',
         });
-        plvl.entities.push(x_player);
+        this.player.xform.offx = -this.player.xform.width*.5;
+        this.player.xform.offy = -this.player.xform.height*.5;
+        //plvl.entities.push(x_player);
 
+        /*
         plvl.entities.push(Object.assign(Assets.get('hack.1'), {
             idx: Array2D.idxfromdir(plvl.startIdx, Direction.south, plvl.cols, plvl.rows),
             z: 2,
         }));
+        */
 
         // -- pathfinding
         this.lvlgraph = new LevelGraph({
@@ -165,15 +175,18 @@ class PlayState extends GameState {
         });
 
         // load level
-        this.loadLevel(plvl);
+        // trigger want level event
+        Events.trigger(LevelSystem.evtWanted, { level: 1 });
+        //this.loadLevel(plvl);
 
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
-        this.player = Hierarchy.find(this.view, (v) => v.tag === 'pc');
+        //this.player = Hierarchy.find(this.view, (v) => v.tag === 'pc');
         this.player.evt.listen(this.player.constructor.evtUpdated, this.onPlayerUpdate);
         this.onLoSUpdate({actor: this.player});
         this.player.addCharm( new FieryCharm() );
+        this.lvl.adopt(this.player);
 
-        this.wpn = Hierarchy.find(this.view, (v) => v.tag === 'hack.1');
+        //this.wpn = Hierarchy.find(this.view, (v) => v.tag === 'hack.1');
         //console.log(`wpn: ${this.wpn} min: ${this.wpn.minx},${this.wpn.miny} max: ${this.wpn.maxx},${this.wpn.maxy}`);
         //console.log(`player: ${this.player} min: ${this.player.minx},${this.player.miny} max: ${this.player.maxx},${this.player.maxy}`);
 
@@ -227,7 +240,27 @@ class PlayState extends GameState {
         }
 
         // trigger load complete
-        Events.trigger('lvl.loaded', {lvl: this.lvl});
+        Events.trigger('lvl.loaded', {plvl: plvl, lvl: this.lvl});
+    }
+
+    onLevelLoaded(evt) {
+        // resize UI elements for new level
+        // -- resize slider/level to match level
+        /*
+        let width = evt.plvl.cols * Config.tileSize;
+        let height = evt.plvl.rows * Config.tileSize;
+        // -- resize scrollable area
+        this.slider.resize(width, height, true);
+        console.log(`on LevelLoaded width: ${width} height: ${height}`);
+        */
+
+        // update player position
+        let startIdx = evt.plvl.startIdx;
+        let wantx = this.lvl.grid.xfromidx(startIdx, true);
+        let wanty = this.lvl.grid.yfromidx(startIdx, true);
+        UpdateSystem.eUpdate(this.player, { idx: startIdx, xform: {x: wantx, y: wanty }});
+
+        console.log(`adjust player: ${startIdx} ${wantx},${wanty}`);
     }
 
     onPlayerUpdate(evt) {
@@ -250,11 +283,13 @@ class PlayState extends GameState {
         let x = this.lvl.xfromidx(idx, true);
         let y = this.lvl.yfromidx(idx, true);
         // what's at index?
+        let stairs;
         for (const other of this.lvl.findidx(idx)) {
+            if (other.idx !== idx) continue;
         //let bounds = new Bounds(x,y, 16,16);
         //for (const other of this.lvl.grid.findOverlaps(bounds)) {
             //console.log(`other: ${other}`);
-            if (other.idx === idx && (this.player.blockedBy & other.blocks)) {
+            if (this.player.blockedBy & other.blocks) {
                 if (other instanceof Enemy) {
                     console.log(`other is an enemy, try to attack...`);
                     TurnSystem.postLeaderAction( new MeleeAttackAction({
@@ -264,12 +299,18 @@ class PlayState extends GameState {
                     console.log(`blocked from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y} hit ${other}`);
                 }
                 return;
+            } else {
+                if (other instanceof Stairs) {
+                    console.log(`stairs ${other} is hit`);
+                    stairs = other;
+                }
             }
         }
         //console.log(`move from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y}`);
         TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
-        //ActionSystem.assign(this.player, new UpdateAction({ update: { idx: idx}}));
-        //ActionSystem.assign(this.player, new EndTurnAction());
+        if (stairs) {
+            TurnSystem.postLeaderAction( new TakeStairsAction({ stairs: stairs }));
+        }
     }
 
     wait() {

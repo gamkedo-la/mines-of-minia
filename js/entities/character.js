@@ -2,6 +2,7 @@ export { Character };
 
 import { Direction } from "../base/dir.js";
 import { Fmt } from "../base/fmt.js";
+import { Rect } from "../base/rect.js";
 import { UpdateSystem } from "../base/systems/updateSystem.js";
 import { Timer } from "../base/timer.js";
 import { MiniaModel } from "./miniaModel.js";

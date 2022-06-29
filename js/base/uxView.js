@@ -78,7 +78,7 @@ class UxView extends Entity {
     }
 
     destroy() {
-        console.log(`== ${this} view destroy`);
+        //console.log(`== ${this} view destroy`);
         Hierarchy.orphan(this.xform);
         if (this.parent) Hierarchy.orphan(this);
         for (const child of this.children) {

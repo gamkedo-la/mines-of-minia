@@ -11,7 +11,6 @@ import { Weapon } from './entities/weapon.js';
 import { Template } from './template.js';
 
 let miniaAssets = [
-    //Rect.xspec({tag: 'sword.1', width: 24, height: 24, color: 'rgba(127,127,127,.75)'}),
     Shape.xspec({
         tag: 'sword.1',
         fill: true,

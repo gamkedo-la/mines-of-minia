@@ -13,7 +13,7 @@ class Spawn {
         // -- stairs
         this.spawnStairs(template, pstate);
         // -- enemies
-        this.spawnEnemies(template, pstate);
+        //this.spawnEnemies(template, pstate);
         yield;
     }
 
@@ -32,6 +32,7 @@ class Spawn {
                 idx: plvl.startIdx,
                 x_sketch: Assets.get(downTag),
                 z: 2,
+                blocks: 0,
             }));
 
         }
@@ -42,6 +43,7 @@ class Spawn {
             idx: plvl.exitIdx,
             x_sketch: Assets.get(upTag),
             z: 2,
+            blocks: 0,
         }));
 
 
