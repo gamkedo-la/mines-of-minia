@@ -43,6 +43,17 @@ class Enemy extends Character {
         super.destroy();
     }
 
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            aggroRange: this.aggroRange,
+            meleeRange: this.meleeRange,
+            attackRating: this.attackRating,
+            defenseRating: this.defenseRating,
+            damageMin: this.damageMin,
+            damageMax: this.damageMax,
+        });
+    }
+
     // PROPERTIES ----------------------------------------------------------
 
     // EVENT HANDLERS ------------------------------------------------------

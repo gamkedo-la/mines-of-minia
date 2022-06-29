@@ -23,7 +23,6 @@ class LevelSystem extends System {
         this.lvl = spec.lvl || new Level();
         this.slider = spec.slider;
         this.wantLevel = 0;
-        this.currentLevel = 0;
         // event handlers
         this.onLevelWanted = this.onLevelWanted.bind(this);
         this.evt.listen(this.constructor.evtWanted, this.onLevelWanted);
@@ -32,7 +31,7 @@ class LevelSystem extends System {
     // EVENT HANDLERS ------------------------------------------------------
     onLevelWanted(evt) {
         console.log(`${this} onLevelWanted: ${Fmt.ofmt(evt)}`);
-        if (evt.level !== this.currentLevel) {
+        if (evt.level !== this.constructor.currentLevelIndex) {
             this.wantLevel = evt.level;
             this.active = true;
         }
@@ -41,28 +40,51 @@ class LevelSystem extends System {
     finalize(evt) {
         this.active = false;
         if (this.wantLevel) {
-            let template = Config.template;
-            console.log(`== wantLevel: ${this.wantLevel}`);
-            template.index = this.wantLevel;
-            let plvl = ProcGen.genLvl(template);
-            this.loadLevel(plvl);
+            //let template = Config.template;
+            //console.log(`== wantLevel: ${this.wantLevel}`);
+            //template.index = this.wantLevel;
+            //let plvl = ProcGen.genLvl(template);
+            this.handleLevelRequest(this.wantLevel);
         }
     }
 
-    loadLevel(plvl) {
-        // clear old level data...
-        // FIXME
-        for (const arr of this.lvl.grid.grid) {
-            if (!arr) continue;
-            for (const e of arr) {
-                //if (e) console.log(`destroy: ${e} cls: ${Fmt.ofmt(e)}`);
-                if (e.cls !== 'Player') {
-                    //console.log(`destroy: ${e} cls: ${e.cls}`);
-                    e.destroy();
+    handleLevelRequest(index) {
+        // save and clear current level
+        if (this.constructor.currentLevelIndex) {
+            // FIXME
+            let lvlentries = [];
+            for (const arr of this.lvl.grid.grid) {
+                if (!arr) continue;
+                for (const e of arr) {
+                    if (e.idx === 3048) console.log(`on level eval: ${e}`);
+                    if (e.cls === 'Enemy' || e.cls === 'Stairs') console.log(`on level eval: ${e}`);
+                    if (e.cls !== 'Player') {
+                        //console.log(`destroy: ${e} cls: ${e.cls}`);
+                        if (e.cls !== 'Tile') {
+                            let spec = e.as_kv();
+                            console.log(`e is not tile: ${e} spec: ${Fmt.ofmt(spec)}`);
+                            lvlentries.push(spec);
+                        }
+                        e.destroy();
+                    }
                 }
             }
+            console.log(`entries: ${Fmt.ofmt(lvlentries)}`);
         }
-        // FIXME... 
+
+        // is level to load cached?
+
+        // otherwise... generate level
+        let template = Config.template;
+        console.log(`== wantLevel: ${this.wantLevel}`);
+        template.index = index;
+        let plvl = ProcGen.genLvl(template);
+
+        // instantiate level
+        this.instantiateLevel(plvl);
+    }
+
+    instantiateLevel(plvl) {
 
         // resize UI elements for new level
         // -- hackety hack hack: the parent window to the level (slider) needs to be resized prior to adding all of the entities to it 

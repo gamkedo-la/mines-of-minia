@@ -8,6 +8,7 @@ import { Timer } from "../base/timer.js";
 import { MiniaModel } from "./miniaModel.js";
 import { Weapon } from "./weapon.js";
 
+
 class Character extends MiniaModel {
     // STATIC VARIABLES ----------------------------------------------------
     static evtAggroGained = 'character.aggroGained';
@@ -88,6 +89,26 @@ class Character extends MiniaModel {
         }
         this.charms = [];
         super.destroy();
+    }
+
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
+            maxSpeed: this.maxSpeed,
+            healthMax: this.healthMax,
+            health: this.health,
+            deathTTL: this.deathTTL,
+            attackRolls: this.attackRolls,
+            defenseRolls: this.defenseRolls,
+            damageReduction: this.damageReduction,
+            resistances: this.resistances,
+            losRange: this.losRange,
+            aggroRange: this.aggroRange,
+            aggroTag: this.aggroTag,
+            team: this.team,
+            lvl: this.lvl,
+            state: this.state,
+        });
     }
 
     // PROPERTIES ----------------------------------------------------------

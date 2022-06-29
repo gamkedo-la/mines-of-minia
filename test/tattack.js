@@ -1,5 +1,6 @@
-import { Attack, Dice, Roll } from "../js/attack.js";
+import { Attack } from "../js/actions/attack.js";
 import { Fmt } from "../js/base/fmt.js";
+import { Dice } from "../js/dice.js";
 
 describe("a die", () => {
 
@@ -31,6 +32,7 @@ describe("a die", () => {
 
 });
 
+/*
 describe("a roll", () => {
 
     it("can be generated from a string", ()=>{
@@ -41,20 +43,10 @@ describe("a roll", () => {
     it("can be computed", ()=>{
         let roll = new Roll({dice: [new Dice(12), new Dice(12)]});
         roll.roll();
-        /*
-        let rolls = {};
-        for (let i=0; i<100; i++) {
-            let v = die.roll();
-            expect(v >= 1 && v <= 20).toBeTruthy();
-            rolls[v] = (rolls[v]) ? rolls[v]+1 : 1;
-        }
-        for (const [k,v] of Object.entries(rolls)) {
-            console.log(`rolled: ${k} => ${v} times`);
-        }
-        */
     });
 
 });
+*/
 
 describe("an attack implementation", () => {
 

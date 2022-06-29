@@ -34,8 +34,7 @@ class ProcGen {
             scalex: template.noiseXScale || .04,
             scaley: template.noiseYScale || .05,
         });
-        console.log(`procgen noise: ${pstate.pnoise}`);
-        console.log(`procgen seed: ${template.seed}`);
+        console.log(`procgen template seed: ${template.seed} final: ${seed}`);
         if (template.doyield) yield;
     }
 

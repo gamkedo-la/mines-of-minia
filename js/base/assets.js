@@ -86,6 +86,9 @@ class SheetRef extends BaseRef {
 }
 
 class AssetRef extends BaseRef {
+    static xspec(spec={}) {
+        return Object.assign({cls: 'AssetRef'}, spec);
+    }
     constructor(spec={}) {
         super(spec);
         Object.assign(this, spec);
@@ -113,6 +116,9 @@ class Assets {
     static init() {}
     static get(tag, generate=false) {
         return this.main.get(tag, generate);
+    }
+    static add(tag, asset) {
+        this.main.add(tag, asset);
     }
 
     static resolveAssetRefs(spec, assets={}, generator) {
@@ -216,6 +222,11 @@ class Assets {
             return this.generator.generate(spec);
         }
         return spec;
+    }
+
+    add(tag, asset) {
+        asset.tag = tag;
+        this.assets[tag] = asset;
     }
 
 }

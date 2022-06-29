@@ -13,7 +13,7 @@ class Spawn {
         // -- stairs
         this.spawnStairs(template, pstate);
         // -- enemies
-        //this.spawnEnemies(template, pstate);
+        this.spawnEnemies(template, pstate);
         yield;
     }
 

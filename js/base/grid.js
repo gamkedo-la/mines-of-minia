@@ -2,7 +2,6 @@ export { Grid };
 
 import { Array2D } from "./array2d.js";
 import { Bounds } from "./bounds.js";
-import { Direction } from "./dir.js";
 import { Fmt } from "./fmt.js";
 import { Util } from "./util.js";
 
@@ -25,6 +24,7 @@ class Grid extends Array2D {
         this.rowHalfSize = this.rowSize * .5;
         this.colHalfSize = this.colSize * .5;
         this.gidxs = new Map();
+        console.log(`grid nentries: ${this.nentries}`);
     }
 
     get minx() { return this.bounds.minx };
@@ -102,18 +102,6 @@ class Grid extends Array2D {
         return j;
     }
 
-    /*
-    heuristic(p1,p2) {
-        let p1i = this.ifromx(p1.x);
-        let p1j = this.jfromy(p1.y);
-        let p2i = this.ifromx(p2.x);
-        let p2j = this.jfromy(p2.y);
-        let di = Math.abs(p1i - p2i);
-        let dj = Math.abs(p1j - p2j);
-        return this.tileSize * (di + dj) + (this.diagSize - 2 * this.tileSize) * Math.min(di, dj);
-    }
-    */
-
     idxfromxy(x,y) {
         let i = Math.floor(x/this.colSize);
         let j = Math.floor(y/this.rowSize);
@@ -138,7 +126,7 @@ class Grid extends Array2D {
 
     resize(bounds, cols, rows) {
         // array/grid resize
-        if (this.grid.cols != cols || this.grid.rows != rows) super.resize(cols, rows);
+        if (this.cols != cols || this.rows != rows) super.resize(cols, rows);
         // bounds resize
         this.bounds = bounds;
         this.colSize = this.bounds.width/this.cols;
@@ -159,7 +147,8 @@ class Grid extends Array2D {
     }
 
     *[Symbol.iterator]() {
-        for (let i=0; i<this.grid.nentries; i++) {
+        console.log(`here`);
+        for (let i=0; i<this.nentries; i++) {
             if (this.grid[i]) {
                 yield *this.grid[i];
             }
@@ -167,7 +156,7 @@ class Grid extends Array2D {
     }
 
     *keys() {
-        for (let i=0; i<this.grid.nentries; i++) {
+        for (let i=0; i<this.nentries; i++) {
             if (this.grid[i]) yield i;
         }
     }

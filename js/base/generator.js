@@ -1,5 +1,6 @@
 export { Generator };
 
+    import { Assets } from "./assets.js";
     import { Fmt } from "./fmt.js";
 import { Gizmo }                from "./gizmo.js";
 import { Registry }             from "./registry.js";
@@ -40,7 +41,11 @@ class Generator {
                         if (obj) nv.push(obj);
                     }
                 } else {
-                    nv = this.generate(v);
+                    if (v.cls === 'AssetRef') {
+                        nv = Assets.get(v.tag, true);
+                    } else {
+                        nv = this.generate(v);
+                    }
                 }
                 let nk = k.slice(2);
                 spec[nk] = nv;

@@ -13,6 +13,7 @@ class Stairs extends MiniaModel {
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
+        console.log(`stairs: ${Fmt.ofmt(spec)}`);
         super.cpost(spec);
         // -- general properties
         this.up = spec.hasOwnProperty('up') ? spec.up : false;
