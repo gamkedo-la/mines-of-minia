@@ -33,7 +33,6 @@ class Translate {
         }
         // -- translate halls
         for (const phall of phalls) {
-            //console.log(`translate hall: ${phall.cidx}`);
             this.translateHall(template, pstate, phall, transidxs);
             //if (template.doyield) yield;
         }
@@ -94,7 +93,6 @@ class Translate {
 
         // FIXME: remove
         let idx = Array2D.idxfromdir(plvl.startIdx, Direction.north, plvl.cols, plvl.rows);
-        idx = Array2D.idxfromdir(idx, Direction.north, plvl.cols, plvl.rows);
         idx = Array2D.idxfromdir(idx, Direction.north, plvl.cols, plvl.rows);
         plvl.exitIdx = idx;
     }
@@ -213,8 +211,6 @@ class Translate {
             let kind = plvlo.data.getidx(idx);
             let byFloor = Direction.all.some((v) => plvlo.data.getidx(plvlo.data.idxfromdir(idx, v)) === 'floor');
 
-            if (idx === 5934) console.log(`${idx} has kind: ${kind}`)
-
             // -- back, mid, fore tags and kinds
             let bgTag, bgKind;
             let mgTag, mgKind;
@@ -282,8 +278,6 @@ class Translate {
                     */
                     break;
             }
-
-            if (idx === 5934) console.log(`${idx} has kind: ${kind} tags: ${fgTag} ${mgTag} ${bgTag}`);
 
             if (fgTag) {
                 plvl.entities.push({

@@ -255,12 +255,12 @@ class PlayState extends GameState {
         */
 
         // update player position
-        let startIdx = evt.plvl.startIdx;
-        let wantx = this.lvl.grid.xfromidx(startIdx, true);
-        let wanty = this.lvl.grid.yfromidx(startIdx, true);
-        UpdateSystem.eUpdate(this.player, { idx: startIdx, xform: {x: wantx, y: wanty }});
+        let idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
+        let wantx = this.lvl.grid.xfromidx(idx, true);
+        let wanty = this.lvl.grid.yfromidx(idx, true);
+        UpdateSystem.eUpdate(this.player, { idx: idx, xform: {x: wantx, y: wanty }});
 
-        console.log(`adjust player: ${startIdx} ${wantx},${wanty}`);
+        console.log(`adjust player: ${idx} ${wantx},${wanty}`);
     }
 
     onPlayerUpdate(evt) {

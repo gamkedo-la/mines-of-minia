@@ -1,6 +1,7 @@
 export { MiniaModel };
 
 import { Bits } from '../base/bits.js';
+import { Fmt } from '../base/fmt.js';
 import { Model } from '../base/model.js';
 
 class MiniaModel extends Model {
@@ -16,8 +17,8 @@ class MiniaModel extends Model {
         // -- render depth
         this.z = spec.z || this.constructor.dfltZ;
         // -- collider interaction
-        this.blockedBy = spec.hasOwnProperty("blockedBy") ? spec.blockedBy : this.constructor.block.all;
-        this.blocks = spec.hasOwnProperty("blocks") ? spec.blocks : this.constructor.block.all;
+        this.blockedBy = spec.hasOwnProperty('blockedBy') ? spec.blockedBy : this.constructor.block.all;
+        this.blocks = spec.hasOwnProperty('blocks') ? spec.blocks : this.constructor.block.all;
     }
 
     as_kv() {
@@ -30,6 +31,10 @@ class MiniaModel extends Model {
             blockedBy: this.blockedBy,
             blocks: this.blocks,
         };
+    }
+
+    toString() {
+        return Fmt.toString(this.constructor.name, this.gid, this.tag, this.x, this.y, this.z, this.idx);
     }
 
 }

@@ -36,7 +36,7 @@ let miniaAssets = [
         tag: 'stairs.down',
         fill: true,
         verts: [ 
-            {x:14, y:2}, {x:2, y:8}, {x:2, y:2}, {x:14, y:2}, {x:14, y:8},
+            {x:8, y:14}, {x:2, y:8}, {x:2, y:2}, {x:14, y:2}, {x:14, y:8},
         ],
         border: 1,
         color: 'gray',

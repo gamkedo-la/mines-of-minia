@@ -57,7 +57,7 @@ class ProcGen {
         // -- translate level outline to level data
         yield *Translate.generator(template, pstate);
         // -- spawn non-tile entities
-        yield *Spawn.generator(template, pstate);
+        if (template.dospawn) yield *Spawn.generator(template, pstate);
     }
 
     static dbgGenerateLevel(generator, pstate) {

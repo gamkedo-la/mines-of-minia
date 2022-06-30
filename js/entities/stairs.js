@@ -13,7 +13,6 @@ class Stairs extends MiniaModel {
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
-        console.log(`stairs: ${Fmt.ofmt(spec)}`);
         super.cpost(spec);
         // -- general properties
         this.up = spec.hasOwnProperty('up') ? spec.up : false;
@@ -28,6 +27,13 @@ class Stairs extends MiniaModel {
     destroy() {
         this._unlinkSketch('_sketch');
         super.destroy();
+    }
+
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            up: this.up,
+            x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
+        });
     }
 
     // PROPERTIES ----------------------------------------------------------

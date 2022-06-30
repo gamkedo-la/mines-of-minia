@@ -4,6 +4,7 @@ import { Config } from '../base/config.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Generator } from '../base/generator.js';
+import { Storage } from '../base/storage.js';
 import { System } from '../base/system.js';
 import { XForm } from '../base/xform.js';
 import { Level } from '../level.js';
@@ -16,6 +17,8 @@ class LevelSystem extends System {
     static evtLoaded = 'lvl.loaded';
 
     static currentLevelIndex = 0;
+    static dfltMaxLevel = 21;
+    static dfltIterateTTL = 0;
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec={}) {
@@ -23,9 +26,12 @@ class LevelSystem extends System {
         this.lvl = spec.lvl || new Level();
         this.slider = spec.slider;
         this.wantLevel = 0;
+        this.maxLevel = spec.maxLevel || this.constructor.dfltMaxLevel;
         // event handlers
         this.onLevelWanted = this.onLevelWanted.bind(this);
         this.evt.listen(this.constructor.evtWanted, this.onLevelWanted);
+        // FIXME: remove
+        this.reset();
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -37,13 +43,16 @@ class LevelSystem extends System {
         }
     }
 
+    reset() {
+        for (let i=1; i<this.maxLevel; i++) {
+            let key = `lvl${i}`;
+            Storage.removeItem(key);
+        }
+    }
+
     finalize(evt) {
         this.active = false;
         if (this.wantLevel) {
-            //let template = Config.template;
-            //console.log(`== wantLevel: ${this.wantLevel}`);
-            //template.index = this.wantLevel;
-            //let plvl = ProcGen.genLvl(template);
             this.handleLevelRequest(this.wantLevel);
         }
     }
@@ -52,36 +61,52 @@ class LevelSystem extends System {
         // save and clear current level
         if (this.constructor.currentLevelIndex) {
             // FIXME
-            let lvlentries = [];
-            for (const arr of this.lvl.grid.grid) {
-                if (!arr) continue;
-                for (const e of arr) {
-                    if (e.idx === 3048) console.log(`on level eval: ${e}`);
-                    if (e.cls === 'Enemy' || e.cls === 'Stairs') console.log(`on level eval: ${e}`);
-                    if (e.cls !== 'Player') {
-                        //console.log(`destroy: ${e} cls: ${e.cls}`);
-                        if (e.cls !== 'Tile') {
-                            let spec = e.as_kv();
-                            console.log(`e is not tile: ${e} spec: ${Fmt.ofmt(spec)}`);
-                            lvlentries.push(spec);
-                        }
-                        e.destroy();
+            let cacheInfo = {
+                entities: [],
+                fowIdxs: Array.from(this.lvl.fowIdxs),
+            }
+            for (const e of this.lvl.grid) {
+                if (e.cls !== 'Player') {
+                    if (e.cls !== 'Tile') {
+                        let spec = e.as_kv();
+                        console.log(`e is not tile: ${e} spec: ${Fmt.ofmt(spec)}`);
+                        cacheInfo.entities.push(spec);
                     }
+                    e.destroy();
                 }
             }
-            console.log(`entries: ${Fmt.ofmt(lvlentries)}`);
+
+            let key = `lvl${this.constructor.currentLevelIndex}`;
+            Storage.setItem(key, cacheInfo);
         }
 
         // is level to load cached?
+        let cacheInfo = Storage.getItem(`lvl${index}`);
+        let template = Object.assign( {}, Config.template, {
+            index: index,
+            dospawn: (cacheInfo) ? false : true,
+        });
 
-        // otherwise... generate level
-        let template = Config.template;
-        console.log(`== wantLevel: ${this.wantLevel}`);
-        template.index = index;
+        // generate level
         let plvl = ProcGen.genLvl(template);
+        // update level info w/ cached info (if available)
+        if (cacheInfo) {
+            plvl.entities = plvl.entities.concat(cacheInfo.entities);
+        }
 
         // instantiate level
         this.instantiateLevel(plvl);
+
+        // update level index
+        let goingUp = (plvl.index > this.constructor.currentLevelIndex);
+        this.constructor.currentLevelIndex = plvl.index;
+        this.lvl.index = plvl.index;
+
+        // update fow
+        this.lvl.fowIdxs = (cacheInfo) ? cacheInfo.fowIdxs : [];
+
+        // trigger load complete
+        Events.trigger(this.constructor.evtLoaded, {plvl: plvl, lvl: this.lvl, goingUp: goingUp});
     }
 
     instantiateLevel(plvl) {
@@ -122,12 +147,6 @@ class LevelSystem extends System {
             this.lvl.adopt(e);
         }
 
-        // update level index
-        this.constructor.currentLevelIndex = plvl.index;
-        this.lvl.index = plvl.index;
-
-        // trigger load complete
-        Events.trigger(this.constructor.evtLoaded, {plvl: plvl, lvl: this.lvl});
     }
     
 }

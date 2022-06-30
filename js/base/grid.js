@@ -24,7 +24,6 @@ class Grid extends Array2D {
         this.rowHalfSize = this.rowSize * .5;
         this.colHalfSize = this.colSize * .5;
         this.gidxs = new Map();
-        console.log(`grid nentries: ${this.nentries}`);
     }
 
     get minx() { return this.bounds.minx };
@@ -147,10 +146,9 @@ class Grid extends Array2D {
     }
 
     *[Symbol.iterator]() {
-        console.log(`here`);
         for (let i=0; i<this.nentries; i++) {
             if (this.grid[i]) {
-                yield *this.grid[i];
+                yield *Array.from(this.grid[i]);
             }
         }
     }
@@ -164,13 +162,13 @@ class Grid extends Array2D {
     *getij(i, j) {
         let idx = this.idxfromij(i, j);
         if (this.grid[idx]) {
-            yield *this.grid[idx];
+            yield *Array.from(this.grid[idx]);
         }
     }
 
     *getidx(idx) {
         if (this.grid[idx]) {
-            yield *this.grid[idx];
+            yield *Array.from(this.grid[idx]);
         }
     }
 
@@ -180,7 +178,7 @@ class Grid extends Array2D {
         for (const idx of gidx) {
             let entries = this.grid[idx] || [];
             if (entries) {
-                for (const gzo of entries) {
+                for (const gzo of Array.from(entries)) {
                     if (found.has(gzo.gid)) continue;
                     if (filter(gzo)) {
                         found.add(gzo.gid);
