@@ -21,6 +21,7 @@ import { miniaAssets } from "./assets.js";
 import { Player } from "./entities/player.js";
 import { ProcTemplate } from "./procgen/ptemplate.js";
 import { Stairs } from "./entities/stairs.js";
+import { Rous } from "./entities/rous.js";
 
 class Minia extends Game {
     static states = {
@@ -79,6 +80,9 @@ class Minia extends Game {
                 obsb: 'rock.outcrop.border',
                 doNoise: true,
             },
+            spawn: {
+                enemyList: [ Rous ],
+            }
         }),
     };
 
@@ -89,6 +93,7 @@ class Minia extends Game {
             Enemy,
             Level,
             Player,
+            Rous,
             Stairs,
             Tile,
             Weapon,

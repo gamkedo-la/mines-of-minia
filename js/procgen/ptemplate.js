@@ -88,6 +88,8 @@ class ProcTemplate {
         this.spawn = {};
         this.spawn.stairsUp = Util.getpath(spec, 'spawn.stairsUp');
         this.spawn.stairsDown = Util.getpath(spec, 'spawn.stairsDown');
+        this.spawn.enemyList = Util.getpath(spec, 'spawn.enemyList', []);
+        this.spawn.roomSpawnChance = Util.getpath(spec, 'spawn.roomSpawnChance', .5);
 
     }
 }

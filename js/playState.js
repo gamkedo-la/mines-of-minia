@@ -93,7 +93,7 @@ class PlayState extends GameState {
                             tag: 'slider',
                             sketch: Sketch.zero,
                             x_xform: XForm.xspec({stretch: false, scalex: Config.scale, scaley: Config.scale, width: 50, height: 50}),
-                            dbg: { xform: true },
+                            //dbg: { xform: true },
                             //autocenter: true,
                             x_children: [
                                 Level.xspec({
@@ -117,7 +117,7 @@ class PlayState extends GameState {
 
 
         this.view = Generator.generate(x_view);
-        console.log(`view: ${this.view}`);
+        //console.log(`view: ${this.view}`);
 
         this.slider = Hierarchy.find(this.view, (v) => v.tag === 'slider');
         this.slider.resize(400,400);
@@ -128,7 +128,7 @@ class PlayState extends GameState {
         Systems.add('level', new LevelSystem({ slider: this.slider, lvl: this.lvl, dbg: Util.getpath(Config, 'dbg.system.level')}));
 
         this.lvl.evt.listen(this.lvl.constructor.evtMouseClicked, this.onLevelClick);
-        console.log(`this.lvl: ${this.lvl}`);
+        //console.log(`this.lvl: ${this.lvl}`);
         //this.lvl.grid.dbg = true;
 
 
@@ -291,7 +291,7 @@ class PlayState extends GameState {
     }
 
     onKeyDown(evt) {
-        console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
+        //console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
         if (!this.controlsActive) {
             console.log(`-- controls disabled, skip onKeyDown evt: ${Fmt.ofmt(evt)}`);
             return;

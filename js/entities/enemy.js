@@ -16,6 +16,13 @@ class Enemy extends Character {
     static dfltHealth = 1;
     static dfltDamage = 1;
 
+    // STATIC METHODS ------------------------------------------------------
+    static attsByLevel(lvl) {
+        return {
+            maxSpeed: .25,
+        };
+    }
+
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec={}) {
         super.cpost(spec);
@@ -106,7 +113,6 @@ class Enemy extends Character {
         console.log(`${this} aggrod ${Fmt.ofmt(evt)}}`);
         this.move.target = evt.target;
         this.attack.target = evt.target;
-        //this.state = 'melee';
         UpdateSystem.eUpdate(this, {state: 'melee'});
         this.actionStream = this.run();
     }

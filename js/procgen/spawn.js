@@ -4,6 +4,8 @@ import { Array2D } from '../base/array2d.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
+import { Fmt } from '../base/fmt.js';
+import { Prng } from '../base/prng.js';
 import { Enemy } from '../entities/enemy.js';
 import { Stairs } from '../entities/stairs.js';
 
@@ -13,7 +15,7 @@ class Spawn {
         // -- stairs
         this.spawnStairs(template, pstate);
         // -- enemies
-        //this.spawnEnemies(template, pstate);
+        this.spawnEnemies(template, pstate);
         yield;
     }
 
@@ -46,26 +48,64 @@ class Spawn {
             blocks: 0,
         }));
 
-
     }
 
     static spawnEnemies(template, pstate) {
         // -- pull data
         let x_spawn = template.spawn || {};
         let plvl = pstate.plvl;
+        let plvlo = pstate.plvlo;
+        let prooms = pstate.prooms || [];
+        if (x_spawn.enemyList.length === 0) return;
 
-        // FIXME: replace w/ real code
-        plvl.entities.push(Enemy.xspec({
-            tag: 'enemy',
-            idx: plvl.startIdx + 3,
-            x_sketch: Assets.get('enemy'),
-            maxSpeed: .25,
-            z: 2,
-            losRange: Config.tileSize*8,
-            aggroRange: Config.tileSize*5,
-            resistances: { bonk: .25 },
-        }));
+        // iterate through rooms
+        for (const proom of prooms) {
+            // roll for spawn
+            if (!Prng.flip(x_spawn.roomSpawnChance)) continue;
+            console.log(`flip ok`);
 
+            // choose appropriate index within room
+            let possible = Array.from(proom.idxs);
+            let spawnIdx = -1;
+            let tries = 20;
+            while(possible.length) {
+                if (tries-- <= 0) break;
+                console.log(`possible.length: ${possible.length}`);
+                let i = Prng.rangeInt(0, possible.length);
+                let testIdx = possible[i];
+                let kind = plvlo.data.getidx(testIdx);
+                let ok = true;
+                if (kind !== 'floor') ok = false;
+                if (testIdx === plvl.startIdx) ok = false;
+                if (testIdx === plvl.exitIdx) ok = false;
+                if (ok) {
+                    spawnIdx = testIdx;
+                    break;
+                } else {
+                    possible.splice(i, 1);
+                }
+            }
+
+            if (spawnIdx === -1) continue;
+
+            // choose enemy class
+            let enemyClass = Prng.choose(x_spawn.enemyList);
+            let x_enemy = Object.assign(
+                enemyClass.xspec({
+                    idx: spawnIdx,
+                    z: 2,
+                    maxSpeed: .25,
+                    losRange: Config.tileSize*8,
+                    aggroRange: Config.tileSize*5,
+                }),
+                enemyClass.attsByLevel(template.index),
+            );
+            console.log(`enemy: ${Fmt.ofmt(x_enemy)}`);
+
+            plvl.entities.push(x_enemy);
+        }
+
+        /*
         plvl.entities.push(Enemy.xspec({
             tag: 'enemy',
             idx: Array2D.idxfromdir(plvl.startIdx+3, Direction.south, plvl.cols, plvl.rows),
@@ -75,6 +115,7 @@ class Spawn {
             losRange: Config.tileSize*8,
             aggroRange: Config.tileSize*5,
         }));
+        */
     }
 
 }
