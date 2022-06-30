@@ -46,7 +46,8 @@ import { TakeStairsAction } from './actions/takeStairs.js';
 
 class PlayState extends GameState {
     async ready() {
-        //this.tileSize = 32;
+
+        this.controlsActive = true;
 
         let bindings = new Bindings({
             bindings: [
@@ -73,9 +74,11 @@ class PlayState extends GameState {
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onTock = this.onTock.bind(this);
         this.onLevelClick = this.onLevelClick.bind(this);
+        this.onLevelWanted = this.onLevelWanted.bind(this);
         this.onLevelLoaded = this.onLevelLoaded.bind(this);
         Events.listen(Keys.evtDown, this.onKeyDown);
         Events.listen(Game.evtTock, this.onTock);
+        Events.listen(LevelSystem.evtWanted, this.onLevelWanted);
         Events.listen(LevelSystem.evtLoaded, this.onLevelLoaded);
         let x_view = UxCanvas.xspec({
             cvsid: 'game.canvas',
@@ -202,47 +205,12 @@ class PlayState extends GameState {
 
     }
 
-    loadLevel(plvl) {
-        // clear old level data...
-        // FIXME... 
-
-        // resize UI elements for new level
-        // -- resize slider/level to match level
-        let width = plvl.cols * Config.tileSize;
-        let height = plvl.rows * Config.tileSize;
-        // -- resize scrollable area
-        this.slider.resize(width, height, true);
-
-        // instantiate level entities
-        for (const x_e of plvl.entities) {
-            //if (x_e.kind === 'wall') console.log(`x_e: ${Fmt.ofmt(x_e)}`);
-            // lookup index
-            let idx = x_e.idx || 0;
-            // override xform to position constructed entity at given index
-            let x = this.lvl.grid.xfromidx(idx, true);
-            let y = this.lvl.grid.yfromidx(idx, true);
-            x_e.x_xform = XForm.xspec({ x: x, y: y, stretch: false, });
-            // update lvl accessors
-            x_e.idxfromdir = this.lvl.idxfromdir.bind(this.lvl);
-            x_e.anyidx = this.lvl.anyidx.bind(this.lvl);
-            x_e.fowidx = this.lvl.fowidx.bind(this.lvl);
-            x_e.fowmask = this.lvl.fowmask.bind(this.lvl);
-            // generate
-            let e = Generator.generate(x_e);
-            // center at x,y
-            // FIXME
-            if (e.cls !== 'Tile') {
-                e.xform.offx = -e.xform.width*.5;
-                e.xform.offy = -e.xform.height*.5;
-            }
-            //console.log(`x_e: ${Fmt.ofmt(x_e)} e: ${e}`);
-            this.lvl.adopt(e);
-        }
-
-        // trigger load complete
-        Events.trigger('lvl.loaded', {plvl: plvl, lvl: this.lvl});
+    onLevelWanted(evt) {
+        console.log(`-- controls disabled`);
+        // disable controls
+        this.controlsActive = false;
     }
-
+        
     onLevelLoaded(evt) {
         // resize UI elements for new level
         // -- resize slider/level to match level
@@ -261,6 +229,10 @@ class PlayState extends GameState {
         UpdateSystem.eUpdate(this.player, { idx: idx, xform: {x: wantx, y: wanty }});
 
         console.log(`adjust player: ${idx} ${wantx},${wanty}`);
+
+        // re-enable controls
+        this.controlsActive = true;
+        console.log(`-- controls enabled`);
     }
 
     onPlayerUpdate(evt) {
@@ -319,7 +291,11 @@ class PlayState extends GameState {
     }
 
     onKeyDown(evt) {
-        //console.log(`${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
+        console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
+        if (!this.controlsActive) {
+            console.log(`-- controls disabled, skip onKeyDown evt: ${Fmt.ofmt(evt)}`);
+            return;
+        }
         switch (evt.key) {
             case '8': {
                 Events.trigger(RenderSystem.evtRenderNeeded);
@@ -395,6 +371,7 @@ class PlayState extends GameState {
     onLevelClick(evt) {
         console.log(`================================================================================`);
         console.log(`-- state onLevelClick`);
+        if (!this.controlsActive) return;
         let lmouse = this.lvl.xform.getLocal(new Vect(evt.mouse.x, evt.mouse.y));
         let idx = this.lvl.idxfromxy(lmouse.x, lmouse.y);
         console.log(`-- local: ${lmouse} idx: ${idx}`);
