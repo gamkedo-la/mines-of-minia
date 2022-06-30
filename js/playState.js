@@ -43,6 +43,8 @@ import { FieryCharm } from './charms/fiery.js';
 import { Stairs } from './entities/stairs.js';
 import { LevelSystem } from './systems/levelSystem.js';
 import { TakeStairsAction } from './actions/takeStairs.js';
+import { OpenAction } from './actions/open.js';
+import { Door } from './entities/door.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -255,34 +257,32 @@ class PlayState extends GameState {
         let x = this.lvl.xfromidx(idx, true);
         let y = this.lvl.yfromidx(idx, true);
         // what's at index?
-        let stairs;
-        for (const other of this.lvl.findidx(idx)) {
-            if (other.idx !== idx) continue;
-        //let bounds = new Bounds(x,y, 16,16);
-        //for (const other of this.lvl.grid.findOverlaps(bounds)) {
-            //console.log(`other: ${other}`);
-            if (this.player.blockedBy & other.blocks) {
-                if (other instanceof Enemy) {
-                    console.log(`other is an enemy, try to attack...`);
-                    TurnSystem.postLeaderAction( new MeleeAttackAction({
-                        target: other,
-                    }));
-                } else {
-                    console.log(`blocked from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y} hit ${other}`);
-                }
-                return;
+        let others = Array.from(this.lvl.findidx(idx, (v) => v.idx === idx));
+
+        if (others.some((v) => v instanceof Enemy)) {
+            let target = others.find((v) => v instanceof Enemy);
+            console.log(`other is an enemy, try to attack...`);
+            TurnSystem.postLeaderAction( new MeleeAttackAction({
+                target: target,
+            }));
+        } else if (others.some((v) => v instanceof Stairs)) {
+            let target = others.find((v) => v instanceof Stairs);
+            console.log(`stairs ${target} is hit`);
+            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
+            TurnSystem.postLeaderAction( new TakeStairsAction({ stairs: target }));
+        } else if (others.some((v) => v instanceof Door)) {
+            let target = others.find((v) => v instanceof Door);
+            if (target.state === 'close') {
+                TurnSystem.postLeaderAction( new OpenAction({ target: target }));
             } else {
-                if (other instanceof Stairs) {
-                    console.log(`stairs ${other} is hit`);
-                    stairs = other;
-                }
+                TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
             }
+        } else if (others.some((v) => this.player.blockedBy & v.blocks)) {
+            console.log(`blocked from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y} hit ${others}`);
+        } else {
+            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
         }
-        //console.log(`move from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y}`);
-        TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
-        if (stairs) {
-            TurnSystem.postLeaderAction( new TakeStairsAction({ stairs: stairs }));
-        }
+
     }
 
     wait() {

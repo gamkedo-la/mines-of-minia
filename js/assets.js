@@ -50,11 +50,21 @@ let miniaAssets = [
     }),
     Rect.xspec({tag: 'floor', width: 32, height: 32, color: 'gray'}),
     Rect.xspec({tag: 'wall', width: 32, height: 32, color: 'blue'}),
-    Rect.xspec({tag: 'door', width: 32, height: 32, color: 'red'}),
+    //Rect.xspec({tag: 'door', width: 32, height: 32, color: 'red'}),
+    Rect.xspec({tag: 'door.close', width: 16, height: 16, color: 'red'}),
+    Rect.xspec({tag: 'door.open', width: 16, height: 16, borderColor: 'green', fill: false}),
     Rect.xspec({tag: 'pc', width: 12, height: 12, color: 'yellow'}),
     Rect.xspec({tag: 'idle', width: 12, height: 12, color: 'green'}),
     Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
     Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
+    Animator.xspec({
+        tag: 'door',
+        sketches: {
+            'close': new AssetRef({tag: 'door.close'}),
+            'open': new AssetRef({tag: 'door.open'}),
+        },
+        state: 'close',
+    }),
     Animator.xspec({
         tag: 'enemy',
         sketches: {

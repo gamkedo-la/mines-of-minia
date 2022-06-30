@@ -22,6 +22,7 @@ import { Player } from "./entities/player.js";
 import { ProcTemplate } from "./procgen/ptemplate.js";
 import { Stairs } from "./entities/stairs.js";
 import { Rous } from "./entities/rous.js";
+import { Door } from "./entities/door.js";
 
 class Minia extends Game {
     static states = {
@@ -90,6 +91,7 @@ class Minia extends Game {
         console.log(`${this.name}.init`);
         Registry.extend([
             Character,
+            Door,
             Enemy,
             Level,
             Player,

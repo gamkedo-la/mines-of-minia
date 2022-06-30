@@ -5,7 +5,6 @@ import { Events } from '../base/event.js';
 import { LevelSystem } from '../systems/levelSystem.js';
 
 class TakeStairsAction extends Action {
-    static evtEndTurn = 'action.endturn';
     static dfltPoints = 0;
 
     constructor(spec={}) {

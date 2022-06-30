@@ -6,17 +6,40 @@ import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
+import { Door } from '../entities/door.js';
 import { Enemy } from '../entities/enemy.js';
 import { Stairs } from '../entities/stairs.js';
 
 class Spawn {
 
     static *generator(template={}, pstate={}) {
+        // -- doors
+        this.spawnDoors(template, pstate);
         // -- stairs
         this.spawnStairs(template, pstate);
         // -- enemies
         this.spawnEnemies(template, pstate);
         yield;
+    }
+
+    static spawnDoors(template, pstate) {
+        // -- pull data
+        let x_spawn = template.spawn || {};
+        let doorTag = x_spawn.door || 'door';
+        let plvl = pstate.plvl;
+        // iterate through halls
+        let phalls = pstate.phalls || [];
+        for (const phall of phalls) {
+
+            for (const idx of phall.exits) {
+                plvl.entities.push(Door.xspec({
+                    idx: idx,
+                    x_sketch: Assets.get(doorTag),
+                    z: 2,
+                    blocks: 0,
+                }));
+            }
+        }
     }
 
     static spawnStairs(template, pstate) {
@@ -29,7 +52,6 @@ class Spawn {
         if (plvl.index > 1) {
 
             plvl.entities.push(Stairs.xspec({
-                tag: 'stairs.down',
                 up: false,
                 idx: plvl.startIdx,
                 x_sketch: Assets.get(downTag),
@@ -40,7 +62,6 @@ class Spawn {
         }
 
         plvl.entities.push(Stairs.xspec({
-            tag: 'stairs.up',
             up: true,
             idx: plvl.exitIdx,
             x_sketch: Assets.get(upTag),
@@ -105,17 +126,6 @@ class Spawn {
             plvl.entities.push(x_enemy);
         }
 
-        /*
-        plvl.entities.push(Enemy.xspec({
-            tag: 'enemy',
-            idx: Array2D.idxfromdir(plvl.startIdx+3, Direction.south, plvl.cols, plvl.rows),
-            x_sketch: Assets.get('enemy'),
-            maxSpeed: .15,
-            z: 2,
-            losRange: Config.tileSize*8,
-            aggroRange: Config.tileSize*5,
-        }));
-        */
     }
 
 }
