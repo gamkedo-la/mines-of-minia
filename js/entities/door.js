@@ -52,10 +52,10 @@ class Door extends MiniaModel {
     // METHODS -------------------------------------------------------------
     open() {
         UpdateSystem.eUpdate(this, { state: 'open' });
-        this.state = 'open';
     }
 
     close() {
+        UpdateSystem.eUpdate(this, { state: 'close' });
     }
 
     show() {
