@@ -17,15 +17,23 @@ class LoSSystem extends System {
         //this.gameEvt = spec.gameEvt || Events.main;
         this.active = false;
         this.eidxs = new Map();
-        this.checkBlockFcn = spec.checkBlockFcn || (v=>v.kind === 'wall');
+        this.dynamicMap = {};
+        this.checkBlockFcn = spec.checkBlockFcn || (v => (v.kind === 'wall') || (v.constructor.dynamicLoS && v.blocksLoS));
         this.onEntityUpdated = this.onEntityUpdated.bind(this);
+        this.onDynamicLosUpdate = this.onDynamicLosUpdate.bind(this);
     }
 
     // EVENT HANDLERS ------------------------------------------------------
     onLoadLevel(evt) {
     }
 
-    onLevelUpdate(evt) {
+    onDynamicLosUpdate(evt) {
+        if (evt.update && evt.update.hasOwnProperty('blocksLoS')) {
+            // iterate through entities that are impacted by actor
+            for (const e of this.dynamicMap[evt.actor.gid]) {
+                this.setLoS(e);
+            }
+        }
     }
 
     onEntityAdded(evt) {

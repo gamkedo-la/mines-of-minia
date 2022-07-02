@@ -7,6 +7,7 @@ import { MiniaModel } from './miniaModel.js';
 
 class Door extends MiniaModel {
     static dfltState = 'close';
+    static dynamicLoS = true;
 
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSketch() {
@@ -24,6 +25,8 @@ class Door extends MiniaModel {
         // -- sync xform to match sketch dimensions
         this.xform.width = this.sketch.width;
         this.xform.height = this.sketch.height;
+        // -- los state
+        this.blocksLoS = (this.state === 'close');
     }
 
     destroy() {
@@ -51,11 +54,11 @@ class Door extends MiniaModel {
 
     // METHODS -------------------------------------------------------------
     open() {
-        UpdateSystem.eUpdate(this, { state: 'open' });
+        UpdateSystem.eUpdate(this, { state: 'open', blocksLoS: false });
     }
 
     close() {
-        UpdateSystem.eUpdate(this, { state: 'close' });
+        UpdateSystem.eUpdate(this, { state: 'close', blocksLoS: true });
     }
 
     show() {
