@@ -118,7 +118,7 @@ class Attack {
             if (roll > bdef) bdef = roll;
         }
 
-        console.log(`${(batk>bdef) ? "== HIT" : "-- miss"}, atkr: ${atkr} defr: ${defr} lvld: ${lvld} batk: ${batk} bdef: ${bdef}`);
+        //console.log(`${(batk>bdef) ? "== HIT" : "-- miss"}, atkr: ${atkr} defr: ${defr} lvld: ${lvld} batk: ${batk} bdef: ${bdef}`);
 
         // hit compares attack vs. defense
         return batk>bdef;
@@ -142,7 +142,7 @@ class Attack {
             damage -= v;
         }
         if (damage < 0) damage = 0;
-        console.log(`== damage: base: [${min}-${max}]:${baseDamage} final: ${damage}`);
+        //console.log(`== damage: base: [${min}-${max}]:${baseDamage} final: ${damage}`);
         return damage;
     }
     

@@ -125,13 +125,13 @@ class Character extends MiniaModel {
     // EVENT HANDLERS ------------------------------------------------------
     onDamaged(evt) {
         let health = this.health - evt.damage;
-        console.log(`${this} onDamaged: ${Fmt.ofmt(evt)} health: ${health}`);
+        //console.log(`${this} onDamaged: ${Fmt.ofmt(evt)} health: ${health}`);
         if (health > 0) {
             UpdateSystem.eUpdate(this, { health: health });
         } else {
             this.evt.trigger(this.constructor.evtDeath, { actor: this });
         }
-        console.log(`player health after damage: ${this.health}`);
+        //console.log(`player health after damage: ${this.health}`);
     }
 
     onDeath(evt) {

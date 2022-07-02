@@ -83,7 +83,7 @@ class Spawn {
         for (const proom of prooms) {
             // roll for spawn
             if (!Prng.flip(x_spawn.roomSpawnChance)) continue;
-            console.log(`flip ok`);
+            //console.log(`flip ok`);
 
             // choose appropriate index within room
             let possible = Array.from(proom.idxs);
@@ -91,7 +91,7 @@ class Spawn {
             let tries = 20;
             while(possible.length) {
                 if (tries-- <= 0) break;
-                console.log(`possible.length: ${possible.length}`);
+                //console.log(`possible.length: ${possible.length}`);
                 let i = Prng.rangeInt(0, possible.length);
                 let testIdx = possible[i];
                 let kind = plvlo.data.getidx(testIdx);
@@ -121,7 +121,7 @@ class Spawn {
                 }),
                 enemyClass.attsByLevel(template.index),
             );
-            console.log(`enemy: ${Fmt.ofmt(x_enemy)}`);
+            //console.log(`enemy: ${Fmt.ofmt(x_enemy)}`);
 
             plvl.entities.push(x_enemy);
         }

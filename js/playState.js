@@ -45,6 +45,7 @@ import { LevelSystem } from './systems/levelSystem.js';
 import { TakeStairsAction } from './actions/takeStairs.js';
 import { OpenAction } from './actions/open.js';
 import { Door } from './entities/door.js';
+import { CloseSystem } from './systems/closeSystem.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -72,6 +73,7 @@ class PlayState extends GameState {
         Systems.add('los', new LoSSystem({ dbg: Util.getpath(Config, 'dbg.system.los')}));
         Systems.add('turn', new TurnSystem({ dbg: Util.getpath(Config, 'dbg.system.turn')}));
         Systems.add('aggro', new AggroSystem({ dbg: Util.getpath(Config, 'dbg.system.aggro')}));
+        Systems.add('close', new CloseSystem({ dbg: Util.getpath(Config, 'dbg.system.close')}));
 
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onTock = this.onTock.bind(this);
@@ -135,6 +137,7 @@ class PlayState extends GameState {
 
 
         Systems.get('los').lvl = this.lvl;
+        Systems.get('close').lvl = this.lvl;
 
         this.template = Config.template;
 
