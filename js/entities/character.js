@@ -62,6 +62,7 @@ class Character extends MiniaModel {
         this.resistances = Object.assign(this.constructor.dfltResistances, spec.resistances);
         // -- line of sight
         this.losRange = spec.losRange || 0;
+        this.losIdxs = [];
         // -- aggro
         this.aggroRange = spec.aggroRange || 0;
         this.aggroTag = spec.aggroTag || this.constructor.dfltAggroTag;

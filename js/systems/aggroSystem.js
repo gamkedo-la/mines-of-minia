@@ -73,6 +73,7 @@ class AggroSystem extends System {
         if (!e.aggroTarget) {
             let tag = e.aggroTag || this.constructor.dfltAggroTag;
             let targets = this.aggroTargets[tag] || [];
+            if (e.losIdxs) targets = targets.filter((v) => e.losIdxs.includes(v.idx));
 
             let target = Util.findBest(
                 targets,
