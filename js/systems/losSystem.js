@@ -4,6 +4,7 @@ import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Mathf } from '../base/math.js';
 import { System } from '../base/system.js';
+import { Util } from '../base/util.js';
 import { UxDbg } from '../base/uxDbg.js';
 
 class LoSSystem extends System {
@@ -17,7 +18,10 @@ class LoSSystem extends System {
         //this.gameEvt = spec.gameEvt || Events.main;
         this.active = false;
         this.eidxs = new Map();
+        // -- map of dynamic object gid -> array of entities impacted by dynamic object
         this.dynamicMap = {};
+        // -- map of dependent entity (e.g.: has LoS enabled) gid -> array of dynamic objects
+        this.dynamicDepMap = {};
         this.checkBlockFcn = spec.checkBlockFcn || (v => (v.kind === 'wall') || (v.constructor.dynamicLoS && v.blocksLoS));
         this.onEntityUpdated = this.onEntityUpdated.bind(this);
         this.onDynamicLosUpdate = this.onDynamicLosUpdate.bind(this);
@@ -29,6 +33,7 @@ class LoSSystem extends System {
 
     onDynamicLosUpdate(evt) {
         if (evt.update && evt.update.hasOwnProperty('blocksLoS')) {
+            if (this.dbg && this.dbg.console) console.log(`-- ${this} on dynamic update ${Fmt.ofmt(evt)}`);
             // iterate through entities that are impacted by actor
             for (const e of this.dynamicMap[evt.actor.gid]) {
                 this.setLoS(e);
@@ -53,6 +58,22 @@ class LoSSystem extends System {
         if (this.dbg && this.dbg.console) console.log(`${this} onEntityRemoved: ${Fmt.ofmt(evt)}`);
         this.store.delete(actor.gid);
         this.eidxs.delete(actor.gid);
+        // is entity tracking dynamic objects?
+        for (const ode of Array.from(this.dynamicDepMap[actor.gid] || [])) {
+            if (this.dbg && this.dbg.console) console.log(`remove dynamic map entry from ${actor} tracking ${ode}`)
+            let dmap = this.dynamicMap[ode.gid];
+            if (dmap) {
+                let i = dmap.indexOf(actor);
+                if (i !== -1) dmap.splice(i, 1);
+                if (dmap.length === 0) {
+                    if (this.dbg && this.dbg.console) console.log(`stop tracking updates for ${ode}`)
+                    ode.evt.ignore(ode.constructor.evtUpdated, this.onDynamicLosUpdate);
+                    delete this.dynamicMap[ode.gid];
+                }
+            }
+        }
+        delete this.dynamicDepMap[actor.gid];
+
         actor.evt.ignore(actor.constructor.evtUpdated, this.onEntityUpdated);
     }
 
@@ -104,7 +125,12 @@ class LoSSystem extends System {
         // center of target (e)
         let cx = this.lvl.xfromidx(e.idx, true);
         let cy = this.lvl.yfromidx(e.idx, true);
+        let dynamics = [];
         for (const tidx of inRange) {
+            // check if dynamic los object is at given tidx
+            for (const de of this.lvl.findidx(tidx, (v) => v.constructor.dynamicLoS)) {
+                dynamics.push(de);
+            }
             // min point from index
             let mx = this.lvl.xfromidx(tidx);
             let my = this.lvl.yfromidx(tidx);
@@ -123,6 +149,43 @@ class LoSSystem extends System {
                 visible.push(tidx);
             }
         }
+        // see if any old los indices correspond to 
+        for (const ode of Array.from(this.dynamicDepMap[e.gid] || [])) {
+            if (!dynamics.includes(ode)) {
+                if (this.dbg && this.dbg.console) console.log(`remove dynamic map entry from ${e} tracking ${ode}`)
+                ode.evt.ignore(ode.constructor.evtUpdated, this.onDynamicLosUpdate);
+                let dmap = this.dynamicMap[ode.gid];
+                if (dmap) {
+                    let i = dmap.indexOf(e);
+                    if (i !== -1) dmap.splice(i, 1);
+                    if (dmap.length === 0) delete this.dynamicMap[ode.gid];
+                }
+                let depmap = this.dynamicDepMap[e.gid];
+                let i = depmap.indexOf(ode);
+                if (i !== -1) depmap.splice(i, 1);
+                if (depmap.length === 0) delete this.dynamicDepMap[e.gid];
+            }
+        }
+        // update dynamic maps and event listeners for new dynamic LoS objects that are to be tracked
+        for (const de of dynamics) {
+            // is this dynamic already tracked?
+            if (!(de.gid in this.dynamicMap)) {
+                this.dynamicMap[de.gid] = [e];
+                de.evt.listen(de.constructor.evtUpdated, this.onDynamicLosUpdate);
+                if (this.dbg && this.dbg.console) console.log(`new dynamic map entry for ${de} tracking ${e}`)
+            } else if (!this.dynamicMap[de.gid].includes(e)) {
+                this.dynamicMap[de.gid].push(e);
+                if (this.dbg && this.dbg.console) console.log(`update dynamic map entry for ${de} tracking ${e}`)
+            }
+            if (!(e.gid in this.dynamicDepMap)) {
+                this.dynamicDepMap[e.gid] = [de];
+                if (this.dbg && this.dbg.console) console.log(`new dep map entry for ${e} tracking ${de}`)
+            } else if (!this.dynamicDepMap[e.gid].includes(de)) {
+                this.dynamicDepMap[e.gid].push(de);
+                if (this.dbg && this.dbg.console) console.log(`update dep map entry for ${e} tracking ${de}`)
+            }
+        }
+
         if (this.dbg && e.cls === 'Player') {
             if ((this.dbg.blocked || this.dbg.visible)) UxDbg.clear();
             if (this.dbg.blocked) {
@@ -140,6 +203,9 @@ class LoSSystem extends System {
                 }
             }
         }
+
+        // -- map of dynamic object gid -> array of entities impacted by dynamic object
+        
         e.losIdxs = visible;
         this.evt.trigger(this.constructor.evtUpdated, {actor: e});
         if (this.dbg && this.dbg.console) console.log(`${this} set LoS for ${e} to ${visible}`);

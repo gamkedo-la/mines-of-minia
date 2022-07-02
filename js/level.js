@@ -145,6 +145,13 @@ class Level extends UxGrid {
         yield *this.grid.findgidx(idx, (v) => (idx === v.idx && filter(v)));
     }
 
+    someidx(idx, filter=(v)=>true) {
+        for (const e of this.grid.findgidx(idx, (v) => (idx === v.idx && filter(v)))) {
+            return e;
+        }
+        return null;
+    }
+
     someAdjacent(idx, filter=(v)=>true) {
         for (const dir of Direction.all) {
             let aidx = this.idxfromdir(idx, dir);
