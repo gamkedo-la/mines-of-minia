@@ -183,7 +183,7 @@ class Util {
         //console.log(`target: ${Fmt.ofmt(target)} exts: ${Fmt.ofmt(ext)}`)
         for (const [k,v] of Object.entries(ext)) {
             // -- handle simple values ... overwrite or assign target property
-            if (!v || typeof v !== 'object' || v instanceof Gizmo) {
+            if (!v || typeof v !== 'object' || v instanceof Gizmo || Array.isArray(v)) {
                 target[k] = v;
             // -- handle objects
             } else {

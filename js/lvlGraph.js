@@ -1,9 +1,11 @@
 export { LevelGraph };
 
+    import { OpenAction } from './actions/open.js';
 import { MoveAction } from './base/actions/move.js';
 import { Direction } from './base/dir.js';
 import { Events } from './base/event.js';
 import { Vect } from './base/vect.js';
+import { Door } from './entities/door.js';
 
 class LevelGraph {
     constructor(spec={}) {
@@ -31,6 +33,8 @@ class LevelGraph {
             // find any objects that might be blocking our path
             let blocked = false;
             for (const other of this.lvl.findidx(nidx, (gzo) => gzo !== e)) {
+                // is the other object a locked door?
+                if ((other instanceof Door) && other.locked) continue;
                 // does the other object block pathfinding entity (e)
                 if (!this.blocks(e, other)) continue;
                 // otherwise... blocked
@@ -46,16 +50,13 @@ class LevelGraph {
         let cost = baseCost;
         let fromv = this.lvl.vfromidx(from, true);
         let tov = this.lvl.vfromidx(to, true);
-        // FIXME: ground based move cost?
         cost += Math.round(Vect.dist(fromv, tov)); 
-            // anything at target to?
-            /*
-            let gidx = this.grid.idxfromxy(to.x, to.y);
-            for (const obj of this.grid.findgidx(gidx, (gzo) => !gzo.pathfinding && gzo.collider && gzo.collider.blocking && gzo.bypassAction)) {
-                actions.push(obj.bypassAction());
-            }
-            */
-        //if (to.extraAction) actions.push(to.extraAction);
+
+        // check for a door...
+        let door = this.lvl.firstidx(to, (v) => v instanceof Door);
+        if (door && door.state === 'close') {
+            actions.push( new OpenAction({ target: door }));
+        }
 
         // push move action
         let action = new MoveAction({ 

@@ -1,10 +1,8 @@
 export { LoSSystem };
 
-import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Mathf } from '../base/math.js';
 import { System } from '../base/system.js';
-import { Util } from '../base/util.js';
 import { UxDbg } from '../base/uxDbg.js';
 
 class LoSSystem extends System {
