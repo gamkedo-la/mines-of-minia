@@ -12,7 +12,7 @@ import { Template } from './template.js';
 
 let miniaAssets = [
     Shape.xspec({
-        tag: 'sword.1',
+        tag: 'sword_1',
         fill: true,
         verts: [ 
             {x:4, y:0}, {x:8, y:0}, {x:8, y:4}, {x:28, y:4}, {x:30, y:6}, {x:28, y:8}, {x:8, y:8}, {x:8, y:12},
@@ -23,7 +23,7 @@ let miniaAssets = [
         borderColor: 'red',
     }),
     Shape.xspec({
-        tag: 'stairs.up',
+        tag: 'stairs_up',
         fill: true,
         verts: [ 
             {x:8, y:2}, {x:14, y:8}, {x:14, y:14}, {x:2, y:14}, {x:2, y:8},
@@ -33,7 +33,7 @@ let miniaAssets = [
         borderColor: 'red',
     }),
     Shape.xspec({
-        tag: 'stairs.down',
+        tag: 'stairs_down',
         fill: true,
         verts: [ 
             {x:8, y:14}, {x:2, y:8}, {x:2, y:2}, {x:14, y:2}, {x:14, y:8},
@@ -44,9 +44,9 @@ let miniaAssets = [
     }),
 
     Weapon.xspec({
-        tag: 'hack.1',
+        tag: 'hack_1',
         kind: 'hack',
-        sketch: new AssetRef({tag: 'sword.1'}),
+        sketch: new AssetRef({tag: 'sword_1'}),
     }),
     //Rect.xspec({tag: 'floor', width: 32, height: 32, color: 'gray'}),
     //Rect.xspec({tag: 'wall', width: 32, height: 32, color: 'blue'}),
@@ -60,19 +60,19 @@ let miniaAssets = [
     //Rect.xspec({tag: 'player_idler', width: 12, height: 12, color: 'black'}),
     Animation.xspec({tag: 'player_idler', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
     ]}),
     Animation.xspec({tag: 'player_idlel', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
     ]}),
     Animation.xspec({tag: 'player_mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 350 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 250 }),
     ]}),
     Animation.xspec({tag: 'player_movel', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 350 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 250 }),
     ]}),
     Animator.xspec({
         tag: 'player',

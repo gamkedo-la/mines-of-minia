@@ -50,6 +50,7 @@ class LevelGraph {
         let cost = baseCost;
         let fromv = this.lvl.vfromidx(from, true);
         let tov = this.lvl.vfromidx(to, true);
+        let facing = (tov.x > fromv.x) ? Direction.east : (tov.x < fromv.x) ? Direction.west : 0;
         cost += Math.round(Vect.dist(fromv, tov)); 
 
         // check for a door...
@@ -64,6 +65,7 @@ class LevelGraph {
             y: tov.y, 
             snap: true, 
             update: { idx: to },
+            facing: facing,
         });
         action.evt.listen(action.constructor.evtStarted, (evt) => this.lvl.reserveIdx(to), Events.once );
         action.evt.listen(action.constructor.evtDone, (evt) => this.lvl.releaseIdx(to), Events.once );

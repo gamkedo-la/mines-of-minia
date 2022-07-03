@@ -5,6 +5,7 @@ import { MoveAction } from '../base/actions/move.js';
 import { Action } from '../base/actions/action.js';
 import { Mathf } from '../base/math.js';
 import { Timer } from '../base/timer.js';
+import { Direction } from '../base/dir.js';
 
 
 class DoOpenAction extends Action {
@@ -55,6 +56,7 @@ class OpenAction extends SerialAction {
             let angle = Mathf.angle(this.actor.xform.x, this.actor.xform.y, this.target.xform.x, this.target.xform.y, true);
             let x = Math.round(this.actor.xform.x + Math.cos(angle) * this.nudge);
             let y = Math.round(this.actor.xform.y + Math.sin(angle) * this.nudge);
+            let facing = (x > this.actor.xform.x) ? Direction.east : (x < this.actor.xform.x) ? Direction.west : 0;
             this.subs.push( new MoveAction({
                 x: x,
                 y: y,
@@ -63,6 +65,7 @@ class OpenAction extends SerialAction {
                 range: 2,
                 stopAtTarget: true,
                 snap: true,
+                facing: facing,
             }));
         }
         this.subs.push( new DoOpenAction({

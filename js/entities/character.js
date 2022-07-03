@@ -165,16 +165,8 @@ class Character extends MiniaModel {
             if (wantAnimState !== this.animState) update.animState = wantAnimState;
         // transition to move state
         } else if (evt.update && evt.update.xform && (evt.update.xform.hasOwnProperty('x') || evt.update.xform.hasOwnProperty('y'))) {
-            if (this.lastx !== evt.update.xform.x) {
-                let wantFacing = (evt.update.xform.x > this.lastx) ? Direction.east : Direction.west;
-                let wantAnimState = (wantFacing === Direction.east) ? 'mover' : 'movel';
-                if (wantAnimState !== this.animState) update.animState = wantAnimState;
-                if (wantFacing !== this.facing) update.facing = wantFacing;
-                this.lastx = evt.update.xform.x;
-            } else {
-                let wantAnimState = (this.facing === Direction.east) ? 'mover' : 'movel';
-                if (wantAnimState !== this.animState) update.animState = wantAnimState;
-            }
+            let wantAnimState = (this.facing === Direction.east) ? 'mover' : 'movel';
+            if (wantAnimState !== this.animState) update.animState = wantAnimState;
         }
         if (!Util.empty(update)) {
             console.log(`-- trigger evt update: state: ${Fmt.ofmt(update)}`);

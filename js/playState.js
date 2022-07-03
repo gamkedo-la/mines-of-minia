@@ -155,7 +155,7 @@ class PlayState extends GameState {
             idx: 0,
             xform: new XForm({ stretch: false }),
             sketch: Assets.get('player', true),
-            maxSpeed: .15,
+            maxSpeed: .25,
             z: 2,
             healthMax: 100,
             losRange: Config.tileSize*5,
@@ -256,6 +256,7 @@ class PlayState extends GameState {
     moveToIdx(idx) {
         let x = this.lvl.xfromidx(idx, true);
         let y = this.lvl.yfromidx(idx, true);
+        let facing = (x > this.player.xform.x) ? Direction.east : (x < this.player.xform.x) ? Direction.west : 0;
         // what's at index?
         let others = Array.from(this.lvl.findidx(idx, (v) => v.idx === idx));
 
@@ -275,12 +276,13 @@ class PlayState extends GameState {
             if (target.state === 'close') {
                 TurnSystem.postLeaderAction( new OpenAction({ target: target }));
             } else {
-                TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
+                TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx } }));
             }
         } else if (others.some((v) => this.player.blockedBy & v.blocks)) {
             console.log(`blocked from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y} hit ${others}`);
         } else {
-            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
+            //TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
+            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx } }));
         }
 
     }

@@ -19,6 +19,7 @@ class MoveAction extends Action {
         this.snap = spec.hasOwnProperty('snap') ? spec.snap : false;
         this.speed = spec.speed || 0;
         this.accel = spec.accel || 0;
+        this.facing = spec.facing || 0;
         this.stopAtTarget = spec.hasOwnProperty('stopAtTarget') ? spec.stopAtTarget : true;
         this.factor = 0;
         // -- setup event handlers
@@ -77,6 +78,9 @@ class MoveAction extends Action {
                     heading: heading,
                     speed: factor*this.speed,
                 };
+                if (this.facing && this.facing != this.actor.facing) {
+                    update.facing = this.facing;
+                }
                 UpdateSystem.eUpdate(this.actor, update);
                 this.factor = factor;
             }

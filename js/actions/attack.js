@@ -7,6 +7,7 @@ import { Mathf } from '../base/math.js';
 import { Weapon } from '../entities/weapon.js';
 import { Random } from '../base/random.js';
 import { SerialAction } from '../base/actions/serialAction.js';
+import { Direction } from '../base/dir.js';
 
 class Attack {
 
@@ -200,6 +201,7 @@ class MeleeAttackAction extends SerialAction {
             let angle = Mathf.angle(this.actor.xform.x, this.actor.xform.y, this.target.xform.x, this.target.xform.y, true);
             let x = Math.round(this.actor.xform.x + Math.cos(angle) * this.nudge);
             let y = Math.round(this.actor.xform.y + Math.sin(angle) * this.nudge);
+            let facing = (x > this.actor.xform.x) ? Direction.east : (x < this.actor.xform.x) ? Direction.west : 0;
             this.subs.push( new MoveAction({
                 x: x,
                 y: y,
@@ -208,6 +210,7 @@ class MeleeAttackAction extends SerialAction {
                 range: 2,
                 stopAtTarget: true,
                 snap: true,
+                facing: facing,
             }));
         }
         this.subs.push( new AttackRollAction({

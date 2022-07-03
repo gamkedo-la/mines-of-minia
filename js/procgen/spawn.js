@@ -46,8 +46,8 @@ class Spawn {
         // -- pull data
         let x_spawn = template.spawn || {};
         let plvl = pstate.plvl;
-        let upTag = x_spawn.stairsUp || 'stairs.up';
-        let downTag = x_spawn.stairsDown || 'stairs.down';
+        let upTag = x_spawn.stairsUp || 'stairs_up';
+        let downTag = x_spawn.stairsDown || 'stairs_down';
         // stairs down
         if (plvl.index > 1) {
 
