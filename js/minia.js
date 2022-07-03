@@ -62,8 +62,10 @@ class Minia extends Game {
 
         template: new ProcTemplate({
             doyield: true,
+            seed: 3,
+            // FIXME: known bad seeds...
+            //seed: 62183,
             //seed: 3,
-            seed: 62183,
             unitSize: 6,
             maxCols: 140,
             maxRows: 100,
