@@ -1,6 +1,7 @@
 export { Enemy };
 
 import { AiMeleeTargetDirective } from '../ai/aiMeleeTargetDirective.js';
+import { AiMoveToIdxDirective } from '../ai/aiMoveToIdxDirective.js';
 import { AiMoveTowardsTargetDirective } from '../ai/aiMoveTowardsTargetDirective.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
@@ -72,6 +73,7 @@ class Enemy extends Character {
             actor: this,
         }
         this.move = new AiMoveTowardsTargetDirective(x_dir);
+        this.search = new AiMoveToIdxDirective(x_dir);
         this.attack = new AiMeleeTargetDirective(x_dir);
         this.actionStream = this.run();
         // activate
@@ -85,6 +87,16 @@ class Enemy extends Character {
             switch (this.state) {
             case 'idle':
                 yield null;
+                break;
+            case 'search':
+                // attempt to move within range
+                yield *this.search.run();
+                // go back to idle state if search ends
+                if (this.search.done) {
+                    UpdateSystem.eUpdate(this, {state: 'idle'});
+                    this.actionStream = this.run();
+                    yield null;
+                }
                 break;
             case 'melee':
                 // attempt to move within range
@@ -120,7 +132,8 @@ class Enemy extends Character {
     onAggroLost(evt) {
         if (!this.active) return;
         console.log(`${this} aggro lost ${Fmt.ofmt(evt)}}`);
-        UpdateSystem.eUpdate(this, {state: 'idle'});
+        this.search.targetIdx = evt.lastIdx;
+        UpdateSystem.eUpdate(this, {state: 'search'});
         this.actionStream = this.run();
     }
 

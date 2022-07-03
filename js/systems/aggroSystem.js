@@ -60,13 +60,21 @@ class AggroSystem extends System {
         // is entity already tracking an aggro target?
         if (e.aggroTarget) {
             let d = Mathf.distance(e.xform.x, e.xform.y, e.aggroTarget.xform.x, e.aggroTarget.xform.y);
-            //console.log(`distance to aggro target: ${d} range: ${e.aggroRange}`);
-            // check for loss of aggro
-            if (d > e.aggroRange) {
-                if (this.dbg) console.log(`${this} ${e} lost aggro for ${e.aggroTarget}`);
-                e.aggroTarget = null;
-                UpdateSystem.eUpdate(e, {aggroTarget: null});
-                e.evt.trigger(e.constructor.evtAggroLost, {actor: e, target: e.aggroTarget});
+            // check los
+            if (e.losIdxs && !e.losIdxs.includes(e.aggroTarget.idx)) {
+                if (this.dbg) console.log(`${this} ${e} lost aggro for ${e.aggroTarget} - lost los`);
+                e.evt.trigger(e.constructor.evtAggroLost, {actor: e, target: e.aggroTarget, lastIdx: e.aggroIdx});
+                UpdateSystem.eUpdate(e, {aggroTarget: null, aggroIdx: -1});
+            // check for loss of aggro due to range
+            } else if (d > e.aggroRange) {
+                if (this.dbg) console.log(`${this} ${e} lost aggro for ${e.aggroTarget} - distance`);
+                e.evt.trigger(e.constructor.evtAggroLost, {actor: e, target: e.aggroTarget, lastIdx: e.aggroIdx});
+                UpdateSystem.eUpdate(e, {aggroTarget: null, aggroIdx: -1});
+            // maintain aggro
+            } else {
+                if (e.aggroTarget.idx !== e.aggroIdx) {
+                    UpdateSystem.eUpdate(e, {aggroIdx: e.aggroTarget.idx});
+                }
             }
         } 
         // no aggro target...
@@ -85,8 +93,10 @@ class AggroSystem extends System {
             // if target, aggro has been gained
             if (target) {
                 if (this.dbg) console.log(`${this} ${e} gained aggro for ${target}`);
-                UpdateSystem.eUpdate(e, {aggroTarget: target});
-                //e.aggroTarget = target;
+                UpdateSystem.eUpdate(e, {
+                    aggroTarget: target,
+                    aggroIdx: target.idx,
+                });
                 e.evt.trigger(e.constructor.evtAggroGained, {actor: e, target: target});
             }
 

@@ -66,6 +66,7 @@ class Character extends MiniaModel {
         // -- aggro
         this.aggroRange = spec.aggroRange || 0;
         this.aggroTag = spec.aggroTag || this.constructor.dfltAggroTag;
+        this.aggroIdx = -1;
         this.team = spec.team || this.constructor.dfltTeam;
         this.lvl = spec.lvl || this.constructor.dfltLvl;
         // -- action stream
