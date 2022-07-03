@@ -180,23 +180,14 @@ class Assets {
         // resolve media references
         await this.resolve();
         // resolve asset references
+        this.resolveAssets();
     }
 
     async resolve() {
         return new Promise( (resolve) => {
             let promises = [];
             for (const [k,v,o] of Util.kvWalk(this.assets)) {
-                if (v instanceof AssetRef) {
-                    let spec = this.assets[v.tag];
-                    if (spec) {
-                        // apply AssetRef overrides to asset specification
-                        spec = Object.assign({}, spec, v);
-                        // generate asset
-                        let asset = this.generator.generate(spec);
-                        // swap reference
-                        o[k] = asset;
-                    }
-                } else if (v instanceof BaseRef) {
+                if (v instanceof BaseRef && !(v instanceof AssetRef)) {
                     // lookup media reference
                     let media = this.media[v.src];
                     let promise = v.resolve(media);
@@ -212,6 +203,23 @@ class Assets {
                 resolve();
             });
         });
+    }
+
+    resolveAssets() {
+        for (const [k,v,o] of Util.kvWalk(this.assets)) {
+            if (v instanceof AssetRef) {
+                let spec = this.assets[v.tag];
+                if (spec) {
+                    // apply AssetRef overrides to asset specification
+                    spec = Object.assign({}, spec, v);
+                    // generate asset
+                    let asset = this.generator.generate(spec);
+                    // swap reference
+                    o[k] = asset;
+                }
+            }
+        }
+
     }
 
     get(tag, generate=false, overrides={}) {

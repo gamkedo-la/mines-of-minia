@@ -109,7 +109,6 @@ class Animation extends Sketch {
             }
         } while (overflow > 0);
         if (updated) {
-            //console.log(`${this} animation updated`);
             this.evt.trigger(this.constructor.evtUpdated, {actor: this});
         }
     }

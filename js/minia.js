@@ -41,7 +41,7 @@ class Minia extends Game {
                 ctrl: false,
                 update: false,
                 mouse: false,
-                render: true,
+                render: false,
                 move: false,
                 aggro: false,
                 turn: false,

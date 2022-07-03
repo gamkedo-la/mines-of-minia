@@ -66,8 +66,8 @@ class UpdateSystem extends System {
         for (const [e,updates] of this.updates) {
             // update entity
             let final = Util.update({}, ...updates);
-            //Util.update(e, final);
-            if (this.dbg) console.log(`update: ${e} with: ${Fmt.ofmt(final)}`);
+            Util.update(e, final);
+            if (this.dbg) console.log(`final update: ${e} with: ${Fmt.ofmt(final)}`);
             e.evt.trigger(e.constructor.evtUpdated, {actor: e, update: final}, true);
         }
         this.updates.clear();

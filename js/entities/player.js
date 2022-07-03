@@ -1,4 +1,5 @@
 export { Player };
+    import { Config } from '../base/config.js';
 import { Character } from './character.js';
 import { Weapon } from './weapon.js';
 
@@ -25,6 +26,11 @@ class Player extends Character {
         this.hitbp = spec.hitbp || 0;
         this.weapon = spec.weapon || this.constructor.dfltWeapon;
         this.blockRating = spec.blockRating || this.dfltBlockRating;
+        this.xform.offx = this.xf
+        this.xform.offx = -this.xform.width*.5;
+        this.xform.offy = Config.tileSize*.5 - this.xform.height;
+        this.xform.origy = .75;
+        //this.dbg = { xform: true };
     }
 
 }

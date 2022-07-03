@@ -5,6 +5,7 @@ import { Fmt } from "../base/fmt.js";
 import { Rect } from "../base/rect.js";
 import { UpdateSystem } from "../base/systems/updateSystem.js";
 import { Timer } from "../base/timer.js";
+import { Util } from "../base/util.js";
 import { MiniaModel } from "./miniaModel.js";
 import { Weapon } from "./weapon.js";
 
@@ -18,6 +19,7 @@ class Character extends MiniaModel {
     static evtDeath = 'character.death';
     static dfltAggroTag = 'player';
     static dfltState = 'idle';
+    static dfltAnimState = 'idler';
     static dfltTeam = 'passive';
     static dfltLvl = 1;
     static dfltAttackRolls = 1;
@@ -51,6 +53,7 @@ class Character extends MiniaModel {
         this.maxSpeed = spec.maxSpeed || 0;
         this.speed = 0;
         this.heading = Direction.asHeading(Direction.south);
+        this.facing = Direction.east;
         // -- health
         this.healthMax = spec.healthMax || this.constructor.dfltHealth;
         this.health = spec.health || this.healthMax;
@@ -74,13 +77,16 @@ class Character extends MiniaModel {
         // -- state management
         this.states = {};
         this.state = spec.state || this.constructor.dfltState;
+        this.animState = spec.animState || this.constructor.dfltAnimState;
         // -- charms (buffs/debuffs)
         this.charms = [];
         // -- events
         this.onDamaged = this.onDamaged.bind(this);
         this.onDeath = this.onDeath.bind(this);
+        this.onIntentForAnimState = this.onIntentForAnimState.bind(this);
         this.evt.listen(this.constructor.evtDamaged, this.onDamaged);
         this.evt.listen(this.constructor.evtDeath, this.onDeath);
+        this.evt.listen(this.constructor.evtIntent, this.onIntentForAnimState);
     }
 
     destroy() {
@@ -140,6 +146,39 @@ class Character extends MiniaModel {
         if (this.state !== 'dying') {
             UpdateSystem.eUpdate(this, { state: 'dying', health: 0 });
             this.deathTimer = new Timer({ttl: this.deathTTL, cb: this.destroy.bind(this)});
+        }
+    }
+
+    onIntentForAnimState(evt) {
+        // transition to idle state
+        let update = {};
+        if (evt.update && evt.update.hasOwnProperty('idx')) {
+            console.log(`-- ${this} idx update idx: ${evt.update.idx} last: ${this.lastIdx}`);
+            if (this.lastIdx !== evt.update.idx) {
+                let wantAnimState = (this.facing === Direction.east) ? 'idler' : 'idlel';
+                if (wantAnimState !== this.animState) update.animState = wantAnimState;
+                this.lastIdx = this.idx;
+            }
+        // transition to idle state
+        } else if (evt.update && evt.update.hasOwnProperty('speed') && evt.update.speed === 0) {
+            let wantAnimState = (this.facing === Direction.east) ? 'idler' : 'idlel';
+            if (wantAnimState !== this.animState) update.animState = wantAnimState;
+        // transition to move state
+        } else if (evt.update && evt.update.xform && (evt.update.xform.hasOwnProperty('x') || evt.update.xform.hasOwnProperty('y'))) {
+            if (this.lastx !== evt.update.xform.x) {
+                let wantFacing = (evt.update.xform.x > this.lastx) ? Direction.east : Direction.west;
+                let wantAnimState = (wantFacing === Direction.east) ? 'mover' : 'movel';
+                if (wantAnimState !== this.animState) update.animState = wantAnimState;
+                if (wantFacing !== this.facing) update.facing = wantFacing;
+                this.lastx = evt.update.xform.x;
+            } else {
+                let wantAnimState = (this.facing === Direction.east) ? 'mover' : 'movel';
+                if (wantAnimState !== this.animState) update.animState = wantAnimState;
+            }
+        }
+        if (!Util.empty(update)) {
+            console.log(`-- trigger evt update: state: ${Fmt.ofmt(update)}`);
+            Object.assign(evt.update, update);
         }
     }
 

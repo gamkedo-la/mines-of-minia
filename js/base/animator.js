@@ -32,6 +32,7 @@ class Animator extends Sketch {
         // -- upstream event handling
         // -- how to pull event update from event
         this.evtAccessor = spec.evtAccessor || ((evt) => (evt.update && evt.update.state) ? evt.update.state : null);
+        console.log(`accessor: ${this.evtAccessor}`);
         // -- the upstream event stream
         this.upEvt = spec.upEvt || Events.null;
         // -- the upstream update event
@@ -69,7 +70,7 @@ class Animator extends Sketch {
     // EVENT HANDLERS ------------------------------------------------------
     onStateChange(evt) {
         let wantState = this.evtAccessor(evt);
-        //console.log(`wantState: ${wantState}`);
+        //console.log(`wantState: ${wantState} from ${Fmt.ofmt(evt)}`);
         if (!wantState) return;
         let fromState = (this.pendingState) ? this.pendingState : this.state;
         // check for no state change
@@ -118,7 +119,7 @@ class Animator extends Sketch {
 
     setSketch(sketch) {
         if (this.sketch) {
-            this.sketch.evt.ignore(this.sketch.evtUpdated, this.onSketchUpdate);
+            this.sketch.evt.ignore(this.sketch.constructor.evtUpdated, this.onSketchUpdate);
             this.sketch.hide();
         }
         this.sketch = sketch;
@@ -126,7 +127,7 @@ class Animator extends Sketch {
         if (!this.hidden) {
             this.sketch.show();
         }
-        this.sketch.evt.listen(this.sketch.evtUpdated, this.onSketchUpdate);
+        this.sketch.evt.listen(this.sketch.constructor.evtUpdated, this.onSketchUpdate);
         this.width = this.sketch.width;
         this.height = this.sketch.height;
     }

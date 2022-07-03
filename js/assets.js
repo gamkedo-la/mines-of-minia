@@ -48,15 +48,43 @@ let miniaAssets = [
         kind: 'hack',
         sketch: new AssetRef({tag: 'sword.1'}),
     }),
-    Rect.xspec({tag: 'floor', width: 32, height: 32, color: 'gray'}),
-    Rect.xspec({tag: 'wall', width: 32, height: 32, color: 'blue'}),
+    //Rect.xspec({tag: 'floor', width: 32, height: 32, color: 'gray'}),
+    //Rect.xspec({tag: 'wall', width: 32, height: 32, color: 'blue'}),
     //Rect.xspec({tag: 'door', width: 32, height: 32, color: 'red'}),
     Rect.xspec({tag: 'door.close', width: 16, height: 16, color: 'red'}),
     Rect.xspec({tag: 'door.open', width: 16, height: 16, borderColor: 'green', fill: false, border: 2}),
-    Rect.xspec({tag: 'pc', width: 12, height: 12, color: 'yellow'}),
+    //Rect.xspec({tag: 'pc', width: 12, height: 12, color: 'yellow'}),
     Rect.xspec({tag: 'idle', width: 12, height: 12, color: 'green'}),
     Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
     Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
+    //Rect.xspec({tag: 'player_idler', width: 12, height: 12, color: 'black'}),
+    Animation.xspec({tag: 'player_idler', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'player_idlel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'player_mover', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'player_movel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'player',
+        sketches: {
+            'idler': new AssetRef({tag: 'player_idler'}),
+            'idlel': new AssetRef({tag: 'player_idlel'}),
+            'mover': new AssetRef({tag: 'player_mover'}),
+            'movel': new AssetRef({tag: 'player_movel'}),
+        },
+        state: 'idler',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
     Animator.xspec({
         tag: 'door',
         sketches: {

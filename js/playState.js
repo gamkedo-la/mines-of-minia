@@ -154,23 +154,18 @@ class PlayState extends GameState {
             tag: 'pc',
             idx: 0,
             xform: new XForm({ stretch: false }),
-            sketch: Assets.get('pc', true),
-            maxSpeed: .25,
+            sketch: Assets.get('player', true),
+            maxSpeed: .15,
             z: 2,
             healthMax: 100,
             losRange: Config.tileSize*5,
             team: 'player',
         });
-        this.player.xform.offx = -this.player.xform.width*.5;
-        this.player.xform.offy = -this.player.xform.height*.5;
-        //plvl.entities.push(x_player);
 
-        /*
-        plvl.entities.push(Object.assign(Assets.get('hack.1'), {
-            idx: Array2D.idxfromdir(plvl.startIdx, Direction.south, plvl.cols, plvl.rows),
-            z: 2,
-        }));
-        */
+        //let a1 = Assets.get('player.idler', true);
+        //let a2 = Assets.get('player', true);
+        //console.log(`a1: ${a1} cel0: ${a1.cels[0]} img: ${Fmt.ofmt(a1.cels[0].sketch.img)}`);
+        //console.log(`a2: ${a2} sketch: ${a2.sketch} cel0: ${a2.sketch.cels[0]} img: ${Fmt.ofmt(a2.sketch.cels[0].sketch.img)}`);
 
         // -- pathfinding
         this.lvlgraph = new LevelGraph({
@@ -181,6 +176,8 @@ class PlayState extends GameState {
             heuristicFcn: this.lvl.idxdist.bind(this.lvl),
             dbg: false,
         });
+
+        //console.log(`=== player sketch: ${this.player.sketch} cel0.sketch: ${Fmt.ofmt(this.player.sketch.cels[0].sketch)}`);
 
         // load level
         // trigger want level event

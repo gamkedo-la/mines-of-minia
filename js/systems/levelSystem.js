@@ -140,8 +140,15 @@ class LevelSystem extends System {
             // center at x,y
             // FIXME
             if (e.cls !== 'Tile') {
+                let h = e.xform.height;
                 e.xform.offx = -e.xform.width*.5;
-                e.xform.offy = -e.xform.height*.5;
+                if (h > Config.tileSize) {
+                    e.xform.offy = -Config.tileSize*.5;
+                    // console.log(`${e} xform offy: ${e.xform.offy}`)
+                } else {
+                    e.xform.offy = -e.xform.height*.5;
+                    // console.log(`${e} xform offy: ${e.xform.offy}`)
+                }
             }
             //console.log(`x_e: ${Fmt.ofmt(x_e)} e: ${e}`);
             this.lvl.adopt(e);
