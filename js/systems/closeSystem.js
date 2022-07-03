@@ -42,13 +42,13 @@ class CloseSystem extends System {
 
     onCharUpdate(evt) {
         let e = evt.actor;
-        if (evt.update && evt.update.hasOwnProperty('idx')) {
+        if (evt.update && (evt.update.hasOwnProperty('idx') || evt.update.state === 'dying')) {
             if (this.dbg) console.log(`-- ${this} onCharUpdate ${Fmt.ofmt(evt)} door map from ${e.idx}: ${this.doorMap[e.gid]}`);
             for (const door of Array.from(this.doorMap[e.gid] || [])) {
                 // check if adjacent to door
                 let adjacent = e.idx === door.idx || this.lvl.someAdjacent(e.idx, (v) => v === door);
                 if (this.dbg) console.log(`check if actor ${e} is adjacent: ${adjacent} to door: ${door}`);
-                if (!adjacent) this.handleOpenDoor(door);
+                if (!adjacent || e.state === 'dying') this.handleOpenDoor(door);
             }
             if (!this.doorMap[e.gid] || this.doorMap[e.gid].length === 0) {
                 e.evt.ignore(e.constructor.evtUpdated, this.onCharUpdate);
@@ -62,6 +62,9 @@ class CloseSystem extends System {
         let adjacent = false;
         for (const idx of [door.idx, ...Direction.all.map((v) => this.lvl.idxfromdir(door.idx, v))]) {
             for (const e of this.lvl.findidx(idx, (v) => v instanceof Character)) {
+                // skip character if dying
+                console.log(`e.state: ${e} ${e.state}`)
+                if (e.state === 'dying') continue;
                 // listen for event updates on adjacent characters
                 e.evt.listen(e.constructor.evtUpdated, this.onCharUpdate);
                 adjacent = true;
