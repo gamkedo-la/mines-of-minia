@@ -153,7 +153,7 @@ class Character extends MiniaModel {
         // transition to idle state
         let update = {};
         if (evt.update && evt.update.hasOwnProperty('idx')) {
-            console.log(`-- ${this} idx update idx: ${evt.update.idx} last: ${this.lastIdx}`);
+            //console.log(`-- ${this} idx update idx: ${evt.update.idx} last: ${this.lastIdx}`);
             if (this.lastIdx !== evt.update.idx) {
                 let wantAnimState = (this.facing === Direction.east) ? 'idler' : 'idlel';
                 if (wantAnimState !== this.animState) update.animState = wantAnimState;
@@ -169,7 +169,7 @@ class Character extends MiniaModel {
             if (wantAnimState !== this.animState) update.animState = wantAnimState;
         }
         if (!Util.empty(update)) {
-            console.log(`-- trigger evt update: state: ${Fmt.ofmt(update)}`);
+            //console.log(`-- trigger evt update: state: ${Fmt.ofmt(update)}`);
             Object.assign(evt.update, update);
         }
     }

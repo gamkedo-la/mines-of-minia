@@ -39,7 +39,7 @@ class TestProcState extends GameState {
 
         this.pstate = {};
         this.template = Config.template;
-        console.log(`template: ${Fmt.ofmt(this.template)}`);
+        //console.log(`template: ${Fmt.ofmt(this.template)}`);
 
         /*
         this.template = new ProcTemplate({

@@ -168,11 +168,18 @@ class Outline {
         for (let i=room.mini; i<=room.maxi; i++) {
             for (let j=room.minj; j<=room.maxj; j++) {
                 let idx = lvl.data.idxfromij(i,j);
-                // detect edge
-                let isEdge = (i===room.mini || j===room.minj || i===room.maxi || j===room.maxj);
-                let v = (isEdge) ? 'wall': 'floor';
                 // detect overlap with another room
                 let ov = lvl.data.getidx(idx);
+                if (ov !== 'fill') {
+                    console.log(`-- overlap at ${idx} value: ${ov}`);
+                    continue;
+                }
+                // detect normal room edge (bounds of room)
+                let isEdge = (i===room.mini || j===room.minj || i===room.maxi || j===room.maxj);
+                // detect edge of room due to overlap w/ other room
+                isEdge |= Direction.all.map((dir) => lvl.data.idxfromdir(idx, dir)).some((aidx) => (!room.idxs.includes(aidx)) && lvl.data.getidx(aidx) !== 'fill');
+                let v = (isEdge) ? 'wall': 'floor';
+                /*
                 if (ov !== 'fill') {
                     let overlapRoom;
                     // find which room we are overlapping with (assumes one that we are connected with)
@@ -182,8 +189,9 @@ class Outline {
                         Util.getOrAssign(overlapRoom.overlaps, room.cidx).push(idx);
                     }
                     // handle overlap data
-                    if (ov !== 'wall') v = 'floor';
+                    if (ov !== 'wall') v = 'wall';
                 }
+                */
                 // set data for room
                 // -- level data
                 lvl.data.setidx(idx,v);
@@ -226,6 +234,7 @@ class Outline {
         phall.addConnection(r2);
 
         // check for overlapping room
+        /*
         if (r2.cidx in r1.overlaps) {
             //ctx.strokeStyle = this.dbgColor;
             //ctx.strokeRect(lvl.x + r1.mini*lvl.tileSize, lvl.y + r1.minj*lvl.tileSize, r1.cols*lvl.tileSize, r1.rows*lvl.tileSize);
@@ -299,6 +308,7 @@ class Outline {
             this.carveDoor(lvl, phall, r2, r2port, r2dir, r2doorWidth, r2door);
             return phall;
         }
+        */
 
         r1port = Util.findBest(
             r1.edges.filter( (v) => this.checkTileIntersectSegment(lvl, v, r1.x, r1.y, r2.x, r2.y)),
@@ -466,6 +476,7 @@ class Outline {
         this.carveSegment(lvl, phall, idx1, midx, width, dir1);
         // leg from idx2 to mid
         this.carveSegment(lvl, phall, idx2, midx, width, dir2);
+        this.carveWalls(lvl, phall);
     }
 
     /**
@@ -502,6 +513,7 @@ class Outline {
         this.carveSegment(lvl, phall, idx2, midx2, width, dir2);
         // middle of switchback
         this.carveSegment(lvl, phall, midx1, midx2, width, Direction.orthogonal(dir1));
+        this.carveWalls(lvl, phall);
     }
 
 
@@ -509,6 +521,7 @@ class Outline {
         let width = spec.hallWidth || 1;
         // single leg from idx1 to idx2
         this.carveSegment(lvl, phall, idx1, idx2, width, dir1);
+        this.carveWalls(lvl, phall);
     }
 
     static carveDoor(lvl, phall, proom, idx, dir, width, doorTile='door') {
@@ -523,6 +536,18 @@ class Outline {
             let wj = Direction.asY(widthDir) * (widx + widthOff);
             lvl.data.setij(i+wi, j+wj, doorTile);
             phall.setidx(lvl.data.idxfromij(i+wi,j+wj), doorTile);
+        }
+    }
+
+    static carveWalls(lvl, proom) {
+        // carve the walls
+        for (const idx of this.findEdgesForIdxs(lvl, proom.idxs)) {
+            let fillAdjacent = Direction.all.map((dir) => lvl.data.idxfromdir(idx, dir)).some((aidx) => (!proom.idxs.includes(aidx)) && lvl.data.getidx(aidx) === 'fill');
+            let otile = lvl.data.getidx(idx);
+            if (fillAdjacent || !otile || otile === 'fill') {
+                lvl.data.setidx(idx, 'wall');
+                proom.setidx(idx, 'wall');
+            }
         }
     }
 
@@ -586,6 +611,8 @@ class Outline {
         if (idx1 !== idx2) {
             for ([i, j] of Util.pixelsInSegmentWidth( i1, j1, i2, j2, width)) {
                 let idx = lvl.data.idxfromij(i,j);
+                // skip segment fill if part of another room
+                if (lvl.data.getidx(idx) !== 'fill') continue;
                 lvl.data.setidx(idx, 'floor');
                 segidxs.push(idx);
                 phall.setidx(idx, 'floor');
@@ -598,6 +625,8 @@ class Outline {
                 phall.setidx(idx, 'floor');
             }
         }
+
+        /*
         // carve the walls
         for (const idx of this.findEdgesForIdxs(lvl, segidxs)) {
             let otile = lvl.data.getidx(idx);
@@ -606,6 +635,8 @@ class Outline {
                 phall.setidx(idx, 'wall');
             }
         }
+        */
+
     }
 
 }

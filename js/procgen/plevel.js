@@ -35,7 +35,7 @@ class ProcLevelGraph {
     *getNeighbors(e, node) {
         if (!this.lvl) return;
         // look along each direction
-        for (const dir of Direction.all) {
+        for (const dir of Direction.cardinals) {
             let nidx = this.lvl.data.idxfromdir(node, dir);
             if (nidx < 0) continue;
             let kind = this.lvl.data.getidx(nidx);

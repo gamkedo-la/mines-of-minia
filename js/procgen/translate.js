@@ -126,9 +126,11 @@ class Translate {
         //console.log(`critical path: ${best}`);
 
         // FIXME: remove
+        /*
         let idx = Array2D.idxfromdir(plvl.startIdx, Direction.north, plvl.cols, plvl.rows);
         idx = Array2D.idxfromdir(idx, Direction.north, plvl.cols, plvl.rows);
         plvl.exitIdx = idx;
+        */
     }
 
     static translateRoom(template, pstate, proom, transidxs) {
@@ -145,7 +147,11 @@ class Translate {
         // pull state
         let plvlo = pstate.plvlo;
         // points of interest... all must be reachable
-        let poiIdxs = new Array(...proom.exits, ...proom.pois);
+        let poiIdxs = Array.from(proom.exits);
+        poiIdxs = poiIdxs.concat(proom.pois);
+        if (poiIdxs.length === 1) {
+            poiIdxs.push(proom.cidx);
+        }
         let swap = ProcLevelOutline.blockSwap;
 
         // ensure each point of interest has floor immediately around it
@@ -176,11 +182,13 @@ class Translate {
                         if (kind in swap) {
                             let skind = swap[kind];
                             plvlo.data.setidx(pidx, skind);
+                            /*
                             for (const dir of Direction.all) {
                                 let nidx = plvlo.data.idxfromdir(pidx, dir);
                                 let nkind = plvlo.data.getidx(nidx);
                                 if (nkind in swap) plvlo.data.setidx(nidx, swap[nkind]);
                             }
+                            */
                         }
                     }
                 }
