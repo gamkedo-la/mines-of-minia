@@ -166,7 +166,7 @@ class Translate {
             }
         }
 
-        let dbg = false;
+        let dbg = true;
         plvlo.pathfilter = (v) => proom.idxs.includes(v);
         if (poiIdxs.length > 1) {
             // run pathfinding for each point of interest combo of room
@@ -176,7 +176,15 @@ class Translate {
                     let idx2 = poiIdxs[j];
                     let solution = plvlo.pathfinder.find({}, idx1, idx2);
                     //console.log(`${idx1} to ${idx2} ${solution.path}`);
-                    if (dbg) console.log(`${idx1} to ${idx2} ${Array.from(solution.path.map((v) => `${v}:${plvlo.data.getidx(v)}`))}`);
+                    /*
+                    if (!solution) {
+                        if (dbg) console.log(`${idx1} to ${idx2} no solution`);
+                    } else {
+                        if (dbg) console.log(`${idx1} to ${idx2} ${solution.path.map((v) => `${v}:${plvlo.data.getidx(v)}`)}`);
+                    }
+                    */
+                    //if (dbg) console.log(`${idx1} to ${idx2} ${Array.from(solution.path.map((v) => `${v}:${plvlo.data.getidx(v)}`))}`);
+                    if (solution) {
                     for (const pidx of solution.path) {
                         let kind = plvlo.data.getidx(pidx);
                         if (kind in swap) {
@@ -190,6 +198,7 @@ class Translate {
                             }
                             */
                         }
+                    }
                     }
                 }
             }

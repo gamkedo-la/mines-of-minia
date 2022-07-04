@@ -32,7 +32,6 @@ class Animator extends Sketch {
         // -- upstream event handling
         // -- how to pull event update from event
         this.evtAccessor = spec.evtAccessor || ((evt) => (evt.update && evt.update.state) ? evt.update.state : null);
-        console.log(`accessor: ${this.evtAccessor}`);
         // -- the upstream event stream
         this.upEvt = spec.upEvt || Events.null;
         // -- the upstream update event

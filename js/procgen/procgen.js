@@ -12,18 +12,6 @@ import { Spawn } from './spawn.js';
 import { Translate } from './translate.js';
 
 class ProcGen {
-    static dfltRows = 16;
-    static dfltCols = 16;
-    static dfltMinRoomWidth = 2;
-    static dfltMaxRoomWidth = 12;
-
-    static features = {
-        none: 0,
-        floor: 1,
-        wall: 2,
-        door: 3,
-        blocked: 4,
-    };
 
     static *initGenerator(template, pstate) {
         if (!template.seed) template.seed = Random.rangeInt(1,100000);

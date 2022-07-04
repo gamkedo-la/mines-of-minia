@@ -164,34 +164,19 @@ class Outline {
         room.maxi = room.mini+room.cols;
         room.maxj = room.minj+room.rows;
         room.cidx = lvl.data.idxfromij(Math.floor(x/unitSize), Math.floor(y/unitSize));
+        //console.log(`-- room ${room.cidx} prng: ${Prng.main.state}`);
         // carve
         for (let i=room.mini; i<=room.maxi; i++) {
             for (let j=room.minj; j<=room.maxj; j++) {
                 let idx = lvl.data.idxfromij(i,j);
                 // detect overlap with another room
                 let ov = lvl.data.getidx(idx);
-                if (ov !== 'fill') {
-                    console.log(`-- overlap at ${idx} value: ${ov}`);
-                    continue;
-                }
+                if (ov !== 'fill') continue;
                 // detect normal room edge (bounds of room)
                 let isEdge = (i===room.mini || j===room.minj || i===room.maxi || j===room.maxj);
                 // detect edge of room due to overlap w/ other room
                 isEdge |= Direction.all.map((dir) => lvl.data.idxfromdir(idx, dir)).some((aidx) => (!room.idxs.includes(aidx)) && lvl.data.getidx(aidx) !== 'fill');
                 let v = (isEdge) ? 'wall': 'floor';
-                /*
-                if (ov !== 'fill') {
-                    let overlapRoom;
-                    // find which room we are overlapping with (assumes one that we are connected with)
-                    for (overlapRoom of room.connections) if (overlapRoom.idxs.includes(idx)) break;
-                    if (overlapRoom) {
-                        Util.getOrAssign(room.overlaps, overlapRoom.cidx).push(idx);
-                        Util.getOrAssign(overlapRoom.overlaps, room.cidx).push(idx);
-                    }
-                    // handle overlap data
-                    if (ov !== 'wall') v = 'wall';
-                }
-                */
                 // set data for room
                 // -- level data
                 lvl.data.setidx(idx,v);
@@ -232,83 +217,6 @@ class Outline {
         // halls are connected to rooms
         phall.addConnection(r1);
         phall.addConnection(r2);
-
-        // check for overlapping room
-        /*
-        if (r2.cidx in r1.overlaps) {
-            //ctx.strokeStyle = this.dbgColor;
-            //ctx.strokeRect(lvl.x + r1.mini*lvl.tileSize, lvl.y + r1.minj*lvl.tileSize, r1.cols*lvl.tileSize, r1.rows*lvl.tileSize);
-            //console.log(`  exception: handle overlap`);
-            // turn overlap area into hallway
-            // -- overlap region becomes floor
-            let overlaps = r1.overlaps[r2.cidx];
-            for (const idx of overlaps) {
-                lvl.data.setidx(idx, 'floor');
-                phall.setidx(idx, 'floor');
-            }
-            // -- widen "hallway" based on hall width
-            let hminidx = overlaps[0];
-            let hmaxidx = overlaps[0];
-            for (let z=0; z<Math.floor(hallWidth/2); z++) {
-                let edges = this.findEdgesForIdxs(lvl, overlaps);
-                for (const idx of edges) {
-                    if (idx < hminidx) hminidx = idx;
-                    if (idx > hmaxidx) hmaxidx = idx;
-                    lvl.data.setidx(idx, 'floor');
-                    phall.setidx(idx, 'floor');
-                    overlaps.push(idx);
-                }
-            }
-            // -- surround "hallway" with walls
-            let edges = this.findEdgesForIdxs(lvl, overlaps);
-            for (const idx of edges) {
-                if (idx < hminidx) hminidx = idx;
-                if (idx > hmaxidx) hmaxidx = idx;
-                lvl.data.setidx(idx, 'wall');
-                phall.setidx(idx, 'wall');
-            }
-            // compute overlap of hallway w/ room1
-            let [hmini, hminj] = lvl.data.ijfromidx(hminidx);
-            let [hmaxi, hmaxj] = lvl.data.ijfromidx(hmaxidx);
-            let [o1mini,o1maxi] = Mathf.projectSegment(r1.mini, r1.maxi, hmini, hmaxi);
-            let [o1minj,o1maxj] = Mathf.projectSegment(r1.minj, r1.maxj, hminj, hmaxj);
-            //console.log(`  hallway i: ${hmini},${hmaxi} j: ${hminj},${hmaxj}`);
-            //console.log(`  room1 i: ${r1.mini},${r1.maxi} j: ${r1.minj},${r1.maxj}`);
-            // choose side w/ greatest overlap
-            if (o1maxi-o1mini > o1maxj-o1minj) {
-                //console.log(`  r1 max i o1i: ${o1mini},${o1maxi} o1j: ${o1minj},${o1maxj}`);
-                r1port = lvl.data.idxfromij(Math.floor((o1maxi+o1mini)/2), (r1midj < o1minj) ? o1minj : o1maxj);
-                r1dir = (r1midj<o1minj) ? Direction.north : Direction.south;
-            } else {
-                //console.log(`  r1 max j o1i: ${o1mini},${o1maxi} o1j: ${o1minj},${o1maxj}`);
-                r1port = lvl.data.idxfromij( (r1midi < o1mini) ? o1mini : o1maxi, Math.floor((o1maxj+o1minj)/2));
-                r1dir = (r1midi<o1mini) ? Direction.west : Direction.east;
-            }
-            // compute overlap of hallway w/ room1
-            let [o2mini,o2maxi] = Mathf.projectSegment(r2.mini, r2.maxi, hmini, hmaxi);
-            let [o2minj,o2maxj] = Mathf.projectSegment(r2.minj, r2.maxj, hminj, hmaxj);
-            // choose side w/ greatest overlap
-            if (o2maxi-o2mini > o2maxj-o2minj) {
-                //console.log(`  r2 max i o2i: ${o2mini},${o2maxi} o2j: ${o2minj},${o2maxj}`);
-                //console.log(`  r2: i ${r2.mini},${r2.maxi} j: ${r2.minj},${r2.maxj}`);
-                r2port = lvl.data.idxfromij(Math.floor((o2maxi+o2mini)/2), (r2.minj < o2minj) ? o2minj : o2maxj);
-                r2dir = (r2midj<o2minj) ? Direction.north : Direction.south;
-                //console.log(`  r2port: ${r2port} ${lvl.data.ijfromidx(r2port)} dir: ${r2dir}`);
-            } else {
-                //console.log(`  max j`);
-                r2port = lvl.data.idxfromij( (r2midi < o2mini) ? o2mini : o2maxi, Math.floor((o2maxj+o2minj)/2));
-                r2dir = (r2midi<o2mini) ? Direction.west : Direction.east;
-            }
-
-            // -- create doors
-            phall.cidx = r1port;
-            this.drawDbgTileIdx(lvl, r1port, 'red');
-            this.drawDbgTileIdx(lvl, r2port, 'yellow');
-            this.carveDoor(lvl, phall, r1, r1port, r1dir, r1doorWidth, r1door);
-            this.carveDoor(lvl, phall, r2, r2port, r2dir, r2doorWidth, r2door);
-            return phall;
-        }
-        */
 
         r1port = Util.findBest(
             r1.edges.filter( (v) => this.checkTileIntersectSegment(lvl, v, r1.x, r1.y, r2.x, r2.y)),

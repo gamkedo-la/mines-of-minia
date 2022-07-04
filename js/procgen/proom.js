@@ -112,7 +112,7 @@ class ProcRoom extends ProcModel {
     }
     
     toString() {
-        return Fmt.toString('Rsv', this.x, this.y, this.radius);
+        return Fmt.toString('proom', this.x, this.y, this.radius);
     }
 
 }

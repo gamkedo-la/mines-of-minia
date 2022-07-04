@@ -141,6 +141,7 @@ class PlayState extends GameState {
 
         this.template = Config.template;
 
+        /*
         let plvl;
         if (true) {
             plvl = ProcGen.genLvl(this.template);
@@ -148,6 +149,7 @@ class PlayState extends GameState {
             plvl = new ProcLevel({ cols: 32, rows: 32, })
             plvl.startIdx = Array2D.idxfromij(16,12, 32, 32);
         }
+        */
 
 
         this.player = new Player({

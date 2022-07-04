@@ -39,43 +39,10 @@ class TestProcState extends GameState {
 
         this.pstate = {};
         this.template = Config.template;
-        //console.log(`template: ${Fmt.ofmt(this.template)}`);
-
-        /*
-        this.template = new ProcTemplate({
-            doyield: true,
-            seed: 2,
-            unitSize: 4,
-            maxCols: 180,
-            maxRows: 120,
-            outline: {
-                hallWidth: 3,
-                colOverflow: 2,
-                rowOverflow: 2,
-            }
-        });
-*/
 
         this.lvlgen = ProcGen.levelGenerator(this.template, this.pstate);
         ProcGen.dbgGenerateLevel(this.lvlgen, this.pstate);
-        //let data = ProcGen.genLevel({step: this.procstep});
 
-        /*
-        let data = new Array2D();
-        data.setij(4, 4, 1);
-        data.setij(5, 4, 1);
-        data.setij(5, 5, 1);
-        */
-        /*
-        let lvl = new Level({
-            tileWidth: 8,
-            tileHeight: 8,
-            data: data,
-            xform: new XForm({x: 200, y:200, stretch: false}),
-        });
-        */
-        //model.evt.listen(model.constructor.evtUpdated, (evt) => { console.log(`==== model updated`)});
-        //this.grid1.adopt(lvl);
     }
 
     onKeyDown(evt) {

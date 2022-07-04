@@ -9,14 +9,6 @@ class ProcTemplate {
     static dfltWall = 'wall';
     static dfltDoor = 'door';
 
-    get width() {
-        return this.maxCols*this.unitSize;
-    }
-
-    get height() {
-        return this.maxRows*this.unitSize;
-    }
-
     constructor(spec={}) {
         // -- generator info
         this.doyield = (spec.hasOwnProperty('doyield')) ? spec.doyield : false;
@@ -29,6 +21,8 @@ class ProcTemplate {
         this.maxCols = spec.maxCols || 250;
         this.maxRows = spec.maxRows || 200;
         this.unitSize = spec.unitSize || 4;
+        this.width = this.maxCols*this.unitSize;
+        this.height = this.maxRows*this.unitSize;
         this.doorWidth = spec.doorWidth || 1;
         this.minRoomUnits = spec.minRoomUnits || 5;
         this.tileSize = spec.tileSize || 16;
