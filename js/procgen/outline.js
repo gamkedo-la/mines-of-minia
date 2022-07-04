@@ -39,27 +39,6 @@ class Outline {
         return valid;
     }
 
-    static sampleFloor(plvlo, pnoise, idx) {
-        let i = plvlo.data.ifromidx(idx);
-        let j = plvlo.data.jfromidx(idx);
-        let sample = pnoise.sample(i,j);
-        //let sample2 = pnoise.sample(i+plvlo.cols,j);
-        let sample2 = pnoise.sample(i+plvlo.cols,j+plvlo.rows);
-        // -- default to standard floor
-        let kind = 'floor';
-
-        if (sample < -.5) {
-            kind = 'pit';
-        } else if (sample < -.3) {
-            kind = 'pitb';
-        } else if (sample > .5) {
-            kind = 'obs';
-        } else if (sample > .3) {
-            kind = 'obsb';
-        }
-        return kind;
-    }
-
     static *levelGenerator(template, pstate) {
         let o_spec = template.outline || {};
         let rooms = pstate.prooms || [];
@@ -105,11 +84,10 @@ class Outline {
         let o_spec = template.outline || {};
         // pull level outline
         let lvl = pstate.plvlo;
-        let noise = pstate.pnoise;
         // pull rooms
         let prooms = pstate.prooms;
         for (const proom of prooms) {
-            this.carveRoomOutline(template, lvl, noise, proom, o_spec);
+            this.carveRoomOutline(template, lvl, proom, o_spec);
         }
         if (template.doyield) yield;
     }
@@ -118,7 +96,6 @@ class Outline {
         let o_spec = template.outline || {};
         // pull level outline
         let lvl = pstate.plvlo;
-        let noise = pstate.pnoise;
         // pull rooms
         let prooms = pstate.prooms;
         let phalls = [];
@@ -140,7 +117,7 @@ class Outline {
                 }
                 vlist.push(maxidx);
                 // process connection
-                let phall = this.carveHall(lvl, noise, room, conn, o_spec);
+                let phall = this.carveHall(lvl, room, conn, o_spec);
                 phalls.push(phall);
             }
         }
@@ -149,7 +126,7 @@ class Outline {
         if (template.doyield) yield;
     }
 
-    static carveRoomOutline(template, lvl, noise, room, spec={}) {
+    static carveRoomOutline(template, lvl, room, spec={}) {
         let schemes = spec.schemes || [
             {weight: .75, minWidthPct: .4, minHeightPct: .4},
             {weight: .25, minWidthPct: .2, minHeightPct: .2},
@@ -193,8 +170,7 @@ class Outline {
                 let idx = lvl.data.idxfromij(i,j);
                 // detect edge
                 let isEdge = (i===room.mini || j===room.minj || i===room.maxi || j===room.maxj);
-                let floorv = this.sampleFloor(lvl, noise, idx);
-                let v = (isEdge) ? 'wall': floorv;
+                let v = (isEdge) ? 'wall': 'floor';
                 // detect overlap with another room
                 let ov = lvl.data.getidx(idx);
                 if (ov !== 'fill') {
@@ -206,7 +182,7 @@ class Outline {
                         Util.getOrAssign(overlapRoom.overlaps, room.cidx).push(idx);
                     }
                     // handle overlap data
-                    if (ov !== 'wall') v = floorv;
+                    if (ov !== 'wall') v = 'floor';
                 }
                 // set data for room
                 // -- level data
@@ -219,7 +195,7 @@ class Outline {
         }
     }
 
-    static carveHall(lvl, noise, r1, r2, spec={}) {
+    static carveHall(lvl, r1, r2, spec={}) {
 
         let hallWidth = spec.hallWidth || 1;
         let r1doorWidth = spec.doorWidth || 1;
@@ -258,9 +234,8 @@ class Outline {
             // -- overlap region becomes floor
             let overlaps = r1.overlaps[r2.cidx];
             for (const idx of overlaps) {
-                let floorv = this.sampleFloor(lvl, noise, idx);
-                lvl.data.setidx(idx, floorv);
-                phall.setidx(idx, floorv);
+                lvl.data.setidx(idx, 'floor');
+                phall.setidx(idx, 'floor');
             }
             // -- widen "hallway" based on hall width
             let hminidx = overlaps[0];
@@ -270,9 +245,8 @@ class Outline {
                 for (const idx of edges) {
                     if (idx < hminidx) hminidx = idx;
                     if (idx > hmaxidx) hmaxidx = idx;
-                    let floorv = this.sampleFloor(lvl, noise, idx);
-                    lvl.data.setidx(idx, floorv);
-                    phall.setidx(idx, floorv);
+                    lvl.data.setidx(idx, 'floor');
+                    phall.setidx(idx, 'floor');
                     overlaps.push(idx);
                 }
             }
@@ -321,8 +295,8 @@ class Outline {
             phall.cidx = r1port;
             this.drawDbgTileIdx(lvl, r1port, 'red');
             this.drawDbgTileIdx(lvl, r2port, 'yellow');
-            this.carveDoor(lvl, noise, phall, r1, r1port, r1dir, r1doorWidth, r1door);
-            this.carveDoor(lvl, noise, phall, r2, r2port, r2dir, r2doorWidth, r2door);
+            this.carveDoor(lvl, phall, r1, r1port, r1dir, r1doorWidth, r1door);
+            this.carveDoor(lvl, phall, r2, r2port, r2dir, r2doorWidth, r2door);
             return phall;
         }
 
@@ -361,7 +335,7 @@ class Outline {
             let delta = Direction.distanceAlong(Direction.orthogonal(r1dir), ioverlap, joverlap);
             if (space >= hallWidth+2) {
                 //console.log(`  normal switchback`);
-                this.carveSwitchbackHall(lvl, noise, phall, r1hall, r1dir, r2hall, r2dir, spec);
+                this.carveSwitchbackHall(lvl, phall, r1hall, r1dir, r2hall, r2dir, spec);
             } else if (space>1 && delta>=(hallWidth)) {
                 //console.log(`  straight`);
                 //ctx.strokeStyle = this.dbgColor;
@@ -379,7 +353,7 @@ class Outline {
                 r1hall = lvl.data.idxfromdir(r1port, r1dir);
                 r2hall = lvl.data.idxfromdir(r2port, r2dir);
                 //console.log(`  final r1port: ${r1port} r1dir: ${r1dir} r2port: ${r2port} r2dir: ${r2dir}`);
-                this.carveStraightHall(lvl, noise, phall, r1hall, r1dir, r2hall, r2dir, spec);
+                this.carveStraightHall(lvl, phall, r1hall, r1dir, r2hall, r2dir, spec);
             } else {
                 // case 1: delta too small
                 if (delta < hallWidth) {
@@ -432,7 +406,7 @@ class Outline {
                     //console.log(`  new r2port: ${r2port}`);
                     r2hall = lvl.data.idxfromdir(r2port, r2dir);
                     //console.log(`  final r1port: ${r1port} r1dir: ${r1dir} r2port: ${r2port} r2dir: ${r2dir}`);
-                    this.carveAngleHall(lvl, noise, phall, r1hall, r1dir, r2hall, r2dir, spec);
+                    this.carveAngleHall(lvl, phall, r1hall, r1dir, r2hall, r2dir, spec);
 
                 // case 2: could have hallway, but space between rooms is too small
                 } else {
@@ -465,19 +439,19 @@ class Outline {
                 }
             }
         } else {
-            this.carveAngleHall(lvl, noise, phall, r1hall, r1dir, r2hall, r2dir, spec);
+            this.carveAngleHall(lvl, phall, r1hall, r1dir, r2hall, r2dir, spec);
         }
 
         // carve doors
         phall.cidx = r1port;
-        this.carveDoor(lvl, noise, phall, r1, r1port, r1dir, r1doorWidth, r1door);
-        this.carveDoor(lvl, noise, phall, r2, r2port, r2dir, r2doorWidth, r2door);
+        this.carveDoor(lvl, phall, r1, r1port, r1dir, r1doorWidth, r1door);
+        this.carveDoor(lvl, phall, r2, r2port, r2dir, r2doorWidth, r2door);
 
         return phall;
 
     }
 
-    static carveAngleHall(lvl, noise, phall, idx1, dir1, idx2, dir2, spec={}) {
+    static carveAngleHall(lvl, phall, idx1, dir1, idx2, dir2, spec={}) {
         let width = spec.hallWidth || 1;
         let i1 = lvl.data.ifromidx(idx1);
         let j1 = lvl.data.jfromidx(idx1);
@@ -489,9 +463,9 @@ class Outline {
         let midx = lvl.data.idxfromij(mi, mj);
         this.drawDbgTileIdx(lvl, midx, 'orange');
         // leg from idx1 to mid
-        this.carveSegment(lvl, noise, phall, idx1, midx, width, dir1);
+        this.carveSegment(lvl, phall, idx1, midx, width, dir1);
         // leg from idx2 to mid
-        this.carveSegment(lvl, noise, phall, idx2, midx, width, dir2);
+        this.carveSegment(lvl, phall, idx2, midx, width, dir2);
     }
 
     /**
@@ -504,7 +478,7 @@ class Outline {
      * @param {*} dir2 
      * @param {*} spec 
      */
-    static carveSwitchbackHall(lvl, noise, phall, idx1, dir1, idx2, dir2, spec={}) {
+    static carveSwitchbackHall(lvl, phall, idx1, dir1, idx2, dir2, spec={}) {
         let width = spec.hallWidth || 1;
         let i1 = lvl.data.ifromidx(idx1);
         let j1 = lvl.data.jfromidx(idx1);
@@ -523,21 +497,21 @@ class Outline {
         //this.drawDbgTile(lvl, mi2, mj2, 'orange');
         UxDbg.drawTile(mi2, mj2, {x: lvl.x, y: lvl.y, tileSize: lvl.unitSize, color: 'orange'});
         // leg from idx1
-        this.carveSegment(lvl, noise, phall, idx1, midx1, width, dir1);
+        this.carveSegment(lvl, phall, idx1, midx1, width, dir1);
         // leg from idx2
-        this.carveSegment(lvl, noise, phall, idx2, midx2, width, dir2);
+        this.carveSegment(lvl, phall, idx2, midx2, width, dir2);
         // middle of switchback
-        this.carveSegment(lvl, noise, phall, midx1, midx2, width, Direction.orthogonal(dir1));
+        this.carveSegment(lvl, phall, midx1, midx2, width, Direction.orthogonal(dir1));
     }
 
 
-    static carveStraightHall(lvl, noise, phall, idx1, dir1, idx2, dir2, spec={}) {
+    static carveStraightHall(lvl, phall, idx1, dir1, idx2, dir2, spec={}) {
         let width = spec.hallWidth || 1;
         // single leg from idx1 to idx2
-        this.carveSegment(lvl, noise, phall, idx1, idx2, width, dir1);
+        this.carveSegment(lvl, phall, idx1, idx2, width, dir1);
     }
 
-    static carveDoor(lvl, noise, phall, proom, idx, dir, width, doorTile='door') {
+    static carveDoor(lvl, phall, proom, idx, dir, width, doorTile='door') {
         phall.exits.push(idx);
         proom.exits.push(idx);
         let i = lvl.data.ifromidx(idx);
@@ -601,7 +575,7 @@ class Outline {
         //this.drawDbgTile(ctx, lvl, lvl.data.ifromidx(idx), lvl.data.jfromidx(idx), color, fill);
     }
 
-    static carveSegment(lvl, noise, phall, idx1, idx2, width, dir) {
+    static carveSegment(lvl, phall, idx1, idx2, width, dir) {
         // carve the hallway
         let i1 = lvl.data.ifromidx(idx1);
         let j1 = lvl.data.jfromidx(idx1);
@@ -612,18 +586,16 @@ class Outline {
         if (idx1 !== idx2) {
             for ([i, j] of Util.pixelsInSegmentWidth( i1, j1, i2, j2, width)) {
                 let idx = lvl.data.idxfromij(i,j);
-                let floorv = this.sampleFloor(lvl, noise, idx);
-                lvl.data.setidx(idx, floorv);
+                lvl.data.setidx(idx, 'floor');
                 segidxs.push(idx);
-                phall.setidx(idx, floorv);
+                phall.setidx(idx, 'floor');
             };
         } else {
             for ([i, j] of Util.pixelsInCross( i1, j1, dir, width)) {
                 let idx = lvl.data.idxfromij(i,j);
-                let floorv = this.sampleFloor(lvl, noise, idx);
-                lvl.data.setidx(idx, floorv);
+                lvl.data.setidx(idx, 'floor');
                 segidxs.push(idx);
-                phall.setidx(idx, floorv);
+                phall.setidx(idx, 'floor');
             }
         }
         // carve the walls

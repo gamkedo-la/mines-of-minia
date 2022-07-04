@@ -25,6 +25,9 @@ class Translate {
         pstate.plvl = plvl;
         // -- choose critical level path (spawn point, exit point, rooms in between)
         this.chooseCriticalPath(template, pstate);
+        // -- noisify level
+        this.noisifyFloor(template, pstate);
+        if (template.doyield) yield;
         // -- keep track of translated idxs
         let transidxs = [];
         // -- translate rooms
@@ -38,6 +41,37 @@ class Translate {
         }
         // yield
         if (template.doyield) yield;
+    }
+
+    static sampleFloor(plvlo, pnoise, idx) {
+        let i = plvlo.data.ifromidx(idx);
+        let j = plvlo.data.jfromidx(idx);
+        let sample = pnoise.sample(i,j);
+        // -- default to standard floor
+        let kind = 'floor';
+        if (sample < -.5) {
+            kind = 'pit';
+        } else if (sample < -.3) {
+            kind = 'pitb';
+        } else if (sample > .5) {
+            kind = 'obs';
+        } else if (sample > .3) {
+            kind = 'obsb';
+        }
+        return kind;
+    }
+
+    static noisifyFloor(template, pstate) {
+        let noise = pstate.pnoise;
+        let plvlo = pstate.plvlo;
+        // iterate through all floor tiles
+        for (let i=0; i<plvlo.data.nentries; i++) {
+            let kind = plvlo.data.getidx(i);
+            if (kind === 'floor') {
+                let nkind = this.sampleFloor(plvlo, noise, i)
+                if (nkind !== 'floor') plvlo.data.setidx(i,nkind);
+            }
+        }
     }
 
     static chooseCriticalPath(template, pstate) {
