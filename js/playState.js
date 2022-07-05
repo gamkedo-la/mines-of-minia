@@ -301,6 +301,23 @@ class PlayState extends GameState {
             return;
         }
         switch (evt.key) {
+            case '+': {
+                this.slider.xform.scalex -= .5;
+                this.slider.xform.scaley -= .5;
+                if (this.slider.xform.scalex < 1) this.slider.xform.scalex = 1;
+                if (this.slider.xform.scaley < 1) this.slider.xform.scaley = 1;
+                this.slider.evt.trigger(this.viewport.constructor.evtUpdated, {actor: this});
+                break;
+            }
+            case '-': {
+                this.slider.xform.scalex += .5;
+                this.slider.xform.scaley += .5;
+                if (this.slider.xform.scalex > 6) this.slider.xform.scalex = 6;
+                if (this.slider.xform.scaley > 6) this.slider.xform.scaley = 6;
+                this.slider.evt.trigger(this.viewport.constructor.evtUpdated, {actor: this});
+                break;
+            }
+
             case '8': {
                 Events.trigger(RenderSystem.evtRenderNeeded);
                 break;
