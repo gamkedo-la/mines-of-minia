@@ -8,6 +8,131 @@ import { XForm } from './base/xform.js';
 
 export { Inventory };
 
+class InventoryData {
+    constructor(spec={}) {
+        // equip
+        this.shielding = spec.shielding;
+        this.reactor = spec.reactor;
+        this.weapon = spec.weapon;
+        this.gadget1 = spec.gadget1;
+        this.gadget2 = spec.gadget2;
+        this.gadget3 = spec.gadget2;
+        // slots
+        this.slots = Array.from(spec.slots || []);
+        this.counts = Array.from(spec.counts || []);
+        this.numSlots = spec.numSlots || 16;
+        // belt
+        this.belt = spec.belt || [];
+        this.beltSlots = spec.beltSlots || 5;
+    }
+
+    get isFull() {
+        for (let i=0; i<this.numSlots; i++) {
+            if (!this.slots[i]) return false;
+        }
+        return true;
+    }
+
+    get isBeltFull() {
+        for (let i=0; i<this.beltSlots; i++) {
+            if (!this.belt[i]) return false;
+        }
+        return true;
+    }
+
+    add(item, slot=null) {
+        // is item stackable (stacked by name)
+        if (item.stackable) {
+            // is there a slot for this stack already
+            for (let i=0; i<this.numSlots; i++) {
+                if (this.slots[i] && this.slots[i].name === item.name) {
+                    this.counts[i] += 1;
+                    return item;
+                }
+            }
+        }
+        if (slot === null) {
+            for (let i=0; i<this.numSlots; i++) if (!this.slots[i]) slot = i;
+            if (slot === null) return;
+        }
+        this.slots[slot] = item;
+        this.counts[slot] = 1;
+        return item;
+    }
+
+    remove(slot, all=false) {
+        if (this.slots[slot]) {
+            let item = this.inv[slot];
+            if (this.counts[slot] <= 1 || all) {
+                let name = (this.inv[slot]) ? this.inv[slot].name : 'none';
+                this.inv[slot] = undefined;
+                this.counts[slot] = 0;
+                // check for belt reference -- remove if found
+                for (let i=0; i<this.beltSlots; i++) {
+                    if (this.beltSlots[i] === name) {
+                        this.beltSlots[i] = null;
+                        break;
+                    }
+                }
+            } else {
+                this.counts[slot] -= 1;
+            }
+            return item;
+        }
+        return null;
+    }
+
+    removeItem(item, all=False) {
+        for (let i=0; i<this.numSlots; i++) {
+            if (this.slots[i] && this.slots[i].name === item.name) {
+                return this.remove(i, all);
+            }
+        }
+        return null;
+    }
+
+    equip(slot, item) {
+        if (item.slot !== slot) return false;
+        this.removeItem(item);
+        this[slot] = item;
+        return true;
+    }
+
+    unequip(slot) {
+        let item = this[slot];
+        if (!item) return false;
+        if (!this.add(item)) return false;
+        this[slot] = null;
+        return true;
+    }
+
+    equipBelt(item, slot=null) {
+        if (item.slot !== belt) return;
+        if (slot === null) {
+            for (let i=0; i<this.beltSlots; i++) if (!this.belt[i]) slot = i;
+            if (slot === null) return;
+        }
+        // check for already on belt
+        if (this.belt.includes(item.name)) return;
+        this.belt[slot] = item.name;
+    }
+
+    unequipBelt(slot) {
+        this.belt[slot] = null;
+    }
+
+    as_kv() {
+        // FIXME
+        /*
+        return Object.assign({}, super.as_kv(), {
+            up: this.up,
+            x_sketch: { cls: 'InventoryData', tag: this._sketch.tag },
+        });
+        */
+    }
+
+}
+
 class Inventory extends UxView {
     static get dfltSelectedUnpressed() {
         return Assets.get('frame.blue.2', true, {lockRatio: true});
@@ -30,13 +155,12 @@ class Inventory extends UxView {
 
     cpost(spec) {
         super.cpost(spec);
-        this.selectedUnpressed = Assets.get('frame.blue.2', true, {lockRatio: true});
-        this.selectedPressed = Assets.get('frame.red.2', true, {lockRatio: true});
-        this.selectedHighlight = Assets.get('frame.yellow.2', true, {lockRatio: true});
 
-        this.unpressed = Assets.get('frame.blue', true, {lockRatio: true});
-        this.pressed = Assets.get('frame.red', true, {lockRatio: true});
-        this.highlight = Assets.get('frame.yellow', true, {lockRatio: true});
+        // equipment
+
+        // belt
+
+        // slots
 
         this.onButtonClick = this.onButtonClick.bind(this);
 

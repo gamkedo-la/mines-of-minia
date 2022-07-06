@@ -1,5 +1,6 @@
 export { Player };
     import { Config } from '../base/config.js';
+import { Inventory } from '../inventory.js';
 import { Character } from './character.js';
 import { Weapon } from './weapon.js';
 
@@ -8,6 +9,7 @@ class Player extends Character {
     static dfltSpry = 10;
     static dfltSavvy = 10;
     static dfltBlockRating = 1;
+    static dfltInvSlots = 16;
 
     static dfltWeapon = new Weapon({
         tag: 'weapon.fists',
@@ -25,6 +27,7 @@ class Player extends Character {
         // -- hit bonus/penalty
         this.hitbp = spec.hitbp || 0;
         this.weapon = spec.weapon || this.constructor.dfltWeapon;
+        this.inventory = spec.inventory || new Inventory();
         this.blockRating = spec.blockRating || this.dfltBlockRating;
         this.xform.offx = this.xf
         this.xform.offx = -this.xform.width*.5;

@@ -9,6 +9,7 @@ import { Prng } from '../base/prng.js';
 import { Door } from '../entities/door.js';
 import { Enemy } from '../entities/enemy.js';
 import { Stairs } from '../entities/stairs.js';
+import { Weapon } from '../entities/weapon.js';
 
 class Spawn {
 
@@ -19,6 +20,8 @@ class Spawn {
         this.spawnStairs(template, pstate);
         // -- enemies
         this.spawnEnemies(template, pstate);
+        // -- test objects
+        this.spawnTest(template, pstate);
         yield;
     }
 
@@ -124,6 +127,46 @@ class Spawn {
             //console.log(`enemy: ${Fmt.ofmt(x_enemy)}`);
 
             plvl.entities.push(x_enemy);
+        }
+
+    }
+
+    static spawnTest(template, pstate) {
+        let plvl = pstate.plvl;
+        let prooms = pstate.prooms || [];
+        // what is the starting room?
+        let sroom;
+        for (const proom of prooms) {
+            if (proom.cidx === plvl.startIdx) {
+                sroom = proom;
+                break;
+            }
+        }
+        if (!sroom) return;
+        // iterate items to spawn
+        let x_spawns = [
+            Weapon.xspec({
+                x_sketch: Assets.get('sword_1'),
+            }),
+        ];
+        for (const x_spawn of x_spawns) {
+            for (let i=0; i<100; i++) {
+                // -- randomly choose index from room
+                let idx = Prng.choose(sroom.idxs);
+                // -- test index to make sure nothing is there..
+                if (idx === plvl.startIdx) continue;
+                // -- not at a floor tile
+                if (plvl.entities.some((v) => v.idx === idx && v.cls === 'Tile' && v.kind !== 'floor')) continue;
+                // -- anything else at index
+                if (plvl.entities.some((v) => v.idx === idx && v.cls !== 'Tile')) continue;
+                // success -- add spawn
+                let x_final = Object.assign({}, x_spawn, {
+                    idx: idx,
+                    z: 2,
+                });
+                plvl.entities.push(x_final);
+                break;
+            }
         }
 
     }
