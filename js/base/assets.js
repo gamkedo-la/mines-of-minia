@@ -114,8 +114,8 @@ class Assets {
 
     // STATIC METHODS ------------------------------------------------------
     static init() {}
-    static get(tag, generate=false) {
-        return this.main.get(tag, generate);
+    static get(tag, generate=false, overrides={}) {
+        return this.main.get(tag, generate, overrides);
     }
     static add(tag, asset) {
         this.main.add(tag, asset);

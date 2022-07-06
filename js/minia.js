@@ -23,6 +23,7 @@ import { ProcTemplate } from "./procgen/ptemplate.js";
 import { Stairs } from "./entities/stairs.js";
 import { Rous } from "./entities/rous.js";
 import { Door } from "./entities/door.js";
+import { Inventory } from "./inventory.js";
 
 class Minia extends Game {
     static states = {
@@ -96,6 +97,7 @@ class Minia extends Game {
             Character,
             Door,
             Enemy,
+            Inventory,
             Level,
             Player,
             Rous,

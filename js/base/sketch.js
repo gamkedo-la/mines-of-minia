@@ -47,7 +47,7 @@ class Sketch extends Gizmo {
 
     // PROPERTIES ----------------------------------------------------------
     get ratio() {
-        return (this.height) ? (this.iwidth/this.iheight) : 1;
+        return (this.iheight) ? (this.iwidth/this.iheight) : 1;
     }
 
     // internal dimensions

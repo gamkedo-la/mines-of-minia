@@ -46,6 +46,7 @@ import { TakeStairsAction } from './actions/takeStairs.js';
 import { OpenAction } from './actions/open.js';
 import { Door } from './entities/door.js';
 import { CloseSystem } from './systems/closeSystem.js';
+import { Inventory } from './inventory.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -90,7 +91,7 @@ class PlayState extends GameState {
             x_children: [
                 UxMask.xspec({
                     tag: 'viewport',
-                    x_xform: XForm.xspec({border: .05, scalex: 1, scaley:1}),
+                    x_xform: XForm.xspec({border: .05}),
                     dbg: { viewMask: true },
                     x_children: [
                         UxPanel.xspec({
@@ -116,6 +117,10 @@ class PlayState extends GameState {
                         }),
                     ],
                 }),
+                Inventory.xspec({
+                    tag: 'inventory',
+                    x_xform: XForm.xspec({border: .1}),
+                }),
             ],
         });
 
@@ -128,6 +133,10 @@ class PlayState extends GameState {
 
         this.viewport = Hierarchy.find(this.view, (v) => v.tag === 'viewport');
         this.lvl = Hierarchy.find(this.view, (v) => v.tag === 'lvl');
+
+        this.inventory = Hierarchy.find(this.view, (v) => v.tag === 'inventory');
+        this.inventory.visible = false;
+        this.inventory.active = false;
 
         Systems.add('level', new LevelSystem({ slider: this.slider, lvl: this.lvl, dbg: Util.getpath(Config, 'dbg.system.level')}));
 
@@ -379,6 +388,14 @@ class PlayState extends GameState {
             case ' ': {
                 this.wait();
                 break;
+            }
+
+            case 'i': {
+                let toggle = this.inventory.active;
+                //this.inventory = new Inventory();
+                this.inventory.visible = !toggle;
+                this.inventory.active = !toggle;
+                this.lvl.active = toggle;
             }
 
         }

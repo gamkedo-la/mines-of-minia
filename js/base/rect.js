@@ -15,6 +15,18 @@ class Rect extends Sketch {
         this.color = spec.color || "rgba(127,127,127,.75)";
         this.fill = (spec.hasOwnProperty('fill')) ? spec.fill : true;
         this.dash = spec.dash;
+        this._iwidth = spec.width || 0;
+        this._iheight = spec.height || 0;
+    }
+
+    // PROPERTIES ----------------------------------------------------------
+    // internal dimensions
+    get iwidth() {
+        return this._iwidth;
+    }
+
+    get iheight() {
+        return this._iheight;
     }
 
     // METHODS -------------------------------------------------------------

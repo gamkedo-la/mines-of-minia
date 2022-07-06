@@ -64,7 +64,9 @@ class UxButton extends UxView {
     set unpressed(v) {
         if (!v) return;
         if (v !== this._unpressed) {
+            let resetSketch = (this.sketch === this._unpressed);
             this._linkSketch('_unpressed', v);
+            if (resetSketch) this.sketch = this._unpressed;
         }
     }
 
@@ -74,7 +76,9 @@ class UxButton extends UxView {
     set pressed(v) {
         if (!v) return;
         if (v !== this._pressed) {
+            let resetSketch = (this.sketch === this._pressed);
             this._linkSketch('_pressed', v);
+            if (resetSketch) this.sketch = this._pressed;
         }
     }
 
