@@ -317,7 +317,7 @@ class PlayState extends GameState {
             return;
         }
         switch (evt.key) {
-            case '+': {
+            case '-': {
                 this.slider.xform.scalex -= .5;
                 this.slider.xform.scaley -= .5;
                 if (this.slider.xform.scalex < 1) this.slider.xform.scalex = 1;
@@ -325,7 +325,8 @@ class PlayState extends GameState {
                 this.slider.evt.trigger(this.viewport.constructor.evtUpdated, {actor: this});
                 break;
             }
-            case '-': {
+            case '+': 
+            case '=': {
                 this.slider.xform.scalex += .5;
                 this.slider.xform.scaley += .5;
                 if (this.slider.xform.scalex > 6) this.slider.xform.scalex = 6;
@@ -403,6 +404,17 @@ class PlayState extends GameState {
                 this.inventory.visible = !toggle;
                 this.inventory.active = !toggle;
                 this.lvl.active = toggle;
+                break;
+            }
+
+            case 'l': {
+                let toggle = this.lvl.fowEnabled;
+                this.lvl.fowEnabled = !toggle;
+                this.lvl.losEnabled = !toggle;
+                console.log(`this.lvl.fowEnabled: ${this.lvl.fowEnabled} ${this.lvl.losEnabled}`);
+                for (const gidx of this.lvl.grid.keys()) this.lvl.gidupdates.add(gidx);
+                this.lvl.evt.trigger(this.lvl.constructor.evtUpdated, {actor: this.lvl});
+                break;
             }
 
         }
