@@ -2,10 +2,12 @@ export { Weapon };
 
 import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
-import { MiniaModel } from './miniaModel.js';
+import { Item } from './item.js';
 
-class Weapon extends MiniaModel {
+class Weapon extends Item {
     // STATIC VARIABLES ----------------------------------------------------
+    static slot = 'weapon';
+
     static kinds = [
         'bonk',
         'poke',
@@ -28,11 +30,6 @@ class Weapon extends MiniaModel {
         3: 2.5,
     };
 
-    // STATIC PROPERTIES ---------------------------------------------------
-    static get dfltSketch() {
-        return new Rect({ width: 16, height: 16, color: 'rgba(255,255,0,.75)' });
-    }
-
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
@@ -51,17 +48,7 @@ class Weapon extends MiniaModel {
         this.damageScalePerLvl = spec.damageScale || this.constructor.damageScaleByTier[this.tier];
         // -- enhancement
         this.enhancement = spec.enhancement || null;
-        // -- sketch
-        this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
-        this._sketch.link(this);
-        // -- sync xform to match sketch dimensions
-        this.xform.width = this.sketch.width;
-        this.xform.height = this.sketch.height;
-    }
 
-    destroy() {
-        this._unlinkSketch('_sketch');
-        super.destroy();
     }
 
     // PROPERTIES ----------------------------------------------------------
@@ -83,20 +70,5 @@ class Weapon extends MiniaModel {
     }
 
     // METHODS -------------------------------------------------------------
-    show() {
-        this._sketch.show();
-    }
-
-    hide() {
-        this._sketch.hide();
-    }
-
-    _render(ctx) {
-        // update sketch dimensions
-        this._sketch.width = this.xform.width;
-        this._sketch.height = this.xform.height;
-        // render
-        if (this._sketch && this._sketch.render) this._sketch.render(ctx, this.xform.minx, this.xform.miny);
-    }
 
 }

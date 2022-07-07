@@ -1,6 +1,7 @@
 export { Player };
-    import { Config } from '../base/config.js';
-import { Inventory } from '../inventory.js';
+
+import { Config } from '../base/config.js';
+import { InventoryData } from '../inventory.js';
 import { Character } from './character.js';
 import { Weapon } from './weapon.js';
 
@@ -27,7 +28,7 @@ class Player extends Character {
         // -- hit bonus/penalty
         this.hitbp = spec.hitbp || 0;
         this.weapon = spec.weapon || this.constructor.dfltWeapon;
-        this.inventory = spec.inventory || new Inventory();
+        this.inventory = spec.inventory || new InventoryData();
         this.blockRating = spec.blockRating || this.dfltBlockRating;
         this.xform.offx = this.xf
         this.xform.offx = -this.xform.width*.5;

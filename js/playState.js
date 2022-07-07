@@ -42,11 +42,13 @@ import { Player } from './entities/player.js';
 import { FieryCharm } from './charms/fiery.js';
 import { Stairs } from './entities/stairs.js';
 import { LevelSystem } from './systems/levelSystem.js';
+import { PickupAction } from './actions/pickup.js';
 import { TakeStairsAction } from './actions/takeStairs.js';
 import { OpenAction } from './actions/open.js';
 import { Door } from './entities/door.js';
 import { CloseSystem } from './systems/closeSystem.js';
 import { Inventory } from './inventory.js';
+
 
 class PlayState extends GameState {
     async ready() {
@@ -173,6 +175,8 @@ class PlayState extends GameState {
             team: 'player',
         });
 
+        this.inventory.setData(this.player.inventory);
+
         //let a1 = Assets.get('player.idler', true);
         //let a2 = Assets.get('player', true);
         //console.log(`a1: ${a1} cel0: ${a1.cels[0]} img: ${Fmt.ofmt(a1.cels[0].sketch.img)}`);
@@ -289,6 +293,9 @@ class PlayState extends GameState {
             } else {
                 TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx } }));
             }
+        } else if (others.some((v) => v.constructor.lootable)) {
+            let target = others.find((v) => v.constructor.lootable);
+            TurnSystem.postLeaderAction( new PickupAction({ target: target }));
         } else if (others.some((v) => this.player.blockedBy & v.blocks)) {
             console.log(`blocked from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y} hit ${others}`);
         } else {
