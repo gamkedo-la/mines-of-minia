@@ -18,6 +18,7 @@ class Item extends MiniaModel {
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
+        this.name = spec.name || 'item';
 
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
@@ -30,6 +31,17 @@ class Item extends MiniaModel {
     destroy() {
         this._unlinkSketch('_sketch');
         super.destroy();
+    }
+
+    // PROPERTIES ----------------------------------------------------------
+    get sketch() {
+        return this._sketch;
+    }
+    set sketch(v) {
+        if (!v) return;
+        if (v !== this._sketch) {
+            this._linkSketch('_sketch', v);
+        }
     }
 
     // METHODS -------------------------------------------------------------

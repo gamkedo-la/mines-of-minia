@@ -52,16 +52,6 @@ class Weapon extends Item {
     }
 
     // PROPERTIES ----------------------------------------------------------
-    get sketch() {
-        return this._sketch;
-    }
-    set sketch(v) {
-        if (!v) return;
-        if (v !== this._sketch) {
-            this._linkSketch('_sketch', v);
-        }
-    }
-
     get damageMin() {
         return Math.round(this.baseDamageMin*this.lvl*(this.damageScalePerLvl-1));
     }

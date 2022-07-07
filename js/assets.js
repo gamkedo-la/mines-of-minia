@@ -11,8 +11,9 @@ import { Weapon } from './entities/weapon.js';
 import { Template } from './template.js';
 
 let miniaAssets = [
+
     Shape.xspec({
-        tag: 'sword_1',
+        tag: 'sword.gray',
         fill: true,
         verts: [ 
             {x:2, y:0}, {x:4, y:0}, {x:4, y:2}, {x:14, y:2}, {x:15, y:3}, {x:14, y:4}, {x:4, y:4}, {x:4, y:6},
@@ -22,6 +23,19 @@ let miniaAssets = [
         color: 'gray',
         borderColor: 'red',
     }),
+
+    Shape.xspec({
+        tag: 'sword.white',
+        fill: true,
+        verts: [ 
+            {x:2, y:0}, {x:4, y:0}, {x:4, y:2}, {x:14, y:2}, {x:15, y:3}, {x:14, y:4}, {x:4, y:4}, {x:4, y:6},
+            {x:2, y:6}, {x:2, y:4}, {x:0, y:4}, {x:0, y:2}, {x:2, y:2},
+        ],
+        border: 1,
+        color: 'white',
+        borderColor: 'red',
+    }),
+
     Shape.xspec({
         tag: 'stairs_up',
         fill: true,
@@ -42,15 +56,22 @@ let miniaAssets = [
         color: 'gray',
         borderColor: 'red',
     }),
+    Shape.xspec({
+        tag: 'gem.blue',
+        fill: true,
+        verts: [ 
+            {x:8, y:2}, {x:14, y:8}, {x:8, y:14}, {x:2, y:8},
+        ],
+        border: 1,
+        color: 'blue',
+        borderColor: 'red',
+    }),
 
     Weapon.xspec({
         tag: 'hack_1',
         kind: 'hack',
         sketch: new AssetRef({tag: 'sword_1'}),
     }),
-    //Rect.xspec({tag: 'floor', width: 32, height: 32, color: 'gray'}),
-    //Rect.xspec({tag: 'wall', width: 32, height: 32, color: 'blue'}),
-    //Rect.xspec({tag: 'door', width: 32, height: 32, color: 'red'}),
     Rect.xspec({tag: 'frame.red', width: 16, height: 16, borderColor: 'red', border: 3, fill: false}),
     Rect.xspec({tag: 'frame.red.2', width: 16, height: 16, borderColor: 'red', border: 6, fill: false}),
     Rect.xspec({tag: 'frame.blue', width: 16, height: 16, borderColor: 'blue', border: 3, fill: false}),

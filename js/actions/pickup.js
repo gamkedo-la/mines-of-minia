@@ -3,6 +3,7 @@ export { PickupAction, DoPickupAction }
 import { Action } from '../base/actions/action.js';
 import { MoveAction } from '../base/actions/move.js';
 import { SerialAction } from '../base/actions/serialAction.js';
+import { Direction } from '../base/dir.js';
 
 class DoPickupAction extends Action {
     constructor(spec) {

@@ -8,6 +8,7 @@ import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { Door } from '../entities/door.js';
 import { Enemy } from '../entities/enemy.js';
+import { Gem } from '../entities/gem.js';
 import { Stairs } from '../entities/stairs.js';
 import { Weapon } from '../entities/weapon.js';
 
@@ -146,7 +147,16 @@ class Spawn {
         // iterate items to spawn
         let x_spawns = [
             Weapon.xspec({
-                x_sketch: Assets.get('sword_1'),
+                name: 'gray.sword',
+                x_sketch: Assets.get('sword.gray'),
+            }),
+            Weapon.xspec({
+                name: 'white.sword',
+                x_sketch: Assets.get('sword.white'),
+            }),
+            Gem.xspec({
+                name: 'blue.gem',
+                x_sketch: Assets.get('gem.blue'),
             }),
         ];
         for (const x_spawn of x_spawns) {
@@ -164,6 +174,7 @@ class Spawn {
                     idx: idx,
                     z: 2,
                 });
+                console.log(`x_final: ${Fmt.ofmt(x_final)}`);
                 plvl.entities.push(x_final);
                 break;
             }

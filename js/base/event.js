@@ -68,7 +68,6 @@ class EvtStream {
         this.counts.set(tag, count+1);
         // -- check for listeners
         let listeners = this.listeners.get(tag);
-        if (tag.startsWith('inventory')) console.log(`trigger ${tag}: ${Fmt.ofmt(listeners)}`);
         if (!listeners) return;
         let evt = new Event(tag, atts);
         let cbs = [];

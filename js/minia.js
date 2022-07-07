@@ -24,6 +24,8 @@ import { Stairs } from "./entities/stairs.js";
 import { Rous } from "./entities/rous.js";
 import { Door } from "./entities/door.js";
 import { Inventory } from "./inventory.js";
+import { Gem } from "./entities/gem.js";
+import { Shielding } from "./entities/shielding.js";
 
 class Minia extends Game {
     static states = {
@@ -97,10 +99,12 @@ class Minia extends Game {
             Character,
             Door,
             Enemy,
+            Gem,
             Inventory,
             Level,
             Player,
             Rous,
+            Shielding,
             Stairs,
             Tile,
             Weapon,
