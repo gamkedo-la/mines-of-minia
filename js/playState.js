@@ -119,6 +119,10 @@ class PlayState extends GameState {
                         }),
                     ],
                 }),
+                UxPanel.xspec({
+                    tag: 'hudroot',
+                    sketch: Sketch.zero,
+                }),
                 Inventory.xspec({
                     tag: 'inventory',
                     x_xform: XForm.xspec({border: .1}),
@@ -139,6 +143,8 @@ class PlayState extends GameState {
         this.inventory = Hierarchy.find(this.view, (v) => v.tag === 'inventory');
         this.inventory.visible = false;
         this.inventory.active = false;
+
+        this.hudroot = Hierarchy.find(this.view, (v) => v.tag === 'hudroot');
 
         Systems.add('level', new LevelSystem({ slider: this.slider, lvl: this.lvl, dbg: Util.getpath(Config, 'dbg.system.level')}));
 

@@ -1,15 +1,17 @@
 export { Inventory, InventoryData };
+
 import { Assets } from './base/assets.js';
-import { EvtStream } from './base/event.js';
+import { Events, EvtStream } from './base/event.js';
 import { Fmt } from './base/fmt.js';
 import { Hierarchy } from './base/hierarchy.js';
+import { Keys } from './base/keys.js';
 import { Sketch } from './base/sketch.js';
 import { Text } from './base/text.js';
 import { UxButton } from './base/uxButton.js';
 import { UxPanel } from './base/uxPanel.js';
+import { UxText } from './base/uxText.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
-
 
 class InventoryData {
     // STATIC VARIABLES ----------------------------------------------------
@@ -249,10 +251,12 @@ class Inventory extends UxView {
         this.numBelt = spec.numBelt || 5;
 
         this.bg = new UxPanel({
+            sketch: Assets.get('oframe.red', true),
+            xform: new XForm({offset: 10, right:.3}),
             children: [
                 new UxPanel({
                     tag: 'equip',
-                    xform: new XForm({offset: 10, right:.7}),
+                    xform: new XForm({offset: 10, right:.6}),
                     sketch: Assets.get('frame.red', true),
                     children: [
                         this.slot({ tag: 'gadget1', xform: new XForm({left: .1, right: .65, top: .2, bottom: .6}), }),
@@ -266,7 +270,7 @@ class Inventory extends UxView {
 
                 new UxPanel({
                     tag: 'belt',
-                    xform: new XForm({offset: 10, left:.6, bottom: .75}),
+                    xform: new XForm({offset: 10, left:.4, bottom: .75}),
                     sketch: Assets.get('frame.red', true),
                     children: [
                         this.slot({ tag: 'belt0', xform: new XForm({offset: 10, left: .0, right: .8}), }),
@@ -279,7 +283,7 @@ class Inventory extends UxView {
 
                 new UxPanel({
                     tag: 'inventory',
-                    xform: new XForm({offset: 10, left:.6, top: .25}),
+                    xform: new XForm({offset: 10, left:.4, top: .25}),
                     sketch: Assets.get('frame.red', true),
                     children: [
                         this.slot({ tag: 'inv0', xform: new XForm({offset: 10, left: .0, right: .8, top: .0, bottom: .8}), }),
@@ -293,32 +297,6 @@ class Inventory extends UxView {
                         this.slot({ tag: 'inv7', xform: new XForm({offset: 10, left: .4, right: .4, top: .2, bottom: .6}), }),
                         this.slot({ tag: 'inv8', xform: new XForm({offset: 10, left: .6, right: .2, top: .2, bottom: .6}), }),
                         this.slot({ tag: 'inv9', xform: new XForm({offset: 10, left: .8, right: .0, top: .2, bottom: .6}), }),
-                    ],
-                }),
-
-                new UxPanel({
-                    tag: 'info',
-                    sketch: Assets.get('frame.red', true),
-                    xform: new XForm({offset: 10, left:.3, right: .4}),
-                    children: [
-                        new UxPanel({
-                            sketch: Sketch.zero,
-                            xform: new XForm({offset: 10, top:.85}),
-                            children: [
-                                new UxButton({
-                                    xform: new XForm({offset: 10, right:.67}),
-                                    text: new Text({text: 'use'})
-                                }),
-                                new UxButton({
-                                    xform: new XForm({offset: 10, left:.33, right:.33}),
-                                    text: new Text({text: 'drop'})
-                                }),
-                                new UxButton({
-                                    xform: new XForm({offset: 10, left:.67}),
-                                    text: new Text({text: 'throw'})
-                                }),
-                            ],
-                        }),
                     ],
                 }),
 
@@ -363,7 +341,9 @@ class Inventory extends UxView {
                 // -- try to equip
                 } else {
                     if (selectedItem && selectedItem.constructor.slot === evt.actor.tag) {
+                        let targetIdx = parseInt(this.selected.tag.slice('3'));
                         this.data.equip(evt.actor.tag, selectedItem);
+                        if (item) this.data.add(item, targetIdx);
                     }
                 }
                 this.reset();
@@ -399,6 +379,10 @@ class Inventory extends UxView {
                 this.reset();
             }
         } else {
+            this.itemPopup = new ItemPopup({
+                xform: new XForm({ left: .7, top: .2, bottom: .2}),
+            });
+            this.adopt(this.itemPopup);
             if (item) {
                 this.markCompatibleSlots(item);
             }
@@ -411,12 +395,15 @@ class Inventory extends UxView {
         let slotTag = `inv${evt.slot}`;
         let sketchTag = evt.target.sketch.tag;
         this.assignSlotSketch(slotTag, sketchTag);
+        console.log(`counts: ${this.data.counts}`);
+        this.changeSlotCount(slotTag, this.data.counts[evt.slot]);
     }
 
     onInventoryRemoved(evt) {
         console.log(`onInventoryRemoved: ${Fmt.ofmt(evt)}`);
         let slotTag = `inv${evt.slot}`;
         this.assignSlotSketch(slotTag);
+        this.changeSlotCount(slotTag, this.data.counts[evt.slot]);
     }
 
     onEquipChanged(evt) {
@@ -434,15 +421,57 @@ class Inventory extends UxView {
     }
 
     // METHODS -------------------------------------------------------------
+
+    changeSlotCount(tag, count) {
+        let cpanel = Hierarchy.find(this, (v) => v.tag === `${tag}.cpanel`);
+        let ctext = Hierarchy.find(this, (v) => v.tag === `${tag}.ctext`);
+        // disable slot counter if not stacked
+        if (count <= 1) {
+            cpanel.enable = false;
+            cpanel.visible = false;
+        } else {
+            cpanel.enable = true;
+            cpanel.visible = true;
+            ctext.text = count.toString();
+        }
+    }
+
     slot(spec) {
-        let buttonTag = spec.tag || 'slot';
-        let panelTag = `${buttonTag}.panel`;
+        let slotTag = spec.tag || 'slot';
+        // outer panel for positioning...
         let panel = new UxPanel( Object.assign( {
             sketch: Sketch.zero,
+            //dbg: { xform: true},
             children: [
-                this.button({ tag: buttonTag, }, this.onSlotClick),
-            ]
-        }, spec, { tag: panelTag }));
+                // inner panel used to align everything else (ratio locked)
+                new UxPanel({
+                    xform: new XForm({ width: 10, height: 10, lockRatio: true}),
+                    sketch: Sketch.zero,
+                    children: [
+                        new UxPanel({
+                            tag: `${slotTag}.panel`,
+                            xform: new XForm({ border: .1 }),
+                            sketch: Sketch.zero,
+                        }),
+                        this.button({ tag: slotTag }, this.onSlotClick),
+                        new UxPanel({
+                            tag: `${slotTag}.cpanel`,
+                            xform: new XForm({left: .6, top: .85, bottom: -.15, oright: 5}),
+                            active: false,
+                            visible: false,
+                            children: [
+                                new UxText({
+                                    tag: `${slotTag}.ctext`,
+                                    text: new Text({text: '0'}),
+                                    xform: new XForm({bottom: -.15}),
+                                }),
+                            ],
+                        }),
+                    ],
+                }),
+            ],
+        }, spec, {tag: `${slotTag}.bg`}));
+        panel.xform.lockRatio = true;
         return panel;
     }
 
@@ -474,9 +503,11 @@ class Inventory extends UxView {
     }
 
     markCompatibleSlots(item) {
+        console.log(`item: ${item} slot: ${item.constructor.slot}`);
         if (item.constructor.slot === 'belt') {
             for (let i=0; i<this.numBelt; i++) {
                 let button = Hierarchy.find(this, (v) => v.tag === `belt${i}`);
+                console.log(`tag: belt${i} button: ${button}`);
                 this.markButton(button);
             }
         } else if (item.constructor.slot === 'weapon') {
@@ -542,6 +573,102 @@ class Inventory extends UxView {
         this.data.evt.listen(this.data.constructor.evtRemoved, this.onInventoryRemoved);
         this.data.evt.listen(this.data.constructor.evtBeltChanged, this.onBeltChanged);
         this.data.evt.listen(this.data.constructor.evtEquipChanged, this.onEquipChanged);
+    }
+
+}
+
+class ItemPopup extends UxView {
+
+    cpost(spec) {
+        super.cpost(spec);
+
+        this.panel = new UxPanel({
+            sketch: Assets.get('oframe.red', true),
+            children: [
+
+                // top panel
+                new UxPanel({
+                    xform: new XForm({bottom: .8}),
+                    sketch: Sketch.zero,
+                    children: [
+                        new UxPanel({
+                            xform: new XForm({right: .7, width: 10, height: 10, lockRatio: true}),
+                            sketch: Assets.get('frame.red', true),
+                            children: [
+                                new UxPanel({
+                                    tag: 'item.picture',
+                                    xform: new XForm({border: .1}),
+                                    sketch: Sketch.zero,
+                                }),
+                            ],
+                        }),
+                        new UxText({
+                            tag: 'item.name',
+                            xform: new XForm({left: .3, offset: 5}),
+                            text: new Text(),
+                        }),
+                    ]
+                }),
+
+                // description
+                new UxPanel({
+                    xform: new XForm({top: .2, bottom: .2}),
+                    sketch: Sketch.zero,
+                    children: [
+                        new UxText({
+                            tag: 'item.description',
+                            xform: new XForm({offset: 5}),
+                            text: new Text({wrap: true}),
+                        }),
+                    ]
+                }),
+
+                // buttons
+                new UxPanel({
+                    xform: new XForm({top: .8}),
+                    sketch: Sketch.zero,
+                    children: [
+                        new UxButton({
+                            tag: 'item.use',
+                            xform: new XForm({offset: 10, right:.67}),
+                            text: new Text({text: 'use'})
+                        }),
+                        new UxButton({
+                            tag: 'item.drop',
+                            xform: new XForm({offset: 10, left:.33, right:.33}),
+                            text: new Text({text: 'drop'})
+                        }),
+                        new UxButton({
+                            tag: 'item.throw',
+                            xform: new XForm({offset: 10, left:.67}),
+                            text: new Text({text: 'throw'})
+                        }),
+                    ]
+                }),
+            ]
+        });
+        this.adopt(this.panel);
+
+        // event handlers
+        this.onKeyDown = this.onKeyDown.bind(this);
+        Events.listen(Keys.evtDown, this.onKeyDown);
+
+    }
+
+    destroy() {
+        super.destroy();
+        Events.ignore(Keys.evtDown, this.onKeyDown);
+    }
+
+    onKeyDown(evt) {
+        if (!this.active) return;
+        console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
+        switch (evt.key) {
+            case 'Escape': {
+                this.destroy();
+                break;
+            }
+        }
     }
 
 }

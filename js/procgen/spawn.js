@@ -158,6 +158,10 @@ class Spawn {
                 name: 'blue.gem',
                 x_sketch: Assets.get('gem.blue'),
             }),
+            Gem.xspec({
+                name: 'blue.gem',
+                x_sketch: Assets.get('gem.blue'),
+            }),
         ];
         for (const x_spawn of x_spawns) {
             for (let i=0; i<100; i++) {
