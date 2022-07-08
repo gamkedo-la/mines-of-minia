@@ -95,7 +95,7 @@ class XForm extends Gizmo {
         if (this.parent) {
             v += this.parent.minx;
             v += (this.parent.width * this.left);
-            let w = (this.stretchx) ? this.parent.width * (1-this.left-this.right) : this._width;
+            let w = ((this.stretchx) ? this.parent.width * (1-this.left-this.right) : this._width) + this.dwidth;
             v += (w * this.origx);
             //v += (this.width * this.origx);
             v += (-this.dwidth * (1-this.origx));
@@ -107,7 +107,7 @@ class XForm extends Gizmo {
         if (this.parent) {
             v += this.parent.miny;
             v += (this.parent.height * this.top);
-            let h = (this.stretchy) ? this.parent.height * (1-this.top-this.bottom) : this._height;
+            let h = ((this.stretchy) ? this.parent.height * (1-this.top-this.bottom) : this._height) + this.dheight;
             //v += (this.height * this.origy);
             v += (h * this.origy);
             v += (-this.dheight * (1-this.origy));
