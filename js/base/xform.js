@@ -83,6 +83,8 @@ class XForm extends Gizmo {
         // translation to apply for this transform
         this.x = spec.x || 0;
         this.y = spec.y || 0;
+        // lock ratio of width/height
+        this.lockRatio = spec.hasOwnProperty('lockRatio') ? spec.lockRatio : false;
     }
 
     // PROPERTIES ----------------------------------------------------------
@@ -93,7 +95,9 @@ class XForm extends Gizmo {
         if (this.parent) {
             v += this.parent.minx;
             v += (this.parent.width * this.left);
-            v += (this.width * this.origx);
+            let w = (this.stretchx) ? this.parent.width * (1-this.left-this.right) : this._width;
+            v += (w * this.origx);
+            //v += (this.width * this.origx);
             v += (-this.dwidth * (1-this.origx));
         }
         return v;
@@ -103,7 +107,9 @@ class XForm extends Gizmo {
         if (this.parent) {
             v += this.parent.miny;
             v += (this.parent.height * this.top);
-            v += (this.height * this.origy);
+            let h = (this.stretchy) ? this.parent.height * (1-this.top-this.bottom) : this._height;
+            //v += (this.height * this.origy);
+            v += (h * this.origy);
             v += (-this.dheight * (1-this.origy));
         }
         return v;
@@ -177,7 +183,20 @@ class XForm extends Gizmo {
     // - takes into account border/offset values
     // - does not take into account scaling
     get width() {
-        let v = (this.parent && this.stretchx) ? this.parent.width * (1-this.left-this.right) : this._width;
+        let v = this._width;
+        if (this.parent && this.stretchx) {
+            v = this.parent.width * (1-this.left-this.right);
+            if (this.lockRatio && this.stretchy) {
+                let h = this.parent.height * (1-this.top-this.bottom);
+                if (v && h) {
+                    if ((this._width / v) < (this._height / h)) {
+                        v = h * this.ratio;
+                    }
+                }
+
+            }
+        }
+        //let v = (this.parent && this.stretchx) ? this.parent.width * (1-this.left-this.right) : this._width;
         v += this.dwidth;
         return v;
     }
@@ -188,7 +207,19 @@ class XForm extends Gizmo {
 
     // height of rectangle
     get height() {
-        let v = (this.parent && this.stretchy) ? this.parent.height * (1-this.top-this.bottom) : this._height;
+        let v = this._height;
+        if (this.parent && this.stretchy) {
+            v = this.parent.height * (1-this.top-this.bottom);
+            if (this.lockRatio && this.stretchx) {
+                let w = this.parent.width * (1-this.left-this.right);
+                if (v && w) {
+                    if ((this._width / w) > (this._height / v)) {
+                        v = w / this.ratio;
+                    }
+                }
+            }
+        }
+        //let v = (this.parent && this.stretchy) ? this.parent.height * (1-this.top-this.bottom) : this._height;
         v += this.dheight;
         return v;
     }
@@ -211,6 +242,11 @@ class XForm extends Gizmo {
     }
     get wbounds() {
         return Bounds.fromMinMax(this.wminx, this.wminy, this.wmaxx, this.wmaxy);
+    }
+
+    // internal width to height ratio
+    get ratio() {
+        return (this._height) ? (this._width/this._height) : 1;
     }
 
     // METHODS -------------------------------------------------------------
