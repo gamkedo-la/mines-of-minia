@@ -9,6 +9,7 @@ import { MiniaModel } from './miniaModel.js';
 class Item extends MiniaModel {
     // STATIC VARIABLES ----------------------------------------------------
     static lootable = true;
+    static dfltDescription = 'an unremarkable item';
 
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSketch() {
@@ -19,6 +20,7 @@ class Item extends MiniaModel {
     cpost(spec) {
         super.cpost(spec);
         this.name = spec.name || 'item';
+        this.description = spec.description || this.constructor.dfltDescription;
 
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);

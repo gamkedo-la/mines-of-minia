@@ -37,7 +37,6 @@ class Weapon extends Item {
         this.kind = spec.kind || this.constructor.dfltKind;
         this.tier = spec.tier || this.constructor.dfltTier;
         this.lvl = spec.lvl || this.constructor.dfltLvl;
-        this.description = spec.description || this.constructor.dfltDescription;
         this.identified = spec.hasOwnProperty('identified') ? spec.identified : false;
         this.slot = 'weapon';
         // -- required strength
