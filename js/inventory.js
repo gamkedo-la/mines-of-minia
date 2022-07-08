@@ -13,6 +13,7 @@ import { UxPanel } from './base/uxPanel.js';
 import { UxText } from './base/uxText.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
+import { Key } from './entities/key.js';
 
 const invTextColor = "yellow";
 
@@ -22,24 +23,31 @@ class InventoryData {
     static evtRemoved = 'inventory.removed';
     static evtBeltChanged = 'belt.changed';
     static evtEquipChanged = 'equip.changed';
+    static evtOtherChanged = 'other.changed';
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     constructor(spec={}) {
-        // equip
+        // -- equip
         this.shielding = spec.shielding;
         this.reactor = spec.reactor;
         this.weapon = spec.weapon;
         this.gadget1 = spec.gadget1;
         this.gadget2 = spec.gadget2;
         this.gadget3 = spec.gadget2;
-        // slots
+        // -- bakcback
         this.slots = Array.from(spec.slots || []);
         this.counts = Array.from(spec.counts || []);
         this.numSlots = spec.numSlots || 15;
-        // belt
+        // -- belt
         this.belt = spec.belt || [];
         this.beltSlots = spec.beltSlots || 5;
         this.evt = new EvtStream();
+        // -- other
+        this.tokens = spec.tokens || 0;
+        for (const keyKind of Key.kinds) {
+            let tag = `${keyKind}Keys`;
+            this[tag] = spec[tag] || 0;
+        }
     }
 
     // PROPERTIES ----------------------------------------------------------
@@ -59,6 +67,16 @@ class InventoryData {
 
     // METHODS -------------------------------------------------------------
     add(item, slot=null) {
+        // item is token
+        if (item.constructor.slot === 'tokens') {
+            this.addToken(item);
+            return true;
+        }
+        // item is key
+        if (item.constructor.slot === 'key') {
+            this.addKey(item);
+            return true;
+        }
         // is item stackable (stacked by name)
         if (item.constructor.stackable) {
             // is there a slot for this stack already
@@ -66,7 +84,7 @@ class InventoryData {
                 if (this.slots[i] && this.slots[i].name === item.name) {
                     this.counts[i] += 1;
                     this.evt.trigger(this.constructor.evtAdded, {actor: this, slot: i, target: item});
-                    return item;
+                    return true;
                 }
             }
         }
@@ -77,12 +95,12 @@ class InventoryData {
                     break;
                 }
             }
-            if (slot === null) return;
+            if (slot === null) return false;
         }
         this.slots[slot] = item;
         this.counts[slot] = 1;
         this.evt.trigger(this.constructor.evtAdded, {actor: this, slot: slot, target: item});
-        return item;
+        return true;
     }
 
     remove(slot, all=false) {
@@ -209,6 +227,31 @@ class InventoryData {
         return spec;
     }
 
+    addToken(item) {
+        this.tokens += item.count;
+        this.evt.trigger(this.constructor.evtOtherChanged, {actor: this, slot: 'tokens'});
+        item.destroy();
+    }
+
+    removeToken(count) {
+        this.tokens -= count;
+        this.evt.trigger(this.constructor.evtOtherChanged, {actor: this, slot: 'tokens'});
+    }
+
+    addKey(item) {
+        let tag = `${item.kind}Keys`;
+        this[tag] += 1;
+        this.evt.trigger(this.constructor.evtOtherChanged, {actor: this, slot: tag});
+        item.destroy();
+    }
+
+    removeKey(keyKind) {
+        let tag = `${keyKind}Keys`;
+        this[tag] += 1;
+        if (this[tag] < 0) this[tag] = 0;
+        this.evt.trigger(this.constructor.evtOtherChanged, {actor: this, slot: tag});
+    }
+
     toString() {
         return Fmt.toString(this.constructor.name);
     }
@@ -248,6 +291,7 @@ class Inventory extends UxView {
         this.onBeltChanged = this.onBeltChanged.bind(this);
         this.onEquipChanged = this.onEquipChanged.bind(this);
         this.onSlotClick = this.onSlotClick.bind(this);
+        this.onOtherChanged = this.onOtherChanged.bind(this);
         // -- the inventory data
         this.numGadgets = spec.numGadgets || 1;
         this.numBelt = spec.numBelt || 3;
@@ -267,7 +311,7 @@ class Inventory extends UxView {
                         }),
                         new UxPanel({
                             sketch: Assets.get('player_portrait', true, { lockRatio: true }),
-                            xform: new XForm({top: .025, bottom: .0, left: -.2, right: -.2}),
+                            xform: new XForm({top: -.1, bottom: .0, left: -.2, right: -.2}),
                         }),
                         this.slot({ tag: 'gadget0', xform: new XForm({left: .1, right: .65, top: .2, bottom: .6}), }),
                         this.slot({ tag: 'gadget1', xform: new XForm({left: .375, right: .375, top: .2, bottom: .6}), }),
@@ -275,6 +319,12 @@ class Inventory extends UxView {
                         this.slot({ tag: 'weapon', xform: new XForm({left: .1, right: .65, top: .4, bottom: .4}), }),
                         this.slot({ tag: 'reactor', xform: new XForm({left: .375, right: .375, top: .4, bottom: .4}), }),
                         this.slot({ tag: 'shielding', xform: new XForm({left: .65, right: .1, top: .4, bottom: .4}), }),
+
+                        this.counter({ tag: 'tokens', xform: new XForm({offset: 10, left: 0, right: .75, top: .8, bottom: .05}), sketch: Assets.get('token', true, {lockRatio: true})}),
+                        this.counter({ tag: 'goldKeys', xform: new XForm({offset: 10, left: .25, right: .5, top: .8, bottom: .05}), sketch: Assets.get('key.gold', true, {lockRatio: true})}),
+                        this.counter({ tag: 'blueKeys', xform: new XForm({offset: 10, left: .5, right: .25, top: .8, bottom: .05}), sketch: Assets.get('key.blue', true, {lockRatio: true})}),
+                        this.counter({ tag: 'darkKeys', xform: new XForm({offset: 10, left: .75, right: .0, top: .8, bottom: .05}), sketch: Assets.get('key.dark', true, {lockRatio: true})}),
+
                     ],
                 }),
 
@@ -372,6 +422,7 @@ class Inventory extends UxView {
             this.data.evt.ignore(this.data.constructor.evtRemoved, this.onInventoryRemoved);
             this.data.evt.ignore(this.data.constructor.evtBeltChanged, this.onBeltChanged);
             this.data.evt.ignore(this.data.constructor.evtEquipChanged, this.onEquipChanged);
+            this.data.evt.ignore(this.data.constructor.evtOtherChanged, this.onOtherChanged);
         }
     }
 
@@ -480,6 +531,13 @@ class Inventory extends UxView {
         this.assignSlotSketch(slotTag, sketchTag);
     }
 
+    onOtherChanged(evt) {
+        let ctext = Hierarchy.find(this, (v) => v.tag === `${evt.slot}.ctext`);
+        let count = this.data[evt.slot];
+        console.log(`count for ${evt.slot}: ${count}`);
+        ctext.text = `${count}`;
+    }
+
     // METHODS -------------------------------------------------------------
 
     changeSlotCount(tag, count) {
@@ -496,8 +554,9 @@ class Inventory extends UxView {
         }
     }
 
-    slot(spec, slotid=null) {
+    slot(spec, slotid=null, sketch=null) {
         let slotTag = spec.tag || 'slot';
+        if (!sketch) sketch = Sketch.zero;
         // outer panel for positioning...
         let panel = new UxPanel( Object.assign( {
             sketch: Sketch.zero,
@@ -511,7 +570,7 @@ class Inventory extends UxView {
                         new UxPanel({
                             tag: `${slotTag}.panel`,
                             xform: new XForm({ border: .1 }),
-                            sketch: Sketch.zero,
+                            sketch: sketch,
                         }),
                         this.button({ tag: slotTag }, this.onSlotClick),
                         new UxPanel({
@@ -550,6 +609,21 @@ class Inventory extends UxView {
         let button = new UxButton(final);
         button.evt.listen(button.constructor.evtMouseClicked, cb);
         return button;
+    }
+
+    counter(spec, count) {
+        let tag = spec.tag || 'counter';
+        let panel = new UxPanel( Object.assign( {
+            children: [
+                new UxText({
+                    tag: `${tag}.ctext`,
+                    text: new Text({text: count || '0', color: invTextColor}),
+                    xform: new XForm({left: .6, top: .75, bottom: -.25}),
+                }),
+            ],
+        }, spec));
+        panel.xform.lockRatio = true;
+        return panel;
     }
 
     getInventoryForButton(button) {
@@ -646,12 +720,13 @@ class Inventory extends UxView {
             this.data.evt.ignore(this.data.constructor.evtRemoved, this.onInventoryRemoved);
             this.data.evt.ignore(this.data.constructor.evtBeltChanged, this.onBeltChanged);
             this.data.evt.ignore(this.data.constructor.evtEquipChanged, this.onEquipChanged);
+            this.data.evt.ignore(this.data.constructor.evtOtherChanged, this.onOtherChanged);
         }
         this.data = data;
         this.data.evt.listen(this.data.constructor.evtAdded, this.onInventoryAdded);
         this.data.evt.listen(this.data.constructor.evtRemoved, this.onInventoryRemoved);
         this.data.evt.listen(this.data.constructor.evtBeltChanged, this.onBeltChanged);
-        this.data.evt.listen(this.data.constructor.evtEquipChanged, this.onEquipChanged);
+        this.data.evt.listen(this.data.constructor.evtOtherChanged, this.onOtherChanged);
 
         // disable backpack slots
         for (let i=0; i<25; i++) {

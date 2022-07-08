@@ -17,6 +17,7 @@ class Weapon extends Item {
         'strung',
         'charged',
     ];
+
     static dfltKind = 'bonk';
     static dfltTier = 1;
     static dfltLvl = 1;
@@ -38,7 +39,6 @@ class Weapon extends Item {
         this.tier = spec.tier || this.constructor.dfltTier;
         this.lvl = spec.lvl || this.constructor.dfltLvl;
         this.identified = spec.hasOwnProperty('identified') ? spec.identified : false;
-        this.slot = 'weapon';
         // -- required strength
         this.brawn = spec.brawn || this.constructor.dfltBrawn;
         // -- damage

@@ -9,6 +9,8 @@ import { MiniaModel } from './miniaModel.js';
 class Item extends MiniaModel {
     // STATIC VARIABLES ----------------------------------------------------
     static lootable = true;
+    static stackable = false;
+    static discoverable = false;
     static dfltDescription = 'an unremarkable item';
 
     // STATIC PROPERTIES ---------------------------------------------------

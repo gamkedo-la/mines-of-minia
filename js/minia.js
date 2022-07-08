@@ -26,6 +26,9 @@ import { Door } from "./entities/door.js";
 import { Inventory } from "./inventory.js";
 import { Gem } from "./entities/gem.js";
 import { Shielding } from "./entities/shielding.js";
+import { Cog } from "./entities/cog.js";
+import { Key } from "./entities/key.js";
+import { Token } from "./entities/token.js";
 
 class Minia extends Game {
     static states = {
@@ -97,9 +100,11 @@ class Minia extends Game {
         console.log(`${this.name}.init`);
         Registry.extend([
             Character,
+            Cog,
             Door,
             Enemy,
             Gem,
+            Key,
             Inventory,
             Level,
             Player,
@@ -107,6 +112,7 @@ class Minia extends Game {
             Shielding,
             Stairs,
             Tile,
+            Token,
             Weapon,
         ]);
     }

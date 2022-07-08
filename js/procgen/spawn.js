@@ -9,7 +9,9 @@ import { Prng } from '../base/prng.js';
 import { Door } from '../entities/door.js';
 import { Enemy } from '../entities/enemy.js';
 import { Gem } from '../entities/gem.js';
+import { Key } from '../entities/key.js';
 import { Stairs } from '../entities/stairs.js';
+import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
 
 class Spawn {
@@ -161,6 +163,15 @@ class Spawn {
             Gem.xspec({
                 name: 'blue.gem',
                 x_sketch: Assets.get('gem.blue'),
+            }),
+            Key.xspec({
+                name: 'gold.key',
+                x_sketch: Assets.get('key.gold'),
+            }),
+            Token.xspec({
+                name: 'token',
+                x_sketch: Assets.get('token'),
+                count: 5,
             }),
         ];
         for (const x_spawn of x_spawns) {

@@ -66,6 +66,40 @@ let miniaAssets = [
         color: 'blue',
         borderColor: 'red',
     }),
+    Shape.xspec({
+        tag: 'key.gold',
+        fill: true,
+        verts: [ 
+            {x:2, y:8}, {x:5, y:5}, {x:7, y:7}, {x:14, y:7},
+            {x:14, y:11}, {x:12, y: 11}, {x:12, y: 9}, {x:7, y:9}, {x:5, y:11}
+        ],
+        border: 1,
+        color: 'gold',
+        borderColor: 'red',
+    }),
+    Shape.xspec({
+        tag: 'key.blue',
+        fill: true,
+        verts: [ 
+            {x:2, y:8}, {x:5, y:5}, {x:7, y:7}, {x:14, y:7},
+            {x:14, y:11}, {x:12, y: 11}, {x:12, y: 9}, {x:7, y:9}, {x:5, y:11}
+        ],
+        border: 1,
+        color: 'blue',
+        borderColor: 'red',
+    }),
+    Shape.xspec({
+        tag: 'key.dark',
+        fill: true,
+        verts: [ 
+            {x:2, y:8}, {x:5, y:5}, {x:7, y:7}, {x:14, y:7},
+            {x:14, y:11}, {x:12, y: 11}, {x:12, y: 9}, {x:7, y:9}, {x:5, y:11}
+        ],
+        border: 1,
+        color: 'rgba(75,75,75,1)',
+        borderColor: 'red',
+    }),
+    Rect.xspec({tag: 'token', width: 12, height: 8, color: 'gold', borderColor: 'red', border: 1}),
 
     Weapon.xspec({
         tag: 'hack_1',
