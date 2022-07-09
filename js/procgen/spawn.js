@@ -189,7 +189,7 @@ class Spawn {
                     idx: idx,
                     z: 2,
                 });
-                console.log(`x_final: ${Fmt.ofmt(x_final)}`);
+                //console.log(`x_final: ${Fmt.ofmt(x_final)}`);
                 plvl.entities.push(x_final);
                 break;
             }
