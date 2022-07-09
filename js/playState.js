@@ -44,7 +44,8 @@ import { OpenAction } from './actions/open.js';
 import { Door } from './entities/door.js';
 import { CloseSystem } from './systems/closeSystem.js';
 import { Inventory } from './inventory.js';
-
+import { UxText } from './base/uxText.js';
+import { Text } from './base/text.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -100,6 +101,21 @@ class PlayState extends GameState {
                     visible: false,
                     x_xform: XForm.xspec({border: .1}),
                 }),
+                UxPanel.xspec({
+                    tag: 'dbgroot',
+                    sketch: Sketch.zero,
+                    x_xform: XForm.xspec({ left: .75, right: .05, top: .1, bottom: .5}),
+                    x_children: [
+                        UxText.xspec({ text: new Text({text: '0 - show/hide debug', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 0/8, bottom: 1-1/8})}),
+                        UxText.xspec({ text: new Text({text: '1 - show/hide los/fow', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 1/8, bottom: 1-2/8})}),
+                        UxText.xspec({ text: new Text({text: '9 - show/hide stats in console', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 2/8, bottom: 1-3/8})}),
+                        UxText.xspec({ text: new Text({text: '+ - zoom in', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 3/8, bottom: 1-4/8})}),
+                        UxText.xspec({ text: new Text({text: '- - zoom out', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 4/8, bottom: 1-5/8})}),
+                        UxText.xspec({ text: new Text({text: '<space> - end player turn', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 5/8, bottom: 1-6/8})}),
+                        UxText.xspec({ text: new Text({text: 'qweadzxc - move player', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 6/8, bottom: 1-7/8})}),
+                        UxText.xspec({ text: new Text({text: 'i - show/hide inventory', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 7/8, bottom: 1-8/8})}),
+                    ],
+                }),
             ],
         });
 
@@ -110,6 +126,7 @@ class PlayState extends GameState {
         this.lvl = Hierarchy.find(this.view, (v) => v.tag === 'lvl');
         this.inventory = Hierarchy.find(this.view, (v) => v.tag === 'inventory');
         this.hudroot = Hierarchy.find(this.view, (v) => v.tag === 'hudroot');
+        this.dbgroot = Hierarchy.find(this.view, (v) => v.tag === 'dbgroot');
 
         // -- link UI elements to systems
         Systems.add('level', new LevelSystem({ slider: this.slider, lvl: this.lvl, dbg: Util.getpath(Config, 'dbg.system.level')}));
@@ -258,8 +275,19 @@ class PlayState extends GameState {
                 break;
             }
 
-            case '8': {
-                Events.trigger(RenderSystem.evtRenderNeeded);
+            case '0': {
+                let toggle = this.dbgroot.active;
+                this.dbgroot.active = !toggle;
+                this.dbgroot.visible = !toggle;
+                break;
+            }
+
+            case '1': {
+                let toggle = this.lvl.fowEnabled;
+                this.lvl.fowEnabled = !toggle;
+                this.lvl.losEnabled = !toggle;
+                for (const gidx of this.lvl.grid.keys()) this.lvl.gidupdates.add(gidx);
+                this.lvl.evt.trigger(this.lvl.constructor.evtUpdated, {actor: this.lvl});
                 break;
             }
 
@@ -327,15 +355,6 @@ class PlayState extends GameState {
                 this.inventory.visible = !toggle;
                 this.inventory.active = !toggle;
                 this.lvl.active = toggle;
-                break;
-            }
-
-            case 'l': {
-                let toggle = this.lvl.fowEnabled;
-                this.lvl.fowEnabled = !toggle;
-                this.lvl.losEnabled = !toggle;
-                for (const gidx of this.lvl.grid.keys()) this.lvl.gidupdates.add(gidx);
-                this.lvl.evt.trigger(this.lvl.constructor.evtUpdated, {actor: this.lvl});
                 break;
             }
 
