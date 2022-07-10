@@ -29,6 +29,8 @@ import { Shielding } from "./entities/shielding.js";
 import { Cog } from "./entities/cog.js";
 import { Key } from "./entities/key.js";
 import { Token } from "./entities/token.js";
+import { Reactor } from "./entities/reactor.js";
+import { Gadget } from "./entities/gadget.js";
 
 class Minia extends Game {
     static states = {
@@ -97,11 +99,13 @@ class Minia extends Game {
             Cog,
             Door,
             Enemy,
+            Gadget,
             Gem,
             Key,
             Inventory,
             Level,
             Player,
+            Reactor,
             Rous,
             Shielding,
             Stairs,

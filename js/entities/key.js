@@ -13,8 +13,16 @@ class Key extends Item {
     ];
     static dfltKind = 'gold';
 
+    // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
         this.kind = spec.kind || this.constructor.dfltKind;
     }
+
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            kind: this.kind,
+        });
+    }
+
 }

@@ -37,6 +37,8 @@ class Character extends MiniaModel {
         for (const kind of Weapon.kinds) {
             r[kind] = 0;
         }
+        for (const kind of ['fire', 'ice', 'shock', 'dark']) {
+        }
         return r;
     }
 
@@ -80,6 +82,7 @@ class Character extends MiniaModel {
         this.animState = spec.animState || this.constructor.dfltAnimState;
         // -- charms (buffs/debuffs)
         this.charms = [];
+        if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
         // -- events
         this.onDamaged = this.onDamaged.bind(this);
         this.onDeath = this.onDeath.bind(this);
@@ -102,6 +105,7 @@ class Character extends MiniaModel {
     as_kv() {
         return Object.assign({}, super.as_kv(), {
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
+            x_charms: this.charms.map((v) => v.as_kv()),
             maxSpeed: this.maxSpeed,
             healthMax: this.healthMax,
             health: this.health,

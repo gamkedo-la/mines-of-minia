@@ -23,6 +23,9 @@ class Item extends MiniaModel {
         super.cpost(spec);
         this.name = spec.name || 'item';
         this.description = spec.description || this.constructor.dfltDescription;
+        // -- charms (buffs/debuffs)
+        this.charms = [];
+        if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
 
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
@@ -37,6 +40,15 @@ class Item extends MiniaModel {
         super.destroy();
     }
 
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
+            x_charms: this.charms.map((v) => v.as_kv()),
+            name: this.name,
+            descriptoin: this.descriptoin,
+        });
+    }
+
     // PROPERTIES ----------------------------------------------------------
     get sketch() {
         return this._sketch;
@@ -49,6 +61,24 @@ class Item extends MiniaModel {
     }
 
     // METHODS -------------------------------------------------------------
+
+    addCharm(charm) {
+        this.charms.push(charm);
+        charm.link(this);
+    }
+    removeCharm(charm) {
+        let idx = this.charms.indexOf(charm);
+        if (idx !== -1) this.charms.splice(idx, 1);
+        charm.unlink();
+    }
+
+    _render(ctx) {
+        // update sketch dimensions
+        this._sketch.width = this.xform.width;
+        this._sketch.height = this.xform.height;
+        // render
+        if (this._sketch && this._sketch.render) this._sketch.render(ctx, this.xform.minx, this.xform.miny);
+    }
     show() {
         this._sketch.show();
     }

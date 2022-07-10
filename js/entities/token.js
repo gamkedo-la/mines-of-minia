@@ -9,4 +9,11 @@ class Token extends Item {
         super.cpost(spec);
         this.count = spec.count || 1;
     }
+
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            count: this.count,
+        });
+    }
+
 }

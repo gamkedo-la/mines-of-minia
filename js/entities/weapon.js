@@ -44,18 +44,28 @@ class Weapon extends Item {
         // -- damage
         this.baseDamageMin = spec.baseDamageMin || this.constructor.dfltBaseDamageMin;
         this.baseDamageMax = spec.baseDamageMax || this.constructor.dfltBaseDamageMax;
-        this.damageScalePerLvl = spec.damageScale || this.constructor.damageScaleByTier[this.tier];
-        // -- enhancement
-        this.enhancement = spec.enhancement || null;
+        this.damageScale = spec.damageScale || this.constructor.damageScaleByTier[this.tier];
+    }
 
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            kind: this.kind,
+            tier: this.tier,
+            lvl: this.lvl,
+            identified: this.identified,
+            brawn: this.brawn,
+            baseDamageMin: this.baseDamageMin,
+            baseDamageMax: this.baseDamageMax,
+            damageScale: this.damageScale,
+        });
     }
 
     // PROPERTIES ----------------------------------------------------------
     get damageMin() {
-        return Math.round(this.baseDamageMin*this.lvl*(this.damageScalePerLvl-1));
+        return Math.round(this.baseDamageMin*this.lvl*(this.damageScale-1));
     }
     get damageMax() {
-        return Math.round(this.baseDamageMax*this.lvl*(this.damageScalePerLvl-1));
+        return Math.round(this.baseDamageMax*this.lvl*(this.damageScale-1));
     }
 
     // METHODS -------------------------------------------------------------
