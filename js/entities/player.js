@@ -25,6 +25,8 @@ class Player extends Character {
         this.brawn = spec.brawn || this.constructor.dfltBrawn;
         this.spry = spec.spry || this.constructor.dfltSpry;
         this.savvy = spec.savvy || this.constructor.dfltSavvy;
+        // FIXME: should come from reactor...
+        this.healthRegenPerAP = .2;
         // -- hit bonus/penalty
         this.hitbp = spec.hitbp || 0;
         this.weapon = spec.weapon || this.constructor.dfltWeapon;

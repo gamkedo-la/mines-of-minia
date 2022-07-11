@@ -46,6 +46,7 @@ import { CloseSystem } from './systems/closeSystem.js';
 import { Inventory } from './inventory.js';
 import { UxText } from './base/uxText.js';
 import { Text } from './base/text.js';
+import { HealthRegenSystem } from './systems/healthRegenSystem.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -58,6 +59,7 @@ class PlayState extends GameState {
         Systems.add('turn', new TurnSystem({ dbg: Util.getpath(Config, 'dbg.system.turn')}));
         Systems.add('aggro', new AggroSystem({ dbg: Util.getpath(Config, 'dbg.system.aggro')}));
         Systems.add('close', new CloseSystem({ dbg: Util.getpath(Config, 'dbg.system.close')}));
+        Systems.add('healthRegen', new HealthRegenSystem({ dbg: Util.getpath(Config, 'dbg.system.healthRegen')}));
 
         let x_view = UxCanvas.xspec({
             cvsid: 'game.canvas',
@@ -251,7 +253,7 @@ class PlayState extends GameState {
     }
 
     onKeyDown(evt) {
-        console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
+        //console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
         if (!this.controlsActive) {
             console.log(`-- controls disabled, skip onKeyDown evt: ${Fmt.ofmt(evt)}`);
             return;
@@ -288,6 +290,13 @@ class PlayState extends GameState {
                 this.lvl.losEnabled = !toggle;
                 for (const gidx of this.lvl.grid.keys()) this.lvl.gidupdates.add(gidx);
                 this.lvl.evt.trigger(this.lvl.constructor.evtUpdated, {actor: this.lvl});
+                break;
+            }
+
+            // FIXME: remove
+            case '8': {
+                UpdateSystem.eUpdate(this.player, {health: this.player.health - 10});
+                console.log(`-- player health: ${this.player.health}/${this.player.healthMax}`);
                 break;
             }
 
@@ -346,6 +355,7 @@ class PlayState extends GameState {
 
             case ' ': {
                 this.wait();
+                console.log(`-- player health: ${this.player.health}/${this.player.healthMax}`);
                 break;
             }
 

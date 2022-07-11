@@ -73,7 +73,9 @@ class TurnSystem extends System {
                 this.followerPoints = {};
                 // run single iteration when turn starts
                 this.active = true
-                Events.trigger(this.constructor.evtDone, {which: 'follower'});
+                if (this.dbg) console.log(`-- ${this} triggering ${this.constructor.evtDone} for leader`);
+                // leader turn is done
+                Events.trigger(this.constructor.evtDone, {which: 'leader', points: this.turnPoints});
             // -- handle leader free action
             } else {
                 if (this.dbg) console.log(`--- leader free action`)
@@ -149,7 +151,8 @@ class TurnSystem extends System {
             if (this.dbg) console.log(`=== STARTING LEADER TURN`)
             this.leaderTurn = true;
             this.startLeaderAction();
-            Events.trigger(this.constructor.evtDone, {which: 'leader'});
+            if (this.dbg) console.log(`-- ${this} triggering ${this.constructor.evtDone} for follower`);
+            Events.trigger(this.constructor.evtDone, {which: 'follower', points: this.turnPoints});
         }
     }
 
