@@ -6,6 +6,7 @@ import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
+import { Cog } from '../entities/cog.js';
 import { Door } from '../entities/door.js';
 import { Enemy } from '../entities/enemy.js';
 import { Gem } from '../entities/gem.js';
@@ -172,6 +173,10 @@ class Spawn {
                 name: 'token',
                 x_sketch: Assets.get('token'),
                 count: 5,
+            }),
+            Cog.xspec({
+                name: 'brass.cog',
+                x_sketch: Assets.get('cog_brass'),
             }),
         ];
         for (const x_spawn of x_spawns) {
