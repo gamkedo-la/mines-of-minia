@@ -31,9 +31,9 @@ class InventoryData {
         this.shielding = spec.shielding;
         this.reactor = spec.reactor;
         this.weapon = spec.weapon;
+        this.gadget0 = spec.gadget0;
         this.gadget1 = spec.gadget1;
         this.gadget2 = spec.gadget2;
-        this.gadget3 = spec.gadget2;
         // -- bakcback
         this.slots = Array.from(spec.slots || []);
         this.counts = Array.from(spec.counts || []);
@@ -48,6 +48,8 @@ class InventoryData {
             let tag = `${keyKind}Keys`;
             this[tag] = spec[tag] || 0;
         }
+        // -- actor (entity tied to inventory)
+        this.actor;
     }
 
     // PROPERTIES ----------------------------------------------------------
@@ -83,7 +85,7 @@ class InventoryData {
             for (let i=0; i<this.numSlots; i++) {
                 if (this.slots[i] && this.slots[i].name === item.name) {
                     this.counts[i] += 1;
-                    this.evt.trigger(this.constructor.evtAdded, {actor: this, slot: i, target: item});
+                    this.evt.trigger(this.constructor.evtAdded, {actor: this.actor, slot: i, target: item});
                     return true;
                 }
             }
@@ -99,7 +101,7 @@ class InventoryData {
         }
         this.slots[slot] = item;
         this.counts[slot] = 1;
-        this.evt.trigger(this.constructor.evtAdded, {actor: this, slot: slot, target: item});
+        this.evt.trigger(this.constructor.evtAdded, {actor: this.actor, slot: slot, target: item});
         return true;
     }
 
@@ -120,7 +122,7 @@ class InventoryData {
             } else {
                 this.counts[slot] -= 1;
             }
-            this.evt.trigger(this.constructor.evtRemoved, {actor: this, slot: slot});
+            this.evt.trigger(this.constructor.evtRemoved, {actor: this.actor, slot: slot});
             return item;
         }
         return null;
@@ -142,18 +144,18 @@ class InventoryData {
         let tmpi = this.slots[slot2];
         this.slots[slot2] = this.slots[slot1];
         if (this.slots[slot2]) {
-            this.evt.trigger(this.constructor.evtAdded, {actor: this, slot: slot2, target: this.slots[slot2]});
+            this.evt.trigger(this.constructor.evtAdded, {actor: this.actor, slot: slot2, target: this.slots[slot2]});
         } else if (tmpi) {
             console.log(`trigger removed`);
-            this.evt.trigger(this.constructor.evtRemoved, {actor: this, slot: slot2});
+            this.evt.trigger(this.constructor.evtRemoved, {actor: this.actor, slot: slot2});
         }
         let oslot1 = this.slots[slot1];
         this.slots[slot1] = tmpi;
         if (this.slots[slot1]) {
-            this.evt.trigger(this.constructor.evtAdded, {actor: this, slot: slot1, target: this.slots[slot1]});
+            this.evt.trigger(this.constructor.evtAdded, {actor: this.actor, slot: slot1, target: this.slots[slot1]});
         } else if (oslot1) {
             console.log(`trigger removed 2`);
-            this.evt.trigger(this.constructor.evtRemoved, {actor: this, slot: slot1});
+            this.evt.trigger(this.constructor.evtRemoved, {actor: this.actor, slot: slot1});
         }
     }
 
@@ -161,17 +163,18 @@ class InventoryData {
         let tmpi = this.belt[slot2];
         this.belt[slot2] = this.belt[slot1];
         console.log(`get ${slot2} ${this.belt[slot2]} => ${this.get(this.belt[slot2])}`);
-        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this, slot: slot2, target: this.get(this.belt[slot2])});
+        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this.actor, slot: slot2, target: this.get(this.belt[slot2])});
         this.belt[slot1] = tmpi;
         console.log(`get ${slot1} ${this.belt[slot1]} => ${this.get(this.belt[slot1])}`);
-        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this, slot: slot1, target: this.get(this.belt[slot1])});
+        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this.actor, slot: slot1, target: this.get(this.belt[slot1])});
     }
 
     equip(slot, item) {
         if (item.constructor.slot !== slot) return false;
         this.removeItem(item);
         this[slot] = item;
-        this.evt.trigger(this.constructor.evtEquipChanged, {actor: this, slot: slot, target: item});
+        this.evt.trigger(this.constructor.evtEquipChanged, {actor: this.actor, slot: slot, target: item});
+        if (item && item.constructor.evtEquipped) item.evt.trigger(item.constructor.evtEquipped, {actor: this.actor, target: item});
         return true;
     }
 
@@ -180,7 +183,8 @@ class InventoryData {
         if (!item) return false;
         if (!this.add(item, invslot)) return false;
         this[slot] = null;
-        this.evt.trigger(this.constructor.evtEquipChanged, {actor: this, slot: slot, target: null});
+        this.evt.trigger(this.constructor.evtEquipChanged, {actor: this.actor, slot: slot, target: null});
+        if (item && item.constructor.evtUnequipped) item.evt.trigger(item.constructor.evtUnequipped, {actor: this.actor, target: item});
         return true;
     }
 
@@ -193,11 +197,11 @@ class InventoryData {
         // check for already on belt
         if (this.belt.includes(item.name)) return;
         this.belt[slot] = item.name;
-        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this, slot: slot, target: item});
+        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this.actor, slot: slot, target: item});
     }
 
     unequipBelt(slot) {
-        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this, slot: slot, target: null});
+        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this.actor, slot: slot, target: null});
         this.belt[slot] = null;
     }
 
@@ -726,7 +730,24 @@ class Inventory extends UxView {
         this.data.evt.listen(this.data.constructor.evtAdded, this.onInventoryAdded);
         this.data.evt.listen(this.data.constructor.evtRemoved, this.onInventoryRemoved);
         this.data.evt.listen(this.data.constructor.evtBeltChanged, this.onBeltChanged);
+        this.data.evt.listen(this.data.constructor.evtEquipChanged, this.onEquipChanged);
         this.data.evt.listen(this.data.constructor.evtOtherChanged, this.onOtherChanged);
+        // fill out inventory sprites for anything currently in inventory
+        for (const slot of ['reactor', 'weapon', 'shielding', 'gadget0', 'gadget1', 'gadget2']) {
+            let item = this.data[slot];
+            if (item) this.assignSlotSketch(slot, item.sketch.tag);
+        }
+        for (let i=0; i<this.data.numSlots; i++) {
+            let slot = `inv{$i}`;
+            let item = this.data[slot];
+            if (item) this.assignSlotSketch(slot, item.sketch.tag);
+        }
+        for (let i=0; i<this.data.numBelt; i++) {
+            let slot = `belt{$i}`;
+            let name = this.data[slot];
+            let item = this.data.get(name);
+            if (item) this.assignSlotSketch(slot, item.sketch.tag);
+        }
 
         // disable backpack slots
         for (let i=0; i<25; i++) {

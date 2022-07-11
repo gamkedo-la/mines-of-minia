@@ -1,10 +1,15 @@
 export { ProcGen };
 
+    import { Assets } from '../base/assets.js';
+import { Config } from '../base/config.js';
 import { Fmt } from '../base/fmt.js';
 import { SimpleNoise } from '../base/noise.js';
 import { Prng } from '../base/prng.js';
 import { Random } from '../base/random.js';
 import { UxDbg } from '../base/uxDbg.js';
+import { XForm } from '../base/xform.js';
+import { Player } from '../entities/player.js';
+import { Reactor } from '../entities/reactor.js';
 import { Layout } from './layout.js';
 import { Outline } from './outline.js';
 import { ProcRoom } from './proom.js';
@@ -12,6 +17,31 @@ import { Spawn } from './spawn.js';
 import { Translate } from './translate.js';
 
 class ProcGen {
+
+    static genPlayer(template) {
+        let player = new Player({
+            tag: 'pc',
+            idx: 0,
+            xform: new XForm({ stretch: false }),
+            sketch: Assets.get('player', true),
+            maxSpeed: .25,
+            z: 2,
+            healthMax: 100,
+            losRange: Config.tileSize*5,
+            team: 'player',
+        });
+
+        // assign initial inventory
+        let reactor = new Reactor({
+            identified: true,
+            healthRegenPerAP: .2,
+            fuelPerAP: .5,
+            sketch: Assets.get('reactor', true),
+        });
+        player.inventory.equip('reactor', reactor);
+
+        return player;
+    }
 
     static *initGenerator(template, pstate) {
         if (!template.seed) template.seed = Random.rangeInt(1,100000);

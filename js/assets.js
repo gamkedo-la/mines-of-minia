@@ -100,6 +100,7 @@ let miniaAssets = [
         borderColor: 'red',
     }),
     Rect.xspec({tag: 'token', width: 12, height: 8, color: 'gold', borderColor: 'red', border: 1}),
+    Rect.xspec({tag: 'reactor', width: 8, height: 12, color: 'green', borderColor: 'red', border: 2}),
 
     Weapon.xspec({
         tag: 'hack_1',

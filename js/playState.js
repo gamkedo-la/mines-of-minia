@@ -48,6 +48,7 @@ import { UxText } from './base/uxText.js';
 import { Text } from './base/text.js';
 import { HealthRegenSystem } from './systems/healthRegenSystem.js';
 import { FuelSystem } from './systems/fuelSystem.js';
+import { ProcGen } from './procgen/procgen.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -138,6 +139,8 @@ class PlayState extends GameState {
         Systems.get('close').lvl = this.lvl;
 
         // -- FIXME: player generation needs to get moved to procedural generation
+        this.player = ProcGen.genPlayer(Config.template);
+        /*
         this.player = new Player({
             tag: 'pc',
             idx: 0,
@@ -149,6 +152,8 @@ class PlayState extends GameState {
             losRange: Config.tileSize*5,
             team: 'player',
         });
+        */
+
         // -- FIXME: remove test charm
         this.player.addCharm( new FieryCharm() );
         this.lvl.adopt(this.player);
