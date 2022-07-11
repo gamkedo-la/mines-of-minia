@@ -47,6 +47,7 @@ import { Inventory } from './inventory.js';
 import { UxText } from './base/uxText.js';
 import { Text } from './base/text.js';
 import { HealthRegenSystem } from './systems/healthRegenSystem.js';
+import { FuelSystem } from './systems/fuelSystem.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -60,6 +61,7 @@ class PlayState extends GameState {
         Systems.add('aggro', new AggroSystem({ dbg: Util.getpath(Config, 'dbg.system.aggro')}));
         Systems.add('close', new CloseSystem({ dbg: Util.getpath(Config, 'dbg.system.close')}));
         Systems.add('healthRegen', new HealthRegenSystem({ dbg: Util.getpath(Config, 'dbg.system.healthRegen')}));
+        Systems.add('fuel', new FuelSystem({ dbg: Util.getpath(Config, 'dbg.system.fuel')}));
 
         let x_view = UxCanvas.xspec({
             cvsid: 'game.canvas',
@@ -296,7 +298,7 @@ class PlayState extends GameState {
             // FIXME: remove
             case '8': {
                 UpdateSystem.eUpdate(this.player, {health: this.player.health - 10});
-                console.log(`-- player health: ${this.player.health}/${this.player.healthMax}`);
+                console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel}`);
                 break;
             }
 
@@ -355,7 +357,7 @@ class PlayState extends GameState {
 
             case ' ': {
                 this.wait();
-                console.log(`-- player health: ${this.player.health}/${this.player.healthMax}`);
+                console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel}`);
                 break;
             }
 

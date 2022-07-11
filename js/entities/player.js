@@ -27,6 +27,8 @@ class Player extends Character {
         this.savvy = spec.savvy || this.constructor.dfltSavvy;
         // FIXME: should come from reactor...
         this.healthRegenPerAP = .2;
+        this.fuel = 10;
+        this.fuelPerAP = .5;
         // -- hit bonus/penalty
         this.hitbp = spec.hitbp || 0;
         this.weapon = spec.weapon || this.constructor.dfltWeapon;
