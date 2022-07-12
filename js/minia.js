@@ -31,6 +31,7 @@ import { Key } from "./entities/key.js";
 import { Token } from "./entities/token.js";
 import { Reactor } from "./entities/reactor.js";
 import { Gadget } from "./entities/gadget.js";
+import { Chest } from "./entities/chest.js";
 
 class Minia extends Game {
     static states = {
@@ -96,6 +97,7 @@ class Minia extends Game {
         console.log(`${this.name}.init`);
         Registry.extend([
             Character,
+            Chest,
             Cog,
             Door,
             Enemy,

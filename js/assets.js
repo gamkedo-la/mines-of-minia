@@ -125,6 +125,8 @@ let miniaAssets = [
 
     Sprite.xspec({tag: 'player_portrait', img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*0, y: 0})}),
 
+    Sprite.xspec({tag: 'chest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 16*1, y: 0})}),
+
     Animation.xspec({tag: 'player_idler', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-red.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-red.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
