@@ -1,11 +1,11 @@
-export { HealthRegenSystem };
+export { PowerRegenSystem };
 
 import { Fmt } from '../base/fmt.js';
 import { System } from '../base/system.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { TurnSystem } from './turnSystem.js';
 
-class HealthRegenSystem extends System {
+class PowerRegenSystem extends System {
     static dfltIterateTTL = 0;
 
     // CONSTRUCTOR ---------------------------------------------------------
@@ -23,7 +23,7 @@ class HealthRegenSystem extends System {
 
     // EVENT HANDLERS ------------------------------------------------------
     onTurnDone(evt) {
-        // health regenerated after leader turn only
+        // power regenerated after leader turn only
         if (evt.which !== 'leader') return;
         this.active = true;
         this.actionPoints = evt.points;
@@ -32,17 +32,17 @@ class HealthRegenSystem extends System {
     // METHODS -------------------------------------------------------------
 
     iterate(evt, e) {
-        // skip if at max health
-        if (e.health >= e.healthMax) return;
+        // skip if at max power
+        if (e.power >= e.powerMax) return;
         // handle regeneration for entity
-        let amt = this.actionPoints * e.healthPerAP;
+        let amt = this.actionPoints * e.powerPerAP;
         if (amt) {
             let total = (this.partials[e.gid] || 0) + amt;
             if (total >= 1) {
-                // update entity health
+                // update entity power
                 let regen = Math.floor(total);
-                let update = Math.min(e.health + regen, e.healthMax);
-                UpdateSystem.eUpdate(e, {health: update});
+                let update = Math.min(e.power + regen, e.powerMax);
+                UpdateSystem.eUpdate(e, {power: update});
                 // calculate remainder
                 total -= regen;
             }
@@ -60,7 +60,7 @@ class HealthRegenSystem extends System {
     }
 
     matchPredicate(e) {
-        return (('health' in e) && ('healthPerAP' in e));
+        return (('power' in e) && ('powerPerAP' in e));
     }
 
 }

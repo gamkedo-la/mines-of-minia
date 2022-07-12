@@ -17,9 +17,9 @@ class Reactor extends Item {
         this.tier = spec.tier || this.constructor.dfltTier;
         this.lvl = spec.lvl || this.dfltLvl;
         this.identified = spec.hasOwnProperty('identified') ? spec.identified : false;
-        this.powerPerAP = spec.powerPerAP || this.dfltPowerPerAP;
-        this.healthPerAP = spec.healthPerAP || this.dfltHealthPerAP;
-        this.fuelPerAP = spec.fuelPerAP || this.dfltFuelPerAP;
+        this.powerPerAP = spec.powerPerAP || this.constructor.dfltPowerPerAP;
+        this.healthPerAP = spec.healthPerAP || this.constructor.dfltHealthPerAP;
+        this.fuelPerAP = spec.fuelPerAP || this.constructor.dfltFuelPerAP;
         // FIXME: scaling for level
         // event handlers
         this.onEquip = this.onEquip.bind(this);
@@ -50,6 +50,7 @@ class Reactor extends Item {
         if (this.healthPerAP) update.healthPerAP = player.healthPerAP + this.healthPerAP;
         if (this.fuelPerAP) update.fuelPerAP = player.fuelPerAP + this.fuelPerAP;
         UpdateSystem.eUpdate(player, update);
+        console.log(`update: ${Fmt.ofmt(update)}`);
     }
 
     onUnequip(evt) {

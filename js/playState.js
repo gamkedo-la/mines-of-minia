@@ -49,6 +49,7 @@ import { Text } from './base/text.js';
 import { HealthRegenSystem } from './systems/healthRegenSystem.js';
 import { FuelSystem } from './systems/fuelSystem.js';
 import { ProcGen } from './procgen/procgen.js';
+import { PowerRegenSystem } from './systems/powerRegenSystem.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -62,6 +63,7 @@ class PlayState extends GameState {
         Systems.add('aggro', new AggroSystem({ dbg: Util.getpath(Config, 'dbg.system.aggro')}));
         Systems.add('close', new CloseSystem({ dbg: Util.getpath(Config, 'dbg.system.close')}));
         Systems.add('healthRegen', new HealthRegenSystem({ dbg: Util.getpath(Config, 'dbg.system.healthRegen')}));
+        Systems.add('powerRegen', new PowerRegenSystem({ dbg: Util.getpath(Config, 'dbg.system.powerRegen')}));
         Systems.add('fuel', new FuelSystem({ dbg: Util.getpath(Config, 'dbg.system.fuel')}));
 
         let x_view = UxCanvas.xspec({
@@ -140,19 +142,6 @@ class PlayState extends GameState {
 
         // -- FIXME: player generation needs to get moved to procedural generation
         this.player = ProcGen.genPlayer(Config.template);
-        /*
-        this.player = new Player({
-            tag: 'pc',
-            idx: 0,
-            xform: new XForm({ stretch: false }),
-            sketch: Assets.get('player', true),
-            maxSpeed: .25,
-            z: 2,
-            healthMax: 100,
-            losRange: Config.tileSize*5,
-            team: 'player',
-        });
-        */
 
         // -- FIXME: remove test charm
         this.player.addCharm( new FieryCharm() );
@@ -304,8 +293,11 @@ class PlayState extends GameState {
 
             // FIXME: remove
             case '8': {
-                UpdateSystem.eUpdate(this.player, {health: this.player.health - 10});
-                console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel}`);
+                UpdateSystem.eUpdate(this.player, {
+                    health: this.player.health - 10,
+                    power: this.player.power - 5,
+                });
+                console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel} power: ${this.player.power}`);
                 break;
             }
 
@@ -364,7 +356,7 @@ class PlayState extends GameState {
 
             case ' ': {
                 this.wait();
-                console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel}`);
+                console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel} power: ${this.player.power}`);
                 break;
             }
 

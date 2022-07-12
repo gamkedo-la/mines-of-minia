@@ -11,7 +11,8 @@ class Player extends Character {
     static dfltSavvy = 10;
     static dfltBlockRating = 1;
     static dfltInvSlots = 16;
-    static dfltMaxFuel = 50;
+    static dfltFuelMax = 50;
+    static dfltPowerMax = 20;
 
     static dfltWeapon = new Weapon({
         tag: 'weapon.fists',
@@ -27,11 +28,15 @@ class Player extends Character {
         this.spry = spec.spry || this.constructor.dfltSpry;
         this.savvy = spec.savvy || this.constructor.dfltSavvy;
         // -- fuel
-        this.maxFuel = spec.maxFuel || this.constructor.dfltMaxFuel;
-        this.fuel = spec.fuel || this.maxFuel;
-        // FIXME: should come from reactor...
-        this.healthRegenPerAP = .2;
-        this.fuelPerAP = .5;
+        this.fuelMax = spec.fuelMax || this.constructor.dfltFuelMax;
+        this.fuel = spec.fuel || this.fuelMax;
+        this.fuelPerAP = spec.fuelPerAP || 0;
+        // -- power
+        this.powerMax = spec.powerMax || this.constructor.dfltPowerMax;
+        this.power = spec.power || this.powerMax;
+        this.powerPerAP = spec.powerPerAP || 0;
+        // -- health regen
+        this.healthPerAP = spec.healthPerAP || 0;
         // -- hit bonus/penalty
         this.hitbp = spec.hitbp || 0;
         this.weapon = spec.weapon || this.constructor.dfltWeapon;
@@ -44,9 +49,6 @@ class Player extends Character {
         this.xform.origy = .75;
         //this.dbg = { xform: true };
 
-        this.powerPerAP = spec.powerPerAP || 0;
-        this.healthPerAP = spec.healthPerAP || 0;
-        this.fuelPerAP = spec.fuelPerAP || 0;
     }
 
     // FIXME: add serialization
