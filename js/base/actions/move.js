@@ -23,7 +23,6 @@ class MoveAction extends Action {
         this.stopAtTarget = spec.hasOwnProperty('stopAtTarget') ? spec.stopAtTarget : true;
         this.factor = 0;
         this.sfx = spec.sfx;
-        console.log(`sfx: ${this.sfx}`);
         // -- setup event handlers
         this.onTock = this.onTock.bind(this);
     }
@@ -43,7 +42,6 @@ class MoveAction extends Action {
     setup() {
         if (!this.speed) this.speed = this.actor.maxSpeed;
         if (this.sfx) {
-            console.log(`-- start sfx: ${this.sfx}`);
             this.sfx.play();
         }
         // setup listener for game clock

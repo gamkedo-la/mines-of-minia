@@ -2,6 +2,7 @@ export { LevelGraph };
 
     import { OpenAction } from './actions/open.js';
 import { MoveAction } from './base/actions/move.js';
+import { Assets } from './base/assets.js';
 import { Direction } from './base/dir.js';
 import { Events } from './base/event.js';
 import { Vect } from './base/vect.js';
@@ -66,6 +67,7 @@ class LevelGraph {
             snap: true, 
             update: { idx: to },
             facing: facing,
+            sfx: Assets.get('player.step', true),
         });
         action.evt.listen(action.constructor.evtStarted, (evt) => this.lvl.reserveIdx(to), Events.once );
         action.evt.listen(action.constructor.evtDone, (evt) => this.lvl.releaseIdx(to), Events.once );
