@@ -131,8 +131,8 @@ let miniaAssets = [
     ]}),
 
     Animation.xspec({tag: 'player_idlel', x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-green.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-green.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-darker-green.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-darker-green.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
     ]}),
 
     /*
