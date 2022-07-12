@@ -119,12 +119,23 @@ let miniaAssets = [
 
     Rect.xspec({tag: 'door.close', width: 16, height: 16, color: 'red'}),
     Rect.xspec({tag: 'door.open', width: 16, height: 16, borderColor: 'green', fill: false, border: 2}),
-    //Rect.xspec({tag: 'pc', width: 12, height: 12, color: 'yellow'}),
     Rect.xspec({tag: 'idle', width: 12, height: 12, color: 'green'}),
     Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
     Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
-    //Rect.xspec({tag: 'player_idler', width: 12, height: 12, color: 'black'}),
+
     Sprite.xspec({tag: 'player_portrait', img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*0, y: 0})}),
+
+    Animation.xspec({tag: 'player_idler', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-red.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-red.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
+    ]}),
+
+    Animation.xspec({tag: 'player_idlel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-green.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-green.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
+    ]}),
+
+    /*
     Animation.xspec({tag: 'player_idler', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
@@ -133,6 +144,8 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
     ]}),
+    */
+
     Animation.xspec({tag: 'player_mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 250 }),
