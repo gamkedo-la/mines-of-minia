@@ -9,6 +9,7 @@ class DoPickupAction extends Action {
     constructor(spec) {
         super(spec);
         this.target = spec.target;
+        this.sfx = spec.sfx;
     }
     setup() {
         // this is an instant action
@@ -24,6 +25,7 @@ class DoPickupAction extends Action {
             this.target.active = false;
             // -- remove item from level
             this.target.orphan();
+            if (this.sfx) this.sfx.play();
         }
     }
 }
@@ -32,6 +34,7 @@ class PickupAction extends SerialAction {
     constructor(spec) {
         super(spec);
         this.target = spec.target;
+        this.sfx = spec.sfx;
     }
 
     setup() {
@@ -50,6 +53,7 @@ class PickupAction extends SerialAction {
 
         this.subs.push( new DoPickupAction({
             target: this.target,
+            sfx: this.sfx,
         }));
     }
 }

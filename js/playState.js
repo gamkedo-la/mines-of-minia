@@ -225,6 +225,7 @@ class PlayState extends GameState {
         // what's at index?
         let others = Array.from(this.lvl.findidx(idx, (v) => v.idx === idx));
 
+
         if (others.some((v) => v instanceof Enemy)) {
             let target = others.find((v) => v instanceof Enemy);
             //console.log(`other is an enemy, try to attack...`);
@@ -245,7 +246,7 @@ class PlayState extends GameState {
             }
         } else if (others.some((v) => v.constructor.lootable)) {
             let target = others.find((v) => v.constructor.lootable);
-            TurnSystem.postLeaderAction( new PickupAction({ target: target }));
+            TurnSystem.postLeaderAction( new PickupAction({ target: target, sfx: Assets.get('player.pickup', true)}));
         } else if (others.some((v) => this.player.blockedBy & v.blocks)) {
             //console.log(`blocked from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y} hit ${others}`);
         } else {

@@ -37,8 +37,11 @@ class Sfx extends Gizmo {
     initialize(play=false) {
         if (!this.initialized) {
             this.initialized = true;
+            // make a copy of audio buffer (can't be decoded twice)
+            let buffer = new ArrayBuffer(this.audio.byteLength);
+            new Uint8Array(buffer).set(new Uint8Array(this.audio));
             // decode raw buffer to audio buffer source
-            let p = this.asys.ctx.decodeAudioData(this.audio);
+            let p = this.asys.ctx.decodeAudioData(buffer);
             p.then((decoded) => {
                 this.decoded = decoded;
                 if (play) this._playDecoded();
