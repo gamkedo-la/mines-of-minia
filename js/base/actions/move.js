@@ -22,6 +22,8 @@ class MoveAction extends Action {
         this.facing = spec.facing || 0;
         this.stopAtTarget = spec.hasOwnProperty('stopAtTarget') ? spec.stopAtTarget : true;
         this.factor = 0;
+        this.sfx = spec.sfx;
+        console.log(`sfx: ${this.sfx}`);
         // -- setup event handlers
         this.onTock = this.onTock.bind(this);
     }
@@ -29,6 +31,7 @@ class MoveAction extends Action {
         super.destroy();
         // setup listener for game clock
         Events.ignore(Game.evtTock, this.onTock);
+        if (this.sfx) this.sfx.destroy();
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -39,6 +42,10 @@ class MoveAction extends Action {
     // METHODS -------------------------------------------------------------
     setup() {
         if (!this.speed) this.speed = this.actor.maxSpeed;
+        if (this.sfx) {
+            console.log(`-- start sfx: ${this.sfx}`);
+            this.sfx.play();
+        }
         // setup listener for game clock
         Events.listen(Game.evtTock, this.onTock);
     }
@@ -96,6 +103,11 @@ class MoveAction extends Action {
             //console.log(`-- move update: ${Fmt.ofmt(update)}`);
             this.finish(update);
         }
+    }
+
+    finish(update) {
+        super.finish(update);
+        if (this.sfx) this.sfx.stop();
     }
 
     toString() {

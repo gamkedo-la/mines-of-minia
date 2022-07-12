@@ -127,6 +127,7 @@ let miniaAssets = [
 
     Sprite.xspec({tag: 'chest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 16*1, y: 0})}),
 
+    /*
     Animation.xspec({tag: 'player_idler', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-red.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-red.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
@@ -136,8 +137,8 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-darker-green.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-darker-green.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
     ]}),
+    */
 
-    /*
     Animation.xspec({tag: 'player_idler', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
@@ -146,7 +147,6 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
     ]}),
-    */
 
     Animation.xspec({tag: 'player_mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 350 }),
@@ -192,7 +192,8 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'test.sound', audio: new SfxRef({src: 'snd/test.mp3'}) }),
     Sfx.xspec({ tag: 'gem.break', audio: new SfxRef({src: 'snd/gem-break.mp3'}) }),
     Sfx.xspec({ tag: 'player.pickup', audio: new SfxRef({src: 'snd/pick-up-item.mp3'}) }),
-    Sfx.xspec({ tag: 'player.step', audio: new SfxRef({src: 'snd/player-step.mp3'}) }),
+    Sfx.xspec({ tag: 'blip.1', audio: new SfxRef({src: 'snd/blip-1.mp3'}) }),
+    Sfx.xspec({ tag: 'player.step', audio: new SfxRef({src: 'snd/step-motor-whir-3.mp3'}), loop: false }),
     ...Template.walls('img/rock-walls.png', 'rock.wall'),
     ...Template.tiles('img/rock-floor.png', 'rock.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
     ...Template.tiles('img/rock-pit.png', 'rock.pit'),

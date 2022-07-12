@@ -250,7 +250,7 @@ class PlayState extends GameState {
         } else if (others.some((v) => this.player.blockedBy & v.blocks)) {
             //console.log(`blocked from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y} hit ${others}`);
         } else {
-            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx } }));
+            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: Assets.get('player.step', true) }));
         }
 
     }
