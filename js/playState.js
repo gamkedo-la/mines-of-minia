@@ -235,6 +235,7 @@ class PlayState extends GameState {
         } else if (others.some((v) => v instanceof Stairs)) {
             let target = others.find((v) => v instanceof Stairs);
             //console.log(`stairs ${target} is hit`);
+            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: Assets.get('player.step', true) }));
             TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
             TurnSystem.postLeaderAction( new TakeStairsAction({ stairs: target }));
         } else if (others.some((v) => v instanceof Door)) {
@@ -242,7 +243,7 @@ class PlayState extends GameState {
             if (target.state === 'close') {
                 TurnSystem.postLeaderAction( new OpenAction({ target: target }));
             } else {
-                TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx } }));
+                TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: Assets.get('player.step', true) }));
             }
         } else if (others.some((v) => v.constructor.lootable)) {
             let target = others.find((v) => v.constructor.lootable);
