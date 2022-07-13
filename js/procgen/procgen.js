@@ -10,6 +10,7 @@ import { UxDbg } from '../base/uxDbg.js';
 import { XForm } from '../base/xform.js';
 import { Player } from '../entities/player.js';
 import { Reactor } from '../entities/reactor.js';
+import { Discovery } from './discovery.js';
 import { Layout } from './layout.js';
 import { Outline } from './outline.js';
 import { ProcRoom } from './proom.js';
@@ -74,6 +75,8 @@ class ProcGen {
         } while (!validLevel);
         // -- translate level outline to level data
         yield *Translate.generator(template, pstate);
+        // -- resolve discoverable items
+        yield *Discovery.generator(template, pstate);
         // -- spawn non-tile entities
         if (template.dospawn) yield *Spawn.generator(template, pstate);
     }

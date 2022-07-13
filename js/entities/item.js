@@ -11,6 +11,7 @@ class Item extends MiniaModel {
     static lootable = true;
     static stackable = false;
     static discoverable = false;
+    static usable = false;
     static dfltDescription = 'an unremarkable item';
     static evtEquipped = 'item.equipped';
     static evtUnequipped = 'item.unequipped';

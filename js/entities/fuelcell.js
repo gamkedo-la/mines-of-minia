@@ -8,6 +8,7 @@ class Fuelcell extends Item {
     static slot = 'item';
     static stackable = true;
     static dfltFuel = 10;
+    static usable = true;
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
@@ -21,7 +22,7 @@ class Fuelcell extends Item {
     // SERIALIZATION -------------------------------------------------------
     as_kv() {
         return Object.assign({}, super.as_kv(), {
-            kind: this.kind,
+            fuel: this.fuel,
         });
     }
 

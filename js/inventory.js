@@ -848,7 +848,9 @@ class ItemPopup extends UxView {
 
         // event handlers
         this.onKeyDown = this.onKeyDown.bind(this);
+        this.onUseClicked = this.onUseClicked.bind(this);
         Events.listen(Keys.evtDown, this.onKeyDown);
+        this.useButton.evt.listen(this.useButton.constructor.evtMouseClicked, this.onUseClicked);
 
         if (spec.item) this.setItem(spec.item);
 
@@ -870,12 +872,18 @@ class ItemPopup extends UxView {
         }
     }
 
+    onUseClicked(evt) {
+        console.log(`-- ${this} onUseClicked: ${Fmt.ofmt(evt)}`);
+        console.log(`item: ${this.item}`);
+    }
+
     setItem(item) {
         // picture
         this.picture.sketch = Assets.get(item.sketch.tag, true) || Sketch.zero;
         this.name.text = item.name;
         this.kind.text = `-- ${item.constructor.slot} --`;
         this.description.text = item.description;
+        this.item = item;
     }
 
 }

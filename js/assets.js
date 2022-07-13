@@ -56,6 +56,7 @@ let miniaAssets = [
         color: 'gray',
         borderColor: 'red',
     }),
+
     Shape.xspec({
         tag: 'gem.blue',
         fill: true,
@@ -66,6 +67,18 @@ let miniaAssets = [
         color: 'blue',
         borderColor: 'red',
     }),
+
+    Shape.xspec({
+        tag: 'gem.gold',
+        fill: true,
+        verts: [ 
+            {x:8, y:2}, {x:14, y:8}, {x:8, y:14}, {x:2, y:8},
+        ],
+        border: 1,
+        color: 'gold',
+        borderColor: 'red',
+    }),
+
     Shape.xspec({
         tag: 'key.gold',
         fill: true,

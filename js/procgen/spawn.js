@@ -162,12 +162,12 @@ class Spawn {
             }),
             */
             Gem.xspec({
-                name: 'blue.gem',
-                x_sketch: Assets.get('gem.blue'),
+                name: 'health.gem',
+                kind: 'health',
             }),
             Gem.xspec({
-                name: 'blue.gem',
-                x_sketch: Assets.get('gem.blue'),
+                name: 'health.gem',
+                kind: 'health',
             }),
             Key.xspec({
                 name: 'gold.key',
