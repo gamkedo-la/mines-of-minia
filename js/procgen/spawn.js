@@ -10,6 +10,7 @@ import { Chest } from '../entities/chest.js';
 import { Cog } from '../entities/cog.js';
 import { Door } from '../entities/door.js';
 import { Enemy } from '../entities/enemy.js';
+import { Fuelcell } from '../entities/fuelcell.js';
 import { Gem } from '../entities/gem.js';
 import { Key } from '../entities/key.js';
 import { Stairs } from '../entities/stairs.js';
@@ -154,10 +155,12 @@ class Spawn {
                 name: 'gray.sword',
                 x_sketch: Assets.get('sword.gray'),
             }),
+            /*
             Weapon.xspec({
                 name: 'white.sword',
                 x_sketch: Assets.get('sword.white'),
             }),
+            */
             Gem.xspec({
                 name: 'blue.gem',
                 x_sketch: Assets.get('gem.blue'),
@@ -175,13 +178,19 @@ class Spawn {
                 x_sketch: Assets.get('token'),
                 count: 5,
             }),
+            /*
             Cog.xspec({
                 name: 'brass.cog',
                 x_sketch: Assets.get('cog_brass'),
             }),
+            */
             Chest.xspec({
                 name: 'test.chest',
                 x_sketch: Assets.get('chest.test'),
+            }),
+            Fuelcell.xspec({
+                name: 'fuelcell',
+                x_sketch: Assets.get('fuelcell'),
             }),
         ];
         for (const x_spawn of x_spawns) {

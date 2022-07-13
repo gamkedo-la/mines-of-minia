@@ -32,6 +32,7 @@ import { Token } from "./entities/token.js";
 import { Reactor } from "./entities/reactor.js";
 import { Gadget } from "./entities/gadget.js";
 import { Chest } from "./entities/chest.js";
+import { Fuelcell } from "./entities/fuelcell.js";
 
 class Minia extends Game {
     static states = {
@@ -101,6 +102,7 @@ class Minia extends Game {
             Cog,
             Door,
             Enemy,
+            Fuelcell,
             Gadget,
             Gem,
             Key,

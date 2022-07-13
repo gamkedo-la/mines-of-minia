@@ -14,6 +14,7 @@ class Item extends MiniaModel {
     static dfltDescription = 'an unremarkable item';
     static evtEquipped = 'item.equipped';
     static evtUnequipped = 'item.unequipped';
+    static evtUse = 'item.use';
 
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSketch() {
