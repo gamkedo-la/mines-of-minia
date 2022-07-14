@@ -141,7 +141,7 @@ class Character extends MiniaModel {
         if (health > 0) {
             UpdateSystem.eUpdate(this, { health: health });
         } else {
-            this.evt.trigger(this.constructor.evtDeath, { actor: this });
+            if (this.state !== 'dying') this.evt.trigger(this.constructor.evtDeath, { actor: this });
         }
         //console.log(`player health after damage: ${this.health}`);
     }
