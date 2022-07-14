@@ -50,6 +50,7 @@ import { HealthRegenSystem } from './systems/healthRegenSystem.js';
 import { FuelSystem } from './systems/fuelSystem.js';
 import { ProcGen } from './procgen/procgen.js';
 import { PowerRegenSystem } from './systems/powerRegenSystem.js';
+import { XPSystem } from './systems/xpSystem.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -65,6 +66,7 @@ class PlayState extends GameState {
         Systems.add('healthRegen', new HealthRegenSystem({ dbg: Util.getpath(Config, 'dbg.system.healthRegen')}));
         Systems.add('powerRegen', new PowerRegenSystem({ dbg: Util.getpath(Config, 'dbg.system.powerRegen')}));
         Systems.add('fuel', new FuelSystem({ dbg: Util.getpath(Config, 'dbg.system.fuel')}));
+        Systems.add('xp', new XPSystem({ dbg: Util.getpath(Config, 'dbg.system.xp')}));
 
         let x_view = UxCanvas.xspec({
             cvsid: 'game.canvas',
@@ -356,7 +358,7 @@ class PlayState extends GameState {
 
             case ' ': {
                 this.wait();
-                console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel} power: ${this.player.power}`);
+                console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel} power: ${this.player.power} xp: ${this.player.xp}`);
                 break;
             }
 

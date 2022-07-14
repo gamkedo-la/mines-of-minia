@@ -35,6 +35,8 @@ class Player extends Character {
         this.powerMax = spec.powerMax || this.constructor.dfltPowerMax;
         this.power = spec.power || this.powerMax;
         this.powerPerAP = spec.powerPerAP || 0;
+        // -- xp gained
+        this.xp = spec.xp || 0;
         // -- health regen
         this.healthPerAP = spec.healthPerAP || 0;
         // -- hit bonus/penalty

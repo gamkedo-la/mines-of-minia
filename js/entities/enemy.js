@@ -16,6 +16,7 @@ class Enemy extends Character {
     static dfltDefenseRating = 10;
     static dfltHealth = 1;
     static dfltDamage = 1;
+    static dfltXp= 1;
 
     // STATIC METHODS ------------------------------------------------------
     static attsByLevel(lvl) {
@@ -33,6 +34,8 @@ class Enemy extends Character {
         this.defenseRating = spec.defenseRating || this.constructor.dfltDefenseRating;
         //this.statemgr = new AiStateManager();
         this.actions;
+        // -- xp value
+        this.xp = spec.xp || this.constructor.dfltXp;
         // -- damage
         this.damageMin = spec.damageMin || this.constructor.dfltDamage;
         this.damageMax = spec.damageMax || this.constructor.dfltDamage;
