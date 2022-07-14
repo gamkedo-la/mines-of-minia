@@ -13,6 +13,19 @@ class Player extends Character {
     static dfltInvSlots = 16;
     static dfltFuelMax = 50;
     static dfltPowerMax = 20;
+    // FIXME
+    static xpReqsByLvl = {
+        1: 10,
+        2: 40,
+    }
+    static attUpdatesByLvl = {
+        2: {
+            healthMax: 10,
+        },
+        3: {
+            healthMax: 10,
+        },
+    }
 
     static dfltWeapon = new Weapon({
         tag: 'weapon.fists',
@@ -50,9 +63,14 @@ class Player extends Character {
         this.xform.offy = Config.tileSize*.5 - this.xform.height;
         this.xform.origy = .75;
         //this.dbg = { xform: true };
-
     }
 
     // FIXME: add serialization
+
+    levelup() {
+        let update = {
+            lvl: this.lvl + 1,
+        }
+    }
 
 }

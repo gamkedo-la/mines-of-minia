@@ -19,11 +19,6 @@ class Enemy extends Character {
     static dfltXp= 1;
 
     // STATIC METHODS ------------------------------------------------------
-    static attsByLevel(lvl) {
-        return {
-            maxSpeed: .25,
-        };
-    }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec={}) {

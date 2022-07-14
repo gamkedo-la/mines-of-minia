@@ -105,7 +105,7 @@ class MoveAction extends Action {
 
     finish(update) {
         super.finish(update);
-        if (this.sfx) this.sfx.stop();
+        if (this.sfx) this.sfx.destroy();
     }
 
     toString() {

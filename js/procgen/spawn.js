@@ -120,16 +120,13 @@ class Spawn {
 
             // choose enemy class
             let enemyClass = Prng.choose(x_spawn.enemyList);
-            let x_enemy = Object.assign(
-                enemyClass.xspec({
-                    idx: spawnIdx,
-                    z: 2,
-                    maxSpeed: .25,
-                    losRange: Config.tileSize*8,
-                    aggroRange: Config.tileSize*5,
-                }),
-                enemyClass.attsByLevel(template.index),
-            );
+            let x_enemy = enemyClass.xspec({
+                idx: spawnIdx,
+                z: 2,
+                maxSpeed: .25,
+                losRange: Config.tileSize*8,
+                aggroRange: Config.tileSize*5,
+            });
             //console.log(`enemy: ${Fmt.ofmt(x_enemy)}`);
 
             plvl.entities.push(x_enemy);
