@@ -26,6 +26,7 @@ class Sfx extends Gizmo {
     }
     destroy() {
         this.stop();
+        this.destroyed = true;
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -44,7 +45,7 @@ class Sfx extends Gizmo {
             let p = this.asys.ctx.decodeAudioData(buffer);
             p.then((decoded) => {
                 this.decoded = decoded;
-                if (play) this._playDecoded();
+                if (!this.destroyed && play) this._playDecoded();
             });
         }
     }

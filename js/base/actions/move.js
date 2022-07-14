@@ -41,9 +41,7 @@ class MoveAction extends Action {
     // METHODS -------------------------------------------------------------
     setup() {
         if (!this.speed) this.speed = this.actor.maxSpeed;
-        if (this.sfx) {
-            this.sfx.play();
-        }
+        if (this.sfx) this.sfx.play();
         // setup listener for game clock
         Events.listen(Game.evtTock, this.onTock);
     }
@@ -105,7 +103,10 @@ class MoveAction extends Action {
 
     finish(update) {
         super.finish(update);
-        if (this.sfx) this.sfx.destroy();
+        if (this.sfx) {
+            this.sfx.destroy();
+            this.sfx = null;
+        }
     }
 
     toString() {

@@ -18,24 +18,24 @@ class XPSystem extends System {
             let actor = evt.actor;
             // has player emerged
             if (actor.cls === 'Player') {
-                console.log(`-- ${this} player emerges: ${actor}`)
+                if (this.dbg) console.log(`-- ${this} player emerges: ${actor}`)
                 this.player = actor;
             } else {
-                console.log(`-- ${this} tracking enemy death: ${actor}`)
+                if (this.dbg) console.log(`-- ${this} tracking enemy death: ${actor}`)
                 actor.evt.listen(actor.constructor.evtDeath, this.onEnemyDeath);
             }
         }
     }
 
     onEnemyDeath(evt) {
-        console.log(`${this} on enemy death: ${evt.actor}`);
+        if (this.dbg) console.log(`${this} on enemy death: ${evt.actor}`);
         if (this.player) {
             let update = {
                 xp: this.player.xp + evt.actor.xp,
             }
             // determine xp required for next level
             let needxp = Player.xpReqsByLvl[this.player.lvl];
-            console.log(`-- need xp: ${needxp} update.xp: ${update.xp}`);
+            if (this.dbg) console.log(`-- need xp: ${needxp} update.xp: ${update.xp}`);
             if (needxp && update.xp >= needxp) {
                 update.lvl = this.player.lvl + 1;
                 // update player atts
@@ -47,7 +47,7 @@ class XPSystem extends System {
                         update[k] = this.player[k] + v;
                     }
                 }
-                console.log(`update player level: ${this.player.lvl} -> ${update.lvl}`);
+                if (this.dbg) console.log(`update player level: ${this.player.lvl} -> ${update.lvl}`);
             }
             UpdateSystem.eUpdate(this.player, update);
         }

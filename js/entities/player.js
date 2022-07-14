@@ -1,9 +1,11 @@
 export { Player };
 
+import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { InventoryData } from '../inventory.js';
 import { Character } from './character.js';
 import { Weapon } from './weapon.js';
+
 
 class Player extends Character {
     static dfltBrawn = 10;
@@ -58,6 +60,9 @@ class Player extends Character {
         this.inventory = spec.inventory || new InventoryData();
         this.inventory.actor = this;
         this.blockRating = spec.blockRating || this.dfltBlockRating;
+        // -- sfx
+        this.moveSfx = spec.moveSfx || Assets.get('player.step', true);
+        // -- xform tweaks
         this.xform.offx = this.xf
         this.xform.offx = -this.xform.width*.5;
         this.xform.offy = Config.tileSize*.5 - this.xform.height;

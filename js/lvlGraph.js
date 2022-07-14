@@ -67,7 +67,7 @@ class LevelGraph {
             snap: true, 
             update: { idx: to },
             facing: facing,
-            sfx: Assets.get('player.step', true),
+            sfx: e.moveSfx,
         });
         action.evt.listen(action.constructor.evtStarted, (evt) => this.lvl.reserveIdx(to), Events.once );
         action.evt.listen(action.constructor.evtDone, (evt) => this.lvl.releaseIdx(to), Events.once );
