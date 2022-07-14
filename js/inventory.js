@@ -1,5 +1,6 @@
 export { Inventory, InventoryData };
 
+    import { UseAction } from './actions/use.js';
 import { Assets } from './base/assets.js';
 import { Events, EvtStream } from './base/event.js';
 import { Fmt } from './base/fmt.js';
@@ -14,6 +15,7 @@ import { UxText } from './base/uxText.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
 import { Key } from './entities/key.js';
+import { TurnSystem } from './systems/turnSystem.js';
 
 const invTextColor = "yellow";
 
@@ -50,6 +52,8 @@ class InventoryData {
         }
         // -- actor (entity tied to inventory)
         this.actor;
+        // -- event handlers
+        this.onUse = this.onUse.bind(this);
     }
 
     // PROPERTIES ----------------------------------------------------------
@@ -65,6 +69,20 @@ class InventoryData {
             if (!this.belt[i]) return false;
         }
         return true;
+    }
+
+    // EVENT HANDLERS ------------------------------------------------------
+    onUse(evt) {
+        let item = evt.actor;
+        // find slot for item
+        let itemIdx = this.slots.indexOf(item);
+        if (item && itemIdx !== -1) {
+            // remove item from inventory (decrement count and remove if zero)
+            this.remove(itemIdx);
+            // destroy item
+            if (this.counts[itemIdx] <= 0) item.destroy();
+        }
+
     }
 
     // METHODS -------------------------------------------------------------
@@ -100,6 +118,8 @@ class InventoryData {
             if (slot === null) return false;
         }
         this.slots[slot] = item;
+        // item is usable?
+        if (item.constructor.usable) item.evt.listen(item.constructor.evtUse, this.onUse);
         this.counts[slot] = 1;
         this.evt.trigger(this.constructor.evtAdded, {actor: this.actor, slot: slot, target: item});
         return true;
@@ -112,6 +132,7 @@ class InventoryData {
                 let name = (this.slots[slot]) ? this.slots[slot].name : 'none';
                 this.slots[slot] = undefined;
                 this.counts[slot] = 0;
+                if (item && item.constructor.usable) item.evt.ignore(item.constructor.evtUse, this.onUse);
                 // check for belt reference -- remove if found
                 for (let i=0; i<this.beltSlots; i++) {
                     if (this.belt[i] === name) {
@@ -122,6 +143,7 @@ class InventoryData {
             } else {
                 this.counts[slot] -= 1;
             }
+            console.log(`slot ${slot} count: ${this.counts[slot]}`);
             this.evt.trigger(this.constructor.evtRemoved, {actor: this.actor, slot: slot});
             return item;
         }
@@ -296,6 +318,8 @@ class Inventory extends UxView {
         this.onEquipChanged = this.onEquipChanged.bind(this);
         this.onSlotClick = this.onSlotClick.bind(this);
         this.onOtherChanged = this.onOtherChanged.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
+        this.onPopupDestroy = this.onPopupDestroy.bind(this);
         // -- the inventory data
         this.numGadgets = spec.numGadgets || 1;
         this.numBelt = spec.numBelt || 3;
@@ -418,9 +442,13 @@ class Inventory extends UxView {
         for (let i=24; i+1>this.data.numSlots; i--) {
             this.toggleSlot(`inv${i}`, false);
         }
+
+        Events.listen(Keys.evtDown, this.onKeyDown);
+
     }
 
     destroy() {
+        Events.ignore(Keys.evtDown, this.onKeyDown);
         if (this.data) {
             this.data.evt.ignore(this.data.constructor.evtAdded, this.onInventoryAdded);
             this.data.evt.ignore(this.data.constructor.evtRemoved, this.onInventoryRemoved);
@@ -431,6 +459,17 @@ class Inventory extends UxView {
     }
 
     // EVENT HANDLERS ------------------------------------------------------
+
+    onKeyDown(evt) {
+        if (!this.active) return;
+        switch (evt.key) {
+            case 'Escape': {
+                this.visible = false;
+                this.active = false;
+                break;
+            }
+        }
+    }
 
     onSlotClick(evt) {
         console.log(`onSlotClick: ${Fmt.ofmt(evt)} selected: ${this.selected}`);
@@ -498,11 +537,20 @@ class Inventory extends UxView {
                     xform: new XForm({ left: .7, top: .2, bottom: .2}),
                     item: item,
                 });
+                this.itemPopup.evt.dbg = true;
+                this.itemPopup.evt.listen(this.itemPopup.constructor.evtDestroyed, this.onPopupDestroy);
+                this.itemPopup.evt.dbg = false;
+                console.log(`=== popup evt: ${Array.from(this.itemPopup.evt.listeners.get('e.destroyed'))}`)
                 this.adopt(this.itemPopup);
                 this.markCompatibleSlots(item);
+                this.select(evt.actor);
             }
-            this.select(evt.actor);
         }
+    }
+
+    onPopupDestroy(evt) {
+        this.itemPopup = null;
+        this.reset();
     }
 
     onInventoryAdded(evt) {
@@ -517,7 +565,8 @@ class Inventory extends UxView {
     onInventoryRemoved(evt) {
         console.log(`onInventoryRemoved: ${Fmt.ofmt(evt)}`);
         let slotTag = `inv${evt.slot}`;
-        this.assignSlotSketch(slotTag);
+        let sketchTag = (this.data.slots[evt.slot]) ? this.data.slots[evt.slot].sketch.tag : null;
+        this.assignSlotSketch(slotTag, sketchTag);
         this.changeSlotCount(slotTag, this.data.counts[evt.slot]);
     }
 
@@ -543,6 +592,15 @@ class Inventory extends UxView {
     }
 
     // METHODS -------------------------------------------------------------
+
+    hide() {
+        if (this.itemPopup) {
+            this.itemPopup.destroy();
+            this.itemPopup = null;
+        }
+        this.reset();
+        super.hide();
+    }
 
     changeSlotCount(tag, count) {
         let cpanel = Hierarchy.find(this, (v) => v.tag === `${tag}.cpanel`);
@@ -650,14 +708,18 @@ class Inventory extends UxView {
         if (item.constructor.slot === 'belt') {
             for (let i=0; i<this.numBelt; i++) {
                 let button = Hierarchy.find(this, (v) => v.tag === `belt${i}`);
-                console.log(`tag: belt${i} button: ${button}`);
+                //console.log(`tag: belt${i} button: ${button}`);
                 this.markButton(button);
             }
         } else if (item.constructor.slot === 'weapon') {
             let button = Hierarchy.find(this, (v) => v.tag === `weapon`);
             this.markButton(button);
         } else if (item.constructor.slot === 'shielding') {
+            let button = Hierarchy.find(this, (v) => v.tag === `shielding`);
+            this.markButton(button);
         } else if (item.constructor.slot === 'reactor') {
+            let button = Hierarchy.find(this, (v) => v.tag === `reactor`);
+            this.markButton(button);
         } else if (item.constructor.slot === 'gadget') {
         }
     }
@@ -858,6 +920,7 @@ class ItemPopup extends UxView {
 
     destroy() {
         super.destroy();
+        this.evt.trigger(this.constructor.evtDestroyed, {actor: this});
         Events.ignore(Keys.evtDown, this.onKeyDown);
     }
 
@@ -875,6 +938,11 @@ class ItemPopup extends UxView {
     onUseClicked(evt) {
         console.log(`-- ${this} onUseClicked: ${Fmt.ofmt(evt)}`);
         console.log(`item: ${this.item}`);
+        let action = new UseAction({
+            target: this.item,
+        });
+        TurnSystem.postLeaderAction(action);
+        this.destroy();
     }
 
     setItem(item) {

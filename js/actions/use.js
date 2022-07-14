@@ -1,6 +1,7 @@
 export { UseAction };
 
 import { Action } from '../base/actions/action.js';
+import { Timer } from '../base/timer.js';
 
 class UseAction extends Action {
     // STATIC VARIABLES ----------------------------------------------------
@@ -23,7 +24,7 @@ class UseAction extends Action {
     onTimer(evt) {
         if (this.dbg) console.log(`${this} is done`);
         // item gets used
-        this.target.use(evt.actor);
+        this.target.use(this.actor);
         // finish
         this.finish();
     }

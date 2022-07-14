@@ -1,9 +1,9 @@
 export { Gem };
 
-    import { Assets } from '../base/assets.js';
+import { Assets } from '../base/assets.js';
 import { Fmt } from '../base/fmt.js';
-import { Generator } from '../base/generator.js';
 import { Prng } from '../base/prng.js';
+import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Item } from './item.js';
 
 class Gem extends Item {
@@ -72,7 +72,7 @@ class Gem extends Item {
 
     static descriptionForKind(kind) {
         if (this.discoveredKinds.has(kind)) {
-            let description = this.descriptionMap(kind) || this.dfltDescription;
+            let description = this.descriptionMap[kind] || this.dfltDescription;
             return description;
         } else {
             let secret = this.kindSecretMap[kind] || this.dfltSecret;
@@ -115,9 +115,6 @@ class Gem extends Item {
             configurable: true,
             get: (v) => this.constructor.descriptionForKind(this.kind),
         });
-        // -- bind events
-        this.onUse = this.onUse.bind(this);
-        this.evt.listen(this.constructor.evtUse, this.onUse);
     } 
 
     // SERIALIZATION -------------------------------------------------------
@@ -128,12 +125,12 @@ class Gem extends Item {
     }
 
     // EVENT HANDLERS ------------------------------------------------------
-    onUse(evt) {
+    use(actor) {
         switch (this.kind) {
             case 'health': {
-                let health = Math.min(evt.actor.healthMax, evt.actor.health+10);
-                if (health !== evt.actor.health) {
-                    UpdateSystem.eUpdate(evt.actor, {health: health });
+                let health = Math.min(actor.healthMax, actor.health+10);
+                if (health !== actor.health) {
+                    UpdateSystem.eUpdate(actor, {health: health });
                 }
                 break;
             }
@@ -141,6 +138,9 @@ class Gem extends Item {
 
         // update discovery
         if (!this.constructor.isDiscovered(this.kind)) this.constructor.discover(this.kind);
+
+        // trigger used event
+        this.evt.trigger(this.constructor.evtUse, {actor: this})
 
     }
 
