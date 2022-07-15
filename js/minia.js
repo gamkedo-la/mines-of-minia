@@ -33,6 +33,7 @@ import { Reactor } from "./entities/reactor.js";
 import { Gadget } from "./entities/gadget.js";
 import { Chest } from "./entities/chest.js";
 import { Fuelcell } from "./entities/fuelcell.js";
+import { Font } from "./base/font.js";
 
 class Minia extends Game {
     static states = {
@@ -117,6 +118,10 @@ class Minia extends Game {
             Token,
             Weapon,
         ]);
+        //Font.dfltFamily = "Medula One";
+        Font.dfltFamily = "Gugi";
+        //Font.dfltFamily = "Rubik Moonrocks";
+        //Font.dfltFamily = "Aldrich";
     }
 
     static ready() {
