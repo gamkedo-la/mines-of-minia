@@ -13,8 +13,7 @@ import { XForm } from './base/xform.js';
 
 class TitleState extends GameState {
     onAdvance(evt) {
-        console.log(`onKeyDown`);
-        Events.trigger(Game.evtStateChanged, {state: 'testproc'});
+        Events.trigger(Game.evtStateChanged, {state: 'play'});
     }
 
     async ready() {
