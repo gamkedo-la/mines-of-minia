@@ -5,6 +5,7 @@ import { Fmt }                  from './fmt.js';
 import { EvtStream }               from './event.js';
 import { Gizmo }                from './gizmo.js';
 import { Timer }                from './timer.js';
+import { Random } from './random.js';
 
 
 /** ========================================================================
@@ -40,6 +41,7 @@ class Animation extends Sketch {
         super.cpost(spec);
         this.loop = (spec.hasOwnProperty('loop')) ? spec.loop : true;
         this.cels = spec.cels || [new Cel()];
+        this.jitter = spec.hasOwnProperty('jitter') ? spec.jitter : false;
         this.cidx = 0;
         this.width = this.cel.sketch.width;
         this.height = this.cel.sketch.height;
@@ -119,7 +121,8 @@ class Animation extends Sketch {
             this.cels[this.cidx].sketch.show();
         }
         if (this.cels.length > 1) {
-            if (!this.timer) this.timer = new Timer({ttl: this.cel.ttl, cb: this.onTimer});
+            let ttl = (this.jitter) ? Random.rangeInt(0, this.cel.ttl) : this.cel.ttl;
+            if (!this.timer) this.timer = new Timer({ttl: ttl, cb: this.onTimer});
         }
     }
 
