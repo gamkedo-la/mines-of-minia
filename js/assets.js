@@ -273,9 +273,16 @@ let miniaAssets = [
     //Sprite.xspec({tag: 'blueChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*1, y: 0}),
     //Sprite.xspec({tag: 'greyChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*2, y: 0}),
     //Sprite.xspec({tag: 'greenChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*3, y: 0}),
-    Sprite.xspec({tag: 'player_portrait', img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 32*0, y: 0})}),
-
+    //Sprite.xspec({tag: 'brownChestopen.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*0, y: 16})}),
+    //Sprite.xspec({tag: 'blueChestopen.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*1, y: 16}),
+    //Sprite.xspec({tag: 'greyChestopen.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*2, y: 16}),
+    //Sprite.xspec({tag: 'greenChestopen.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*3, y: 16}),
     
+    //Sprite.xspec({tag: 'brownChestKey.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32*0, y: 32})}),
+    //Sprite.xspec({tag: 'blueChestKey.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32*1, y: 32})}),
+    //Sprite.xspec({tag: 'greyChestKey.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32*2, y: 32})}),
+    //Sprite.xspec({tag: 'greenChestKey.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32*3, y: 32})}),
+    Sprite.xspec({tag: 'player_portrait', img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 32*0, y: 0})}),
 
     /*
     Animation.xspec({tag: 'player_idler', x_cels: [
