@@ -60,6 +60,7 @@ class Sfx extends Gizmo {
             let gainNode = this.asys.ctx.createGain()
             gainNode.gain.value = this.volume;
             this.link = gainNode;
+            this.src.connect(gainNode)
         } else {
             this.link = this.src;
         }
