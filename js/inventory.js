@@ -775,7 +775,7 @@ class Inventory extends UxView {
 
     assignSlotSketch(slotTag, sketchTag) {
         let panel  = Hierarchy.find(this.bg, (v) => v.tag === `${slotTag}.panel`);
-        let sketch = (sketchTag) ? Assets.get(sketchTag, true, {lockRatio: true}) : Sketch.zero;
+        let sketch = (sketchTag) ? Assets.get(sketchTag, true, {lockRatio: true, state: 'carry'}) : Sketch.zero;
         console.log(`panel: ${panel} sketch: ${sketch}`);
         if (sketch) panel.sketch = sketch;
     }
@@ -947,7 +947,7 @@ class ItemPopup extends UxView {
 
     setItem(item) {
         // picture
-        this.picture.sketch = Assets.get(item.sketch.tag, true) || Sketch.zero;
+        this.picture.sketch = Assets.get(item.sketch.tag, true, { lockRatio: true, state: 'carry'}) || Sketch.zero;
         this.name.text = item.name;
         this.kind.text = `-- ${item.constructor.slot} --`;
         this.description.text = item.description;

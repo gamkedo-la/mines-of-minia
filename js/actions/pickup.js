@@ -4,6 +4,7 @@ import { Action } from '../base/actions/action.js';
 import { MoveAction } from '../base/actions/move.js';
 import { SerialAction } from '../base/actions/serialAction.js';
 import { Direction } from '../base/dir.js';
+import { UpdateSystem } from '../base/systems/updateSystem.js';
 
 class DoPickupAction extends Action {
     constructor(spec) {
@@ -23,6 +24,9 @@ class DoPickupAction extends Action {
             // -- hide item
             this.target.visible = false;
             this.target.active = false;
+            // -- update item state
+            UpdateSystem.eUpdate(this.target, { animState: 'carry'})
+            console.log(`target: ${this.target} animState: ${this.target.animState}`);
             // -- remove item from level
             this.target.orphan();
             if (this.sfx) this.sfx.play();

@@ -137,6 +137,72 @@ let miniaAssets = [
     Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
     Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
 
+    Animation.xspec({tag: 'reactor.1.carry', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*3, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*6, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*3, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'reactor.1.free', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*6, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'reactor.1',
+        sketches: {
+            'carry': new AssetRef({tag: 'reactor.1.carry'}),
+            'free': new AssetRef({tag: 'reactor.1.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'reactor.2.carry', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*4, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*7, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*4, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'reactor.2.free', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*1, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*7, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'reactor.2',
+        sketches: {
+            'carry': new AssetRef({tag: 'reactor.2.carry'}),
+            'free': new AssetRef({tag: 'reactor.2.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'reactor.3.carry', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*5, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*8, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 16*5, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'reactor.3.free', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*8, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'reactor.3',
+        sketches: {
+            'carry': new AssetRef({tag: 'reactor.3.carry'}),
+            'free': new AssetRef({tag: 'reactor.3.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
     Sprite.xspec({tag: 'chest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*0, y: 0})}),
     //Sprite.xspec({tag: 'blueChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*1, y: 0}),
     //Sprite.xspec({tag: 'greyChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*2, y: 0}),

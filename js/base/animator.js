@@ -69,8 +69,8 @@ class Animator extends Sketch {
     // EVENT HANDLERS ------------------------------------------------------
     onStateChange(evt) {
         let wantState = this.evtAccessor(evt);
-        //console.log(`wantState: ${wantState} from ${Fmt.ofmt(evt)}`);
         if (!wantState) return;
+        //console.log(`${this} wantState: ${wantState} from ${Fmt.ofmt(evt)}`);
         let fromState = (this.pendingState) ? this.pendingState : this.state;
         // check for no state change
         if (fromState === wantState) return;

@@ -11,6 +11,7 @@ class Reactor extends Item {
     static dfltPowerPerAP = .1;
     static dfltHealthPerAP = .1;
     static dfltFuelPerAP = .1;
+    static dfltAnimState = 'free';
 
     cpost(spec) {
         super.cpost(spec);
@@ -20,6 +21,7 @@ class Reactor extends Item {
         this.powerPerAP = spec.powerPerAP || this.constructor.dfltPowerPerAP;
         this.healthPerAP = spec.healthPerAP || this.constructor.dfltHealthPerAP;
         this.fuelPerAP = spec.fuelPerAP || this.constructor.dfltFuelPerAP;
+        this.animState = spec.animState || this.constructor.dfltAnimState;
         // FIXME: scaling for level
         // event handlers
         this.onEquip = this.onEquip.bind(this);

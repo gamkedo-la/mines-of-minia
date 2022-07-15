@@ -13,6 +13,7 @@ import { Enemy } from '../entities/enemy.js';
 import { Fuelcell } from '../entities/fuelcell.js';
 import { Gem } from '../entities/gem.js';
 import { Key } from '../entities/key.js';
+import { Reactor } from '../entities/reactor.js';
 import { Stairs } from '../entities/stairs.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
@@ -169,6 +170,18 @@ class Spawn {
             Key.xspec({
                 name: 'gold.key',
                 x_sketch: Assets.get('key.gold'),
+            }),
+            Reactor.xspec({
+                name: 'reactor.1',
+                x_sketch: Assets.get('reactor.1'),
+            }),
+            Reactor.xspec({
+                name: 'reactor.2',
+                x_sketch: Assets.get('reactor.2'),
+            }),
+            Reactor.xspec({
+                name: 'reactor.3',
+                x_sketch: Assets.get('reactor.3'),
             }),
             Token.xspec({
                 name: 'token',

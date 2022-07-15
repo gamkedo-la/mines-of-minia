@@ -64,6 +64,13 @@ class Item extends MiniaModel {
         }
     }
 
+    onSketchUpdate(evt) {
+        // update xform width/height
+        this.xform.width = this.sketch.width;
+        this.xform.height = this.sketch.height;
+        super.onSketchUpdate(evt);
+    }
+
     // METHODS -------------------------------------------------------------
 
     addCharm(charm) {
