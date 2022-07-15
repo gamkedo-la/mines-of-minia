@@ -881,17 +881,17 @@ class ItemPopup extends UxView {
                         new UxButton({
                             tag: 'item.use',
                             xform: new XForm({offset: 10, right:.67}),
-                            text: new Text({text: 'use'})
+                            text: new Text({text: '   use   '})
                         }),
                         new UxButton({
                             tag: 'item.drop',
                             xform: new XForm({offset: 10, left:.33, right:.33}),
-                            text: new Text({text: 'drop'})
+                            text: new Text({text: '  drop  '})
                         }),
                         new UxButton({
                             tag: 'item.throw',
                             xform: new XForm({offset: 10, left:.67}),
-                            text: new Text({text: 'throw'})
+                            text: new Text({text: ' throw '})
                         }),
                     ]
                 }),
