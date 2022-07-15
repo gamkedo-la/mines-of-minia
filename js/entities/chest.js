@@ -1,5 +1,6 @@
 export { Chest };
 
+    import { Config } from '../base/config.js';
 import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';

@@ -63,10 +63,8 @@ class Player extends Character {
         // -- sfx
         this.moveSfx = spec.moveSfx || Assets.get('player.step', true);
         // -- xform tweaks
-        this.xform.offx = this.xf
         this.xform.offx = -this.xform.width*.5;
         this.xform.offy = Config.tileSize*.5 - this.xform.height;
-        this.xform.origy = .75;
         //this.dbg = { xform: true };
     }
 

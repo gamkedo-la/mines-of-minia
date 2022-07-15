@@ -143,7 +143,8 @@ class LevelSystem extends System {
                 let h = e.xform.height;
                 e.xform.offx = -e.xform.width*.5;
                 if (h > Config.tileSize) {
-                    e.xform.offy = -Config.tileSize*.5;
+                    //e.xform.offy = -Config.tileSize*.5;
+                    e.xform.offy = Config.tileSize*.5 - e.xform.height;
                     // console.log(`${e} xform offy: ${e.xform.offy}`)
                 } else {
                     e.xform.offy = -e.xform.height*.5;
