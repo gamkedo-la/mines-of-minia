@@ -137,11 +137,11 @@ let miniaAssets = [
     Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
     Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
 
-    Sprite.xspec({tag: 'chest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 16*0, y: 0})}),
-    //Sprite.xspec({tag: 'blueChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 16*1, y: 0}),
-    //Sprite.xspec({tag: 'greyChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 16*2, y: 0}),
-    //Sprite.xspec({tag: 'greenChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 16*3, y: 0}),
-    Sprite.xspec({tag: 'player_portrait', img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*0, y: 0})}),
+    Sprite.xspec({tag: 'chest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*0, y: 0})}),
+    //Sprite.xspec({tag: 'blueChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*1, y: 0}),
+    //Sprite.xspec({tag: 'greyChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*2, y: 0}),
+    //Sprite.xspec({tag: 'greenChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*3, y: 0}),
+    Sprite.xspec({tag: 'player_portrait', img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 32*0, y: 0})}),
 
     
 
