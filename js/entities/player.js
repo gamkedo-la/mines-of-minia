@@ -38,7 +38,7 @@ class Player extends Character {
 
     cpost(spec) {
         super.cpost(spec);
-        this.weaponProficiencies = spec.weaponProficiencies || {};
+        this.weaponxps = spec.weaponxps || {};
         this.brawn = spec.brawn || this.constructor.dfltBrawn;
         this.spry = spec.spry || this.constructor.dfltSpry;
         this.savvy = spec.savvy || this.constructor.dfltSavvy;
@@ -72,10 +72,5 @@ class Player extends Character {
 
     // FIXME: add serialization
 
-    levelup() {
-        let update = {
-            lvl: this.lvl + 1,
-        }
-    }
 
 }

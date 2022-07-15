@@ -1,5 +1,6 @@
 export { XPSystem };
 
+import { Fmt } from '../base/fmt.js';
 import { System } from '../base/system.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Player } from '../entities/player.js';
@@ -10,6 +11,7 @@ class XPSystem extends System {
         super.cpost(spec);
         this.player;
         this.onEnemyDeath = this.onEnemyDeath.bind(this);
+        this.onPlayerAttack = this.onPlayerAttack.bind(this);
         this.active = false;
     }
 
@@ -20,10 +22,26 @@ class XPSystem extends System {
             if (actor.cls === 'Player') {
                 if (this.dbg) console.log(`-- ${this} player emerges: ${actor}`)
                 this.player = actor;
+                this.player.evt.listen(this.player.constructor.evtAttacked, this.onPlayerAttack);
             } else {
                 if (this.dbg) console.log(`-- ${this} tracking enemy death: ${actor}`)
                 actor.evt.listen(actor.constructor.evtDeath, this.onEnemyDeath);
             }
+        }
+    }
+
+    onPlayerAttack(evt) {
+        if (this.dbg) console.log(`${this} on player attack: ${evt.actor}`);
+        if (this.player) {
+            let kind = evt.weapon.kind;
+            let xp = this.player.weaponxps[kind] || 0;
+            let update = {
+                weaponxps: {
+                    [kind]: xp + 1,
+                }
+            }
+            UpdateSystem.eUpdate(this.player, update);
+            console.log(`player weaponxp: ${Fmt.ofmt(this.player.weaponxps)}`);
         }
     }
 

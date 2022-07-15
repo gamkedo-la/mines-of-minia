@@ -12,10 +12,13 @@ import { Direction } from '../base/dir.js';
 class Attack {
 
     static getWeaponProficiency(actor, weapon) {
-        let wpnps = actor.weaponProficiencies || {};
+        let xps = actor.weaponxps || {};
         let kind = weapon.kind || Weapon.dfltKind;
-        let wpnp = wpnps[kind] || 1;
-        return wpnp
+        let xp = xps[kind] || 1;
+        // arbitrary number here to calculate proficiency from xp
+        // -- this gives a proficiency of 100 at xp of 1000... may need to tweak this...
+        let prof = Math.min(100, Math.floor(Math.pow(xp, 1/1.5)));
+        return prof;
     }
     static computeWeaponProfiencyWeight(wpnp) {
         if (wpnp < 50) {
@@ -159,11 +162,12 @@ class AttackRollAction extends Action {
 
     setup() {
         this.timer = new Timer({ttl: this.ttl, cb: () => this.finish() });
+        let weapon = this.actor.weapon;
         // roll for hit
-        let hit = Attack.hit(this.actor, this.target, this.actor.weapon);
+        let hit = Attack.hit(this.actor, this.target, weapon);
         if (hit) {
-            this.actor.evt.trigger(this.actor.constructor.evtAttacked, { actor: this.actor, target: this.target });
-            let damage = Attack.damage(this.actor, this.target, this.actor.weapon);
+            this.actor.evt.trigger(this.actor.constructor.evtAttacked, { actor: this.actor, target: this.target, weapon: weapon });
+            let damage = Attack.damage(this.actor, this.target, weapon);
             if (damage) {
                 this.target.evt.trigger(this.target.constructor.evtDamaged, { actor: this.actor, target: this.target, damage: damage });
             }
