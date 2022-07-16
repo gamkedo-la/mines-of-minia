@@ -10,6 +10,7 @@ import { UxDbg } from '../base/uxDbg.js';
 import { XForm } from '../base/xform.js';
 import { Player } from '../entities/player.js';
 import { Reactor } from '../entities/reactor.js';
+import { Weapon } from '../entities/weapon.js';
 import { Discovery } from './discovery.js';
 import { Layout } from './layout.js';
 import { Outline } from './outline.js';
@@ -37,9 +38,15 @@ class ProcGen {
             identified: true,
             healthRegenPerAP: .2,
             fuelPerAP: .5,
-            sketch: Assets.get('reactor', true),
+            sketch: Assets.get('reactor.1', true),
         });
+        let weapon = new Weapon({
+            kind: 'poke',
+            sketch: Assets.get('poke.1', true),
+        });
+
         player.inventory.equip('reactor', reactor);
+        player.inventory.equip('weapon', weapon);
 
         return player;
     }
