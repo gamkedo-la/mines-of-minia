@@ -413,6 +413,34 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*23, y: 0})}), ttl: 50 }),
     ]}),
 
+    Animation.xspec({tag: 'golem_dyingr', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*24, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*25, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*26, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*27, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*28, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*29, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*30, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*29, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*30, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*29, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*30, y: 0})}), ttl: 150 }),
+    ]}),
+
+    Animation.xspec({tag: 'golem_dyingl', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*31, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*32, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*33, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*34, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*35, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*36, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*37, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*36, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*37, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*36, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*37, y: 0})}), ttl: 150 }),
+    ]}),
+
     Animator.xspec({
         tag: 'golem',
         sketches: {
@@ -420,6 +448,8 @@ let miniaAssets = [
             'idlel': new AssetRef({tag: 'golem_idlel'}),
             'mover': new AssetRef({tag: 'golem_mover'}),
             'movel': new AssetRef({tag: 'golem_movel'}),
+            'dyingr': new AssetRef({tag: 'golem_dyingr'}),
+            'dyingl': new AssetRef({tag: 'golem_dyingl'}),
         },
         state: 'idler',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,

@@ -148,7 +148,8 @@ class Character extends MiniaModel {
 
     onDeath(evt) {
         if (this.state !== 'dying') {
-            UpdateSystem.eUpdate(this, { state: 'dying', health: 0 });
+            let wantAnimState = (this.facing === Direction.east) ? 'dyingr' : 'dyingl';
+            UpdateSystem.eUpdate(this, { state: 'dying', health: 0, animState: wantAnimState });
             this.deathTimer = new Timer({ttl: this.deathTTL, cb: this.destroy.bind(this)});
         }
     }
@@ -173,7 +174,7 @@ class Character extends MiniaModel {
             if (wantAnimState !== this.animState) update.animState = wantAnimState;
         }
         if (!Util.empty(update)) {
-            //console.log(`-- trigger evt update: state: ${Fmt.ofmt(update)}`);
+            //console.log(`-- ${this} trigger evt update: state: ${Fmt.ofmt(update)}`);
             Object.assign(evt.update, update);
         }
     }
