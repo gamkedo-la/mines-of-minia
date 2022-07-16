@@ -150,23 +150,25 @@ class Spawn {
         // iterate items to spawn
         let x_spawns = [
             Weapon.xspec({
+                kind: 'poke',
                 name: 'poke.1',
                 x_sketch: Assets.get('poke.1'),
             }),
             Weapon.xspec({
-                name: 'poke.2',
-                x_sketch: Assets.get('poke.2'),
+                kind: 'hack',
+                name: 'hack.1',
+                x_sketch: Assets.get('hack.1'),
             }),
             Weapon.xspec({
-                name: 'poke.3',
-                x_sketch: Assets.get('poke.3'),
+                kind: 'hack',
+                name: 'hack.2',
+                x_sketch: Assets.get('hack.2'),
             }),
-            /*
             Weapon.xspec({
-                name: 'white.sword',
-                x_sketch: Assets.get('sword.white'),
+                kind: 'hack',
+                name: 'hack.3',
+                x_sketch: Assets.get('hack.3'),
             }),
-            */
             Gem.xspec({
                 name: 'health.gem',
                 kind: 'health',
