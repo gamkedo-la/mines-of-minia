@@ -104,7 +104,6 @@ class Animation extends Sketch {
             // otherwise, continue to advance cels while cel ttl is < overflow
             updated = true;
             if (this.cel.ttl >= overflow) {
-                if (this.tag === 'golem_movel') console.log(`star timer: ${this.cel.ttl-overflow}`);
                 this.timer = new Timer({ttl: this.cel.ttl-overflow, cb: this.onTimer});
                 break;
             } else {
@@ -123,7 +122,6 @@ class Animation extends Sketch {
         }
         if (this.cels.length > 1) {
             let ttl = (this.jitter) ? Random.rangeInt(0, this.cel.ttl) : this.cel.ttl;
-                if (this.tag === 'golem_movel') console.log(`star initial timer: ${ttl}`);
             if (!this.timer) this.timer = new Timer({ttl: ttl, cb: this.onTimer});
         }
     }

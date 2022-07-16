@@ -19,6 +19,8 @@ class MoveSystem extends System {
 
     cpost(spec) {
         super.cpost(spec);
+        this.xoverflows = {};
+        this.yoverflows = {};
         // bind event handlers 
         this.onEntityIntent = this.onEntityIntent.bind(this);
         this.evt.listen(UxView.evtIntent, this.onEntityIntent);
@@ -44,6 +46,8 @@ class MoveSystem extends System {
             if (this.store.has(actor.gid)) {
                 if (this.dbg) console.log(`${this} detected speed zeroed on moving object, update to no longer track ${actor}`);
                 this.store.delete(actor.gid, actor);
+                delete this.xoverflows[actor.gid];
+                delete this.yoverflows[actor.gid];
             }
         }
     }
@@ -54,13 +58,31 @@ class MoveSystem extends System {
         let speed = e.speed;
         if (!speed) return;
         speed *= evt.elapsed;
-
         // determine desired position based on speed and heading
-        let wantx = Math.round(e.xform.x + speed * Math.cos(e.heading));
-        let wanty = Math.round(e.xform.y + speed * Math.sin(e.heading));
-        if (wantx === e.x && wanty === e.y) return;
+        let dx = speed * Math.cos(e.heading) + (this.xoverflows[e.gid] || 0);
+        let dy = speed * Math.sin(e.heading) + (this.yoverflows[e.gid] || 0);
+        let wanty = e.xform.y;
+        let wantx = e.xform.x;
+        if (Math.abs(dx)>.001) {
+            if (Math.abs(dx) > 1) {
+                let rx = Math.round(dx);
+                wantx += rx;
+                this.xoverflows[e.gid] = dx-rx;
+            } else {
+                this.xoverflows[e.gid] = dx;
+            }
+        }
+        if (Math.abs(dy)>.001) {
+            if (Math.abs(dy) > 1) {
+                let ry = Math.round(dy);
+                wanty += ry;
+                this.yoverflows[e.gid] = dy-ry;
+            } else {
+                this.yoverflows[e.gid] = dy;
+            }
+        }
+        if (wantx === e.xform.x && wanty === e.xform.y) return;
         if (this.dbg) console.log(`move transform from: ${e.xform.x},${e.xform.y} to: ${wantx},${wanty}`);
-
         // handle update
         UpdateSystem.eUpdate(e, { xform: {x: wantx, y: wanty }});
     }

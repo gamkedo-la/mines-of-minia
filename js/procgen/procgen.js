@@ -26,7 +26,7 @@ class ProcGen {
             idx: 0,
             xform: new XForm({ stretch: false }),
             sketch: Assets.get('player', true),
-            maxSpeed: .25,
+            maxSpeed: Config.tileSize/.3/1000,
             z: 2,
             healthMax: 100,
             losRange: Config.tileSize*5,

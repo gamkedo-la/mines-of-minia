@@ -18,7 +18,7 @@ class Golem extends Enemy{
             xp: 5,
             healthMax: health,
             x_sketch: Assets.get('golem'),
-            maxSpeed: .2,
+            maxSpeed: Config.tileSize/.3/1000,
             losRange: Config.tileSize*5,
             aggroRange: Config.tileSize*5,
         }, spec);
