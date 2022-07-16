@@ -34,6 +34,7 @@ import { Gadget } from "./entities/gadget.js";
 import { Chest } from "./entities/chest.js";
 import { Fuelcell } from "./entities/fuelcell.js";
 import { Font } from "./base/font.js";
+import { Golem } from "./entities/golem.js";
 
 class Minia extends Game {
     static states = {
@@ -106,6 +107,7 @@ class Minia extends Game {
             Fuelcell,
             Gadget,
             Gem,
+            Golem,
             Key,
             Inventory,
             Level,

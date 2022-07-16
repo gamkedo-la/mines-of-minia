@@ -178,8 +178,8 @@ class AttackRollAction extends Action {
 class MeleeAttackAction extends SerialAction {
     static dfltTTL = 100;
     static dfltNudge = 8;
-    static dfltNudgeSpeed = .2;
-    static dfltNudgeAccel = .2;
+    static dfltNudgeSpeed = .15;
+    static dfltNudgeAccel = .1;
 
     constructor(spec) {
         super(spec);

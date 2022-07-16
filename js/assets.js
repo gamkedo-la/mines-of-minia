@@ -350,18 +350,6 @@ let miniaAssets = [
     //Sprite.xspec({tag: 'greenChestKey.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32*3, y: 32})}),
     Sprite.xspec({tag: 'player_portrait', img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 32*0, y: 0})}),
 
-    /*
-    Animation.xspec({tag: 'player_idler', x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-red.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-red.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
-    ]}),
-
-    Animation.xspec({tag: 'player_idlel', x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-darker-green.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bot-darker-green.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
-    ]}),
-    */
-
     Animation.xspec({tag: 'player_idler', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
@@ -379,11 +367,6 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 250 }),
     ]}),
-    Animation.xspec({tag: 'cog_brass', x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 16, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 32, y: 0})}), ttl: 150 }),
-    ]}),
     Animator.xspec({
         tag: 'player',
         sketches: {
@@ -395,6 +378,59 @@ let miniaAssets = [
         state: 'idler',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
+
+    Animation.xspec({tag: 'golem_idler', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'golem_mover', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*8, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*9, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*10, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*11, y: 0})}), ttl: 50 }),
+    ]}),
+
+    Animation.xspec({tag: 'golem_idlel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*12, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*13, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*14, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*15, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'golem_movel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*16, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*17, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*18, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*19, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*20, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*21, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*22, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/golem.png', width: 16, height: 32, x: 16*23, y: 0})}), ttl: 50 }),
+    ]}),
+
+    Animator.xspec({
+        tag: 'golem',
+        sketches: {
+            'idler': new AssetRef({tag: 'golem_idler'}),
+            'idlel': new AssetRef({tag: 'golem_idlel'}),
+            'mover': new AssetRef({tag: 'golem_mover'}),
+            'movel': new AssetRef({tag: 'golem_movel'}),
+        },
+        state: 'idler',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'cog_brass', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 16, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 32, y: 0})}), ttl: 150 }),
+    ]}),
+
     Animator.xspec({
         tag: 'door',
         sketches: {
