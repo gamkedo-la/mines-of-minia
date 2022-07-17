@@ -175,8 +175,8 @@ class Spawn {
                 kind: 'health',
             }),
             Gem.xspec({
-                name: 'health.gem',
-                kind: 'health',
+                name: 'test.gem',
+                kind: 'test',
             }),
             Key.xspec({
                 name: 'gold.key',

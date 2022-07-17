@@ -57,6 +57,7 @@ let miniaAssets = [
         borderColor: 'red',
     }),
 
+    /*
     Shape.xspec({
         tag: 'gem.blue',
         fill: true,
@@ -67,6 +68,7 @@ let miniaAssets = [
         color: 'blue',
         borderColor: 'red',
     }),
+    */
 
     Shape.xspec({
         tag: 'gem.gold',
@@ -136,6 +138,12 @@ let miniaAssets = [
     Rect.xspec({tag: 'idle', width: 12, height: 12, color: 'green'}),
     Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
     Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
+
+    Animation.xspec({tag: 'gem.blue', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
+    ]}),
 
     Animation.xspec({tag: 'reactor.1.carry', jitter: true, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 350 }),
