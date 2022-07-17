@@ -15,4 +15,16 @@ describe("grid implementation", () => {
         found = Array.from(Array.from(grid)).map((v)=>v.gid);
         expect(found).toEqual([1, 2, 3, 5, 6, 4]);
     });
+
+    for (const test of [
+        { idx1: 0, idx2: 3, xrslt: [0,1,2,3] },
+        { idx1: 0, idx2: 11, xrslt: [0,1,10,11] },
+    ]) {
+        it(`can determine indices between ${test.idx1} and ${test.idx2}`, ()=>{
+            let grid = new Grid({cols: 8, rows: 8, bounds: new Bounds(0,0,16,16)});
+            let rslt = Array.from(grid.idxsBetween(test.idx1, test.idx2));
+            expect(rslt).toEqual(test.xrslt);
+        });
+    };
+
 });

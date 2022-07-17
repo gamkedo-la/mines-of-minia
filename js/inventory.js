@@ -950,7 +950,7 @@ class ItemPopup extends UxView {
 
     onDropClicked(evt) {
         let action = new DropAction({
-            target: this.item,
+            item: this.item,
         });
         TurnSystem.postLeaderAction(action);
         this.destroy();

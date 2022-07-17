@@ -2,7 +2,9 @@ export { Grid };
 
 import { Array2D } from "./array2d.js";
 import { Bounds } from "./bounds.js";
+import { Direction } from "./dir.js";
 import { Fmt } from "./fmt.js";
+import { Mathf } from "./math.js";
 import { Util } from "./util.js";
 
 /** ========================================================================
@@ -202,6 +204,16 @@ class Grid extends Array2D {
         for (const gzo of this.findgidx(gidx, filter)) {
             let otherBounds = this.locator(gzo);
             if (Bounds.overlaps(otherBounds, bounds)) yield gzo;
+        }
+    }
+
+    *idxsBetween(idx1, idx2) {
+        let i1 = this.ifromidx(idx1);
+        let j1 = this.jfromidx(idx1);
+        let i2 = this.ifromidx(idx2);
+        let j2 = this.jfromidx(idx2);
+        for (const [i,j] of Util.pixelsInSegment(i1, j1, i2, j2)) {
+            yield this.idxfromij(i,j);
         }
     }
 

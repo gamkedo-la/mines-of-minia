@@ -4,6 +4,7 @@ import { Direction } from "./base/dir.js";
 import { Fmt } from "./base/fmt.js";
 import { Mathf } from "./base/math.js";
 import { Pathfinder } from "./base/pathfinder.js";
+import { Util } from "./base/util.js";
 import { UxGrid } from "./base/uxGrid.js";
 import { Vect } from "./base/vect.js";
 import { LevelGraph } from "./lvlGraph.js";
@@ -139,6 +140,10 @@ class Level extends UxGrid {
                 if (d<=range) yield oidx;
             }
         }
+    }
+
+    *idxsBetween(idx1, idx2) {
+        yield *super.idxsBetween(idx1, idx2);
     }
 
     *findidx(idx, filter=(v)=>true) {

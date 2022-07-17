@@ -13,7 +13,7 @@ class DropAction extends Action {
 
     constructor(spec) {
         super(spec);
-        this.target = spec.target;
+        this.item = spec.item;
         this.sfx = spec.sfx || this.constructor.dfltSfx;
     }
 
@@ -21,12 +21,12 @@ class DropAction extends Action {
         // this is an instant action
         this.done = true;
         // try to remove from actor inventory
-        this.actor.inventory.removeItem(this.target, true);
+        this.actor.inventory.removeItem(this.item, true);
         // -- show item
-        this.target.visible = true;
-        this.target.active = true;
+        this.item.visible = true;
+        this.item.active = true;
         // -- update item state/position
-        UpdateSystem.eUpdate(this.target, { 
+        UpdateSystem.eUpdate(this.item, { 
             animState: 'free',
             idx: this.actor.idx,
             xform: {
@@ -35,7 +35,7 @@ class DropAction extends Action {
             },
         });
         // -- remove item from level
-        this.target.evt.trigger(this.target.constructor.evtEmerged, {actor: this.target}, true);
+        this.item.evt.trigger(this.item.constructor.evtEmerged, {actor: this.item}, true);
         // play sound
         if (this.sfx) this.sfx.play();
     }
