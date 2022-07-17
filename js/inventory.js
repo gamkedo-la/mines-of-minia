@@ -39,7 +39,6 @@ class InventoryData {
         this.gadget2 = spec.gadget2;
         // -- bakcback
         this.slots = Array.from(spec.slots || []);
-        this.counts = Array.from(spec.counts || []);
         this.numSlots = spec.numSlots || 15;
         // -- belt
         this.belt = spec.belt || [];
@@ -75,15 +74,12 @@ class InventoryData {
     // EVENT HANDLERS ------------------------------------------------------
     onUse(evt) {
         let item = evt.actor;
-        // find slot for item
-        let itemIdx = this.slots.indexOf(item);
-        if (item && itemIdx !== -1) {
-            // remove item from inventory (decrement count and remove if zero)
-            this.remove(itemIdx);
-            // destroy item
-            if (this.counts[itemIdx] <= 0) item.destroy();
+        // remove item from inventory
+        this.removeItem(item);
+        // destroy object if applicable
+        if (!item.constructor.stackable || item.count <= 0) {
+            item.destroy();
         }
-
     }
 
     // METHODS -------------------------------------------------------------
@@ -103,8 +99,10 @@ class InventoryData {
             // is there a slot for this stack already
             for (let i=0; i<this.numSlots; i++) {
                 if (this.slots[i] && this.slots[i].name === item.name) {
-                    this.counts[i] += 1;
-                    this.evt.trigger(this.constructor.evtAdded, {actor: this.actor, slot: i, target: item});
+                    this.slots[i].count += 1;
+                    this.evt.trigger(this.constructor.evtAdded, {actor: this.actor, slot: i, target: this.slots[i]});
+                    // only keep one copy of item
+                    item.destroy();
                     return true;
                 }
             }
@@ -121,7 +119,6 @@ class InventoryData {
         this.slots[slot] = item;
         // item is usable?
         if (item.constructor.usable) item.evt.listen(item.constructor.evtUse, this.onUse);
-        this.counts[slot] = 1;
         this.evt.trigger(this.constructor.evtAdded, {actor: this.actor, slot: slot, target: item});
         return true;
     }
@@ -129,10 +126,10 @@ class InventoryData {
     remove(slot, all=false) {
         if (this.slots[slot]) {
             let item = this.slots[slot];
-            if (this.counts[slot] <= 1 || all) {
+            // is item stackable?
+            if (!item.constructor.stackable || (item.constructor.stackable && item.count <= 1) || all) {
                 let name = (this.slots[slot]) ? this.slots[slot].name : 'none';
                 this.slots[slot] = undefined;
-                this.counts[slot] = 0;
                 if (item && item.constructor.usable) item.evt.ignore(item.constructor.evtUse, this.onUse);
                 // check for belt reference -- remove if found
                 for (let i=0; i<this.beltSlots; i++) {
@@ -142,9 +139,8 @@ class InventoryData {
                     }
                 }
             } else {
-                this.counts[slot] -= 1;
+                item.count -= 1;
             }
-            console.log(`slot ${slot} count: ${this.counts[slot]}`);
             this.evt.trigger(this.constructor.evtRemoved, {actor: this.actor, slot: slot});
             return item;
         }
@@ -161,9 +157,6 @@ class InventoryData {
     }
 
     swap(slot1, slot2) {
-        let tmpc = this.counts[slot2];
-        this.counts[slot2] = this.counts[slot1];
-        this.counts[slot1] = tmpc;
         let tmpi = this.slots[slot2];
         this.slots[slot2] = this.slots[slot1];
         if (this.slots[slot2]) {
@@ -218,8 +211,8 @@ class InventoryData {
             if (slot === null) return;
         }
         // check for already on belt
-        if (this.belt.includes(item.name)) return;
-        this.belt[slot] = item.name;
+        if (this.belt.includes(item.gid)) return;
+        this.belt[slot] = item.gid;
         this.evt.trigger(this.constructor.evtBeltChanged, {actor: this.actor, slot: slot, target: item});
     }
 
@@ -228,7 +221,7 @@ class InventoryData {
         this.belt[slot] = null;
     }
 
-    get(name) {
+    getByName(name) {
         if (!name) return null;
         for (let i=0; i<this.numSlots; i++) {
             if (this.slots[i] && this.slots[i].name === name) return this.slots[i];
@@ -236,10 +229,16 @@ class InventoryData {
         return null;
     }
 
+    getByGid(gid) {
+        for (let i=0; i<this.numSlots; i++) {
+            if (this.slots[i] && this.slots[i].gid === gid) return this.slots[i];
+        }
+        return null;
+    }
+
     as_kv() {
         spec = {
             cls: this.constructor.name,
-            counts: Array.from(this.counts),
             x_slots: this.slots.map((v) => (v) ? v.as_kv() : null),
             numSlots: this.numSlots,
             belt: Array.from(this.belt),
@@ -474,9 +473,9 @@ class Inventory extends UxView {
 
     onSlotClick(evt) {
         console.log(`onSlotClick: ${Fmt.ofmt(evt)} selected: ${this.selected}`);
-        let item = this.getInventoryForButton(evt.actor);
+        let item = this.getItemForButton(evt.actor);
         if (this.selected) {
-            let selectedItem = this.getInventoryForButton(this.selected);
+            let selectedItem = this.getItemForButton(this.selected);
             // -- self: unselect
             if (this.selected === evt.actor) {
                 this.reset();
@@ -557,18 +556,19 @@ class Inventory extends UxView {
     onInventoryAdded(evt) {
         console.log(`onInventoryAdded: ${Fmt.ofmt(evt)}`);
         let slotTag = `inv${evt.slot}`;
-        let sketchTag = evt.target.sketch.tag;
+        let item = evt.target;
+        let sketchTag = item.sketch.tag;
         this.assignSlotSketch(slotTag, sketchTag);
-        console.log(`counts: ${this.data.counts}`);
-        this.changeSlotCount(slotTag, this.data.counts[evt.slot]);
+        this.changeSlotCount(slotTag, (item.constructor.stackable) ? item.count: 1);
     }
 
     onInventoryRemoved(evt) {
         console.log(`onInventoryRemoved: ${Fmt.ofmt(evt)}`);
         let slotTag = `inv${evt.slot}`;
-        let sketchTag = (this.data.slots[evt.slot]) ? this.data.slots[evt.slot].sketch.tag : null;
+        let item = this.data.slots[evt.slot];
+        let sketchTag = (item) ? item.sketch.tag : null;
         this.assignSlotSketch(slotTag, sketchTag);
-        this.changeSlotCount(slotTag, this.data.counts[evt.slot]);
+        this.changeSlotCount(slotTag, (item && item.constructor.stackable) ? item.count: 0);
     }
 
     onEquipChanged(evt) {
@@ -690,7 +690,7 @@ class Inventory extends UxView {
         return panel;
     }
 
-    getInventoryForButton(button) {
+    getItemForButton(button) {
         let tag = button.tag;
         if (tag.startsWith('inv')) {
             let idx = parseInt(tag.slice('3'));
@@ -700,7 +700,8 @@ class Inventory extends UxView {
         if (tag.startsWith('belt')) {
             let idx = parseInt(tag.slice('4'));
             console.log(`belt idx: ${idx}`);
-            return this.data.belt[idx];
+            let gid = this.data.belt[idx];
+            return this.data.getByGid(gid);
         }
         return this.data[tag];
     }
@@ -808,8 +809,8 @@ class Inventory extends UxView {
         }
         for (let i=0; i<this.data.numBelt; i++) {
             let slot = `belt{$i}`;
-            let name = this.data[slot];
-            let item = this.data.get(name);
+            let gid = this.data[slot];
+            let item = this.data.getByGid(gid);
             if (item) this.assignSlotSketch(slot, item.sketch.tag);
         }
 
@@ -956,6 +957,7 @@ class ItemPopup extends UxView {
     }
 
     setItem(item) {
+        console.log(`setItem: ${item}`);
         // picture
         this.picture.sketch = Assets.get(item.sketch.tag, true, { lockRatio: true, state: 'carry'}) || Sketch.zero;
         this.name.text = item.name;

@@ -21,7 +21,7 @@ class DropAction extends Action {
         // this is an instant action
         this.done = true;
         // try to remove from actor inventory
-        this.actor.inventory.removeItem(this.target);
+        this.actor.inventory.removeItem(this.target, true);
         // -- show item
         this.target.visible = true;
         this.target.active = true;

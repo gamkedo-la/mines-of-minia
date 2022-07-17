@@ -175,6 +175,10 @@ class Spawn {
                 kind: 'health',
             }),
             Gem.xspec({
+                name: 'health.gem',
+                kind: 'health',
+            }),
+            Gem.xspec({
                 name: 'test.gem',
                 kind: 'test',
             }),

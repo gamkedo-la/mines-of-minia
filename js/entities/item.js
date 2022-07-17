@@ -28,6 +28,8 @@ class Item extends MiniaModel {
         super.cpost(spec);
         this.name = spec.name || 'item';
         this.description = spec.description || this.constructor.dfltDescription;
+        // -- for stackable items...
+        this.count = spec.count || 1;
         // -- charms (buffs/debuffs)
         this.charms = [];
         if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
@@ -50,7 +52,8 @@ class Item extends MiniaModel {
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
             x_charms: this.charms.map((v) => v.as_kv()),
             name: this.name,
-            descriptoin: this.descriptoin,
+            description: this.description,
+            count: this.count,
         });
     }
 
