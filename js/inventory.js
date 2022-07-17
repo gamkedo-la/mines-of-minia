@@ -1,5 +1,6 @@
 export { Inventory, InventoryData };
 
+    import { DropAction } from './actions/drop.js';
     import { UseAction } from './actions/use.js';
 import { Assets } from './base/assets.js';
 import { Events, EvtStream } from './base/event.js';
@@ -667,6 +668,7 @@ class Inventory extends UxView {
             pressed: this.constructor.dfltPressed,
             unpressed: this.constructor.dfltUnpressed,
             highlight: this.constructor.dfltHighlight,
+            mouseClickedSound: Assets.get('menu.click', true),
         }, spec);
         let button = new UxButton(final);
         button.evt.listen(button.constructor.evtMouseClicked, cb);
@@ -911,8 +913,10 @@ class ItemPopup extends UxView {
         // event handlers
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onUseClicked = this.onUseClicked.bind(this);
+        this.onDropClicked = this.onDropClicked.bind(this);
         Events.listen(Keys.evtDown, this.onKeyDown);
         this.useButton.evt.listen(this.useButton.constructor.evtMouseClicked, this.onUseClicked);
+        this.dropButton.evt.listen(this.dropButton.constructor.evtMouseClicked, this.onDropClicked);
 
         if (spec.item) this.setItem(spec.item);
 
@@ -936,9 +940,15 @@ class ItemPopup extends UxView {
     }
 
     onUseClicked(evt) {
-        console.log(`-- ${this} onUseClicked: ${Fmt.ofmt(evt)}`);
-        console.log(`item: ${this.item}`);
         let action = new UseAction({
+            target: this.item,
+        });
+        TurnSystem.postLeaderAction(action);
+        this.destroy();
+    }
+
+    onDropClicked(evt) {
+        let action = new DropAction({
             target: this.item,
         });
         TurnSystem.postLeaderAction(action);

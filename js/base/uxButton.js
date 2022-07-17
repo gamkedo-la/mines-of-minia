@@ -22,6 +22,7 @@ class UxButton extends UxView {
     }
     cpost(spec) {
         super.cpost(spec);
+        if (spec.mouseClickedSound) this.mouseClickedSound = spec.mouseClickedSound;
         // -- bind event handlers
         this.onMouseToggle = this.onMouseToggle.bind(this);
         this.evt.listen(this.constructor.evtMouseDown, this.onMouseToggle);

@@ -492,6 +492,8 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'player.pickup', audio: new SfxRef({src: 'snd/pickup-ding.mp3'}), volume: .25 }),
     Sfx.xspec({ tag: 'blip.1', audio: new SfxRef({src: 'snd/blip-1.mp3'}) }),
     Sfx.xspec({ tag: 'player.step', audio: new SfxRef({src: 'snd/step-motor-whir-3.mp3'}), loop: false }),
+    Sfx.xspec({ tag: 'menu.click', audio: new SfxRef({src: 'snd/click.mp3'}), volume: .5, loop: false }),
+    Sfx.xspec({ tag: 'item.drop', audio: new SfxRef({src: 'snd/wet-thud.mp3'}), volume: .5, loop: false }),
     ...Template.walls('img/rock-walls.png', 'rock.wall'),
     ...Template.tiles('img/rock-floor.png', 'rock.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
     ...Template.tiles('img/rock-pit.png', 'rock.pit'),

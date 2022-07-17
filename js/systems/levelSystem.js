@@ -4,9 +4,11 @@ import { Config } from '../base/config.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Generator } from '../base/generator.js';
+import { Hierarchy } from '../base/hierarchy.js';
 import { Storage } from '../base/storage.js';
 import { System } from '../base/system.js';
 import { XForm } from '../base/xform.js';
+import { Item } from '../entities/item.js';
 import { Level } from '../level.js';
 import { ProcGen } from '../procgen/procgen.js';
 
@@ -29,7 +31,9 @@ class LevelSystem extends System {
         this.maxLevel = spec.maxLevel || this.constructor.dfltMaxLevel;
         // event handlers
         this.onLevelWanted = this.onLevelWanted.bind(this);
+        this.onItemEmerged = this.onItemEmerged.bind(this);
         this.evt.listen(this.constructor.evtWanted, this.onLevelWanted);
+        this.evt.listen(Item.evtEmerged, this.onItemEmerged);
         // FIXME: remove
         this.reset();
     }
@@ -41,6 +45,11 @@ class LevelSystem extends System {
             this.wantLevel = evt.level;
             this.active = true;
         }
+    }
+
+    onItemEmerged(evt) {
+        console.log(`item emerged: ${Fmt.ofmt(evt)}`);
+        this.lvl.adopt(evt.actor);
     }
 
     reset() {

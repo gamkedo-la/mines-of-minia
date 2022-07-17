@@ -16,6 +16,7 @@ class Item extends MiniaModel {
     static evtEquipped = 'item.equipped';
     static evtUnequipped = 'item.unequipped';
     static evtUse = 'item.use';
+    static evtEmerged = 'item.emerged';
 
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSketch() {

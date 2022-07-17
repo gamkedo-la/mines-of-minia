@@ -199,9 +199,11 @@ class Spawn {
                 x_sketch: Assets.get('token'),
                 count: 5,
             }),
+            /*
             Golem.xspec({
                 name: 'golem',
             }),
+            */
 
             /*
             Cog.xspec({

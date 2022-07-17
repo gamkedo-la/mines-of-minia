@@ -34,7 +34,6 @@ import { AggroSystem } from './systems/aggroSystem.js';
 import { Enemy } from './entities/enemy.js';
 import { WaitAction } from './base/actions/wait.js';
 import { MeleeAttackAction } from './actions/attack.js';
-import { Player } from './entities/player.js';
 import { FieryCharm } from './charms/fiery.js';
 import { Stairs } from './entities/stairs.js';
 import { LevelSystem } from './systems/levelSystem.js';
@@ -215,6 +214,8 @@ class PlayState extends GameState {
         let facing = (x > this.player.xform.x) ? Direction.east : (x < this.player.xform.x) ? Direction.west : 0;
         // what's at index?
         let others = Array.from(this.lvl.findidx(idx, (v) => v.idx === idx));
+
+        console.log(`others: ${others}`);
 
 
         if (others.some((v) => v instanceof Enemy)) {
