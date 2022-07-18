@@ -19,6 +19,10 @@ describe("grid implementation", () => {
     for (const test of [
         { idx1: 0, idx2: 3, xrslt: [0,1,2,3] },
         { idx1: 0, idx2: 11, xrslt: [0,1,10,11] },
+        { idx1: 11, idx2: 0, xrslt: [11,10,1,0] },
+        { idx1: 0, idx2: 27, xrslt: [0,9,18,27] },
+        { idx1: 0, idx2: 63, xrslt: [0,9,18,27,36,45,54,63] },
+        { idx1: 0, idx2: 56, xrslt: [0,8,16,24,32,40,48,56] },
     ]) {
         it(`can determine indices between ${test.idx1} and ${test.idx2}`, ()=>{
             let grid = new Grid({cols: 8, rows: 8, bounds: new Bounds(0,0,16,16)});

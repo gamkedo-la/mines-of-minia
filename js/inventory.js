@@ -1,7 +1,7 @@
 export { Inventory, InventoryData };
 
-    import { DropAction } from './actions/drop.js';
-    import { UseAction } from './actions/use.js';
+import { DropAction } from './actions/drop.js';
+import { UseAction } from './actions/use.js';
 import { Assets } from './base/assets.js';
 import { Events, EvtStream } from './base/event.js';
 import { Fmt } from './base/fmt.js';
@@ -448,6 +448,14 @@ class Inventory extends UxView {
     }
 
     destroy() {
+        console.log(`-- ${this} destroy`);
+        super.destroy();
+        /*
+        Events.ignore(Keys.evtDown, this.onKeyDown);
+        for (const child of this.children) {
+            child.destroy();
+        }
+        */
         Events.ignore(Keys.evtDown, this.onKeyDown);
         if (this.data) {
             this.data.evt.ignore(this.data.constructor.evtAdded, this.onInventoryAdded);
@@ -473,9 +481,9 @@ class Inventory extends UxView {
 
     onSlotClick(evt) {
         console.log(`onSlotClick: ${Fmt.ofmt(evt)} selected: ${this.selected}`);
-        let item = this.getItemForButton(evt.actor);
+        let item = this.getItemForSlot(evt.actor.tag);
         if (this.selected) {
-            let selectedItem = this.getItemForButton(this.selected);
+            let selectedItem = this.getItemForSlot(this.selected.tag);
             // -- self: unselect
             if (this.selected === evt.actor) {
                 this.reset();
@@ -678,6 +686,7 @@ class Inventory extends UxView {
     counter(spec, count) {
         let tag = spec.tag || 'counter';
         let panel = new UxPanel( Object.assign( {
+            tag: `${tag}.cpanel`,
             children: [
                 new UxText({
                     tag: `${tag}.ctext`,
@@ -690,20 +699,19 @@ class Inventory extends UxView {
         return panel;
     }
 
-    getItemForButton(button) {
-        let tag = button.tag;
-        if (tag.startsWith('inv')) {
-            let idx = parseInt(tag.slice('3'));
+    getItemForSlot(slot) {
+        if (slot.startsWith('inv')) {
+            let idx = parseInt(slot.slice('3'));
             console.log(`idx: ${idx}`);
             return this.data.slots[idx];
         }
-        if (tag.startsWith('belt')) {
+        if (slot.startsWith('belt')) {
             let idx = parseInt(tag.slice('4'));
             console.log(`belt idx: ${idx}`);
             let gid = this.data.belt[idx];
             return this.data.getByGid(gid);
         }
-        return this.data[tag];
+        return this.data[slot];
     }
 
     markCompatibleSlots(item) {
@@ -783,6 +791,39 @@ class Inventory extends UxView {
         if (sketch) panel.sketch = sketch;
     }
 
+    updateSlot(slot) {
+        // handle key/token slots
+        let count = 0;
+        let item;
+        if (slot.startswith('key') || slot === 'token') {
+            count = this.data[slot];
+        } else {
+            item = this.getItemForSlot(slot)
+            if (item) count = item.count;
+        }
+
+        // pull item for slot
+        // -- update sketch
+        if (item) {
+            let panel  = Hierarchy.find(this.bg, (v) => v.tag === `${slot}.panel`);
+            let sketch = (item.tag) ? Assets.get(item.tag, true, {lockRatio: true, state: 'carry'}) : Sketch.zero;
+            if (sketch) panel.sketch = sketch;
+        }
+        // -- update counter
+        if (item || slot())
+        count = (item) ? item.count : 0;
+        let cpanel = Hierarchy.find(this, (v) => v.tag === `${slot}.cpanel`);
+        let ctext = Hierarchy.find(this, (v) => v.tag === `${slot}.ctext`);
+        if (!count || count <= 1) {
+            cpanel.enable = false;
+            cpanel.visible = false;
+        } else {
+            cpanel.enable = true;
+            cpanel.visible = true;
+            ctext.text = `${count}`;
+        }
+    }
+
     setData(data) {
         if (this.data) {
             this.data.evt.ignore(this.data.constructor.evtAdded, this.onInventoryAdded);
@@ -803,16 +844,20 @@ class Inventory extends UxView {
             if (item) this.assignSlotSketch(slot, item.sketch.tag);
         }
         for (let i=0; i<this.data.numSlots; i++) {
-            let slot = `inv{$i}`;
-            let item = this.data[slot];
+            let slot = `inv${i}`;
+            let item = this.data.slots[i];
+            console.log(`inv slot: ${slot} item: ${item}`);
             if (item) this.assignSlotSketch(slot, item.sketch.tag);
         }
         for (let i=0; i<this.data.numBelt; i++) {
-            let slot = `belt{$i}`;
-            let gid = this.data[slot];
+            let slot = `belt${i}`;
+            let gid = this.data.belt[i];
             let item = this.data.getByGid(gid);
+            console.log(`belt slot: ${slot} item: ${item}`);
             if (item) this.assignSlotSketch(slot, item.sketch.tag);
         }
+        // keys/tokens
+        // FIXME
 
         // disable backpack slots
         for (let i=0; i<25; i++) {
@@ -915,17 +960,19 @@ class ItemPopup extends UxView {
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onUseClicked = this.onUseClicked.bind(this);
         this.onDropClicked = this.onDropClicked.bind(this);
+        this.onThrowClicked = this.onThrowClicked.bind(this);
         Events.listen(Keys.evtDown, this.onKeyDown);
         this.useButton.evt.listen(this.useButton.constructor.evtMouseClicked, this.onUseClicked);
         this.dropButton.evt.listen(this.dropButton.constructor.evtMouseClicked, this.onDropClicked);
+        this.throwButton.evt.listen(this.throwButton.constructor.evtMouseClicked, this.onThrowClicked);
 
         if (spec.item) this.setItem(spec.item);
 
     }
 
     destroy() {
+        console.log(`-- ${this} destroy`);
         super.destroy();
-        this.evt.trigger(this.constructor.evtDestroyed, {actor: this});
         Events.ignore(Keys.evtDown, this.onKeyDown);
     }
 
@@ -945,6 +992,7 @@ class ItemPopup extends UxView {
             target: this.item,
         });
         TurnSystem.postLeaderAction(action);
+        this.parent.hide();
         this.destroy();
     }
 
@@ -953,6 +1001,11 @@ class ItemPopup extends UxView {
             item: this.item,
         });
         TurnSystem.postLeaderAction(action);
+        this.destroy();
+    }
+
+    onThrowClicked(evt) {
+        this.parent.hide();
         this.destroy();
     }
 

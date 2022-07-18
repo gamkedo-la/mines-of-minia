@@ -103,12 +103,14 @@ class PlayState extends GameState {
                     tag: 'hudroot',
                     sketch: Sketch.zero,
                 }),
+
                 Inventory.xspec({
                     tag: 'inventory',
                     active: false,
                     visible: false,
                     x_xform: XForm.xspec({border: .1}),
                 }),
+
                 UxPanel.xspec({
                     tag: 'dbgroot',
                     sketch: Sketch.zero,
@@ -132,7 +134,7 @@ class PlayState extends GameState {
         this.slider = Hierarchy.find(this.view, (v) => v.tag === 'slider');
         this.viewport = Hierarchy.find(this.view, (v) => v.tag === 'viewport');
         this.lvl = Hierarchy.find(this.view, (v) => v.tag === 'lvl');
-        this.inventory = Hierarchy.find(this.view, (v) => v.tag === 'inventory');
+        //this.inventory = Hierarchy.find(this.view, (v) => v.tag === 'inventory');
         this.hudroot = Hierarchy.find(this.view, (v) => v.tag === 'hudroot');
         this.dbgroot = Hierarchy.find(this.view, (v) => v.tag === 'dbgroot');
 
@@ -147,7 +149,7 @@ class PlayState extends GameState {
         // -- FIXME: remove test charm
         this.player.addCharm( new FieryCharm() );
         this.lvl.adopt(this.player);
-        this.inventory.setData(this.player.inventory);
+        //this.inventory.setData(this.player.inventory);
         Systems.get('turn').leader = this.player;
 
         // -- camera
@@ -364,11 +366,32 @@ class PlayState extends GameState {
             }
 
             case 'i': {
-                let toggle = this.inventory.active;
+                let toggle;
+
+                if (this.inventory) {
+                    toggle = false;
+                    console.log(`-- destroy inventory: ${this.inventory}`);
+                    this.inventory.destroy();
+                    this.inventory = null;
+                } else {
+                    toggle = true;
+
+                    this.inventory = new Inventory({
+                        tag: 'inventory',
+                        xform: new XForm({border: .1}),
+                        data: this.player.inventory,
+                    });
+                    console.log(`-- new inventory: ${this.inventory}`)
+
+                    this.hudroot.adopt(this.inventory);
+
+                }
+                //let toggle = this.inventory.active;
                 //this.inventory = new Inventory();
-                this.inventory.visible = !toggle;
-                this.inventory.active = !toggle;
-                this.lvl.active = toggle;
+
+                //this.inventory.visible = !toggle;
+                //this.inventory.active = !toggle;
+                this.lvl.active = !toggle;
                 break;
             }
 

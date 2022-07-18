@@ -27,5 +27,11 @@ class Entity extends Gizmo {
         // -- event handling
         this.evt = new EvtStream();
     }
+    destroy() {
+        // superclass sends global destroy signal
+        super.destroy();
+        // send instance destroy signal
+        this.evt.trigger(this.constructor.evtDestroyed, {actor: this});
+    }
 
 }
