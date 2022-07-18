@@ -96,6 +96,10 @@ class PlayState extends GameState {
                                     tag: UxDbg.dfltTag,
                                     x_xform: XForm.xspec({origx: 0, origy:0}),
                                 }),
+                                UxPanel.xspec({
+                                    tag: 'overlay',
+                                    sketch: Sketch.zero,
+                                }),
                             ],
                         }),
                     ],
@@ -138,6 +142,7 @@ class PlayState extends GameState {
         this.viewport = Hierarchy.find(this.view, (v) => v.tag === 'viewport');
         this.lvl = Hierarchy.find(this.view, (v) => v.tag === 'lvl');
         //this.inventory = Hierarchy.find(this.view, (v) => v.tag === 'inventory');
+        this.overlay = Hierarchy.find(this.view, (v) => v.tag === 'overlay');
         this.hudroot = Hierarchy.find(this.view, (v) => v.tag === 'hudroot');
         this.dbgroot = Hierarchy.find(this.view, (v) => v.tag === 'dbgroot');
 
@@ -220,7 +225,11 @@ class PlayState extends GameState {
 
         // FIXME: test aim handler
         if (this.aim) this.aim.destroy();
-        this.aim = new AimHandler({lvl: this.lvl});
+        this.aim = new AimHandler({
+            lvl: this.lvl,
+            player: this.player,
+            overlay: this.overlay,
+        });
         this.aim.evt.listen(this.aim.constructor.evtDestroyed, ()=>{
             this.aim = null;
             console.log(`-- removing aim`);
