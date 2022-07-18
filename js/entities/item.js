@@ -1,5 +1,6 @@
 export { Item };
 
+import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
 import { MiniaModel } from './miniaModel.js';
 
@@ -108,6 +109,10 @@ class Item extends MiniaModel {
         this._sketch.height = this.xform.height;
         // render
         if (this._sketch && this._sketch.render) this._sketch.render(ctx, this.xform.minx, this.xform.miny);
+    }
+
+    toString() {
+        return Fmt.toString(this.constructor.name, this.gid, this.name, this.tag, this.x, this.y);
     }
 
 }

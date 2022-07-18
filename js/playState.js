@@ -104,12 +104,14 @@ class PlayState extends GameState {
                     sketch: Sketch.zero,
                 }),
 
+                /*
                 Inventory.xspec({
                     tag: 'inventory',
                     active: false,
                     visible: false,
                     x_xform: XForm.xspec({border: .1}),
                 }),
+                */
 
                 UxPanel.xspec({
                     tag: 'dbgroot',
@@ -381,6 +383,7 @@ class PlayState extends GameState {
                         xform: new XForm({border: .1}),
                         data: this.player.inventory,
                     });
+                    this.inventory.evt.listen(this.inventory.constructor.evtDestroyed, () => this.inventory = null);
                     console.log(`-- new inventory: ${this.inventory}`)
 
                     this.hudroot.adopt(this.inventory);

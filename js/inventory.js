@@ -47,7 +47,7 @@ class InventoryData {
         // -- other
         this.tokens = spec.tokens || 0;
         for (const keyKind of Key.kinds) {
-            let tag = `${keyKind}Keys`;
+            let tag = `key.${keyKind}`;
             this[tag] = spec[tag] || 0;
         }
         // -- actor (entity tied to inventory)
@@ -149,7 +149,7 @@ class InventoryData {
 
     removeItem(item, all=false) {
         for (let i=0; i<this.numSlots; i++) {
-            if (this.slots[i] && this.slots[i].name === item.name) {
+            if (this.slots[i] && this.slots[i].gid === item.gid) {
                 return this.remove(i, all);
             }
         }
@@ -162,7 +162,6 @@ class InventoryData {
         if (this.slots[slot2]) {
             this.evt.trigger(this.constructor.evtAdded, {actor: this.actor, slot: slot2, target: this.slots[slot2]});
         } else if (tmpi) {
-            console.log(`trigger removed`);
             this.evt.trigger(this.constructor.evtRemoved, {actor: this.actor, slot: slot2});
         }
         let oslot1 = this.slots[slot1];
@@ -170,7 +169,6 @@ class InventoryData {
         if (this.slots[slot1]) {
             this.evt.trigger(this.constructor.evtAdded, {actor: this.actor, slot: slot1, target: this.slots[slot1]});
         } else if (oslot1) {
-            console.log(`trigger removed 2`);
             this.evt.trigger(this.constructor.evtRemoved, {actor: this.actor, slot: slot1});
         }
     }
@@ -178,11 +176,9 @@ class InventoryData {
     swapBelt(slot1, slot2) {
         let tmpi = this.belt[slot2];
         this.belt[slot2] = this.belt[slot1];
-        console.log(`get ${slot2} ${this.belt[slot2]} => ${this.get(this.belt[slot2])}`);
-        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this.actor, slot: slot2, target: this.get(this.belt[slot2])});
+        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this.actor, slot: slot2, target: this.getByGid(this.belt[slot2])});
         this.belt[slot1] = tmpi;
-        console.log(`get ${slot1} ${this.belt[slot1]} => ${this.get(this.belt[slot1])}`);
-        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this.actor, slot: slot1, target: this.get(this.belt[slot1])});
+        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this.actor, slot: slot1, target: this.getByGid(this.belt[slot1])});
     }
 
     equip(slot, item) {
@@ -265,14 +261,14 @@ class InventoryData {
     }
 
     addKey(item) {
-        let tag = `${item.kind}Keys`;
+        let tag = `key.${item.kind}`;
         this[tag] += 1;
         this.evt.trigger(this.constructor.evtOtherChanged, {actor: this, slot: tag});
         item.destroy();
     }
 
     removeKey(keyKind) {
-        let tag = `${keyKind}Keys`;
+        let tag = `key.${keyKind}`;
         this[tag] += 1;
         if (this[tag] < 0) this[tag] = 0;
         this.evt.trigger(this.constructor.evtOtherChanged, {actor: this, slot: tag});
@@ -349,9 +345,9 @@ class Inventory extends UxView {
                         this.slot({ tag: 'shielding', xform: new XForm({left: .65, right: .1, top: .4, bottom: .4}), }),
 
                         this.counter({ tag: 'tokens', xform: new XForm({offset: 10, left: 0, right: .75, top: .8, bottom: .05}), sketch: Assets.get('token', true, {lockRatio: true})}),
-                        this.counter({ tag: 'goldKeys', xform: new XForm({offset: 10, left: .25, right: .5, top: .8, bottom: .05}), sketch: Assets.get('key.gold', true, {lockRatio: true})}),
-                        this.counter({ tag: 'blueKeys', xform: new XForm({offset: 10, left: .5, right: .25, top: .8, bottom: .05}), sketch: Assets.get('key.blue', true, {lockRatio: true})}),
-                        this.counter({ tag: 'darkKeys', xform: new XForm({offset: 10, left: .75, right: .0, top: .8, bottom: .05}), sketch: Assets.get('key.dark', true, {lockRatio: true})}),
+                        this.counter({ tag: 'key.gold', xform: new XForm({offset: 10, left: .25, right: .5, top: .8, bottom: .05}), sketch: Assets.get('key.gold', true, {lockRatio: true})}),
+                        this.counter({ tag: 'key.blue', xform: new XForm({offset: 10, left: .5, right: .25, top: .8, bottom: .05}), sketch: Assets.get('key.blue', true, {lockRatio: true})}),
+                        this.counter({ tag: 'key.dark', xform: new XForm({offset: 10, left: .75, right: .0, top: .8, bottom: .05}), sketch: Assets.get('key.dark', true, {lockRatio: true})}),
 
                     ],
                 }),
@@ -448,14 +444,7 @@ class Inventory extends UxView {
     }
 
     destroy() {
-        console.log(`-- ${this} destroy`);
         super.destroy();
-        /*
-        Events.ignore(Keys.evtDown, this.onKeyDown);
-        for (const child of this.children) {
-            child.destroy();
-        }
-        */
         Events.ignore(Keys.evtDown, this.onKeyDown);
         if (this.data) {
             this.data.evt.ignore(this.data.constructor.evtAdded, this.onInventoryAdded);
@@ -472,15 +461,14 @@ class Inventory extends UxView {
         if (!this.active) return;
         switch (evt.key) {
             case 'Escape': {
-                this.visible = false;
-                this.active = false;
+                this.destroy();
                 break;
             }
         }
     }
 
     onSlotClick(evt) {
-        console.log(`onSlotClick: ${Fmt.ofmt(evt)} selected: ${this.selected}`);
+        //console.log(`onSlotClick: ${Fmt.ofmt(evt)} selected: ${this.selected}`);
         let item = this.getItemForSlot(evt.actor.tag);
         if (this.selected) {
             let selectedItem = this.getItemForSlot(this.selected.tag);
@@ -532,7 +520,6 @@ class Inventory extends UxView {
                         // unequip
                         } else if (!item) {
                             let targetIdx = parseInt(evt.actor.tag.slice('3'));
-                            console.log(`-- unequip tag: ${this.selected.tag} idx: ${targetIdx}`);
                             this.data.unequip(this.selected.tag, targetIdx);
                         }
                     }
@@ -548,7 +535,6 @@ class Inventory extends UxView {
                 this.itemPopup.evt.dbg = true;
                 this.itemPopup.evt.listen(this.itemPopup.constructor.evtDestroyed, this.onPopupDestroy);
                 this.itemPopup.evt.dbg = false;
-                console.log(`=== popup evt: ${Array.from(this.itemPopup.evt.listeners.get('e.destroyed'))}`)
                 this.adopt(this.itemPopup);
                 this.markCompatibleSlots(item);
                 this.select(evt.actor);
@@ -562,42 +548,26 @@ class Inventory extends UxView {
     }
 
     onInventoryAdded(evt) {
-        console.log(`onInventoryAdded: ${Fmt.ofmt(evt)}`);
-        let slotTag = `inv${evt.slot}`;
-        let item = evt.target;
-        let sketchTag = item.sketch.tag;
-        this.assignSlotSketch(slotTag, sketchTag);
-        this.changeSlotCount(slotTag, (item.constructor.stackable) ? item.count: 1);
+        let slot = `inv${evt.slot}`;
+        this.updateSlot(slot);
     }
 
     onInventoryRemoved(evt) {
-        console.log(`onInventoryRemoved: ${Fmt.ofmt(evt)}`);
-        let slotTag = `inv${evt.slot}`;
-        let item = this.data.slots[evt.slot];
-        let sketchTag = (item) ? item.sketch.tag : null;
-        this.assignSlotSketch(slotTag, sketchTag);
-        this.changeSlotCount(slotTag, (item && item.constructor.stackable) ? item.count: 0);
+        let slot = `inv${evt.slot}`;
+        this.updateSlot(slot);
     }
 
     onEquipChanged(evt) {
-        let slotTag = evt.slot;
-        let sketchTag = (evt.target) ? evt.target.sketch.tag : null;
-        console.log(`onEquipChanged: ${Fmt.ofmt(evt)} slotTag: ${slotTag} sketchTag: ${sketchTag}`);
-        this.assignSlotSketch(slotTag, sketchTag);
+        this.updateSlot(evt.slot);
     }
 
     onBeltChanged(evt) {
-        let slotTag = `belt${evt.slot}`;
-        let sketchTag = (evt.target) ? evt.target.sketch.tag : null;
-        console.log(`onBeltChanged: ${Fmt.ofmt(evt)} slotTag: ${slotTag} sketchTag: ${sketchTag}`);
-        this.assignSlotSketch(slotTag, sketchTag);
+        let slot = `belt${evt.slot}`;
+        this.updateSlot(slot);
     }
 
     onOtherChanged(evt) {
-        let ctext = Hierarchy.find(this, (v) => v.tag === `${evt.slot}.ctext`);
-        let count = this.data[evt.slot];
-        console.log(`count for ${evt.slot}: ${count}`);
-        ctext.text = `${count}`;
+        this.updateSlot(evt.slot);
     }
 
     // METHODS -------------------------------------------------------------
@@ -686,12 +656,18 @@ class Inventory extends UxView {
     counter(spec, count) {
         let tag = spec.tag || 'counter';
         let panel = new UxPanel( Object.assign( {
-            tag: `${tag}.cpanel`,
             children: [
-                new UxText({
-                    tag: `${tag}.ctext`,
-                    text: new Text({text: count || '0', color: invTextColor}),
+                new UxPanel({
+                    tag: `${tag}.cpanel`,
                     xform: new XForm({left: .6, top: .75, bottom: -.25}),
+                    sketch: Sketch.zero,
+                    children: [
+                        new UxText({
+                            tag: `${tag}.ctext`,
+                            text: new Text({text: '0', color: invTextColor}),
+                            xform: new XForm({bottom: -.15}),
+                        }),
+                    ],
                 }),
             ],
         }, spec));
@@ -702,12 +678,10 @@ class Inventory extends UxView {
     getItemForSlot(slot) {
         if (slot.startsWith('inv')) {
             let idx = parseInt(slot.slice('3'));
-            console.log(`idx: ${idx}`);
             return this.data.slots[idx];
         }
         if (slot.startsWith('belt')) {
-            let idx = parseInt(tag.slice('4'));
-            console.log(`belt idx: ${idx}`);
+            let idx = parseInt(slot.slice('4'));
             let gid = this.data.belt[idx];
             return this.data.getByGid(gid);
         }
@@ -715,11 +689,9 @@ class Inventory extends UxView {
     }
 
     markCompatibleSlots(item) {
-        console.log(`item: ${item} slot: ${item.constructor.slot}`);
         if (item.constructor.slot === 'belt') {
             for (let i=0; i<this.numBelt; i++) {
                 let button = Hierarchy.find(this, (v) => v.tag === `belt${i}`);
-                //console.log(`tag: belt${i} button: ${button}`);
                 this.markButton(button);
             }
         } else if (item.constructor.slot === 'weapon') {
@@ -784,43 +756,43 @@ class Inventory extends UxView {
         if (this.itemPopup) this.itemPopup.destroy();
     }
 
-    assignSlotSketch(slotTag, sketchTag) {
-        let panel  = Hierarchy.find(this.bg, (v) => v.tag === `${slotTag}.panel`);
-        let sketch = (sketchTag) ? Assets.get(sketchTag, true, {lockRatio: true, state: 'carry'}) : Sketch.zero;
-        console.log(`panel: ${panel} sketch: ${sketch}`);
-        if (sketch) panel.sketch = sketch;
-    }
-
     updateSlot(slot) {
         // handle key/token slots
         let count = 0;
         let item;
-        if (slot.startswith('key') || slot === 'token') {
+        let updateSketch = true;
+        let updateCount = true;
+        let alwaysShowCount = true;
+        if (slot.startsWith('key') || slot === 'tokens') {
             count = this.data[slot];
+            updateSketch = false;
+        } else if (slot.startsWith('belt')) {
+            updateCount = false;
+            item = this.getItemForSlot(slot)
         } else {
             item = this.getItemForSlot(slot)
             if (item) count = item.count;
+            alwaysShowCount = false;
         }
-
         // pull item for slot
         // -- update sketch
-        if (item) {
+        if (updateSketch) {
             let panel  = Hierarchy.find(this.bg, (v) => v.tag === `${slot}.panel`);
-            let sketch = (item.tag) ? Assets.get(item.tag, true, {lockRatio: true, state: 'carry'}) : Sketch.zero;
+            let sketch = (item) ? Assets.get(item.sketch.tag, true, {lockRatio: true, state: 'carry'}) : Sketch.zero;
             if (sketch) panel.sketch = sketch;
         }
         // -- update counter
-        if (item || slot())
-        count = (item) ? item.count : 0;
-        let cpanel = Hierarchy.find(this, (v) => v.tag === `${slot}.cpanel`);
-        let ctext = Hierarchy.find(this, (v) => v.tag === `${slot}.ctext`);
-        if (!count || count <= 1) {
-            cpanel.enable = false;
-            cpanel.visible = false;
-        } else {
-            cpanel.enable = true;
-            cpanel.visible = true;
-            ctext.text = `${count}`;
+        if (updateCount) {
+            let cpanel = Hierarchy.find(this, (v) => v.tag === `${slot}.cpanel`);
+            let ctext = Hierarchy.find(this, (v) => v.tag === `${slot}.ctext`);
+            if (!alwaysShowCount && count <= 1) {
+                cpanel.enable = false;
+                cpanel.visible = false;
+            } else {
+                cpanel.enable = true;
+                cpanel.visible = true;
+                ctext.text = `${count}`;
+            }
         }
     }
 
@@ -839,25 +811,32 @@ class Inventory extends UxView {
         this.data.evt.listen(this.data.constructor.evtEquipChanged, this.onEquipChanged);
         this.data.evt.listen(this.data.constructor.evtOtherChanged, this.onOtherChanged);
         // fill out inventory sprites for anything currently in inventory
-        for (const slot of ['reactor', 'weapon', 'shielding', 'gadget0', 'gadget1', 'gadget2']) {
-            let item = this.data[slot];
-            if (item) this.assignSlotSketch(slot, item.sketch.tag);
+        for (const slot of ['reactor', 'weapon', 'shielding', 'gadget0', 'gadget1', 'gadget2', 'tokens']) {
+            this.updateSlot(slot);
         }
         for (let i=0; i<this.data.numSlots; i++) {
             let slot = `inv${i}`;
-            let item = this.data.slots[i];
-            console.log(`inv slot: ${slot} item: ${item}`);
-            if (item) this.assignSlotSketch(slot, item.sketch.tag);
+            this.updateSlot(slot);
         }
         for (let i=0; i<this.data.numBelt; i++) {
             let slot = `belt${i}`;
-            let gid = this.data.belt[i];
-            let item = this.data.getByGid(gid);
-            console.log(`belt slot: ${slot} item: ${item}`);
-            if (item) this.assignSlotSketch(slot, item.sketch.tag);
+            this.updateSlot(slot);
         }
-        // keys/tokens
-        // FIXME
+        // keys
+        for (const kind of Key.kinds) {
+            let slot = `key.${kind}`;
+            this.updateSlot(slot);
+        }
+
+        // disable gadget slots
+        for (let i=2; i+1>this.numGadgets; i--) {
+            this.toggleSlot(`gadget${i}`, false);
+        }
+
+        // disable excess belts
+        for (let i=4; i+1>this.numBelt; i--) {
+            this.toggleSlot(`belt${i}`, false);
+        }
 
         // disable backpack slots
         for (let i=0; i<25; i++) {
@@ -971,7 +950,6 @@ class ItemPopup extends UxView {
     }
 
     destroy() {
-        console.log(`-- ${this} destroy`);
         super.destroy();
         Events.ignore(Keys.evtDown, this.onKeyDown);
     }
@@ -1010,7 +988,6 @@ class ItemPopup extends UxView {
     }
 
     setItem(item) {
-        console.log(`setItem: ${item}`);
         // picture
         this.picture.sketch = Assets.get(item.sketch.tag, true, { lockRatio: true, state: 'carry'}) || Sketch.zero;
         this.name.text = item.name;
