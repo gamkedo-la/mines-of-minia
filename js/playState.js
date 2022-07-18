@@ -50,6 +50,7 @@ import { FuelSystem } from './systems/fuelSystem.js';
 import { ProcGen } from './procgen/procgen.js';
 import { PowerRegenSystem } from './systems/powerRegenSystem.js';
 import { XPSystem } from './systems/xpSystem.js';
+import { AimHandler } from './aimHandler.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -178,11 +179,13 @@ class PlayState extends GameState {
         this.onLevelClick = this.onLevelClick.bind(this);
         this.onLevelWanted = this.onLevelWanted.bind(this);
         this.onLevelLoaded = this.onLevelLoaded.bind(this);
+        this.onAimWanted = this.onAimWanted.bind(this);
         this.onLoSUpdate({actor: this.player});
         Systems.get('los').evt.listen(Systems.get('los').constructor.evtUpdated, this.onLoSUpdate);
         this.lvl.evt.listen(this.lvl.constructor.evtMouseClicked, this.onLevelClick);
         Events.listen(Keys.evtDown, this.onKeyDown);
         Events.listen(Game.evtTock, this.onTock);
+        Events.listen('aim.wanted', this.onAimWanted);
         Events.listen(LevelSystem.evtWanted, this.onLevelWanted);
         Events.listen(LevelSystem.evtLoaded, this.onLevelLoaded);
 
@@ -210,6 +213,19 @@ class PlayState extends GameState {
         if (evt.actor === this.player) {
             this.lvl.updateLoS(this.player.losIdxs);
         }
+    }
+
+    onAimWanted(evt) {
+        console.log(`-- ${this} onAimWanted: ${Fmt.ofmt(evt)}`);
+
+        // FIXME: test aim handler
+        if (this.aim) this.aim.destroy();
+        this.aim = new AimHandler({lvl: this.lvl});
+        this.aim.evt.listen(this.aim.constructor.evtDestroyed, ()=>{
+            this.aim = null;
+            console.log(`-- removing aim`);
+        });
+
     }
 
     moveToIdx(idx) {

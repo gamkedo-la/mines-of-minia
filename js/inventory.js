@@ -983,8 +983,9 @@ class ItemPopup extends UxView {
     }
 
     onThrowClicked(evt) {
-        this.parent.hide();
+        this.parent.destroy();
         this.destroy();
+        Events.trigger('aim.wanted');
     }
 
     setItem(item) {
