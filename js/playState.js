@@ -51,6 +51,7 @@ import { ProcGen } from './procgen/procgen.js';
 import { PowerRegenSystem } from './systems/powerRegenSystem.js';
 import { XPSystem } from './systems/xpSystem.js';
 import { AimHandler } from './aimHandler.js';
+import { InteractHandler } from './interactHandler.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -166,6 +167,7 @@ class PlayState extends GameState {
         this.camera.evt.listen(this.camera.constructor.evtUpdated, (evt) => Events.trigger(RenderSystem.evtRenderNeeded));
 
         // -- pathfinding
+        /*
         this.lvlgraph = new LevelGraph({
             lvl: this.lvl,
         })
@@ -174,6 +176,7 @@ class PlayState extends GameState {
             heuristicFcn: this.lvl.idxdist.bind(this.lvl),
             dbg: false,
         });
+        */
 
         // bind event handlers
         //this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
@@ -181,22 +184,39 @@ class PlayState extends GameState {
         //this.player.evt.listen(this.player.constructor.evtUpdated, this.onPlayerUpdate);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onTock = this.onTock.bind(this);
-        this.onLevelClick = this.onLevelClick.bind(this);
+        //this.onLevelClick = this.onLevelClick.bind(this);
         this.onLevelWanted = this.onLevelWanted.bind(this);
         this.onLevelLoaded = this.onLevelLoaded.bind(this);
-        this.onAimWanted = this.onAimWanted.bind(this);
+        this.onHandlerWanted = this.onHandlerWanted.bind(this);
+        this.onTurnDone = this.onTurnDone.bind(this);
         this.onLoSUpdate({actor: this.player});
         Systems.get('los').evt.listen(Systems.get('los').constructor.evtUpdated, this.onLoSUpdate);
-        this.lvl.evt.listen(this.lvl.constructor.evtMouseClicked, this.onLevelClick);
+        //this.lvl.evt.listen(this.lvl.constructor.evtMouseClicked, this.onLevelClick);
         Events.listen(Keys.evtDown, this.onKeyDown);
         Events.listen(Game.evtTock, this.onTock);
-        Events.listen('aim.wanted', this.onAimWanted);
+        Events.listen('handler.wanted', this.onHandlerWanted);
         Events.listen(LevelSystem.evtWanted, this.onLevelWanted);
         Events.listen(LevelSystem.evtLoaded, this.onLevelLoaded);
+        Events.listen(TurnSystem.evtDone, this.onTurnDone)
 
         // -- load level
         Events.trigger(LevelSystem.evtWanted, { level: 1 });
 
+        // setup input handler
+        this.handler;
+        this.loadHandler('interact');
+
+    }
+
+    // FIXME
+    destroy() {
+        super.destroy();
+        Events.ignore(Keys.evtDown, this.onKeyDown);
+        Events.ignore(Game.evtTock, this.onTock);
+        Events.ignore('handler.wanted', this.onHandlerWanted);
+        Events.ignore(LevelSystem.evtWanted, this.onLevelWanted);
+        Events.ignore(LevelSystem.evtLoaded, this.onLevelLoaded);
+        Events.ignore(TurnSystem.evtDone, this.onTurnDone)
     }
 
     onLevelWanted(evt) {
@@ -220,9 +240,11 @@ class PlayState extends GameState {
         }
     }
 
-    onAimWanted(evt) {
-        console.log(`-- ${this} onAimWanted: ${Fmt.ofmt(evt)}`);
+    onHandlerWanted(evt) {
+        console.log(`-- ${this} onHandlerWanted: ${Fmt.ofmt(evt)}`);
+        this.loadHandler(evt.which);
 
+        /*
         // FIXME: test aim handler
         if (this.aim) this.aim.destroy();
         this.aim = new AimHandler({
@@ -234,9 +256,51 @@ class PlayState extends GameState {
             this.aim = null;
             console.log(`-- removing aim`);
         });
+        */
 
     }
 
+    onTurnDone(evt) {
+        console.log(`-- ${this} onTurnDone: ${Fmt.ofmt(evt)}`);
+        if (evt.which !== 'follower') return;
+        // re-enable interact handler
+        if (!this.handler) {
+            this.loadHandler('interact');
+        }
+    }
+
+    loadHandler(which) {
+        if (this.handler) {
+            this.handler.destroy();
+            console.log(`-- clearing handler: ${this.handler}`);
+            this.handler = null;
+        }
+        switch(which) {
+            case 'aim': {
+                this.handler = new AimHandler({
+                    lvl: this.lvl,
+                    player: this.player,
+                    overlay: this.overlay,
+                });
+                break;
+            }
+            case 'interact': {
+                this.handler = new InteractHandler({
+                    lvl: this.lvl,
+                    player: this.player,
+                    overlay: this.overlay,
+                });
+            }
+        }
+        if (this.handler) {
+            this.handler.evt.listen(this.handler.constructor.evtDestroyed, ()=>{
+                console.log(`-- removing destroyed handler: ${this.handler}`);
+                this.handler = null;
+            });
+        }
+    }
+
+    /*
     moveToIdx(idx) {
         let x = this.lvl.xfromidx(idx, true);
         let y = this.lvl.yfromidx(idx, true);
@@ -281,6 +345,7 @@ class PlayState extends GameState {
         TurnSystem.postLeaderAction(new WaitAction());
         //ActionSystem.assign(this.player, new EndTurnAction());
     }
+    */
 
     onKeyDown(evt) {
         //console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
@@ -338,6 +403,7 @@ class PlayState extends GameState {
                 break;
             }
 
+            /*
             case 'q': {
                 let nidx = this.lvl.idxfromdir(this.player.idx, Direction.northWest);
                 this.moveToIdx(nidx);
@@ -391,6 +457,7 @@ class PlayState extends GameState {
                 console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel} power: ${this.player.power} xp: ${this.player.xp}`);
                 break;
             }
+            */
 
             case 'i': {
                 let toggle;
@@ -408,7 +475,10 @@ class PlayState extends GameState {
                         xform: new XForm({border: .1}),
                         data: this.player.inventory,
                     });
-                    this.inventory.evt.listen(this.inventory.constructor.evtDestroyed, () => this.inventory = null);
+                    this.inventory.evt.listen(this.inventory.constructor.evtDestroyed, () => {
+                        this.inventory = null;
+                        this.lvl.active = true;
+                    });
                     console.log(`-- new inventory: ${this.inventory}`)
 
                     this.hudroot.adopt(this.inventory);
@@ -429,34 +499,6 @@ class PlayState extends GameState {
     onTock(evt) {
         Stats.count('game.tock')
         Stats.update(evt);
-    }
-
-    onLevelClick(evt) {
-        console.log(`================================================================================`);
-        console.log(`-- state onLevelClick`);
-        if (!this.controlsActive) return;
-        let lmouse = this.lvl.xform.getLocal(new Vect(evt.mouse.x, evt.mouse.y));
-        let idx = this.lvl.idxfromxy(lmouse.x, lmouse.y);
-        console.log(`-- local: ${lmouse} idx: ${idx}`);
-
-        this.dbg = true;
-
-        let path = this.pathfinder.find(this.player, this.player.idx, idx);
-        if (path) {
-            UxDbg.clear();
-            let lx = this.player.xform.x;
-            let ly = this.player.xform.y;
-            let first = true;
-            for (const action of path.actions) {
-                if (this.dbg && action.constructor.name === 'MoveAction') {
-                    UxDbg.drawLine(lx, ly, action.x, action.y);
-                    lx = action.x;
-                    ly = action.y;
-                }
-                TurnSystem.postLeaderAction(action);
-            }
-        }
-
     }
 
     stop() {

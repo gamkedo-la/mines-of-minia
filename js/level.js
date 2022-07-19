@@ -61,6 +61,7 @@ class Level extends UxGrid {
         super.onResized(evt);
     }
 
+    /*
     onMouseClicked(evt) {
         super.onMouseClicked(evt);
         console.log(`lvl: ${this} clicked: ${Fmt.ofmt(evt)}`);
@@ -69,6 +70,7 @@ class Level extends UxGrid {
         let idx = this.grid.idxfromxy(lmouse.x, lmouse.y);
         console.log(`local: ${lmouse} idx: ${idx} values: ${Array.from(this.findidx(idx))}`);
     }
+    */
 
     // METHODS -------------------------------------------------------------
 

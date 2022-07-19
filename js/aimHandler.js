@@ -54,6 +54,7 @@ class AimHandler extends Entity {
         console.log(`-- ${this} onKeyDown: ${Fmt.ofmt(evt)}`);
         switch (evt.key) {
             case 'Escape': {
+                Events.trigger('handler.wanted', {which: 'interact'});
                 this.destroy();
                 break;
             }
@@ -62,6 +63,9 @@ class AimHandler extends Entity {
 
     onLevelClick(evt) {
         console.log(`-- ${this} onLevelClick: ${Fmt.ofmt(evt)}`);
+        let lmouse = this.lvl.xform.getLocal(new Vect(evt.mouse.x, evt.mouse.y));
+        let idx = this.lvl.idxfromxy(lmouse.x, lmouse.y);
+        console.log(`idx: ${idx}`);
     }
 
     onMouseMoved(evt) {
