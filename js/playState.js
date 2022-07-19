@@ -39,6 +39,7 @@ import { PowerRegenSystem } from './systems/powerRegenSystem.js';
 import { XPSystem } from './systems/xpSystem.js';
 import { AimHandler } from './aimHandler.js';
 import { InteractHandler } from './interactHandler.js';
+import { Hud } from './hud.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -92,6 +93,9 @@ class PlayState extends GameState {
                 UxPanel.xspec({
                     tag: 'hudroot',
                     sketch: Sketch.zero,
+                    x_children: [
+                        Hud.xspec(),
+                    ],
                 }),
 
                 UxPanel.xspec({
