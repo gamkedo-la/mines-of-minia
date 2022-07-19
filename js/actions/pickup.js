@@ -52,7 +52,8 @@ class PickupAction extends SerialAction {
             accel: .001, 
             snap: true, 
             facing: facing, 
-            update: { idx: this.target.idx } 
+            sfx: this.actor.moveSfx,
+            update: { idx: this.target.idx },
         }));
 
         this.subs.push( new DoPickupAction({

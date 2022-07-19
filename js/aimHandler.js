@@ -1,6 +1,8 @@
 export { AimHandler };
 
-    import { Assets } from './base/assets.js';
+import { DropAction } from './actions/drop.js';
+import { ThrowAction } from './actions/throw.js';
+import { Assets } from './base/assets.js';
 import { Entity } from './base/entity.js';
 import { Events } from './base/event.js';
 import { Fmt } from './base/fmt.js';
@@ -10,6 +12,8 @@ import { UpdateSystem } from './base/systems/updateSystem.js';
 import { UxPanel } from './base/uxPanel.js';
 import { Vect } from './base/vect.js';
 import { XForm } from './base/xform.js';
+import { TurnSystem } from './systems/turnSystem.js';
+
 
 /**
  * A mini-state to handle inputs during aiming
@@ -20,6 +24,7 @@ class AimHandler extends Entity {
         this.lvl = spec.lvl;
         this.player = spec.player;
         this.overlay = spec.overlay;
+        this.projectile = spec.projectile;
         // create a reticle
         this.reticle = new UxPanel({
             sketch: Assets.get('reticle.aim.ok', true),
@@ -51,7 +56,7 @@ class AimHandler extends Entity {
     }
 
     onKeyDown(evt) {
-        console.log(`-- ${this} onKeyDown: ${Fmt.ofmt(evt)}`);
+        //console.log(`-- ${this} onKeyDown: ${Fmt.ofmt(evt)}`);
         switch (evt.key) {
             case 'Escape': {
                 Events.trigger('handler.wanted', {which: 'interact'});
@@ -62,10 +67,38 @@ class AimHandler extends Entity {
     }
 
     onLevelClick(evt) {
-        console.log(`-- ${this} onLevelClick: ${Fmt.ofmt(evt)}`);
+        //console.log(`-- ${this} onLevelClick: ${Fmt.ofmt(evt)}`);
         let lmouse = this.lvl.xform.getLocal(new Vect(evt.mouse.x, evt.mouse.y));
         let idx = this.lvl.idxfromxy(lmouse.x, lmouse.y);
-        console.log(`idx: ${idx}`);
+        // -- click must be within player's los
+        if (!this.player.losIdxs.includes(idx)) return;
+        // test path to target
+        let pathidxs = Array.from(this.lvl.idxsBetween(this.player.idx, idx));
+        let targetIdx = idx;
+        for (let i=1; i<pathidxs.length; i++) {
+            if (this.lvl.anyidx(pathidxs[i], (v) => (v.idx === pathidxs[i]) && (this.projectile.blockedBy & v.blocks))) {
+                targetIdx = pathidxs[i-1];
+                break;
+            }
+        }
+        //console.log(`pathidxs: ${pathidxs} aim: ${idx} player: ${this.player.idx} target: ${targetIdx}`);
+        // check for target drop at player's feet
+        let action;
+        if (this.player.idx === targetIdx) {
+            action = new DropAction({
+                item: this.projectile,
+            });
+        // otherwise throw to index
+        } else {
+            action = new ThrowAction({
+                item: this.projectile,
+                idx: targetIdx,
+                x: this.lvl.xfromidx(targetIdx, true),
+                y: this.lvl.yfromidx(targetIdx, true),
+            });
+        }
+        TurnSystem.postLeaderAction(action);
+        this.destroy();
     }
 
     onMouseMoved(evt) {

@@ -145,7 +145,7 @@ class Level extends UxGrid {
     }
 
     *idxsBetween(idx1, idx2) {
-        yield *super.idxsBetween(idx1, idx2);
+        yield *this.grid.idxsBetween(idx1, idx2);
     }
 
     *findidx(idx, filter=(v)=>true) {

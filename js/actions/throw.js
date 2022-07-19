@@ -1,75 +1,95 @@
-export { ThrowAction };
+export { ThrowToAction, ThrowAction };
 
+import { Action } from '../base/actions/action.js';
+import { MoveAction } from '../base/actions/move.js';
+import { PlaySfxAction } from '../base/actions/playSfx.js';
 import { SerialAction } from '../base/actions/serialAction.js';
+import { Assets } from '../base/assets.js';
+import { ActionSystem } from '../base/systems/actionSystem.js';
 import { DropAction } from './drop.js';
 
+class ThrowToAction extends Action {
+    static dfltSpeed = .15;
+    static dfltAccel = 0;
+
+    constructor(spec={}) {
+        super(spec);
+        this.item = spec.item;
+        this.idx = spec.idx;
+        this.x = spec.x;
+        this.y = spec.y;
+        this.speed = spec.speed || this.constructor.dfltSpeed;
+        this.accel = spec.accel || this.constructor.dfltAccel;
+        this.onMoveDone = this.onMoveDone.bind(this);
+    }
+
+    setup() {
+        // move item to target
+        let action = new MoveAction({
+            x: this.x,
+            y: this.y,
+            speed: this.speed,
+            accel: this.accel,
+            range: 2,
+            stopAtTarget: true,
+            snap: true,
+            update: { idx: this.idx},
+        });
+        action.evt.listen(action.constructor.evtDone, this.onMoveDone);
+        ActionSystem.assign(this.item, action);
+    }
+
+    onMoveDone(evt) {
+        if (this.dbg) console.log(`${this} is done`);
+        this.finish();
+    }
+}
+
 class ThrowAction extends SerialAction {
+    static _dfltThrowSfx;
+    static get dfltThrowSfx() {
+        if (!this._dfltThrowSfx) this._dfltThrowSfx = Assets.get('item.throw', true);
+        return this._dfltThrowSfx;
+    }
+    static _dfltHitSfx;
+    static get dfltHitSfx() {
+        if (!this._dfltHitSfx) this._dfltHitSfx = Assets.get('item.throwHit', true);
+        return this._dfltHitSfx;
+    }
+
     constructor(spec) {
         super(spec);
         this.item = spec.item;
-        this.targetIdx = spec.targetIdx;
-        this.lvl = spec.lvl;
+        this.idx = spec.idx;
+        this.x = spec.x;
+        this.y = spec.y;
+        this.throwsfx = spec.throwsfx || this.constructor.dfltThrowSfx;
+        this.hitsfx = spec.hitsfx || this.constructor.dfltHitSfx;
     }
 
     setup() {
         if (this.dbg) console.log(`starting ${this} action w ttl: ${this.ttl}`);
+        console.log(`throw item: ${this.item}`);
         // actor first "drops" item
         this.subs.push( new DropAction({
-            target: this.item,
-            // FIXME
-            //sfx: this.throwSfx,
+            item: this.item,
+            sfx: this.throwsfx,
         }));
-
-        // check path to target
-
-        /*
-        testBlockedAlongLine(idxs, p1idx,p1x,p1y, p2idx,p2x,p2y) {
-            // check if los is blocked by determining what is in line between test index and player
-            for (const lidx of idxs) {
-                if (lidx === p1idx || lidx === p2idx) continue;
-                if (this.lvl.checkIdxIntersectSegment(lidx, p1x, p1y, p2x, p2y)) {
-                    // find objects at index
-                    if (this.lvl.anyidx(lidx, (v) => v.idx === lidx && this.checkBlockFcn(v))) return true;
-                }
-            }
-            return false;
-        }
-        */
 
         // move to target
-        this.subs.push( new MoveAction({
-            x: this.actor.xform.x,
-            y: this.actor.xform.y,
-            speed: this.nudgeSpeed,
-            accel: this.nudgeAccel,
-            range: 2,
-            stopAtTarget: true,
-            snap: true,
+        this.subs.push( new ThrowToAction({
+            item: this.item,
+            x: this.x,
+            y: this.y,
+            idx: this.idx,
         }));
 
-        // hit target
-
-        // -- nudge towards target
-        if (this.nudge) {
-            let angle = Mathf.angle(this.actor.xform.x, this.actor.xform.y, this.target.xform.x, this.target.xform.y, true);
-            let x = Math.round(this.actor.xform.x + Math.cos(angle) * this.nudge);
-            let y = Math.round(this.actor.xform.y + Math.sin(angle) * this.nudge);
-            let facing = (x > this.actor.xform.x) ? Direction.east : (x < this.actor.xform.x) ? Direction.west : 0;
-            this.subs.push( new MoveAction({
-                x: x,
-                y: y,
-                speed: this.nudgeSpeed,
-                accel: this.nudgeAccel,
-                range: 2,
-                stopAtTarget: true,
-                snap: true,
-                facing: facing,
+        // play hit sound
+        if (this.hitsfx) {
+            this.subs.push( new PlaySfxAction({
+                sfx: this.hitsfx,
             }));
         }
-        this.subs.push( new AttackRollAction({
-            target: this.target,
-            ttl: this.ttl,
-        }));
 
     }
 

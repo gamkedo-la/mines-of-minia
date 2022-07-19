@@ -24,6 +24,13 @@ class Item extends MiniaModel {
         return new Rect({ width: 16, height: 16, color: 'rgba(255,255,0,.75)' });
     }
 
+    // STATIC METHODS ------------------------------------------------------
+    static xspec(spec={}) {
+        return Object.assign( this.spec, {
+            blocks: 0,
+        }, spec);
+    }
+
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);

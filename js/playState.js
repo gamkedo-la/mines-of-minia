@@ -1,10 +1,8 @@
 export { PlayState };
 
-import { MoveAction } from './base/actions/move.js';
 import { Assets } from './base/assets.js';
 import { Camera } from './base/camera.js';
 import { Config } from './base/config.js';
-import { Direction } from './base/dir.js';
 import { Events } from './base/event.js';
 import { Fmt } from './base/fmt.js';
 import { Game } from './base/game.js';
@@ -12,7 +10,6 @@ import { GameState } from './base/gameState.js';
 import { Generator } from './base/generator.js';
 import { Hierarchy } from './base/hierarchy.js';
 import { Keys } from './base/keys.js';
-import { Pathfinder } from './base/pathfinder.js';
 import { Sketch } from './base/sketch.js';
 import { Stats } from './base/stats.js';
 import { Systems } from './base/system.js';
@@ -24,23 +21,13 @@ import { UxCanvas } from './base/uxCanvas.js';
 import { UxDbg } from './base/uxDbg.js';
 import { UxMask } from './base/uxMask.js';
 import { UxPanel } from './base/uxPanel.js';
-import { Vect } from './base/vect.js';
 import { XForm } from './base/xform.js';
 import { Level } from './level.js';
-import { LevelGraph } from './lvlGraph.js';
 import { LoSSystem } from './systems/losSystem.js';
 import { TurnSystem } from './systems/turnSystem.js';
 import { AggroSystem } from './systems/aggroSystem.js';
-import { Enemy } from './entities/enemy.js';
-import { WaitAction } from './base/actions/wait.js';
-import { MeleeAttackAction } from './actions/attack.js';
 import { FieryCharm } from './charms/fiery.js';
-import { Stairs } from './entities/stairs.js';
 import { LevelSystem } from './systems/levelSystem.js';
-import { PickupAction } from './actions/pickup.js';
-import { TakeStairsAction } from './actions/takeStairs.js';
-import { OpenAction } from './actions/open.js';
-import { Door } from './entities/door.js';
 import { CloseSystem } from './systems/closeSystem.js';
 import { Inventory } from './inventory.js';
 import { UxText } from './base/uxText.js';
@@ -82,13 +69,10 @@ class PlayState extends GameState {
                             tag: 'slider',
                             sketch: Sketch.zero,
                             x_xform: XForm.xspec({stretch: false, scalex: Config.scale, scaley: Config.scale, width: 50, height: 50}),
-                            //dbg: { xform: true },
-                            //autocenter: true,
                             x_children: [
                                 Level.xspec({
                                     losEnabled: Config.losEnabled,
                                     fowEnabled: Config.fowEnabled,
-                                    //dbg: { xform: true },
                                     tag: 'lvl',
                                     tileSize: Config.tileSize,
                                     x_xform: XForm.xspec({origx: 0, origy:0}),
@@ -109,15 +93,6 @@ class PlayState extends GameState {
                     tag: 'hudroot',
                     sketch: Sketch.zero,
                 }),
-
-                /*
-                Inventory.xspec({
-                    tag: 'inventory',
-                    active: false,
-                    visible: false,
-                    x_xform: XForm.xspec({border: .1}),
-                }),
-                */
 
                 UxPanel.xspec({
                     tag: 'dbgroot',
@@ -166,32 +141,16 @@ class PlayState extends GameState {
         this.camera.trackTarget(this.player);
         this.camera.evt.listen(this.camera.constructor.evtUpdated, (evt) => Events.trigger(RenderSystem.evtRenderNeeded));
 
-        // -- pathfinding
-        /*
-        this.lvlgraph = new LevelGraph({
-            lvl: this.lvl,
-        })
-        this.pathfinder = new Pathfinder({
-            graph: this.lvlgraph,
-            heuristicFcn: this.lvl.idxdist.bind(this.lvl),
-            dbg: false,
-        });
-        */
-
         // bind event handlers
-        //this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onLoSUpdate = this.onLoSUpdate.bind(this);
-        //this.player.evt.listen(this.player.constructor.evtUpdated, this.onPlayerUpdate);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onTock = this.onTock.bind(this);
-        //this.onLevelClick = this.onLevelClick.bind(this);
         this.onLevelWanted = this.onLevelWanted.bind(this);
         this.onLevelLoaded = this.onLevelLoaded.bind(this);
         this.onHandlerWanted = this.onHandlerWanted.bind(this);
         this.onTurnDone = this.onTurnDone.bind(this);
         this.onLoSUpdate({actor: this.player});
         Systems.get('los').evt.listen(Systems.get('los').constructor.evtUpdated, this.onLoSUpdate);
-        //this.lvl.evt.listen(this.lvl.constructor.evtMouseClicked, this.onLevelClick);
         Events.listen(Keys.evtDown, this.onKeyDown);
         Events.listen(Game.evtTock, this.onTock);
         Events.listen('handler.wanted', this.onHandlerWanted);
@@ -241,27 +200,12 @@ class PlayState extends GameState {
     }
 
     onHandlerWanted(evt) {
-        console.log(`-- ${this} onHandlerWanted: ${Fmt.ofmt(evt)}`);
-        this.loadHandler(evt.which);
-
-        /*
-        // FIXME: test aim handler
-        if (this.aim) this.aim.destroy();
-        this.aim = new AimHandler({
-            lvl: this.lvl,
-            player: this.player,
-            overlay: this.overlay,
-        });
-        this.aim.evt.listen(this.aim.constructor.evtDestroyed, ()=>{
-            this.aim = null;
-            console.log(`-- removing aim`);
-        });
-        */
-
+        //console.log(`-- ${this} onHandlerWanted: ${Fmt.ofmt(evt)}`);
+        this.loadHandler(evt.which, evt);
     }
 
     onTurnDone(evt) {
-        console.log(`-- ${this} onTurnDone: ${Fmt.ofmt(evt)}`);
+        //console.log(`-- ${this} onTurnDone: ${Fmt.ofmt(evt)}`);
         if (evt.which !== 'follower') return;
         // re-enable interact handler
         if (!this.handler) {
@@ -269,7 +213,7 @@ class PlayState extends GameState {
         }
     }
 
-    loadHandler(which) {
+    loadHandler(which, evt={}) {
         if (this.handler) {
             this.handler.destroy();
             console.log(`-- clearing handler: ${this.handler}`);
@@ -281,6 +225,7 @@ class PlayState extends GameState {
                     lvl: this.lvl,
                     player: this.player,
                     overlay: this.overlay,
+                    projectile: evt.projectile,
                 });
                 break;
             }
@@ -294,58 +239,11 @@ class PlayState extends GameState {
         }
         if (this.handler) {
             this.handler.evt.listen(this.handler.constructor.evtDestroyed, ()=>{
-                console.log(`-- removing destroyed handler: ${this.handler}`);
+                //console.log(`-- removing destroyed handler: ${this.handler}`);
                 this.handler = null;
             });
         }
     }
-
-    /*
-    moveToIdx(idx) {
-        let x = this.lvl.xfromidx(idx, true);
-        let y = this.lvl.yfromidx(idx, true);
-        let facing = (x > this.player.xform.x) ? Direction.east : (x < this.player.xform.x) ? Direction.west : 0;
-        // what's at index?
-        let others = Array.from(this.lvl.findidx(idx, (v) => v.idx === idx));
-
-        console.log(`others: ${others}`);
-
-
-        if (others.some((v) => v instanceof Enemy)) {
-            let target = others.find((v) => v instanceof Enemy);
-            //console.log(`other is an enemy, try to attack...`);
-            TurnSystem.postLeaderAction( new MeleeAttackAction({
-                target: target,
-            }));
-        } else if (others.some((v) => v instanceof Stairs)) {
-            let target = others.find((v) => v instanceof Stairs);
-            //console.log(`stairs ${target} is hit`);
-            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
-            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
-            TurnSystem.postLeaderAction( new TakeStairsAction({ stairs: target }));
-        } else if (others.some((v) => v instanceof Door)) {
-            let target = others.find((v) => v instanceof Door);
-            if (target.state === 'close') {
-                TurnSystem.postLeaderAction( new OpenAction({ target: target }));
-            } else {
-                TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
-            }
-        } else if (others.some((v) => v.constructor.lootable)) {
-            let target = others.find((v) => v.constructor.lootable);
-            TurnSystem.postLeaderAction( new PickupAction({ target: target, sfx: Assets.get('player.pickup', true)}));
-        } else if (others.some((v) => this.player.blockedBy & v.blocks)) {
-            //console.log(`blocked from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y} hit ${others}`);
-        } else {
-            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
-        }
-
-    }
-
-    wait() {
-        TurnSystem.postLeaderAction(new WaitAction());
-        //ActionSystem.assign(this.player, new EndTurnAction());
-    }
-    */
 
     onKeyDown(evt) {
         //console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
@@ -403,68 +301,12 @@ class PlayState extends GameState {
                 break;
             }
 
-            /*
-            case 'q': {
-                let nidx = this.lvl.idxfromdir(this.player.idx, Direction.northWest);
-                this.moveToIdx(nidx);
-                break;
-            }
-
-            case 'w': {
-                let nidx = this.lvl.idxfromdir(this.player.idx, Direction.north);
-                this.moveToIdx(nidx);
-                break;
-            }
-
-            case 'e': {
-                let nidx = this.lvl.idxfromdir(this.player.idx, Direction.northEast);
-                this.moveToIdx(nidx);
-                break;
-            }
-
-            case 'a': {
-                let nidx = this.lvl.idxfromdir(this.player.idx, Direction.west);
-                this.moveToIdx(nidx);
-                break;
-            }
-
-            case 'd': {
-                let nidx = this.lvl.idxfromdir(this.player.idx, Direction.east);
-                this.moveToIdx(nidx);
-                break;
-            }
-
-            case 'z': {
-                let nidx = this.lvl.idxfromdir(this.player.idx, Direction.southWest);
-                this.moveToIdx(nidx);
-                break;
-            }
-
-            case 'x': {
-                let nidx = this.lvl.idxfromdir(this.player.idx, Direction.south);
-                this.moveToIdx(nidx);
-                break;
-            }
-
-            case 'c': {
-                let nidx = this.lvl.idxfromdir(this.player.idx, Direction.southEast);
-                this.moveToIdx(nidx);
-                break;
-            }
-
-            case ' ': {
-                this.wait();
-                console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel} power: ${this.player.power} xp: ${this.player.xp}`);
-                break;
-            }
-            */
-
             case 'i': {
                 let toggle;
 
                 if (this.inventory) {
                     toggle = false;
-                    console.log(`-- destroy inventory: ${this.inventory}`);
+                    //console.log(`-- destroy inventory: ${this.inventory}`);
                     this.inventory.destroy();
                     this.inventory = null;
                 } else {
@@ -479,16 +321,10 @@ class PlayState extends GameState {
                         this.inventory = null;
                         this.lvl.active = true;
                     });
-                    console.log(`-- new inventory: ${this.inventory}`)
-
+                    //console.log(`-- new inventory: ${this.inventory}`)
                     this.hudroot.adopt(this.inventory);
 
                 }
-                //let toggle = this.inventory.active;
-                //this.inventory = new Inventory();
-
-                //this.inventory.visible = !toggle;
-                //this.inventory.active = !toggle;
                 this.lvl.active = !toggle;
                 break;
             }

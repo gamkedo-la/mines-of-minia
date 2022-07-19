@@ -15,6 +15,7 @@ class DropAction extends Action {
         super(spec);
         this.item = spec.item;
         this.sfx = spec.sfx || this.constructor.dfltSfx;
+        console.log(`drop item: ${this.item}`);
     }
 
     setup() {

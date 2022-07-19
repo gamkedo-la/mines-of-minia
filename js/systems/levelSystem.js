@@ -48,7 +48,7 @@ class LevelSystem extends System {
     }
 
     onItemEmerged(evt) {
-        console.log(`item emerged: ${Fmt.ofmt(evt)}`);
+        //console.log(`item emerged: ${Fmt.ofmt(evt)}`);
         this.lvl.adopt(evt.actor);
     }
 
