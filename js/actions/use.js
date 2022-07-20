@@ -24,7 +24,11 @@ class UseAction extends Action {
     onTimer(evt) {
         if (this.dbg) console.log(`${this} is done`);
         // item gets used
-        this.target.use(this.actor);
+        if (this.target.use && typeof(this.target.use) === "function") {
+            this.target.use(this.actor);
+        } else {
+            console.log(`ERROR: attempt to use unusable item`);
+        }
         // finish
         this.finish();
     }
