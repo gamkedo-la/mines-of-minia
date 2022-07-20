@@ -508,6 +508,9 @@ let miniaAssets = [
 
     StretchSprite.xspec({tag: 'hud.border', border: 27, img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 0, y: 16*4, scalex: 3, scaley: 3})}),
     Sprite.xspec({tag: 'hud.portrait', img: new SheetRef({src: 'img/hud.png', width: 48, height: 48, x: 0, y: 0})}),
-    Sprite.xspec({tag: 'hud.healthbar', img: new SheetRef({src: 'img/hud.png', width: 80, height: 16, x: 16*3, y: 0})}),
+    Sprite.xspec({tag: 'hud.bar', img: new SheetRef({src: 'img/hud.png', width: 80, height: 16, x: 16*3, y: 0})}),
+    Sprite.xspec({tag: 'hud.button.unpressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*8, y: 16*0})}),
+    Sprite.xspec({tag: 'hud.button.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*8, y: 16*2})}),
+    Sprite.xspec({tag: 'hud.button.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*8, y: 16*4})}),
 
 ];

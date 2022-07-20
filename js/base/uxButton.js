@@ -95,6 +95,7 @@ class UxButton extends UxView {
 
     // EVENT HANDLERS ------------------------------------------------------
     onMouseToggle(evt) {
+        console.log(`${this} onMouseToggle`);
         if (!this.active) return;
         let lastSketch = this.sketch;
         this.sketch = (this.mouseDown) ? this._pressed : this._unpressed;
@@ -124,7 +125,7 @@ class UxButton extends UxView {
         this.sketch.height = this.xform.height;
         this.sketch.render(ctx, this.xform.minx, this.xform.miny);
         // render highlight
-        if (this.mouseOver) {
+        if (this.mouseOver && !this.mouseDown) {
             this._highlight.width = this.xform.width;
             this._highlight.height = this.xform.height;
             this._highlight.render(ctx, this.xform.minx, this.xform.miny);
