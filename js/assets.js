@@ -7,6 +7,7 @@ import { Rect } from './base/rect.js';
 import { Sfx } from './base/sfx.js';
 import { Shape } from './base/shape.js';
 import { Sprite } from './base/sprite.js';
+import { StretchSprite } from './base/stretchSprite.js';
 import { Weapon } from './entities/weapon.js';
 import { Template } from './template.js';
 
@@ -504,4 +505,9 @@ let miniaAssets = [
     ...Template.tiles('img/rock-pit-border.png', 'rock.pit.border', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
     ...Template.walls('img/rock-outcrop.png', 'rock.outcrop', { vars: { z: [[3,1],[3,2],[3,3],[3,4]]}}),
     ...Template.tiles('img/rock-outcrop-border.png', 'rock.outcrop.border', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
+
+    StretchSprite.xspec({tag: 'hud.border', border: 27, img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 0, y: 16*4, scalex: 3, scaley: 3})}),
+    Sprite.xspec({tag: 'hud.portrait', img: new SheetRef({src: 'img/hud.png', width: 48, height: 48, x: 0, y: 0})}),
+    Sprite.xspec({tag: 'hud.healthbar', img: new SheetRef({src: 'img/hud.png', width: 80, height: 16, x: 16*3, y: 0})}),
+
 ];

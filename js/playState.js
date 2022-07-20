@@ -64,7 +64,7 @@ class PlayState extends GameState {
                 UxMask.xspec({
                     tag: 'viewport',
                     x_xform: XForm.xspec({border: .05}),
-                    dbg: { viewMask: true },
+                    //dbg: { viewMask: true },
                     x_children: [
                         UxPanel.xspec({
                             tag: 'slider',

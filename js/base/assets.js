@@ -38,8 +38,48 @@ class BaseRef {
 class SfxRef extends BaseRef {}
 
 class ImageRef extends BaseRef {
+    static _canvas;
+    static _ctx;
+
+    static get canvas() {
+        if (!this._canvas) this.init();
+        return this._canvas;
+    }
+
+    static get ctx() {
+        if (!this._ctx) this.init();
+        return this._ctx;
+    }
+
+    static init() {
+        this._canvas = document.createElement('canvas');
+        this._ctx = this.canvas.getContext('2d');
+    }
+
+    constructor(spec={}) {
+        super(spec);
+        this.scalex = spec.scalex || 1;
+        this.scaley = spec.scaley || 1;
+        if (spec.scale) {
+            this.scalex = spec.scale;
+            this.scaley = spec.scale;
+        }
+    }
     resolve(media) {
-        return this.resolveImage(media);
+        let promise = this.resolveImage(media);
+        if (this.scalex === 1 || this.scaley === 1) {
+            return promise;
+        } else {
+            return promise.then(img => {
+                let canvas = this.constructor.canvas;
+                let ctx = this.constructor.ctx;
+                canvas.width = this.width*this.scalex;
+                canvas.height = this.height*this.scaley;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+                return this.resolveImage(canvas.toDataURL(), false);
+            });
+        }
     }
 }
 
@@ -69,6 +109,12 @@ class SheetRef extends BaseRef {
         this.height = spec.height || 0;
         this.x = spec.x || 0;
         this.y = spec.y || 0;
+        this.scalex = spec.scalex || 1;
+        this.scaley = spec.scaley || 1;
+        if (spec.scale) {
+            this.scalex = spec.scale;
+            this.scaley = spec.scale;
+        }
     }
 
     resolve(media) {
@@ -76,10 +122,11 @@ class SheetRef extends BaseRef {
         return promise.then(img => {
             let canvas = this.constructor.canvas;
             let ctx = this.constructor.ctx;
-            canvas.width = this.width;
-            canvas.height = this.height;
-            ctx.clearRect(0, 0, this.width, this.height);
-            ctx.drawImage(img, this.x, this.y, this.width, this.height, 0, 0, this.width, this.height);
+            canvas.width = this.width*this.scalex;
+            canvas.height = this.height*this.scaley;
+            if (this.scalex !== 1 || this.scaley !== 1) console.log(`dim: ${this.width},${this.height} resolved: ${canvas.width},${canvas.height}`)
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, this.x, this.y, this.width, this.height, 0, 0, canvas.width, canvas.height);
             return this.resolveImage(canvas.toDataURL(), false);
         });
     }

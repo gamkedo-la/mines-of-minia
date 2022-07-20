@@ -1,4 +1,5 @@
 export { StretchSprite };
+    import { Fmt } from "./fmt.js";
 import { Sketch } from "./sketch.js";
 
 /** ========================================================================
@@ -19,6 +20,7 @@ class StretchSprite extends Sketch {
         this.left = spec.left || 0;
         this.right = spec.right || 0;
         if (spec.border) this.top = this.bottom = this.left = this.right = spec.border;
+        console.log(`${Fmt.ofmt(spec)}`);
     }
 
     // METHODS -------------------------------------------------------------
@@ -29,14 +31,17 @@ class StretchSprite extends Sketch {
      */
     _render(ctx, x=0, y=0, width=0, height=0) {
         // scale if necessary
-        if ((this.width !== width) || (this.height !== height)) {
-            let sw = this.width;
-            let sh = this.height;
+        //console.log(`this.img: ${this.img.width},${this.img.height} passed ${width},${height}`);
+        if ((width !== this.img.width) || (height !== this.img.height)) {
+        //if ((this.width !== width) || (this.height !== height)) {
+            let sw = this.img.width;
+            let sh = this.img.height;
             let dw = width;
             let dh = height;
             // render corners w/out scale
             // img, sx, sy, swidth, sheight, dx, dy, dwidth, dheight
             if (this.top && this.left) {  // upper left
+                //console.log(`p: ${x},${y} s: ${sw},${sh} d: ${dw},${dh} t: ${this.top} l: ${this.left}`);
                 ctx.drawImage(this.img, 
                     0, 0, this.left, this.top, 
                     x, y, this.left, this.top);
