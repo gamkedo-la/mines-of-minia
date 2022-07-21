@@ -515,5 +515,8 @@ let miniaAssets = [
     Sprite.xspec({tag: 'hud.sbutton.unpressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*12, y: 16*0})}),
     Sprite.xspec({tag: 'hud.sbutton.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*12, y: 16*2})}),
     Sprite.xspec({tag: 'hud.sbutton.bg', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*12, y: 16*4})}),
+    Sprite.xspec({tag: 'hud.gbutton.unpressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*0})}),
+    Sprite.xspec({tag: 'hud.gbutton.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*2})}),
+    Sprite.xspec({tag: 'hud.gbutton.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*4})}),
 
 ];

@@ -1,7 +1,9 @@
 export { Hud };
 
     import { UseAction } from './actions/use.js';
+import { WaitAction } from './base/actions/wait.js';
 import { Assets } from './base/assets.js';
+import { Events } from './base/event.js';
 import { Fmt } from './base/fmt.js';
 import { Hierarchy } from './base/hierarchy.js';
 import { Mathf } from './base/math.js';
@@ -16,8 +18,10 @@ import { TurnSystem } from './systems/turnSystem.js';
 
 
 class Hud extends UxView {
+    // CONSTRUCTOR ---------------------------------------------------------
     cpost(spec) {
         super.cpost(spec);
+        this.getCurrentHandler = spec.getCurrentHandler || (() => 'interact');
         this.player;
         // build out hud
         this.adopt( new UxPanel({
@@ -26,18 +30,15 @@ class Hud extends UxView {
             children: [
                 new UxPanel({
                     sketch: Sketch.zero,
-                    //dbg: { xform: true },
                     xform: new XForm({oleft: 10, otop: 10, origx: 0, origy: 0, right: .6, bottom: .8, width: 220, height: 100, lockRatio: true}),
                     children: [
                         new UxPanel({
                             sketch: Assets.get('hud.portrait', true, {lockRatio: true}),
                             xform: new XForm({right: .6,}),
-                            //dbg: { xform: true },
                         }),
                         new UxPanel({
                             sketch: Sketch.zero,
                             xform: new XForm({left: .25, top: .2, bottom: .2}),
-                            //dbg: { xform: true },
                             children: [
                                 this.sliderBar('bar.health', new XForm({bottom: .67}), "rgba(179,56,49,1)"),
                                 this.sliderBar('bar.power', new XForm({top: .33, bottom: .33}), "rgba(77,101,180,1)"),
@@ -48,38 +49,78 @@ class Hud extends UxView {
                 }),
 
                 new UxButton({
+                    tag: 'hud.options',
                     text: new Text({text: '    options    '}),
                     pressed: Assets.get('hud.button.pressed', true),
                     unpressed: Assets.get('hud.button.unpressed', true),
                     highlight: Assets.get('hud.button.highlight', true),
                     xform: new XForm({left: .925, bottom: .85, otop: 30, oright: 30, lockRatio: true, width: 10, height: 10, origx: 1, origy: 0}),
-                    //dbg: { xform: true },
                 }),
 
                 new UxPanel({
                     sketch: Sketch.zero,
                     xform: new XForm({left: .75, top: .875, obottom: 30, oright: 30, lockRatio: true}),
                     children: [
-
                         this.beltslot(0),
                         this.beltslot(1),
                         this.beltslot(2),
                         this.beltslot(3),
                         this.beltslot(4),
-
                     ],
-                    //dbg: { xform: true },
+                }),
+
+                new UxButton({
+                    tag: 'hud.wait',
+                    text: new Text({text: '    wait    '}),
+                    pressed: Assets.get('hud.gbutton.pressed', true),
+                    unpressed: Assets.get('hud.gbutton.unpressed', true),
+                    highlight: Assets.get('hud.gbutton.highlight', true),
+                    xform: new XForm({right: .925, top: .85, obottom: 30, oleft: 30, lockRatio: true, width: 10, height: 10, origx: 1, origy: 1}),
+                }),
+
+                new UxButton({
+                    tag: 'hud.find',
+                    text: new Text({text: '    find    '}),
+                    pressed: Assets.get('hud.gbutton.pressed', true),
+                    unpressed: Assets.get('hud.gbutton.unpressed', true),
+                    highlight: Assets.get('hud.gbutton.highlight', true),
+                    xform: new XForm({left: .065, right: .86, top: .85, obottom: 30, oleft: 30, lockRatio: true, width: 10, height: 10, origx: 1, origy: 1}),
+                }),
+
+                new UxButton({
+                    tag: 'hud.cancel',
+                    text: new Text({text: '   cancel   '}),
+                    pressed: Assets.get('hud.button.pressed', true),
+                    unpressed: Assets.get('hud.button.unpressed', true),
+                    highlight: Assets.get('hud.button.highlight', true),
+                    xform: new XForm({left: .13, right: .795, top: .85, obottom: 30, oleft: 30, lockRatio: true, width: 10, height: 10, origx: 1, origy: 1}),
                 }),
 
             ],
         }));
 
+        // ui elements
+        this.optionsButton = Hierarchy.find(this, (v) => v.tag === 'hud.options');
+        this.waitButton = Hierarchy.find(this, (v) => v.tag === 'hud.wait');
+        this.findButton = Hierarchy.find(this, (v) => v.tag === 'hud.find');
+        this.cancelButton = Hierarchy.find(this, (v) => v.tag === 'hud.cancel');
+
         // bind event handlers
         this.onBeltChanged = this.onBeltChanged.bind(this);
         this.onBeltClicked = this.onBeltClicked.bind(this);
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
+        this.onOptionsClicked = this.onOptionsClicked.bind(this);
+        this.onWaitClicked = this.onWaitClicked.bind(this);
+        this.onFindClicked = this.onFindClicked.bind(this);
+        this.onCancelClicked = this.onCancelClicked.bind(this);
+
+        this.optionsButton.evt.listen(this.optionsButton.constructor.evtMouseClicked, this.onOptionsClicked);
+        this.waitButton.evt.listen(this.waitButton.constructor.evtMouseClicked, this.onWaitClicked);
+        this.findButton.evt.listen(this.findButton.constructor.evtMouseClicked, this.onFindClicked);
+        this.cancelButton.evt.listen(this.cancelButton.constructor.evtMouseClicked, this.onCancelClicked);
     }
 
+    // EVENT HANDLERS ------------------------------------------------------
     onBeltChanged(evt) {
         let inactive = 5-this.player.inventory.beltSlots;
         this.assignBelt(evt.slot, inactive+evt.slot);
@@ -87,6 +128,7 @@ class Hud extends UxView {
 
     onBeltClicked(evt) {
         console.log(`onBeltClicked: ${Fmt.ofmt(evt)}`);
+        if (this.getCurrentHandler() !== 'interact') return;
         let beltIdx = evt.actor.beltIdx;
         let gid = this.player.inventory.belt[beltIdx];
         let item = this.player.inventory.getByGid(gid);
@@ -110,6 +152,21 @@ class Hud extends UxView {
         }
     }
 
+    onOptionsClicked(evt) {
+        console.log(`${this} onOptionsClicked: ${Fmt.ofmt(evt)}}`)
+    }
+    onWaitClicked(evt) {
+        if (this.getCurrentHandler() !== 'interact') return;
+        TurnSystem.postLeaderAction(new WaitAction());
+    }
+    onFindClicked(evt) {
+        console.log(`${this} onFindClicked: ${Fmt.ofmt(evt)}}`)
+    }
+    onCancelClicked(evt) {
+        console.log(`${this} onCancelClicked: ${Fmt.ofmt(evt)}}`)
+    }
+
+    // METHODS -------------------------------------------------------------
     linkPlayer(player) {
         this.player = player;
         // disable inactive belt slots

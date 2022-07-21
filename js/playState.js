@@ -96,6 +96,7 @@ class PlayState extends GameState {
                     x_children: [
                         Hud.xspec({
                             tag: 'hud',
+                            getCurrentHandler: () => this.currentHandler,
                         }),
                     ],
                 }),
@@ -208,7 +209,7 @@ class PlayState extends GameState {
     }
 
     onHandlerWanted(evt) {
-        //console.log(`-- ${this} onHandlerWanted: ${Fmt.ofmt(evt)}`);
+        console.log(`-- ${this} onHandlerWanted: ${Fmt.ofmt(evt)}`);
         this.loadHandler(evt.which, evt);
     }
 
@@ -222,6 +223,7 @@ class PlayState extends GameState {
     }
 
     loadHandler(which, evt={}) {
+        this.currentHandler = which;
         if (this.handler) {
             this.handler.destroy();
             console.log(`-- clearing handler: ${this.handler}`);
