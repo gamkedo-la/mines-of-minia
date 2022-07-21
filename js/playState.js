@@ -94,7 +94,9 @@ class PlayState extends GameState {
                     tag: 'hudroot',
                     sketch: Sketch.zero,
                     x_children: [
-                        Hud.xspec(),
+                        Hud.xspec({
+                            tag: 'hud',
+                        }),
                     ],
                 }),
 
@@ -125,6 +127,7 @@ class PlayState extends GameState {
         this.overlay = Hierarchy.find(this.view, (v) => v.tag === 'overlay');
         this.hudroot = Hierarchy.find(this.view, (v) => v.tag === 'hudroot');
         this.dbgroot = Hierarchy.find(this.view, (v) => v.tag === 'dbgroot');
+        this.hud = Hierarchy.find(this.view, (v) => v.tag === 'hud');
 
         // -- link UI elements to systems
         Systems.add('level', new LevelSystem({ slider: this.slider, lvl: this.lvl, dbg: Util.getpath(Config, 'dbg.system.level')}));
@@ -139,6 +142,7 @@ class PlayState extends GameState {
         this.lvl.adopt(this.player);
         //this.inventory.setData(this.player.inventory);
         Systems.get('turn').leader = this.player;
+        this.hud.linkPlayer(this.player);
 
         // -- camera
         this.camera = new Camera({view: this.slider, viewport: this.viewport, overflow: false, buffer: 0});
