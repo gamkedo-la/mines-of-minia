@@ -11,6 +11,7 @@ import { XForm } from '../base/xform.js';
 import { Player } from '../entities/player.js';
 import { Reactor } from '../entities/reactor.js';
 import { Weapon } from '../entities/weapon.js';
+import { InventoryData } from '../inventory.js';
 import { Discovery } from './discovery.js';
 import { Layout } from './layout.js';
 import { Outline } from './outline.js';
@@ -31,6 +32,11 @@ class ProcGen {
             healthMax: 100,
             losRange: Config.tileSize*5,
             team: 'player',
+            inventory: new InventoryData({
+                numSlots: 15,
+                beltSlots: 3,
+                gadgetSlots: 1,
+            }),
         });
 
         // assign initial inventory

@@ -34,9 +34,11 @@ class InventoryData {
         this.shielding = spec.shielding;
         this.reactor = spec.reactor;
         this.weapon = spec.weapon;
+        // -- gadgets
         this.gadget0 = spec.gadget0;
         this.gadget1 = spec.gadget1;
         this.gadget2 = spec.gadget2;
+        this.gadgetSlots = spec.gadgetSlots || 3;
         // -- bakcback
         this.slots = Array.from(spec.slots || []);
         this.numSlots = spec.numSlots || 15;
@@ -317,9 +319,6 @@ class Inventory extends UxView {
         this.onOtherChanged = this.onOtherChanged.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onPopupDestroy = this.onPopupDestroy.bind(this);
-        // -- the inventory data
-        this.numGadgets = spec.numGadgets || 1;
-        this.numBelt = spec.numBelt || 3;
 
         this.bg = new UxPanel({
             sketch: Assets.get('oframe.red', true),
@@ -426,12 +425,12 @@ class Inventory extends UxView {
         this.marked = [];
 
         // disable excess belts
-        for (let i=4; i+1>this.numBelt; i--) {
+        for (let i=4; i+1>this.data.beltSlots; i--) {
             this.toggleSlot(`belt${i}`, false);
         }
 
         // disable gadget slots
-        for (let i=2; i+1>this.numGadgets; i--) {
+        for (let i=2; i+1>this.data.gadgetSlots; i--) {
             this.toggleSlot(`gadget${i}`, false);
         }
 
@@ -691,7 +690,7 @@ class Inventory extends UxView {
 
     markCompatibleSlots(item) {
         if (item.constructor.slot === 'belt') {
-            for (let i=0; i<this.numBelt; i++) {
+            for (let i=0; i<this.data.beltSlots; i++) {
                 let button = Hierarchy.find(this, (v) => v.tag === `belt${i}`);
                 this.markButton(button);
             }
@@ -831,12 +830,12 @@ class Inventory extends UxView {
         }
 
         // disable gadget slots
-        for (let i=2; i+1>this.numGadgets; i--) {
+        for (let i=2; i+1>this.data.gadgetSlots; i--) {
             this.toggleSlot(`gadget${i}`, false);
         }
 
         // disable excess belts
-        for (let i=4; i+1>this.numBelt; i--) {
+        for (let i=4; i+1>this.data.beltSlots; i--) {
             this.toggleSlot(`belt${i}`, false);
         }
 
