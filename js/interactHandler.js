@@ -216,8 +216,9 @@ class InteractHandler extends Entity {
             TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
             //TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
             TurnSystem.postLeaderAction( new TakeStairsAction({ stairs: target }));
-        } else if (others.some((v) => v instanceof Door)) {
-            let target = others.find((v) => v instanceof Door);
+        //} else if (others.some((v) => v instanceof Door)) {
+        } else if (others.some((v) => v.constructor.openable)) {
+            let target = others.find((v) => v.constructor.openable);
             if (target.state === 'close') {
                 TurnSystem.postLeaderAction( new OpenAction({ target: target }));
             } else {

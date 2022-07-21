@@ -6,6 +6,7 @@ import { AssetRef, SheetRef, ImageRef, SfxRef } from './base/assets.js';
 import { Rect } from './base/rect.js';
 import { Sfx } from './base/sfx.js';
 import { Shape } from './base/shape.js';
+import { Sketch } from './base/sketch.js';
 import { Sprite } from './base/sprite.js';
 import { StretchSprite } from './base/stretchSprite.js';
 import { Weapon } from './entities/weapon.js';
@@ -346,7 +347,25 @@ let miniaAssets = [
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
-    Sprite.xspec({tag: 'chest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*0, y: 0})}),
+    Sprite.xspec({tag: 'chest.brown.close', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*0, y: 0})}),
+    Sprite.xspec({tag: 'chest.brown.open', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*1, y: 0})}),
+    Animation.xspec({tag: 'chest.brown.opening', loop: false, x_cels: [
+        Cel.xspec({sketch: new AssetRef({tag: 'chest.brown.open'}), ttl: 300 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+        Cel.xspec({sketch: new AssetRef({tag: 'chest.brown.open'}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+        Cel.xspec({sketch: new AssetRef({tag: 'chest.brown.open'}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'chest.brown',
+        sketches: {
+            'close': new AssetRef({tag: 'chest.brown.close'}),
+            'open': new AssetRef({tag: 'chest.brown.opening'}),
+        },
+        state: 'close',
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
     //Sprite.xspec({tag: 'blueChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*1, y: 0}),
     //Sprite.xspec({tag: 'greyChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*2, y: 0}),
     //Sprite.xspec({tag: 'greenChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*3, y: 0}),

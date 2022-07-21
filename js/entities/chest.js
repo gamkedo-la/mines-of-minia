@@ -1,14 +1,15 @@
 export { Chest };
 
-    import { Config } from '../base/config.js';
-import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { Timer } from '../base/timer.js';
 import { MiniaModel } from './miniaModel.js';
 
 class Chest extends MiniaModel {
     static dfltState = 'close';
     static dynamicLoS = true;
+    static openable = true;
+    static dfltOpenTTL = 1000;
 
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSketch() {
@@ -28,10 +29,12 @@ class Chest extends MiniaModel {
         this.xform.height = this.sketch.height;
         // -- los state
         this.blocksLoS = (this.state === 'close');
+        this.openTTL = spec.openTTL || this.constructor.dfltOpenTTL;
     }
 
     destroy() {
         this._unlinkSketch('_sketch');
+        if (this.timer) this.timer.destroy();
         super.destroy();
     }
 
@@ -56,6 +59,7 @@ class Chest extends MiniaModel {
     // METHODS -------------------------------------------------------------
     open() {
         UpdateSystem.eUpdate(this, { state: 'open', blocksLoS: false });
+        this.timer = new Timer({ttl: this.openTTL, cb: () => this.destroy() });
     }
 
     close() {

@@ -8,6 +8,7 @@ import { MiniaModel } from './miniaModel.js';
 class Door extends MiniaModel {
     static dfltState = 'close';
     static dynamicLoS = true;
+    static openable = true;
 
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSketch() {

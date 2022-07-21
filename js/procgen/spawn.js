@@ -216,8 +216,8 @@ class Spawn {
             }),
             */
             Chest.xspec({
-                name: 'test.chest',
-                x_sketch: Assets.get('chest.test'),
+                name: 'chest.brown',
+                x_sketch: Assets.get('chest.brown'),
             }),
             Fuelcell.xspec({
                 name: 'fuelcell',
