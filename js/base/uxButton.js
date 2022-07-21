@@ -95,7 +95,6 @@ class UxButton extends UxView {
 
     // EVENT HANDLERS ------------------------------------------------------
     onMouseToggle(evt) {
-        console.log(`${this} onMouseToggle`);
         if (!this.active) return;
         let lastSketch = this.sketch;
         this.sketch = (this.mouseDown) ? this._pressed : this._unpressed;

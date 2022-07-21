@@ -1,6 +1,8 @@
 export { Hud };
 
+    import { UseAction } from './actions/use.js';
 import { Assets } from './base/assets.js';
+import { Fmt } from './base/fmt.js';
 import { Hierarchy } from './base/hierarchy.js';
 import { Mathf } from './base/math.js';
 import { Rect } from './base/rect.js';
@@ -10,6 +12,7 @@ import { UxButton } from './base/uxButton.js';
 import { UxPanel } from './base/uxPanel.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
+import { TurnSystem } from './systems/turnSystem.js';
 
 
 class Hud extends UxView {
@@ -73,12 +76,26 @@ class Hud extends UxView {
 
         // bind event handlers
         this.onBeltChanged = this.onBeltChanged.bind(this);
+        this.onBeltClicked = this.onBeltClicked.bind(this);
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
     }
 
     onBeltChanged(evt) {
         let inactive = 5-this.player.inventory.beltSlots;
         this.assignBelt(evt.slot, inactive+evt.slot);
+    }
+
+    onBeltClicked(evt) {
+        console.log(`onBeltClicked: ${Fmt.ofmt(evt)}`);
+        let beltIdx = evt.actor.beltIdx;
+        let gid = this.player.inventory.belt[beltIdx];
+        let item = this.player.inventory.getByGid(gid);
+        if (item) {
+            let action = new UseAction({
+                target: item,
+            });
+            TurnSystem.postLeaderAction(action);
+        }
     }
 
     onPlayerUpdate(evt) {
@@ -100,7 +117,7 @@ class Hud extends UxView {
         console.log(`inactive: ${inactive} player inv: ${this.player.inventory}`);
         for (let i=0; i<inactive; i++) {
             let root = Hierarchy.find(this, (v) => v.tag === `belt.root.${i}`);
-            root.enable = false;
+            root.active = false;
             root.visible = false;
         }
         for (let i=inactive; i<5; i++) {
@@ -118,14 +135,21 @@ class Hud extends UxView {
         let gid = this.player.inventory.belt[beltIdx];
         let item = this.player.inventory.getByGid(gid);
         let root = Hierarchy.find(this, (v) => v.tag === `belt.root.${panelIdx}`);
+        let btn = Hierarchy.find(this, (v) => v.tag === `belt.button.${panelIdx}`);
         root.visible = true;
         let panel = Hierarchy.find(this, (v) => v.tag === `belt.${panelIdx}`);
         let sketch = (item) ? Assets.get(item.sketch.tag, true, {state: 'carry'}) : Sketch.zero;
         if (sketch) panel.sketch = sketch;
         if (item) {
-            root.enable = true;
+            root.active = true;
+            btn.active = true;
+            btn.beltIdx = beltIdx;
+            btn.evt.listen(btn.constructor.evtMouseClicked, this.onBeltClicked);
         } else {
-            root.enable = false;
+            root.active = false;
+            btn.active = false;
+            btn.mouseOver = false;
+            btn.evt.ignore(btn.constructor.evtMouseClicked, this.onBeltClicked);
         }
     }
 
@@ -183,6 +207,7 @@ class Hud extends UxView {
                 new UxPanel({ sketch: Assets.get('hud.sbutton.bg', true) }),
                 new UxPanel({ tag: `belt.${idx}`, sketch: Sketch.zero, xform: new XForm({ border: .175 }) }),
                 new UxButton({
+                    tag: `belt.button.${idx}`,
                     text: Sketch.zero,
                     pressed: Assets.get('hud.sbutton.unpressed', true),
                     unpressed: Assets.get('hud.sbutton.unpressed', true),

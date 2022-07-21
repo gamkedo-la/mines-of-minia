@@ -128,13 +128,14 @@ class InventoryData {
             let item = this.slots[slot];
             // is item stackable?
             if (!item.constructor.stackable || (item.constructor.stackable && item.count <= 1) || all) {
-                let name = (this.slots[slot]) ? this.slots[slot].name : 'none';
+                let gid = (this.slots[slot]) ? this.slots[slot].gid : 0;
                 this.slots[slot] = undefined;
                 if (item && item.constructor.usable) item.evt.ignore(item.constructor.evtUse, this.onUse);
                 // check for belt reference -- remove if found
                 for (let i=0; i<this.beltSlots; i++) {
-                    if (this.belt[i] === name) {
+                    if (this.belt[i] === gid) {
                         this.belt[i] = null;
+                        this.evt.trigger(this.constructor.evtBeltChanged, {actor: this.actor, slot: i, target: null});
                         break;
                     }
                 }
@@ -769,6 +770,7 @@ class Inventory extends UxView {
         } else if (slot.startsWith('belt')) {
             updateCount = false;
             item = this.getItemForSlot(slot)
+            console.log(`belt: ${slot} item: ${item}`);
         } else {
             item = this.getItemForSlot(slot)
             if (item) count = item.count;
@@ -818,7 +820,7 @@ class Inventory extends UxView {
             let slot = `inv${i}`;
             this.updateSlot(slot);
         }
-        for (let i=0; i<this.data.numBelt; i++) {
+        for (let i=0; i<this.data.beltSlots; i++) {
             let slot = `belt${i}`;
             this.updateSlot(slot);
         }
