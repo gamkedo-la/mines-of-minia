@@ -119,7 +119,7 @@ class Item extends MiniaModel {
     }
 
     toString() {
-        return Fmt.toString(this.constructor.name, this.gid, this.name, this.tag, this.x, this.y);
+        return Fmt.toString(this.constructor.name, this.gid, this.name, this.tag, this.xform.x, this.xform.y);
     }
 
 }

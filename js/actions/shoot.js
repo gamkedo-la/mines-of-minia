@@ -11,6 +11,8 @@ import { XForm } from '../base/xform.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Generator } from '../base/generator.js';
 import { Fmt } from '../base/fmt.js';
+import { SpawnAction } from './spawn.js';
+
 
 class ShootAction extends SerialAction {
     static _dfltShootSfx;
@@ -43,34 +45,28 @@ class ShootAction extends SerialAction {
                 power: Math.max(0,this.actor.power-this.weapon.power),
             });
         }
+
         // -- spawn the particle
-        let x_projectile = Object.assign({}, this.projectileSpec, {
-            idx: this.actor.idx, 
+        let projectile = Generator.generate(this.projectileSpec);
+        console.log(`shoot projectile: ${projectile} from ${Fmt.ofmt(this.projectileSpec)}`);
+        this.subs.push(new SpawnAction({
+            target: this.actor,
+            spawn: projectile,
+            sfx: this.shootsfx,
             z: 3,
-            xform: new XForm({stretch: false, x: this.actor.xform.x, y: this.actor.xform.y}),
-        });
-        let projectile = Generator.generate(x_projectile);
-        // -- emerge projectile to level
-        projectile.evt.trigger(projectile.constructor.evtEmerged, {actor: projectile}, true);
-        // -- play shoot sound
-        if (this.shootsfx) {
-            this.subs.push( new PlaySfxAction({
-                sfx: this.shootsfx,
-            }));
-        }
+        }));
+        console.log(`projectile zed: ${projectile.z} xform: ${projectile.xform}`);
+
         // -- move to target
         this.subs.push( new ThrowToAction({
             item: projectile,
             x: this.x,
             y: this.y,
             idx: this.idx,
+            throwsfx: null,
+            hitsfx: this.hitsfx,
         }));
-        // -- play hit sound
-        if (this.hitsfx) {
-            this.subs.push( new PlaySfxAction({
-                sfx: this.hitsfx,
-            }));
-        }
+
         // -- find targets at target idx, set attack action for each
         console.log(`lvl: ${this.lvl}`);
         for (const target of this.lvl.findidx(this.idx, (v) => v.health)) {

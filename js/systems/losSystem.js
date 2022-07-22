@@ -9,6 +9,15 @@ class LoSSystem extends System {
 
     static evtUpdated = 'los.updated';
 
+    // STATIC METHODS ------------------------------------------------------
+    static checkLoSBetweenIdxs(lvl, idx1, idx2, checkFcn=(v => (v.kind === 'wall') || (v.constructor.dynamicLoS && v.blocksLoS))) {
+        for (const idx of lvl.idxsBetween(idx1, idx2)) {
+            if (idx === idx1 || idx == idx2) continue;
+            if (lvl.anyidx(idx, (v) => v.idx === idx && checkFcn(v))) return false;
+        }
+        return true;
+    }
+
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec={}) {
         super.cpost(spec);

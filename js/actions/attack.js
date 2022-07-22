@@ -8,6 +8,12 @@ import { Weapon } from '../entities/weapon.js';
 import { Random } from '../base/random.js';
 import { SerialAction } from '../base/actions/serialAction.js';
 import { Direction } from '../base/dir.js';
+import { SpawnAction } from './spawn.js';
+import { XForm } from '../base/xform.js';
+import { Projectile } from '../entities/projectile.js';
+import { Generator } from '../base/generator.js';
+import { ThrowToAction } from './throw.js';
+import { DestroyTargetAction } from '../base/actions/destroy.js';
 
 class Attack {
 
@@ -269,6 +275,9 @@ class RangeAttackAction extends SerialAction {
         this.nudgeSpeed = spec.nudgeSpeed || this.constructor.dfltNudgeSpeed;
         this.nudgeAccel = spec.nudgeAccel || this.constructor.dfltNudgeAccel;
         this.ttl = spec.ttl || this.constructor.dfltTTL;
+        this.projectileSpec = spec.projectileSpec || Projectile.xspec();
+        this.shootsfx = spec.shootsfx;
+        this.hitsfx = spec.hitsfx;
     }
 
     destroy() {
@@ -297,21 +306,24 @@ class RangeAttackAction extends SerialAction {
             }));
         }
 
-        // -- spawn the particle
-        let x_projectile = Object.assign({}, this.projectileSpec, {
-            idx: this.actor.idx, 
+        // -- spawn the projectile
+        let projectile = Generator.generate(this.projectileSpec);
+        this.subs.push(new SpawnAction({
+            target: this.actor,
+            spawn: projectile,
+            sfx: this.shootsfx,
             z: 3,
-            xform: new XForm({stretch: false, x: this.actor.xform.x, y: this.actor.xform.y}),
-        });
-        let projectile = Generator.generate(x_projectile);
-        // -- emerge projectile to level
-        projectile.evt.trigger(projectile.constructor.evtEmerged, {actor: projectile}, true);
-        // -- play shoot sound
-        if (this.shootsfx) {
-            this.subs.push( new PlaySfxAction({
-                sfx: this.shootsfx,
-            }));
-        }
+        }));
+
+        // -- move to target
+        this.subs.push( new ThrowToAction({
+            item: projectile,
+            x: this.target.xform.x,
+            y: this.target.xform.y,
+            idx: this.target.idx,
+            throwsfx: null,
+            hitsfx: this.hitsfx,
+        }));
 
         this.subs.push( new RangeAttackRollAction({
             target: this.target,
@@ -329,5 +341,10 @@ class RangeAttackAction extends SerialAction {
                 snap: true,
             }));
         }
+
+        // -- destroy projectile
+        this.subs.push( new DestroyTargetAction({
+            target: projectile,
+        }));
     }
 }

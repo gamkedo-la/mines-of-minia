@@ -16,6 +16,7 @@ class AiMoveToIdxDirective extends AiDirective {
         this.reset();
         // iterate until directive is done
         while (!this.done) {
+            console.log(`move to idx running`);
             // check for end state
             if (this.actor.idx === this.targetIdx) {
                 console.log(`move to idx reached ${this.targetIdx}`);

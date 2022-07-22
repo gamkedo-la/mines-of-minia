@@ -13,11 +13,16 @@ class AiRangeTargetDirective extends AiDirective {
 
     *run() {
         this.reset();
-        let iterations = 50;
         while (!this.done) {
+            console.log(`airange target running`);
             let range = this.getTargetRange();
             //console.log(`range: ${range} this.range: ${this.range}`)
-            if (iterations-- <= 0) break;
+            // check for LoS
+            if (this.actor.losIdxs.length && !this.actor.losIdxs.includes(this.target.idx)) {
+                this.ok = false;
+                this.done = true;
+                return null;
+            }
             // check for target in range
             if (range > this.rangeMax || range < this.rangeMin) {
                 this.ok = false;

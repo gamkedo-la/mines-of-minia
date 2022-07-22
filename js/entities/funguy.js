@@ -1,5 +1,8 @@
 export { Funguy };
 
+import { AiMoveToIdxDirective } from '../ai/aiMoveToIdxDirective.js';
+import { AiMoveToRangeDirective } from '../ai/aiMoveToRangeDirective.js';
+import { AiRangeTargetDirective } from '../ai/aiRangeTargetDirective.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Prng } from '../base/prng.js';
@@ -41,9 +44,10 @@ class Funguy extends Enemy{
         let x_dir = {
             lvl: lvl,
             actor: this,
+            rangeMin: this.rangeMin,
+            rangeMax: this.rangeMax,
         }
-        this.moveTo = new AiMoveTowardsTargetDirective(Object.assign({range: this.rangeMin}, x_dir));
-        this.moveFrom = new AiMoveFromTargetDirective(Object.assign({range: this.rangeMax}, x_dir));
+        this.move = new AiMoveToRangeDirective(x_dir);
         this.search = new AiMoveToIdxDirective(x_dir);
         this.attack = new AiRangeTargetDirective(x_dir);
         this.actionStream = this.run();
@@ -52,38 +56,5 @@ class Funguy extends Enemy{
     }
     */
 
-    // METHODS -------------------------------------------------------------
-    // run state action generator
-    /*
-    *run() {
-        while (!this.done) {
-            switch (this.state) {
-            case 'idle':
-                yield null;
-                break;
-            case 'search':
-                // attempt to move within range
-                yield *this.search.run();
-                // go back to idle state if search ends
-                if (this.search.done) {
-                    UpdateSystem.eUpdate(this, {state: 'idle'});
-                    this.actionStream = this.run();
-                    yield null;
-                }
-                break;
-            case 'attack':
-                // attempt to move within range
-                yield *this.move.run();
-                // attack while in range
-                yield *this.attack.run();
-                // prevent tight loops in run loop if move/attack both fail
-                if (!this.move.ok && !this.attack.ok) yield null;
-                break;
-            default:
-                yield null;
-            }
-        }
-    }
-    */
 
 }
