@@ -38,6 +38,7 @@ import { Golem } from "./entities/golem.js";
 import { Hud } from "./hud.js";
 import { RangedWeapon } from "./entities/rangedWeapon.js";
 import { Projectile } from "./entities/projectile.js";
+import { Funguy } from "./entities/funguy.js";
 
 class Minia extends Game {
     static states = {
@@ -108,6 +109,7 @@ class Minia extends Game {
             Door,
             Enemy,
             Fuelcell,
+            Funguy,
             Gadget,
             Gem,
             Golem,

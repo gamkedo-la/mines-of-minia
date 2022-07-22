@@ -11,6 +11,7 @@ import { Cog } from '../entities/cog.js';
 import { Door } from '../entities/door.js';
 import { Enemy } from '../entities/enemy.js';
 import { Fuelcell } from '../entities/fuelcell.js';
+import { Funguy } from '../entities/funguy.js';
 import { Gem } from '../entities/gem.js';
 import { Golem } from '../entities/golem.js';
 import { Key } from '../entities/key.js';
@@ -205,8 +206,8 @@ class Spawn {
                 x_sketch: Assets.get('token'),
                 count: 5,
             }),
-            Golem.xspec({
-                name: 'golem',
+            Funguy.xspec({
+                name: 'funguy',
             }),
 
             /*

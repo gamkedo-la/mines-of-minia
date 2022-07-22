@@ -1,4 +1,4 @@
-export { Attack, AttackRollAction, MeleeAttackAction, RangeAttackAction };
+export { Attack, AttackRollAction, MeleeAttackAction, RangeAttackRollAction, RangeAttackAction };
 
 import { Action } from '../base/actions/action.js';
 import { MoveAction } from '../base/actions/move.js';
@@ -232,7 +232,7 @@ class MeleeAttackAction extends SerialAction {
     }
 }
 
-class RangeAttackAction extends Action {
+class RangeAttackRollAction extends Action {
 
     // CONSTRUCTOR ---------------------------------------------------------
     constructor(spec) {
@@ -251,6 +251,83 @@ class RangeAttackAction extends Action {
         console.log(`${this} damage ${damage}`);
         if (damage) {
             this.target.evt.trigger(this.target.constructor.evtDamaged, { actor: this.actor, target: this.target, damage: damage });
+        }
+    }
+}
+
+class RangeAttackAction extends SerialAction {
+    static dfltTTL = 100;
+    static dfltNudge = 8;
+    static dfltNudgeSpeed = .05;
+    static dfltNudgeAccel = .001;
+
+    constructor(spec) {
+        super(spec);
+        this.target = spec.target;
+        this.weapon = spec.weapon;
+        this.nudge = spec.nudge || this.constructor.dfltNudge;
+        this.nudgeSpeed = spec.nudgeSpeed || this.constructor.dfltNudgeSpeed;
+        this.nudgeAccel = spec.nudgeAccel || this.constructor.dfltNudgeAccel;
+        this.ttl = spec.ttl || this.constructor.dfltTTL;
+    }
+
+    destroy() {
+        if (!this.done) this.ok = false;
+        if (this.timer) this.timer.destroy();
+    }
+
+    // METHODS -------------------------------------------------------------
+    setup() {
+        if (this.dbg) console.log(`starting ${this} action w ttl: ${this.ttl}`);
+        // -- nudge towards target
+        if (this.nudge) {
+            let angle = Mathf.angle(this.actor.xform.x, this.actor.xform.y, this.target.xform.x, this.target.xform.y, true);
+            let x = Math.round(this.actor.xform.x + Math.cos(angle) * this.nudge);
+            let y = Math.round(this.actor.xform.y + Math.sin(angle) * this.nudge);
+            let facing = (x > this.actor.xform.x) ? Direction.east : (x < this.actor.xform.x) ? Direction.west : 0;
+            this.subs.push( new MoveAction({
+                x: x,
+                y: y,
+                speed: this.nudgeSpeed,
+                accel: this.nudgeAccel,
+                range: 2,
+                stopAtTarget: true,
+                snap: true,
+                facing: facing,
+            }));
+        }
+
+        // -- spawn the particle
+        let x_projectile = Object.assign({}, this.projectileSpec, {
+            idx: this.actor.idx, 
+            z: 3,
+            xform: new XForm({stretch: false, x: this.actor.xform.x, y: this.actor.xform.y}),
+        });
+        let projectile = Generator.generate(x_projectile);
+        // -- emerge projectile to level
+        projectile.evt.trigger(projectile.constructor.evtEmerged, {actor: projectile}, true);
+        // -- play shoot sound
+        if (this.shootsfx) {
+            this.subs.push( new PlaySfxAction({
+                sfx: this.shootsfx,
+            }));
+        }
+
+        this.subs.push( new RangeAttackRollAction({
+            target: this.target,
+            weapon: this.weapon,
+        }));
+
+        if (this.nudge) {
+            this.subs.push( new MoveAction({
+                x: this.actor.xform.x,
+                y: this.actor.xform.y,
+                speed: this.nudgeSpeed,
+                accel: this.nudgeAccel,
+                range: 2,
+                stopAtTarget: true,
+                snap: true,
+            }));
         }
     }
 }

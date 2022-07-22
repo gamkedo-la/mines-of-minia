@@ -4,7 +4,7 @@ import { DestroyTargetAction } from '../base/actions/destroy.js';
 import { PlaySfxAction } from '../base/actions/playSfx.js';
 import { SerialAction } from '../base/actions/serialAction.js';
 import { ThrowToAction } from './throw.js';
-import { RangeAttackAction } from './attack.js';
+import { RangeAttackRollAction } from './attack.js';
 import { Projectile } from '../entities/projectile.js';
 import { Assets } from '../base/assets.js';
 import { XForm } from '../base/xform.js';
@@ -74,7 +74,7 @@ class ShootAction extends SerialAction {
         // -- find targets at target idx, set attack action for each
         console.log(`lvl: ${this.lvl}`);
         for (const target of this.lvl.findidx(this.idx, (v) => v.health)) {
-            this.subs.push( new RangeAttackAction({
+            this.subs.push( new RangeAttackRollAction({
                 weapon: this.weapon,
                 target: target,
             }));

@@ -14,6 +14,7 @@ class Enemy extends Character {
     static dfltMeleeRange = 31;
     static dfltAttackRating = 10;
     static dfltDefenseRating = 10;
+    static dfltAttackKind = 'bonk';
     static dfltHealth = 1;
     static dfltDamage = 1;
     static dfltXp= 1;
@@ -32,6 +33,7 @@ class Enemy extends Character {
         // -- xp value
         this.xp = spec.xp || this.constructor.dfltXp;
         // -- damage
+        this.attackKind = spec.attackKind || this.constructor.dfltAttackKind;
         this.damageMin = spec.damageMin || this.constructor.dfltDamage;
         this.damageMax = spec.damageMax || this.constructor.dfltDamage;
         // -- bind event handlers
