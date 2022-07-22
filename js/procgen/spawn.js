@@ -14,6 +14,8 @@ import { Fuelcell } from '../entities/fuelcell.js';
 import { Gem } from '../entities/gem.js';
 import { Golem } from '../entities/golem.js';
 import { Key } from '../entities/key.js';
+import { Projectile } from '../entities/projectile.js';
+import { RangedWeapon } from '../entities/rangedWeapon.js';
 import { Reactor } from '../entities/reactor.js';
 import { Stairs } from '../entities/stairs.js';
 import { Token } from '../entities/token.js';
@@ -222,6 +224,10 @@ class Spawn {
             Fuelcell.xspec({
                 name: 'fuelcell',
                 x_sketch: Assets.get('fuelcell'),
+            }),
+            RangedWeapon.xspec({
+                name: 'test.range',
+                x_sketch: Assets.get('range.yellow'),
             }),
         ];
         for (const x_spawn of x_spawns) {

@@ -235,7 +235,7 @@ class PlayState extends GameState {
                     lvl: this.lvl,
                     player: this.player,
                     overlay: this.overlay,
-                    projectile: evt.projectile,
+                    shooter: evt.shooter,
                 });
                 break;
             }

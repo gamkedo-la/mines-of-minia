@@ -967,12 +967,19 @@ class ItemPopup extends UxView {
     }
 
     onUseClicked(evt) {
-        let action = new UseAction({
-            target: this.item,
-        });
-        TurnSystem.postLeaderAction(action);
-        this.parent.hide();
-        this.destroy();
+        if (this.item.constructor.shootable) {
+            console.log(`${this.item} shootable`);
+            Events.trigger('handler.wanted', {which: 'aim', shooter: this.item});
+            this.parent.destroy();
+            this.destroy();
+        } else if (this.item.constructor.shootable) {
+            let action = new UseAction({
+                target: this.item,
+            });
+            TurnSystem.postLeaderAction(action);
+            this.parent.destroy();
+            this.destroy();
+        }
     }
 
     onDropClicked(evt) {
@@ -986,7 +993,7 @@ class ItemPopup extends UxView {
     onThrowClicked(evt) {
         this.parent.destroy();
         this.destroy();
-        Events.trigger('handler.wanted', {which: 'aim', projectile: this.item});
+        Events.trigger('handler.wanted', {which: 'aim', shooter: this.item});
     }
 
     setItem(item) {

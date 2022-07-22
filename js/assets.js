@@ -15,26 +15,20 @@ import { Template } from './template.js';
 let miniaAssets = [
 
     Shape.xspec({
-        tag: 'sword.gray',
+        tag: 'range.yellow',
         fill: true,
-        verts: [ 
-            {x:2, y:0}, {x:4, y:0}, {x:4, y:2}, {x:14, y:2}, {x:15, y:3}, {x:14, y:4}, {x:4, y:4}, {x:4, y:6},
-            {x:2, y:6}, {x:2, y:4}, {x:0, y:4}, {x:0, y:2}, {x:2, y:2},
-        ],
+        verts: [ {x:2, y:7}, {x:14, y:7}, {x:14, y:9}, {x:2, y:9} ],
         border: 1,
-        color: 'gray',
+        color: 'yellow',
         borderColor: 'red',
     }),
 
     Shape.xspec({
-        tag: 'sword.white',
+        tag: 'projectile.yellow',
         fill: true,
-        verts: [ 
-            {x:2, y:0}, {x:4, y:0}, {x:4, y:2}, {x:14, y:2}, {x:15, y:3}, {x:14, y:4}, {x:4, y:4}, {x:4, y:6},
-            {x:2, y:6}, {x:2, y:4}, {x:0, y:4}, {x:0, y:2}, {x:2, y:2},
-        ],
+        verts: [ {x:7, y:7}, {x:9, y:7}, {x:9, y:9}, {x:7, y:9} ],
         border: 1,
-        color: 'white',
+        color: 'yellow',
         borderColor: 'red',
     }),
 
@@ -122,11 +116,6 @@ let miniaAssets = [
     Rect.xspec({tag: 'reticle.aim.ok', width: 12, height: 12, borderColor: 'green', border: 1, fill: false}),
     Rect.xspec({tag: 'reticle.aim.nok', width: 12, height: 12, borderColor: 'red', border: 1, fill: false}),
 
-    Weapon.xspec({
-        tag: 'hack_1',
-        kind: 'hack',
-        sketch: new AssetRef({tag: 'sword_1'}),
-    }),
     Rect.xspec({tag: 'oframe.red', width: 16, height: 16, color: 'black', borderColor: 'red', border: 3}),
     Rect.xspec({tag: 'frame.red', width: 16, height: 16, borderColor: 'red', border: 3, fill: false}),
     Rect.xspec({tag: 'frame.red.2', width: 16, height: 16, borderColor: 'red', border: 6, fill: false}),

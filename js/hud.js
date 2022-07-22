@@ -133,10 +133,15 @@ class Hud extends UxView {
         let gid = this.player.inventory.belt[beltIdx];
         let item = this.player.inventory.getByGid(gid);
         if (item) {
-            let action = new UseAction({
-                target: item,
-            });
-            TurnSystem.postLeaderAction(action);
+            if (item.constructor.shootable) {
+                console.log(`${item} shootable`);
+                Events.trigger('handler.wanted', {which: 'aim', shooter: item});
+            } else {
+                let action = new UseAction({
+                    target: item,
+                });
+                TurnSystem.postLeaderAction(action);
+            }
         }
     }
 
@@ -195,7 +200,7 @@ class Hud extends UxView {
         let btn = Hierarchy.find(this, (v) => v.tag === `belt.button.${panelIdx}`);
         root.visible = true;
         let panel = Hierarchy.find(this, (v) => v.tag === `belt.${panelIdx}`);
-        let sketch = (item) ? Assets.get(item.sketch.tag, true, {state: 'carry'}) : Sketch.zero;
+        let sketch = (item) ? Assets.get(item.sketch.tag, true, {state: 'carry', lockRatio: true}) : Sketch.zero;
         if (sketch) panel.sketch = sketch;
         if (item) {
             root.active = true;

@@ -36,6 +36,8 @@ import { Fuelcell } from "./entities/fuelcell.js";
 import { Font } from "./base/font.js";
 import { Golem } from "./entities/golem.js";
 import { Hud } from "./hud.js";
+import { RangedWeapon } from "./entities/rangedWeapon.js";
+import { Projectile } from "./entities/projectile.js";
 
 class Minia extends Game {
     static states = {
@@ -114,6 +116,8 @@ class Minia extends Game {
             Inventory,
             Level,
             Player,
+            Projectile,
+            RangedWeapon,
             Reactor,
             Rous,
             Shielding,

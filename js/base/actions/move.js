@@ -81,6 +81,7 @@ class MoveAction extends Action {
                     heading: heading,
                     speed: factor*this.speed,
                 };
+                if (this.dbg) console.log(`${this.actor} update heading: ${heading} speed: ${factor*this.speed}`);
                 if (this.facing && this.facing != this.actor.facing) {
                     update.facing = this.facing;
                 }

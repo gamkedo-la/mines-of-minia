@@ -1,6 +1,7 @@
 export { AimHandler };
 
 import { DropAction } from './actions/drop.js';
+import { ShootAction } from './actions/shoot.js';
 import { ThrowAction } from './actions/throw.js';
 import { Assets } from './base/assets.js';
 import { Entity } from './base/entity.js';
@@ -24,7 +25,7 @@ class AimHandler extends Entity {
         this.lvl = spec.lvl;
         this.player = spec.player;
         this.overlay = spec.overlay;
-        this.projectile = spec.projectile;
+        this.shooter = spec.shooter;
         // create a reticle
         this.reticle = new UxPanel({
             sketch: Assets.get('reticle.aim.ok', true),
@@ -73,30 +74,45 @@ class AimHandler extends Entity {
         // -- click must be within player's los
         if (!this.player.losIdxs.includes(idx)) return;
         // test path to target
+        // FIXME: handle shooter type for pathing
         let pathidxs = Array.from(this.lvl.idxsBetween(this.player.idx, idx));
         let targetIdx = idx;
         for (let i=1; i<pathidxs.length; i++) {
-            if (this.lvl.anyidx(pathidxs[i], (v) => (v.idx === pathidxs[i]) && (this.projectile.blockedBy & v.blocks))) {
-                targetIdx = pathidxs[i-1];
+            if (this.lvl.anyidx(pathidxs[i], (v) => (v.idx === pathidxs[i]) && (this.shooter.blockedBy & v.blocks))) {
+                if (this.shooter.constructor.shootable) {
+                    targetIdx = pathidxs[i];
+                } else {
+                    targetIdx = pathidxs[i-1];
+                }
                 break;
             }
         }
         //console.log(`pathidxs: ${pathidxs} aim: ${idx} player: ${this.player.idx} target: ${targetIdx}`);
         // check for target drop at player's feet
         let action;
-        if (this.player.idx === targetIdx) {
-            action = new DropAction({
-                item: this.projectile,
-            });
-        // otherwise throw to index
-        } else {
-            action = new ThrowAction({
-                item: this.projectile,
+        if (this.shooter.constructor.shootable) {
+            action = new ShootAction({
+                weapon: this.shooter,
                 idx: targetIdx,
                 x: this.lvl.xfromidx(targetIdx, true),
                 y: this.lvl.yfromidx(targetIdx, true),
             });
+        } else {
+            if (this.player.idx === targetIdx) {
+                action = new DropAction({
+                    item: this.shooter,
+                });
+            // otherwise throw to index
+            } else {
+                action = new ThrowAction({
+                    item: this.shooter,
+                    idx: targetIdx,
+                    x: this.lvl.xfromidx(targetIdx, true),
+                    y: this.lvl.yfromidx(targetIdx, true),
+                });
+            }
         }
+        console.log(`-- action: ${action}`);
         TurnSystem.postLeaderAction(action);
         this.destroy();
     }
