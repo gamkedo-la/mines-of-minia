@@ -213,7 +213,7 @@ class InteractHandler extends Entity {
         } else if (others.some((v) => v instanceof Stairs)) {
             let target = others.find((v) => v instanceof Stairs);
             //console.log(`stairs ${target} is hit`);
-            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
+            TurnSystem.postLeaderAction( new MoveAction({ points: 1, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
             //TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
             TurnSystem.postLeaderAction( new TakeStairsAction({ stairs: target }));
         //} else if (others.some((v) => v instanceof Door)) {
@@ -222,7 +222,7 @@ class InteractHandler extends Entity {
             if (target.state === 'close') {
                 TurnSystem.postLeaderAction( new OpenAction({ target: target }));
             } else {
-                TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
+                TurnSystem.postLeaderAction( new MoveAction({ points: 1, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
             }
         } else if (others.some((v) => v.constructor.lootable)) {
             let target = others.find((v) => v.constructor.lootable);
@@ -231,7 +231,7 @@ class InteractHandler extends Entity {
             //console.log(`blocked from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y} hit ${others}`);
             tookAction = false;
         } else {
-            TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
+            TurnSystem.postLeaderAction( new MoveAction({ points: 1, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
         }
 
         if (tookAction) this.destroy();

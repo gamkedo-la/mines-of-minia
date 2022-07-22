@@ -14,6 +14,7 @@ import { UxPanel } from './base/uxPanel.js';
 import { Vect } from './base/vect.js';
 import { XForm } from './base/xform.js';
 import { TurnSystem } from './systems/turnSystem.js';
+import { OverlaySystem } from './systems/overlaySystem.js';
 
 
 /**
@@ -74,7 +75,6 @@ class AimHandler extends Entity {
         // -- click must be within player's los
         if (!this.player.losIdxs.includes(idx)) return;
         // test path to target
-        // FIXME: handle shooter type for pathing
         let pathidxs = Array.from(this.lvl.idxsBetween(this.player.idx, idx));
         let targetIdx = idx;
         for (let i=1; i<pathidxs.length; i++) {
@@ -91,8 +91,14 @@ class AimHandler extends Entity {
         // check for target drop at player's feet
         let action;
         if (this.shooter.constructor.shootable) {
+            // check for power requirements
+            if (this.shooter.power > this.player.power) {
+                Events.trigger(OverlaySystem.evtWarn, { actor: this.player, which: 'insufficient power'});
+                return;
+            }
             action = new ShootAction({
                 weapon: this.shooter,
+                lvl: this.lvl,
                 idx: targetIdx,
                 x: this.lvl.xfromidx(targetIdx, true),
                 y: this.lvl.yfromidx(targetIdx, true),
@@ -113,8 +119,10 @@ class AimHandler extends Entity {
             }
         }
         console.log(`-- action: ${action}`);
-        TurnSystem.postLeaderAction(action);
-        this.destroy();
+        if (action ) {
+            TurnSystem.postLeaderAction(action);
+            this.destroy();
+        }
     }
 
     onMouseMoved(evt) {

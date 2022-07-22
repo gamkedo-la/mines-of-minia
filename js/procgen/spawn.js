@@ -205,11 +205,9 @@ class Spawn {
                 x_sketch: Assets.get('token'),
                 count: 5,
             }),
-            /*
             Golem.xspec({
                 name: 'golem',
             }),
-            */
 
             /*
             Cog.xspec({
@@ -228,6 +226,9 @@ class Spawn {
             RangedWeapon.xspec({
                 name: 'test.range',
                 x_sketch: Assets.get('range.yellow'),
+                baseDamageMin: 5,
+                baseDamageMax: 10,
+                projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.yellow')}),
             }),
         ];
         for (const x_spawn of x_spawns) {

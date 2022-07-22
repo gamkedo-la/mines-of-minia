@@ -12,10 +12,6 @@ class Weapon extends Item {
         'bonk',
         'poke',
         'hack',
-        'chuck',
-        'fling',
-        'strung',
-        'charged',
     ];
 
     static dfltKind = 'bonk';

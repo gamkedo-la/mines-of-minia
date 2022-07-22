@@ -40,6 +40,7 @@ import { XPSystem } from './systems/xpSystem.js';
 import { AimHandler } from './aimHandler.js';
 import { InteractHandler } from './interactHandler.js';
 import { Hud } from './hud.js';
+import { OverlaySystem } from './systems/overlaySystem.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -56,6 +57,7 @@ class PlayState extends GameState {
         Systems.add('powerRegen', new PowerRegenSystem({ dbg: Util.getpath(Config, 'dbg.system.powerRegen')}));
         Systems.add('fuel', new FuelSystem({ dbg: Util.getpath(Config, 'dbg.system.fuel')}));
         Systems.add('xp', new XPSystem({ dbg: Util.getpath(Config, 'dbg.system.xp')}));
+        Systems.add('overlay', new OverlaySystem({ dbg: Util.getpath(Config, 'dbg.system.overlay')}));
 
         let x_view = UxCanvas.xspec({
             cvsid: 'game.canvas',

@@ -1,4 +1,4 @@
-export { Attack, AttackRollAction, MeleeAttackAction };
+export { Attack, AttackRollAction, MeleeAttackAction, RangeAttackAction };
 
 import { Action } from '../base/actions/action.js';
 import { MoveAction } from '../base/actions/move.js';
@@ -136,8 +136,6 @@ class Attack {
         let damageReduction = target.damageReduction || 0;
         let kind = ((weapon) ? weapon.kind : actor.attackKind) || 'bonk';
         let resistance = target.resistances[kind] || 0;
-        //console.log(`actor: ${actor} weapon: ${weapon}`);
-        //console.log(`kind: ${kind} damage reduction: ${damageReduction} resistance: ${resistance}`);
         // -- damage reduction is taken off the top
         let damage = baseDamage - damageReduction;
         // -- damage resistance is a percent reduction
@@ -146,7 +144,7 @@ class Attack {
             damage -= v;
         }
         if (damage < 0) damage = 0;
-        //console.log(`== damage: base: [${min}-${max}]:${baseDamage} final: ${damage}`);
+        console.log(`== damage: base: [${min}-${max}]:${baseDamage} final: ${damage}`);
         return damage;
     }
     
@@ -193,8 +191,6 @@ class MeleeAttackAction extends SerialAction {
     destroy() {
         if (!this.done) this.ok = false;
         if (this.timer) this.timer.destroy();
-        if (this.nudgeTowards) this.nudgeTowards.destroy();
-        if (this.nudgeBack) this.nudgeBack.destroy();
     }
 
     // METHODS -------------------------------------------------------------
@@ -234,6 +230,27 @@ class MeleeAttackAction extends SerialAction {
             }));
         }
     }
+}
 
+class RangeAttackAction extends Action {
 
+    // CONSTRUCTOR ---------------------------------------------------------
+    constructor(spec) {
+        super(spec);
+        this.weapon = spec.weapon;
+        this.target = spec.target;
+    }
+
+    // METHODS -------------------------------------------------------------
+    setup() {
+        // this is an instant action
+        this.done = true;
+        //this.actor.evt.trigger(this.actor.constructor.evtAttacked, { actor: this.actor, target: this.target, weapon: weapon });
+        // -- roll for damage
+        let damage = Attack.damage(this.actor, this.target, this.weapon);
+        console.log(`${this} damage ${damage}`);
+        if (damage) {
+            this.target.evt.trigger(this.target.constructor.evtDamaged, { actor: this.actor, target: this.target, damage: damage });
+        }
+    }
 }

@@ -7,6 +7,7 @@ import { UpdateSystem } from "../base/systems/updateSystem.js";
 import { Timer } from "../base/timer.js";
 import { Util } from "../base/util.js";
 import { MiniaModel } from "./miniaModel.js";
+import { RangedWeapon } from "./rangedWeapon.js";
 import { Weapon } from "./weapon.js";
 
 
@@ -37,7 +38,8 @@ class Character extends MiniaModel {
         for (const kind of Weapon.kinds) {
             r[kind] = 0;
         }
-        for (const kind of ['fire', 'ice', 'shock', 'dark']) {
+        for (const kind of RangedWeapon.kinds) {
+            r[kind] = 0;
         }
         return r;
     }
