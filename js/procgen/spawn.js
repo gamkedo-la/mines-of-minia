@@ -224,13 +224,39 @@ class Spawn {
                 name: 'fuelcell',
                 x_sketch: Assets.get('fuelcell'),
             }),
+
             RangedWeapon.xspec({
-                name: 'test.range',
-                x_sketch: Assets.get('range.yellow'),
+                name: 'dark.gun.1',
+                x_sketch: Assets.get('dark.gun.1'),
                 baseDamageMin: 5,
                 baseDamageMax: 10,
-                projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.yellow')}),
+                projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.dark')}),
             }),
+
+            RangedWeapon.xspec({
+                name: 'shock.gun.1',
+                x_sketch: Assets.get('shock.gun.2'),
+                baseDamageMin: 5,
+                baseDamageMax: 10,
+                projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.shock')}),
+            }),
+
+            RangedWeapon.xspec({
+                name: 'fire.gun.3',
+                x_sketch: Assets.get('fire.gun.3'),
+                baseDamageMin: 15,
+                baseDamageMax: 20,
+                projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.fire')}),
+            }),
+
+            RangedWeapon.xspec({
+                name: 'ice.gun.3',
+                x_sketch: Assets.get('ice.gun.3'),
+                baseDamageMin: 15,
+                baseDamageMax: 20,
+                projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.ice')}),
+            }),
+
         ];
         for (const x_spawn of x_spawns) {
             for (let i=0; i<100; i++) {

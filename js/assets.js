@@ -15,23 +15,41 @@ import { Template } from './template.js';
 let miniaAssets = [
 
     Shape.xspec({
-        tag: 'range.yellow',
+        tag: 'projectile.fire',
         fill: true,
-        verts: [ {x:2, y:7}, {x:14, y:7}, {x:14, y:9}, {x:2, y:9} ],
+        verts: [ {x:7, y:7}, {x:9, y:7}, {x:9, y:9}, {x:7, y:9} ],
         border: 1,
-        color: 'yellow',
+        color: 'orange',
         borderColor: 'red',
     }),
 
     Shape.xspec({
-        tag: 'projectile.yellow',
+        tag: 'projectile.dark',
         fill: true,
         verts: [ {x:7, y:7}, {x:9, y:7}, {x:9, y:9}, {x:7, y:9} ],
         border: 1,
-        color: 'yellow',
+        color: 'purple',
         borderColor: 'red',
     }),
 
+    Shape.xspec({
+        tag: 'projectile.ice',
+        fill: true,
+        verts: [ {x:7, y:7}, {x:9, y:7}, {x:9, y:9}, {x:7, y:9} ],
+        border: 1,
+        color: 'aqua',
+        borderColor: 'red',
+    }),
+
+
+    Shape.xspec({
+        tag: 'projectile.shock',
+        fill: true,
+        verts: [ {x:7, y:7}, {x:9, y:7}, {x:9, y:9}, {x:7, y:9} ],
+        border: 1,
+        color: 'white',
+        borderColor: 'red',
+    }),
     Shape.xspec({
         tag: 'stairs_up',
         fill: true,
@@ -550,6 +568,271 @@ let miniaAssets = [
         sketches: {
             'carry': new AssetRef({tag: 'token.carry'}),
             'free': new AssetRef({tag: 'token.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'dark.gun.1.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*3, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*6, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*9, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'dark.gun.1.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*6, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*9, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'dark.gun.1',
+        sketches: {
+            'carry': new AssetRef({tag: 'dark.gun.1.carry'}),
+            'free': new AssetRef({tag: 'dark.gun.1.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'dark.gun.2.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*4, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*7, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*10, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'dark.gun.2.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*1, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*7, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*10, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'dark.gun.2',
+        sketches: {
+            'carry': new AssetRef({tag: 'dark.gun.2.carry'}),
+            'free': new AssetRef({tag: 'dark.gun.2.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'dark.gun.3.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*5, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*8, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 16, x: 16*11, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'dark.gun.3.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*8, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/dark-gun.png', width: 16, height: 32, x: 16*11, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'dark.gun.3',
+        sketches: {
+            'carry': new AssetRef({tag: 'dark.gun.3.carry'}),
+            'free': new AssetRef({tag: 'dark.gun.3.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'ice.gun.1.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*3, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*6, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*9, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'ice.gun.1.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*6, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*9, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'ice.gun.1',
+        sketches: {
+            'carry': new AssetRef({tag: 'ice.gun.1.carry'}),
+            'free': new AssetRef({tag: 'ice.gun.1.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'ice.gun.2.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*4, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*7, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*10, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'ice.gun.2.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*1, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*7, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*10, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'ice.gun.2',
+        sketches: {
+            'carry': new AssetRef({tag: 'ice.gun.2.carry'}),
+            'free': new AssetRef({tag: 'ice.gun.2.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'ice.gun.3.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*5, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*8, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 16, x: 16*11, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'ice.gun.3.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*8, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/ice-gun.png', width: 16, height: 32, x: 16*11, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'ice.gun.3',
+        sketches: {
+            'carry': new AssetRef({tag: 'ice.gun.3.carry'}),
+            'free': new AssetRef({tag: 'ice.gun.3.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+
+    Animation.xspec({tag: 'fire.gun.1.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*3, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*6, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*9, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'fire.gun.1.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*6, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*9, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'fire.gun.1',
+        sketches: {
+            'carry': new AssetRef({tag: 'fire.gun.1.carry'}),
+            'free': new AssetRef({tag: 'fire.gun.1.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'fire.gun.2.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*4, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*7, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*10, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'fire.gun.2.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*1, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*7, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*10, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'fire.gun.2',
+        sketches: {
+            'carry': new AssetRef({tag: 'fire.gun.2.carry'}),
+            'free': new AssetRef({tag: 'fire.gun.2.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'fire.gun.3.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*5, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*8, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 16, x: 16*11, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'fire.gun.3.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*8, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fire-gun.png', width: 16, height: 32, x: 16*11, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'fire.gun.3',
+        sketches: {
+            'carry': new AssetRef({tag: 'fire.gun.3.carry'}),
+            'free': new AssetRef({tag: 'fire.gun.3.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'shock.gun.1.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*3, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*6, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*9, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'shock.gun.1.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*6, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*9, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'shock.gun.1',
+        sketches: {
+            'carry': new AssetRef({tag: 'shock.gun.1.carry'}),
+            'free': new AssetRef({tag: 'shock.gun.1.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'shock.gun.2.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*4, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*7, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*10, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'shock.gun.2.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*1, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*7, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*10, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'shock.gun.2',
+        sketches: {
+            'carry': new AssetRef({tag: 'shock.gun.2.carry'}),
+            'free': new AssetRef({tag: 'shock.gun.2.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
+
+    Animation.xspec({tag: 'shock.gun.3.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*5, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*8, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 16, x: 16*11, y: 0})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'shock.gun.3.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*8, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shock-gun.png', width: 16, height: 32, x: 16*11, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'shock.gun.3',
+        sketches: {
+            'carry': new AssetRef({tag: 'shock.gun.3.carry'}),
+            'free': new AssetRef({tag: 'shock.gun.3.free'}),
         },
         state: 'free',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
