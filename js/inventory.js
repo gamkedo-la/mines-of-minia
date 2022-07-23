@@ -344,7 +344,7 @@ class Inventory extends UxView {
                         this.slot({ tag: 'reactor', xform: new XForm({left: .375, right: .375, top: .4, bottom: .4}), }),
                         this.slot({ tag: 'shielding', xform: new XForm({left: .65, right: .1, top: .4, bottom: .4}), }),
 
-                        this.counter({ tag: 'tokens', xform: new XForm({offset: 10, left: 0, right: .75, top: .8, bottom: .05}), sketch: Assets.get('token', true, {lockRatio: true})}),
+                        this.counter({ tag: 'tokens', xform: new XForm({offset: 10, left: 0, right: .75, top: .8, bottom: .05}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
                         this.counter({ tag: 'key.gold', xform: new XForm({offset: 10, left: .25, right: .5, top: .8, bottom: .05}), sketch: Assets.get('key.gold', true, {lockRatio: true})}),
                         this.counter({ tag: 'key.blue', xform: new XForm({offset: 10, left: .5, right: .25, top: .8, bottom: .05}), sketch: Assets.get('key.blue', true, {lockRatio: true})}),
                         this.counter({ tag: 'key.dark', xform: new XForm({offset: 10, left: .75, right: .0, top: .8, bottom: .05}), sketch: Assets.get('key.dark', true, {lockRatio: true})}),

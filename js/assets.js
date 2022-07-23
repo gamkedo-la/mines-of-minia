@@ -110,7 +110,7 @@ let miniaAssets = [
         color: 'rgba(75,75,75,1)',
         borderColor: 'red',
     }),
-    Rect.xspec({tag: 'token', width: 12, height: 8, color: 'gold', borderColor: 'red', border: 1}),
+    //Rect.xspec({tag: 'token', width: 12, height: 8, color: 'gold', borderColor: 'red', border: 1}),
     Rect.xspec({tag: 'reactor', width: 8, height: 12, color: 'green', borderColor: 'red', border: 2}),
     Rect.xspec({tag: 'fuelcell', width: 8, height: 12, color: 'blue', borderColor: 'red', border: 1}),
     Rect.xspec({tag: 'reticle.aim.ok', width: 12, height: 12, borderColor: 'green', border: 1, fill: false}),
@@ -528,5 +528,31 @@ let miniaAssets = [
     Sprite.xspec({tag: 'hud.gbutton.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*4})}),
 
     Sprite.xspec({tag: 'funguy', img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*0, y: 16*0})}),
+
+    Animation.xspec({tag: 'token.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 16, x: 16*3, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 16, x: 16*4, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 16, x: 16*5, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'token.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 32, x: 16*1, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 32, x: 16*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'token',
+        sketches: {
+            'carry': new AssetRef({tag: 'token.carry'}),
+            'free': new AssetRef({tag: 'token.free'}),
+        },
+        state: 'free',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
 
 ];
