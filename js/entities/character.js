@@ -85,6 +85,8 @@ class Character extends MiniaModel {
         // -- charms (buffs/debuffs)
         this.charms = [];
         if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
+        // -- loot
+        this.loot = spec.loot || [];
         // -- events
         this.onDamaged = this.onDamaged.bind(this);
         this.onDeath = this.onDeath.bind(this);

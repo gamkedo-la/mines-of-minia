@@ -41,6 +41,8 @@ class Item extends MiniaModel {
         // -- charms (buffs/debuffs)
         this.charms = [];
         if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
+        // -- loot
+        this.loot = spec.loot || [];
 
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
