@@ -37,7 +37,6 @@ class Funguy extends Enemy{
     }
 
     // EVENT HANDLERS ------------------------------------------------------
-    /*
     onLevelLoaded(evt) {
         let lvl = evt.lvl;
         // setup directives
@@ -54,7 +53,6 @@ class Funguy extends Enemy{
         // activate
         this.active = true;
     }
-    */
 
 
 }

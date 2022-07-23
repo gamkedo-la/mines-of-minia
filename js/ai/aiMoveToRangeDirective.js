@@ -2,6 +2,7 @@ export { AiMoveToRangeDirective };
 
 import { MoveAction } from '../base/actions/move.js';
 import { Direction } from '../base/dir.js';
+import { Fmt } from '../base/fmt.js';
 import { Mathf } from '../base/math.js';
 import { Util } from '../base/util.js';
 import { LoSSystem } from '../systems/losSystem.js';
@@ -18,7 +19,6 @@ class AiMoveToRangeDirective extends AiDirective {
     }
 
     *run() {
-        console.log(`move to range running`);
         this.reset();
         // iterate until directive is done
         while (!this.done) {
@@ -38,11 +38,9 @@ class AiMoveToRangeDirective extends AiDirective {
 
             // are we too far away???
             // -- too far
-            } else 
-            
-            if (d >= this.rangeMax) {
+            } else if (d >= this.rangeMax) {
                 // otherwise, run pathfinding to move towards target
-                let path = this.pathfinder.find(this.actor, this.actor.idx, this.target.idx, this.lvl.checkAdjacentIdx.bind(this.lvl));
+                let path = this.pathfinder.find(this.actor, this.actor.idx, this.target.idx);
                 // -- no path
                 if (!path) {
                     this.ok = false;
@@ -80,30 +78,42 @@ class AiMoveToRangeDirective extends AiDirective {
                 // -- something is blocking adjacent movement
                 } else {
                     // find target index within los range
-                    let targetIdx = Util.findBest(
+                    let bestIdx = Util.findBest(
                         this.actor.losIdxs,
-                        (v) => {
-                            let x = this.lvl.xfromidx(v, true);
-                            let y = this.lvl.yfromidx(v, true);
+                        // best index based on distance to actor
+                        (i) => {
+                            let x = this.lvl.xfromidx(i, true);
+                            let y = this.lvl.yfromidx(i, true);
                             return Mathf.distance(this.actor.xform.x, this.actor.xform.y, x, y);
                         },
+                        // best distance is closest (compare fcn)
                         (v1,v2) => v1<v2,
-                        (v) => {
-                            // can't move there...
-                            if (this.lvl.anyidx(v, (v2) => v2.blocks & this.actor.blockedBy)) return false;
-                            // no LoS to target
-                            if (!LoSSystem.checkLoSBetweenIdxs(this.lvl, v, this.target.idx)) return false;
+                        // no filter on distance values
+                        (v) => true,
+                        // filter target indices based on range to target and los to target
+                        (i) => {
+                            if (i === this.actor.idx) return false;
+                            // -- can't move there...
+                            if (this.lvl.anyidx(i, (v2) => v2.blocks & this.actor.blockedBy)) return false;
+                            // -- no LoS to target
+                            if (!LoSSystem.checkLoSBetweenIdxs(this.lvl, i, this.target.idx)) return false;
+                            // -- check range to target
+                            let x = this.lvl.xfromidx(i, true);
+                            let y = this.lvl.yfromidx(i, true);
+                            let d = Mathf.distance(this.target.xform.x, this.target.xform.y, x, y);
+                            if (d < this.rangeMin || d > this.rangeMax) return false;
+                            // -- otherwise good
                             return true;
                         }
                     );
                     // no target idx?
-                    if (!targetIdx) {
+                    if (!bestIdx) {
                         this.ok = false;
                         this.done = true;
                         return null;
                     }
                     // pathfind to target index
-                    let path = this.pathfinder.find(this.actor, this.actor.idx, targetIdx, this.lvl.checkAdjacentIdx.bind(this.lvl));
+                    let path = this.pathfinder.find(this.actor, this.actor.idx, bestIdx);
                     // -- no path
                     if (!path) {
                         this.ok = false;
@@ -112,7 +122,7 @@ class AiMoveToRangeDirective extends AiDirective {
                     }
 
                     // yield next action from pathfinding...
-                    if (this.dbg) console.log(`move from: ${this.actor.idx} towards: ${targetIdx} path: ${Fmt.ofmt(path)}`);
+                    if (this.dbg) console.log(`move from: ${this.actor.idx} towards: ${bestIdx} path: ${Fmt.ofmt(path)}`);
                     let action = path.actions[0];
                     yield action;
                 }

@@ -211,12 +211,13 @@ class Util {
         return target;
     }
 
-    static findBest(items, evalFcn=(v)=>v, cmpFcn=(v1,v2) => v1<v2, filterFcn=(v)=>true) {
+    static findBest(items, evalFcn=(v)=>v, cmpFcn=(v1,v2) => v1<v2, filterFcn=(v)=>true, itemFilterFcn=(v)=>true) {
         let bestItem;
         let bestValue;
         for (const item of items) {
             let value = evalFcn(item);
             if (!filterFcn(value)) continue;
+            if (!itemFilterFcn(item)) continue;
             if (!bestItem || cmpFcn(value,bestValue)) {
                 bestItem = item;
                 bestValue = value;
