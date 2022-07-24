@@ -2,6 +2,7 @@ export { Spawn };
 
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
+import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { Chest } from '../entities/chest.js';
 import { Door } from '../entities/door.js';
@@ -26,6 +27,8 @@ class Spawn {
         this.spawnStairs(template, pstate);
         // -- enemies
         this.spawnEnemies(template, pstate);
+        // -- traps
+        this.spawnTraps(template, pstate);
         // -- test objects
         this.spawnTest(template, pstate);
         yield;
@@ -48,6 +51,62 @@ class Spawn {
                     blocks: 0,
                 }));
             }
+        }
+    }
+
+    static spawnTrapForRoom(template, pstate, proom, options) {
+        let x_spawn = template.spawn || {};
+        let plvl = pstate.plvl;
+        // pick spawn options for room
+        let option = Prng.chooseWeightedOption(options);
+        let chance = option.hasOwnProperty('chance') ? option.chance : 1;
+        let min = option.hasOwnProperty('min') ? option.min : 1;
+        let max = option.hasOwnProperty('max') ? option.max : 1;
+        //console.log(`-- proom: ${proom} trap option: ${Fmt.ofmt(option)} chance: ${chance}`);
+        // room trap check
+        if (!Prng.flip(chance)) return;
+        // how many traps
+        let count = Prng.rangeInt(min, max);
+        for (let i=0; i<count; i++) {
+            // choose index
+            let idx;
+            for (let i=0; i<100; i++) {
+                // -- randomly choose index from room
+                idx = Prng.choose(proom.idxs);
+                //console.log(`-- try index: ${idx}`);
+                // -- test index to make sure nothing is there..
+                if (idx === plvl.startIdx) continue;
+                // -- not at a floor tile
+                if (plvl.entities.some((v) => v.idx === idx && v.cls === 'Tile' && v.kind !== 'floor')) continue;
+                // -- anything else at index
+                if (plvl.entities.some((v) => v.idx === idx && v.cls !== 'Tile')) continue;
+                // choose trap class
+                let cls = Prng.choose(x_spawn.trapList);
+                let x_trap = cls.xspec({
+                    idx: idx,
+                    z: 2,
+                });
+                //console.log(`trap: ${Fmt.ofmt(x_trap)}`);
+                plvl.entities.push(x_trap);
+                break;
+            }
+        }
+    }
+
+    static spawnTraps(template, pstate) {
+        // -- pull data
+        let x_spawn = template.spawn || {};
+        let prooms = pstate.prooms || [];
+        if (!x_spawn.trapList) return;
+        let phalls = pstate.phalls || [];
+        // -- iterate through rooms
+        // iterate through rooms
+        for (const proom of prooms) {
+            this.spawnTrapForRoom(template, pstate, proom, x_spawn.roomTrapOptions);
+        }
+        // iterate through halls
+        for (const phall of phalls) {
+            this.spawnTrapForRoom(template, pstate, phall, x_spawn.hallTrapOptions);
         }
     }
 

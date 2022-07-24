@@ -34,6 +34,9 @@ class Prng {
     static flip(pct=.5) {
         return this.main.flip(pct);
     }
+    static chooseWeightedOption(arr) {
+        return this.main.chooseWeightedOption(arr);
+    }
 
     // CONSTRUCTOR ---------------------------------------------------------
     constructor(seed=1) {
@@ -89,6 +92,22 @@ class Prng {
 
     flip(pct=.5) {
         return this.random() < pct;
+    }
+
+    chooseWeightedOption(arr) {
+        // count weights
+        if (!arr || !arr.length) return null;
+        if (arr.length === 1) return arr[0];
+        let weights = arr.reduce((pv, cv) => (pv.weight||1)+(cv.weight||1), 0);
+        let choice = this.random() * weights;
+        for (let i=0, t=0; i<arr.length; i++) {
+            let w = arr[i].weight || 1;
+            if (choice >= t && choice < t+w) {
+                return arr[i];
+            }
+            t += w;
+        }
+        return arr[arr.length-1];
     }
 
     /**

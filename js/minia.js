@@ -98,6 +98,7 @@ class Minia extends Game {
             },
             spawn: {
                 enemyList: [ Rous ],
+                trapList: [ SpikeTrap ],
             }
         }),
     };
