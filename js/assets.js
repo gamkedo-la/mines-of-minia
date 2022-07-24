@@ -145,6 +145,15 @@ let miniaAssets = [
         state: 'armed',
     }),
 
+    Animator.xspec({
+        tag: 'growth.test',
+        sketches: {
+            'armed': new Rect({ width: 10, height: 10, borderColor: 'rgba(0,150,0,.75)', fill: false, border: 1 }),
+            'inactive': new Rect({ width: 10, height: 10, borderColor: 'rgba(127,127,127,.75)', fill: false, border: 1 }),
+        },
+        state: 'armed',
+    }),
+
     Animation.xspec({tag: 'gem.blue', jitter: true, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
@@ -513,6 +522,7 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'test.sound', audio: new SfxRef({src: 'snd/test.mp3'}) }),
     Sfx.xspec({ tag: 'gem.break', audio: new SfxRef({src: 'snd/gem-break.mp3'}) }),
     Sfx.xspec({ tag: 'trap.trigger', audio: new SfxRef({src: 'snd/pick-up-item.mp3'}), volume: .5 }),
+    Sfx.xspec({ tag: 'growth.trigger', audio: new SfxRef({src: 'snd/step-thud.mp3'}), volume: .5 }),
     Sfx.xspec({ tag: 'player.pickup', audio: new SfxRef({src: 'snd/pickup-ding.mp3'}), volume: .25 }),
     Sfx.xspec({ tag: 'blip.1', audio: new SfxRef({src: 'snd/blip-1.mp3'}) }),
     Sfx.xspec({ tag: 'player.step', audio: new SfxRef({src: 'snd/step-motor-whir-3.mp3'}), volume: .5, loop: false }),

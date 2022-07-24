@@ -9,6 +9,7 @@ import { Door } from '../entities/door.js';
 import { Fuelcell } from '../entities/fuelcell.js';
 import { Funguy } from '../entities/funguy.js';
 import { Gem } from '../entities/gem.js';
+import { Growth } from '../entities/growth.js';
 import { Key } from '../entities/key.js';
 import { Projectile } from '../entities/projectile.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
@@ -283,11 +284,9 @@ class Spawn {
                 projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.ice')}),
             }),
 
-            SpikeTrap.xspec({
-                name: 'trap.test',
-                damageMin: 10,
-                damageMax: 20,
-                x_sketch: Assets.get('trap.test'),
+            Growth.xspec({
+                name: 'growth.test',
+                x_sketch: Assets.get('growth.test'),
             }),
 
         ];
