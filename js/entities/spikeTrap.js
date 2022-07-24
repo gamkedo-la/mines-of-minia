@@ -18,10 +18,12 @@ class SpikeTrap extends Trap {
         super.trigger(actor);
         // apply damage
         // -- calculate damage to apply
-        let damage = Attack.damage(this, actor);
-        if (damage > 0) {
-            console.log(`${this} applying ${damage} damage to ${actor}`);
-            actor.evt.trigger(actor.constructor.evtDamaged, { actor: this, target: actor, damage: damage });
+        if (actor.health) {
+            let damage = Attack.damage(this, actor);
+            if (damage > 0) {
+                console.log(`${this} applying ${damage} damage to ${actor}`);
+                actor.evt.trigger(actor.constructor.evtDamaged, { actor: this, target: actor, damage: damage });
+            }
         }
     }
 

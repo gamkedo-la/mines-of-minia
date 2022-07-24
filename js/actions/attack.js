@@ -141,7 +141,7 @@ class Attack {
         let baseDamage = Random.rangeInt(min, max);
         let damageReduction = target.damageReduction || 0;
         let kind = ((weapon) ? weapon.kind : actor.attackKind) || 'bonk';
-        let resistance = target.resistances[kind] || 0;
+        let resistance = (target.resistances) ? target.resistances[kind] || 0 : 0;
         // -- damage reduction is taken off the top
         let damage = baseDamage - damageReduction;
         // -- damage resistance is a percent reduction
