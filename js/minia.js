@@ -39,6 +39,8 @@ import { Hud } from "./hud.js";
 import { RangedWeapon } from "./entities/rangedWeapon.js";
 import { Projectile } from "./entities/projectile.js";
 import { Funguy } from "./entities/funguy.js";
+import { Trap } from "./entities/trap.js";
+import { SpikeTrap } from "./entities/spikeTrap.js";
 
 class Minia extends Game {
     static states = {
@@ -123,9 +125,11 @@ class Minia extends Game {
             Reactor,
             Rous,
             Shielding,
+            SpikeTrap,
             Stairs,
             Tile,
             Token,
+            Trap,
             Weapon,
         ]);
         //Font.dfltFamily = "Medula One";

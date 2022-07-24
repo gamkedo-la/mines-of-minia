@@ -14,7 +14,7 @@ class Golem extends Enemy{
         let health = Prng.rangeInt(3,8);
         for (let i=1; i<lvl; i++) health += Prng.rangeInt(1,3);
         // final spec
-        return Object.assign( this.spec, {
+        return Object.assign( {}, this.spec, {
             xp: 5,
             healthMax: health,
             x_sketch: Assets.get('golem'),

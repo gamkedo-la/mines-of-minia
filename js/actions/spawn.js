@@ -50,7 +50,7 @@ class SpawnAction extends Action {
             });
             spawn = Generator.generate(x_obj);
         }
-        console.log(`spawn: ${spawn} zed: ${spawn.z} xform: ${spawn.xform}`);
+        //console.log(`spawn: ${spawn} zed: ${spawn.z} xform: ${spawn.xform}`);
         // -- emerge object
         spawn.evt.trigger(spawn.constructor.evtEmerged, {actor: spawn}, true);
         // -- play spawn sound

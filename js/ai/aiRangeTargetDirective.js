@@ -14,7 +14,7 @@ class AiRangeTargetDirective extends AiDirective {
     *run() {
         this.reset();
         while (!this.done) {
-            console.log(`airange target running`);
+            //console.log(`airange target running`);
             let range = this.getTargetRange();
             //console.log(`range: ${range} this.range: ${this.range}`)
             // check for LoS

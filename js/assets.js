@@ -71,19 +71,6 @@ let miniaAssets = [
         borderColor: 'red',
     }),
 
-    /*
-    Shape.xspec({
-        tag: 'gem.blue',
-        fill: true,
-        verts: [ 
-            {x:8, y:2}, {x:14, y:8}, {x:8, y:14}, {x:2, y:8},
-        ],
-        border: 1,
-        color: 'blue',
-        borderColor: 'red',
-    }),
-    */
-
     Shape.xspec({
         tag: 'gem.gold',
         fill: true,
@@ -128,8 +115,7 @@ let miniaAssets = [
         color: 'rgba(75,75,75,1)',
         borderColor: 'red',
     }),
-    //Rect.xspec({tag: 'token', width: 12, height: 8, color: 'gold', borderColor: 'red', border: 1}),
-    Rect.xspec({tag: 'reactor', width: 8, height: 12, color: 'green', borderColor: 'red', border: 2}),
+
     Rect.xspec({tag: 'fuelcell', width: 8, height: 12, color: 'blue', borderColor: 'red', border: 1}),
     Rect.xspec({tag: 'reticle.aim.ok', width: 12, height: 12, borderColor: 'green', border: 1, fill: false}),
     Rect.xspec({tag: 'reticle.aim.nok', width: 12, height: 12, borderColor: 'red', border: 1, fill: false}),
@@ -149,6 +135,15 @@ let miniaAssets = [
     Rect.xspec({tag: 'idle', width: 12, height: 12, color: 'green'}),
     Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
     Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
+
+    Animator.xspec({
+        tag: 'trap.test',
+        sketches: {
+            'armed': new Rect({ width: 10, height: 10, borderColor: 'rgba(255,255,0,.75)', fill: false, border: 1 }),
+            'inactive': new Rect({ width: 10, height: 10, borderColor: 'rgba(127,127,127,.75)', fill: false, border: 1 }),
+        },
+        state: 'armed',
+    }),
 
     Animation.xspec({tag: 'gem.blue', jitter: true, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
@@ -517,7 +512,7 @@ let miniaAssets = [
     }),
     Sfx.xspec({ tag: 'test.sound', audio: new SfxRef({src: 'snd/test.mp3'}) }),
     Sfx.xspec({ tag: 'gem.break', audio: new SfxRef({src: 'snd/gem-break.mp3'}) }),
-    Sfx.xspec({ tag: 'trap.trigger', audio: new SfxRef({src: 'snd/pick-up-item.mp3'}) }),
+    Sfx.xspec({ tag: 'trap.trigger', audio: new SfxRef({src: 'snd/pick-up-item.mp3'}), volume: .5 }),
     Sfx.xspec({ tag: 'player.pickup', audio: new SfxRef({src: 'snd/pickup-ding.mp3'}), volume: .25 }),
     Sfx.xspec({ tag: 'blip.1', audio: new SfxRef({src: 'snd/blip-1.mp3'}) }),
     Sfx.xspec({ tag: 'player.step', audio: new SfxRef({src: 'snd/step-motor-whir-3.mp3'}), volume: .5, loop: false }),

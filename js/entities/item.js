@@ -9,6 +9,7 @@ import { MiniaModel } from './miniaModel.js';
  */
 class Item extends MiniaModel {
     // STATIC VARIABLES ----------------------------------------------------
+    static mobile = true;
     static lootable = true;
     static stackable = false;
     static discoverable = false;

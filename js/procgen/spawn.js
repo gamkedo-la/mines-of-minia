@@ -1,23 +1,18 @@
 export { Spawn };
 
-import { Array2D } from '../base/array2d.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
-import { Direction } from '../base/dir.js';
-import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { Chest } from '../entities/chest.js';
-import { Cog } from '../entities/cog.js';
 import { Door } from '../entities/door.js';
-import { Enemy } from '../entities/enemy.js';
 import { Fuelcell } from '../entities/fuelcell.js';
 import { Funguy } from '../entities/funguy.js';
 import { Gem } from '../entities/gem.js';
-import { Golem } from '../entities/golem.js';
 import { Key } from '../entities/key.js';
 import { Projectile } from '../entities/projectile.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
 import { Reactor } from '../entities/reactor.js';
+import { SpikeTrap } from '../entities/spikeTrap.js';
 import { Stairs } from '../entities/stairs.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
@@ -163,16 +158,6 @@ class Spawn {
                 name: 'hack.1',
                 x_sketch: Assets.get('hack.1'),
             }),
-            Weapon.xspec({
-                kind: 'hack',
-                name: 'hack.2',
-                x_sketch: Assets.get('hack.2'),
-            }),
-            Weapon.xspec({
-                kind: 'hack',
-                name: 'hack.3',
-                x_sketch: Assets.get('hack.3'),
-            }),
             Gem.xspec({
                 name: 'health.gem',
                 kind: 'health',
@@ -192,14 +177,6 @@ class Spawn {
             Reactor.xspec({
                 name: 'reactor.1',
                 x_sketch: Assets.get('reactor.1'),
-            }),
-            Reactor.xspec({
-                name: 'reactor.2',
-                x_sketch: Assets.get('reactor.2'),
-            }),
-            Reactor.xspec({
-                name: 'reactor.3',
-                x_sketch: Assets.get('reactor.3'),
             }),
             Token.xspec({
                 name: 'token',
@@ -240,35 +217,18 @@ class Spawn {
             }),
 
             RangedWeapon.xspec({
-                name: 'dark.gun.1',
-                x_sketch: Assets.get('dark.gun.1'),
-                baseDamageMin: 5,
-                baseDamageMax: 10,
-                projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.dark')}),
-            }),
-
-            RangedWeapon.xspec({
-                name: 'shock.gun.1',
-                x_sketch: Assets.get('shock.gun.2'),
-                baseDamageMin: 5,
-                baseDamageMax: 10,
-                projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.shock')}),
-            }),
-
-            RangedWeapon.xspec({
-                name: 'fire.gun.3',
-                x_sketch: Assets.get('fire.gun.3'),
-                baseDamageMin: 15,
-                baseDamageMax: 20,
-                projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.fire')}),
-            }),
-
-            RangedWeapon.xspec({
                 name: 'ice.gun.3',
                 x_sketch: Assets.get('ice.gun.3'),
                 baseDamageMin: 15,
                 baseDamageMax: 20,
                 projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.ice')}),
+            }),
+
+            SpikeTrap.xspec({
+                name: 'trap.test',
+                damageMin: 10,
+                damageMax: 20,
+                x_sketch: Assets.get('trap.test'),
             }),
 
         ];

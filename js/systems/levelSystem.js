@@ -40,7 +40,7 @@ class LevelSystem extends System {
 
     // EVENT HANDLERS ------------------------------------------------------
     onLevelWanted(evt) {
-        console.log(`${this} onLevelWanted: ${Fmt.ofmt(evt)}`);
+        //console.log(`${this} onLevelWanted: ${Fmt.ofmt(evt)}`);
         if (evt.level !== this.constructor.currentLevelIndex) {
             this.wantLevel = evt.level;
             this.active = true;
@@ -48,7 +48,7 @@ class LevelSystem extends System {
     }
 
     onItemEmerged(evt) {
-        console.log(`item emerged: ${Fmt.ofmt(evt)}`);
+        //console.log(`item emerged: ${Fmt.ofmt(evt)}`);
         this.lvl.adopt(evt.actor);
     }
 

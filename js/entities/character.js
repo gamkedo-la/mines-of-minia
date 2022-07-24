@@ -30,6 +30,7 @@ class Character extends MiniaModel {
     static dfltDamageReduction = 0;
     static dfltDeathTTL = 200;
     static dfltHealth = 1;
+    static mobile = true;
 
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSketch() {
