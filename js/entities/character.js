@@ -1,10 +1,12 @@
 export { Character };
 
+import { DropLootAction } from "../actions/loot.js";
+import { DestroyAction } from "../base/actions/destroy.js";
 import { Direction } from "../base/dir.js";
 import { Fmt } from "../base/fmt.js";
 import { Rect } from "../base/rect.js";
+import { ActionSystem } from "../base/systems/actionSystem.js";
 import { UpdateSystem } from "../base/systems/updateSystem.js";
-import { Timer } from "../base/timer.js";
 import { Util } from "../base/util.js";
 import { MiniaModel } from "./miniaModel.js";
 import { RangedWeapon } from "./rangedWeapon.js";
@@ -154,7 +156,16 @@ class Character extends MiniaModel {
         if (this.state !== 'dying') {
             let wantAnimState = (this.facing === Direction.east) ? 'dyingr' : 'dyingl';
             UpdateSystem.eUpdate(this, { state: 'dying', health: 0, animState: wantAnimState });
-            this.deathTimer = new Timer({ttl: this.deathTTL, cb: this.destroy.bind(this)});
+            // spawn any loot
+            for (let loot of (this.loot || [])) {
+                ActionSystem.assign(this, new DropLootAction({
+                    lootSpec: loot,
+                }));
+            }
+            // destroy
+            ActionSystem.assign(this, new DestroyAction({
+                ttl: this.deathTTL,
+            }));
         }
     }
 

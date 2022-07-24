@@ -1,5 +1,6 @@
 export { DestroyAction, DestroyTargetAction };
 
+import { Timer } from '../timer.js';
 import { Action } from './action.js';
 
 class DestroyAction extends Action {
@@ -11,6 +12,7 @@ class DestroyAction extends Action {
         super(spec);
         this.sfx = spec.sfx;
         this.ttl = spec.ttl || this.constructor.dfltTTL;
+        this.onTimer = this.onTimer.bind(this);
     }
     destroy() {
         super.destroy();

@@ -208,6 +208,13 @@ class Spawn {
             }),
             Funguy.xspec({
                 name: 'funguy',
+                loot: [
+                    Token.xspec({
+                        name: 'token',
+                        x_sketch: Assets.get('token'),
+                        count: 5,
+                    }),
+                ],
             }),
 
             /*

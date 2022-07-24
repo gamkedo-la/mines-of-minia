@@ -24,7 +24,7 @@ class Funguy extends Enemy{
             maxSpeed: Config.tileSize/.3/1000,
             losRange: Config.tileSize*5,
             aggroRange: Config.tileSize*5,
-            deathTTL: 1000,
+            deathTTL: 200,
             attackKind: 'dark',
         }, spec);
     }

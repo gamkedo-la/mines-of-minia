@@ -525,6 +525,9 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'item.drop', audio: new SfxRef({src: 'snd/wet-thud.mp3'}), volume: .5, loop: false }),
     Sfx.xspec({ tag: 'item.throw', audio: new SfxRef({src: 'snd/arrow-shoot.mp3'}), volume: .3, loop: false }),
     Sfx.xspec({ tag: 'item.throwHit', audio: new SfxRef({src: 'snd/hit-bolt.mp3'}), volume: .5, loop: false }),
+    Sfx.xspec({ tag: 'item.loot', audio: new SfxRef({src: 'snd/uncork-flask.mp3'}), volume: .4, loop: false }),
+    Sfx.xspec({ tag: 'item.lootThud', audio: new SfxRef({src: 'snd/hard-bump.mp3'}), volume: .4, loop: false }),
+
     ...Template.walls('img/rock-walls.png', 'rock.wall'),
     ...Template.tiles('img/rock-floor.png', 'rock.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
     ...Template.tiles('img/rock-pit.png', 'rock.pit'),
