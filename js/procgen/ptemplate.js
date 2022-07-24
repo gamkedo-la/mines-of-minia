@@ -96,6 +96,13 @@ class ProcTemplate {
             { weight: .5, chance: 0 },
             { weight: .5, chance: 1, min: 1, max: 2 },
         ]);
+        // -- growth
+        this.spawn.growth = Util.getpath(spec, 'spawn.growth');
+        // -- sample period for noise function
+        this.spawn.growthNoisePeriod = Util.getpath(spec, 'spawn.growthNoisePeriod', 2);
+        // -- sample pct for noise function
+        this.spawn.growthNoisePct = Util.getpath(spec, 'spawn.growthNoisePct', 0);
+        this.spawn.growthFreePct = Util.getpath(spec, 'spawn.growthFreePct', 0);
 
     }
 }

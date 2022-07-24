@@ -9,9 +9,7 @@ class SpikeTrap extends Trap {
     static dfltAttackKind = 'poke';
     static dfltDamage = 5;
     static get dfltSketch() {
-        let sketch = Assets.get('trap.test', true);
-        console.log(`-- sketch: ${sketch}`);
-        return sketch;
+        return Assets.get('trap.test', true);
     }
 
     cpost(spec) {

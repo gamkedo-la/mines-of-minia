@@ -30,6 +30,8 @@ class Spawn {
         this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
+        // -- growth
+        this.spawnGrowth(template, pstate);
         // -- test objects
         this.spawnTest(template, pstate);
         yield;
@@ -55,6 +57,16 @@ class Spawn {
         }
     }
 
+    static checkSpawnIdx(plvl, idx) {
+        // -- ignore start index
+        if (idx === plvl.startIdx) return false;
+        // -- not at a floor tile
+        if (plvl.entities.some((v) => v.idx === idx && v.cls === 'Tile' && v.kind !== 'floor')) return false;
+        // -- anything else at index?
+        if (plvl.entities.some((v) => v.idx === idx && v.cls !== 'Tile')) return false;
+        return true;
+    }
+
     static spawnTrapForRoom(template, pstate, proom, options) {
         let x_spawn = template.spawn || {};
         let plvl = pstate.plvl;
@@ -76,11 +88,7 @@ class Spawn {
                 idx = Prng.choose(proom.idxs);
                 //console.log(`-- try index: ${idx}`);
                 // -- test index to make sure nothing is there..
-                if (idx === plvl.startIdx) continue;
-                // -- not at a floor tile
-                if (plvl.entities.some((v) => v.idx === idx && v.cls === 'Tile' && v.kind !== 'floor')) continue;
-                // -- anything else at index
-                if (plvl.entities.some((v) => v.idx === idx && v.cls !== 'Tile')) continue;
+                if (!this.checkSpawnIdx(plvl, idx)) continue;
                 // choose trap class
                 let cls = Prng.choose(x_spawn.trapList);
                 let x_trap = cls.xspec({
@@ -98,8 +106,8 @@ class Spawn {
         // -- pull data
         let x_spawn = template.spawn || {};
         let prooms = pstate.prooms || [];
-        if (!x_spawn.trapList) return;
         let phalls = pstate.phalls || [];
+        if (!x_spawn.trapList) return;
         // -- iterate through rooms
         // iterate through rooms
         for (const proom of prooms) {
@@ -108,6 +116,55 @@ class Spawn {
         // iterate through halls
         for (const phall of phalls) {
             this.spawnTrapForRoom(template, pstate, phall, x_spawn.hallTrapOptions);
+        }
+    }
+
+    static spawnGrowthForRoom(template, pstate, room) {
+        let x_spawn = template.spawn || {};
+        let plvlo = pstate.plvlo;
+        let plvl = pstate.plvl;
+        let noise = pstate.pnoise;
+        let growth = x_spawn.growth || 'growth.test';
+        let growthNoisePct = x_spawn.growthNoisePct || 0;
+        let growthNoisePeriod = x_spawn.growthNoisePeriod || 1;
+        let growthFreePct = x_spawn.growthFreePct || 0;
+        if (!growthNoisePct && !growthFreePct) return;
+        // iterate indicies
+        for (const idx of room.idxs) {
+            // -- test index to make sure nothing is there..
+            if (!this.checkSpawnIdx(plvl, idx)) continue;
+            // -- check free spawn
+            let spawn = Prng.flip(growthFreePct);
+            if (!spawn) {
+                // -- test for
+                let i = plvlo.data.ifromidx(idx) + plvlo.data.cols;
+                let j = plvlo.data.jfromidx(idx) + plvlo.data.rows;
+                // -- sample is in range of -1 to 1
+                // -- pct is in range of 0 to 1
+                let sample = noise.sample(i*growthNoisePeriod,j*growthNoisePeriod);
+                if (sample < (growthNoisePct*2)-1) spawn = true;
+            }
+            if (spawn) {
+                let x_growth = Growth.xspec({
+                    idx: idx,
+                    z: 2,
+                    x_sketch: Assets.get(growth),
+                });
+                //console.log(`growth: ${Fmt.ofmt(x_growth)}`);
+                plvl.entities.push(x_growth);
+            }
+        }
+    }
+
+    static spawnGrowth(template, pstate) {
+        let prooms = pstate.prooms || [];
+        let phalls = pstate.phalls || [];
+        for (const proom of prooms) {
+            this.spawnGrowthForRoom(template, pstate, proom);
+        }
+        // iterate through halls
+        for (const phall of phalls) {
+            this.spawnGrowthForRoom(template, pstate, phall);
         }
     }
 
