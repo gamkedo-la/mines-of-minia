@@ -548,7 +548,42 @@ let miniaAssets = [
     Sprite.xspec({tag: 'hud.gbutton.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*2})}),
     Sprite.xspec({tag: 'hud.gbutton.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*4})}),
 
-    Sprite.xspec({tag: 'funguy', img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*0, y: 16*0})}),
+    Sprite.xspec({tag: 'funguy.idler', img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*0, y: 16*0})}),
+
+    Animation.xspec({tag: 'funguy.mover', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*8, y: 0})}), ttl: 25 }),
+    ]}),
+
+    Sprite.xspec({tag: 'funguy.idlel', img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*0, y: 32})}),
+    Animation.xspec({tag: 'funguy.movel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*1, y: 32})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*2, y: 32})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*3, y: 32})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*4, y: 32})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*5, y: 32})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*6, y: 32})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*7, y: 32})}), ttl: 25 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*8, y: 32})}), ttl: 25 }),
+    ]}),
+
+    Animator.xspec({
+        tag: 'funguy',
+        sketches: {
+            'idler': new AssetRef({tag: 'funguy.idler'}),
+            'idlel': new AssetRef({tag: 'funguy.idlel'}),
+            'mover': new AssetRef({tag: 'funguy.mover'}),
+            'movel': new AssetRef({tag: 'funguy.movel'}),
+        },
+        state: 'idler',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+    }),
 
     Animation.xspec({tag: 'token.carry', jitter: true, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/token.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
