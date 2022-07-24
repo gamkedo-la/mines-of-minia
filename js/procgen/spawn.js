@@ -226,6 +226,13 @@ class Spawn {
             Chest.xspec({
                 name: 'chest.brown',
                 x_sketch: Assets.get('chest.brown'),
+                loot: [
+                    Token.xspec({
+                        name: 'token',
+                        x_sketch: Assets.get('token'),
+                        count: 5,
+                    }),
+                ],
             }),
             Fuelcell.xspec({
                 name: 'fuelcell',

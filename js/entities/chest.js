@@ -1,8 +1,10 @@
 export { Chest };
 
+import { DropLootAction } from '../actions/loot.js';
+import { DestroyAction } from '../base/actions/destroy.js';
 import { Rect } from '../base/rect.js';
+import { ActionSystem } from '../base/systems/actionSystem.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
-import { Timer } from '../base/timer.js';
 import { MiniaModel } from './miniaModel.js';
 
 class Chest extends MiniaModel {
@@ -24,6 +26,8 @@ class Chest extends MiniaModel {
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
         this._sketch.link(this);
+        // -- loot
+        this.loot = spec.loot || [];
         // -- sync xform to match sketch dimensions
         this.xform.width = this.sketch.width;
         this.xform.height = this.sketch.height;
@@ -34,13 +38,13 @@ class Chest extends MiniaModel {
 
     destroy() {
         this._unlinkSketch('_sketch');
-        if (this.timer) this.timer.destroy();
         super.destroy();
     }
 
     as_kv() {
         return Object.assign({}, super.as_kv(), {
             state: this.state,
+            loot: this.loot,
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
         });
     }
@@ -59,11 +63,16 @@ class Chest extends MiniaModel {
     // METHODS -------------------------------------------------------------
     open() {
         UpdateSystem.eUpdate(this, { state: 'open', blocksLoS: false });
-        this.timer = new Timer({ttl: this.openTTL, cb: () => this.destroy() });
-    }
-
-    close() {
-        UpdateSystem.eUpdate(this, { state: 'close', blocksLoS: true });
+        // spawn any loot
+        for (let loot of (this.loot || [])) {
+            ActionSystem.assign(this, new DropLootAction({
+                lootSpec: loot,
+            }));
+        }
+        // destroy after timer
+        ActionSystem.assign(this, new DestroyAction({
+            ttl: this.openTTL,
+        }));
     }
 
     show() {
