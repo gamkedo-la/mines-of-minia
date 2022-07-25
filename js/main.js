@@ -11,7 +11,7 @@ window.onload = async function() {
     let started = false;
     const maxDeltaTime = 1000/20;
     const evt = Events.main;
-//practice commit will be removed
+
     // start the game
     Minia.start();
 
