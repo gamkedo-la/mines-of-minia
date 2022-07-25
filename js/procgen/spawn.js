@@ -63,6 +63,8 @@ class Spawn {
     static checkSpawnIdx(plvl, idx, otherFcn=(v) => v.idx === idx && v.cls !== 'Tile') {
         // -- ignore start index
         if (idx === plvl.startIdx) return false;
+        // -- not at a door
+        if (plvl.entities.some((v) => v.idx === idx && v.cls === 'Door')) return false;
         // -- not at a floor tile
         if (plvl.entities.some((v) => v.idx === idx && v.cls === 'Tile' && v.kind !== 'floor')) return false;
         // -- anything else at index?
