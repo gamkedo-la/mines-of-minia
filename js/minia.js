@@ -42,6 +42,7 @@ import { Funguy } from "./entities/funguy.js";
 import { Trap } from "./entities/trap.js";
 import { SpikeTrap } from "./entities/spikeTrap.js";
 import { Growth } from "./entities/growth.js";
+import { Clutter } from "./entities/clutter.js";
 
 class Minia extends Game {
     static states = {
@@ -101,8 +102,10 @@ class Minia extends Game {
                 enemyList: [ Rous ],
                 trapList: [ SpikeTrap ],
                 growth: 'growth.test',
-                //growthFreePct: .1,
+                growthFreePct: .1,
                 growthNoisePct: .25,
+                clutter: 'rock.clutter',
+                clutterFreePct: .1,
             }
         }),
     };
@@ -112,6 +115,7 @@ class Minia extends Game {
         Registry.extend([
             Character,
             Chest,
+            Clutter,
             Cog,
             Door,
             Enemy,

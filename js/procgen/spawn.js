@@ -2,9 +2,11 @@ export { Spawn };
 
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
+import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { Chest } from '../entities/chest.js';
+import { Clutter } from '../entities/clutter.js';
 import { Door } from '../entities/door.js';
 import { Fuelcell } from '../entities/fuelcell.js';
 import { Funguy } from '../entities/funguy.js';
@@ -14,7 +16,6 @@ import { Key } from '../entities/key.js';
 import { Projectile } from '../entities/projectile.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
 import { Reactor } from '../entities/reactor.js';
-import { SpikeTrap } from '../entities/spikeTrap.js';
 import { Stairs } from '../entities/stairs.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
@@ -32,6 +33,8 @@ class Spawn {
         this.spawnTraps(template, pstate);
         // -- growth
         this.spawnGrowth(template, pstate);
+        // -- clutter
+        this.spawnClutter(template, pstate);
         // -- test objects
         this.spawnTest(template, pstate);
         yield;
@@ -57,13 +60,13 @@ class Spawn {
         }
     }
 
-    static checkSpawnIdx(plvl, idx) {
+    static checkSpawnIdx(plvl, idx, otherFcn=(v) => v.idx === idx && v.cls !== 'Tile') {
         // -- ignore start index
         if (idx === plvl.startIdx) return false;
         // -- not at a floor tile
         if (plvl.entities.some((v) => v.idx === idx && v.cls === 'Tile' && v.kind !== 'floor')) return false;
         // -- anything else at index?
-        if (plvl.entities.some((v) => v.idx === idx && v.cls !== 'Tile')) return false;
+        if (otherFcn && plvl.entities.some(otherFcn)) return false;
         return true;
     }
 
@@ -93,7 +96,7 @@ class Spawn {
                 let cls = Prng.choose(x_spawn.trapList);
                 let x_trap = cls.xspec({
                     idx: idx,
-                    z: 2,
+                    z: template.bgoZed,
                 });
                 //console.log(`trap: ${Fmt.ofmt(x_trap)}`);
                 plvl.entities.push(x_trap);
@@ -147,7 +150,7 @@ class Spawn {
             if (spawn) {
                 let x_growth = Growth.xspec({
                     idx: idx,
-                    z: 2,
+                    z: template.fgZed,
                     x_sketch: Assets.get(growth),
                 });
                 //console.log(`growth: ${Fmt.ofmt(x_growth)}`);
@@ -168,6 +171,53 @@ class Spawn {
         }
     }
 
+    static spawnClutterForRoom(template, pstate, room) {
+        let x_spawn = template.spawn || {};
+        let plvlo = pstate.plvlo;
+        let plvl = pstate.plvl;
+        let clutter = x_spawn.clutter || 'clutter.test';
+        let clutterFreePct = x_spawn.clutterFreePct || 0;
+        if (!clutterFreePct) return;
+        // iterate indicies
+        for (const idx of room.idxs) {
+            // -- test index to make sure nothing is there..
+            // -- clutter can spawn under other items (except growth)
+            if (!this.checkSpawnIdx(plvl, idx, (v) => (v.idx === idx && v.cls === 'Growth'))) continue;
+            // -- count adjacent walls
+            let walls = Direction.cardinals.reduce((pv, cv) => {
+                let aidx = plvlo.data.idxfromdir(idx, cv);
+                let kind = plvlo.data.getidx(aidx);
+                if (kind === 'wall') return pv + 1
+                return (kind === 'wall') ? pv + 1 : pv;
+            }, 0);
+            // -- check free spawn
+            // -- only will spawn against walls
+            let chance = clutterFreePct * walls;
+            let spawn = Prng.flip(chance);
+            if (spawn) {
+                let x_growth = Clutter.xspec({
+                    idx: idx,
+                    z: template.bgoZed,
+                    x_sketch: Assets.get(clutter),
+                });
+                //console.log(`growth: ${Fmt.ofmt(x_growth)}`);
+                plvl.entities.push(x_growth);
+            }
+        }
+    }
+
+    static spawnClutter(template, pstate) {
+        let prooms = pstate.prooms || [];
+        let phalls = pstate.phalls || [];
+        for (const proom of prooms) {
+            this.spawnClutterForRoom(template, pstate, proom);
+        }
+        // iterate through halls
+        for (const phall of phalls) {
+            this.spawnClutterForRoom(template, pstate, phall);
+        }
+    }
+
     static spawnStairs(template, pstate) {
         // -- pull data
         let x_spawn = template.spawn || {};
@@ -181,7 +231,7 @@ class Spawn {
                 up: false,
                 idx: plvl.startIdx,
                 x_sketch: Assets.get(downTag),
-                z: 2,
+                z: template.fgZed,
                 blocks: 0,
             }));
 
@@ -239,7 +289,7 @@ class Spawn {
             let enemyClass = Prng.choose(x_spawn.enemyList);
             let x_enemy = enemyClass.xspec({
                 idx: spawnIdx,
-                z: 2,
+                z: template.fgZed,
                 maxSpeed: .25,
                 losRange: Config.tileSize*8,
                 aggroRange: Config.tileSize*5,
@@ -360,7 +410,7 @@ class Spawn {
                 // success -- add spawn
                 let x_final = Object.assign({}, x_spawn, {
                     idx: idx,
-                    z: 2,
+                    z: template.fgZed,
                 });
                 //console.log(`x_final: ${Fmt.ofmt(x_final)}`);
                 plvl.entities.push(x_final);

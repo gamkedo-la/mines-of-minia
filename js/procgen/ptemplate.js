@@ -26,6 +26,11 @@ class ProcTemplate {
         this.doorWidth = spec.doorWidth || 1;
         this.minRoomUnits = spec.minRoomUnits || 5;
         this.tileSize = spec.tileSize || 16;
+        // -- zed values
+        this.bgZed = spec.bgZed || 1;
+        this.bgoZed = spec.bgoZed || 2;
+        this.fgZed = spec.bgZed || 3;
+        this.fgoZed = spec.bgoZed || 4;
 
         // -- main pie generation
         this.pie = {};
@@ -103,6 +108,9 @@ class ProcTemplate {
         // -- sample pct for noise function
         this.spawn.growthNoisePct = Util.getpath(spec, 'spawn.growthNoisePct', 0);
         this.spawn.growthFreePct = Util.getpath(spec, 'spawn.growthFreePct', 0);
+        // -- clutter
+        this.spawn.clutter = Util.getpath(spec, 'spawn.clutter');
+        this.spawn.clutterFreePct = Util.getpath(spec, 'spawn.clutterFreePct', .05);
 
     }
 }

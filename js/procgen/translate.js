@@ -209,26 +209,12 @@ class Translate {
 
     static translateEmptyRoom(template, pstate, proom, transidxs) {
         let t_spec = template.translate || {};
-        let floor = t_spec.floor || 'floor';
-        let wall = t_spec.wall || 'wall';
-
         // -- pull data
         let plvlo = pstate.plvlo;
         let plvl = pstate.plvl || [];
-
-        //console.log(`proom: ${proom.cidx}`);
         let tags = {};
         let floorTag = t_spec.hasOwnProperty('floor') ? t_spec['floor'] : 'floor';
         if (proom.critical) {
-            // FIXME
-            /*
-            for (const idx of proom.idxs) {
-                let kind = plvlo.data.getidx(idx);
-                if (kind !== 'wall') {
-                    plvlo.data.setidx(idx, 'obsb');
-                }
-            }
-            */
             tags = {
                 floor: floorTag,
                 pit: t_spec.hasOwnProperty('pit') ? t_spec['pit'] : 'pit',
@@ -249,87 +235,47 @@ class Translate {
                 obsb: t_spec.hasOwnProperty('obsb') ? t_spec['obsb'] : floorTag,
             };
         }
-
         // make sure room is viable
         this.makeRoomViable(template, pstate, proom);
-
         // iterate through room indices
         for (const idx of proom.idxs) {
             // index check... this ensures that an index will not get translated twice (e.g.: if a room overlaps w/ a hall, etc);
             if (transidxs.includes(idx)) continue;
             transidxs.push(idx);
-
             let kind = plvlo.data.getidx(idx);
-            let byFloor = Direction.all.some((v) => plvlo.data.getidx(plvlo.data.idxfromdir(idx, v)) === 'floor');
-
             // -- back, mid, fore tags and kinds
             let bgTag, bgKind;
-            let mgTag, mgKind;
             let fgTag, fgKind;
             switch (kind) {
                 case 'pit':
                     bgKind = 'pit';
                     bgTag = tags[kind];
-                    /*
-                    if (byFloor) {
-                        mgKind = 'floor';
-                        mgTag = floorTag;
-                    }
-                    */
                     break;
                 case 'pitb':
                     bgKind = 'floor';
                     bgTag = tags[kind];
-                    /*
-                    if (byFloor && bgTag !== floorTag) {
-                        mgKind = 'floor';
-                        mgTag = floorTag;
-                    }
-                    */
                     break;
                 case 'floor':
-                    mgKind = 'floor';
-                    mgTag = floorTag;
+                    bgKind = 'floor';
+                    bgTag = floorTag;
                     break;
                 case 'wall':
                     fgKind = 'wall';
                     fgTag = tags[kind];
-                    /*
-                    if (byFloor) {
-                        mgKind = 'floor';
-                        mgTag = floorTag;
-                    }
-                    */
                     break;
                 case 'door':
-                    // FIXME
-                    mgKind = 'floor';
-                    mgTag = t_spec.hasOwnProperty('floor') ? t_spec['floor'] : 'floor';
+                    bgKind = 'floor';
+                    bgTag = floorTag;
                     break;
                 case 'obs':
                     fgKind = 'wall';
                     fgTag = tags[kind];
-                    //mgKind = 'floor';
-                    //mgTag = tags['obsb'];
-                    /*
-                    if (byFloor) {
-                        mgKind = 'floor';
-                        mgTag = floorTag;
-                    }
-                    */
                     break;
                 case 'obsb':
-                    mgKind = 'floor';
-                    mgTag = tags[kind];
-                    /*
-                    if (byFloor && fgTag !== floorTag) {
-                        mgKind = 'floor';
-                        mgTag = floorTag;
-                    }
-                    */
+                    bgKind = 'floor';
+                    bgTag = tags[kind];
                     break;
             }
-
             if (fgTag) {
                 plvl.entities.push({
                     cls: 'Tile',
@@ -337,21 +283,9 @@ class Translate {
                     tileSize: template.tileSize,
                     baseAssetTag: fgTag,
                     idx: idx,
-                    z: 2,
+                    z: template.fgZed,
                 });
             }
-
-            if (mgTag) {
-                plvl.entities.push({
-                    cls: 'Tile',
-                    kind: mgKind,
-                    tileSize: template.tileSize,
-                    baseAssetTag: mgTag,
-                    idx: idx,
-                    z: 1,
-                });
-            }
-
             if (bgTag) {
                 plvl.entities.push({
                     cls: 'Tile',
@@ -359,43 +293,9 @@ class Translate {
                     tileSize: template.tileSize,
                     baseAssetTag: bgTag,
                     idx: idx,
-                    z: 0,
+                    z: template.bgZed,
                 });
             }
-
-
-            /*
-            // add floor tile
-            let x_ground = {
-                cls: 'Tile',
-                kind: 'ground',
-                tileSize: template.tileSize,
-                baseAssetTag: floor,
-                idx: idx,
-                z: 0,
-            };
-            plvl.entities.push(x_ground);
-
-            // add wall tile
-            if (plvlo.data.getidx(idx) === 'wall') {
-                let x_wall = {
-                    cls: 'Tile',
-                    kind: 'wall',
-                    tileSize: template.tileSize,
-                    baseAssetTag: wall,
-                    idx: idx,
-                    z: 1,
-                };
-                plvl.entities.push(x_wall);
-            }
-
-            // add door tile 
-            if (plvlo.data.getidx(idx) === 'door') {
-                let byDoor = Direction.all.some((v) => doorIdxs.includes(plvlo.data.idxfromdir(idx, v)));
-                if (!byDoor) doorIdxs.push(idx);
-            }
-            // FIXME
-            */
         }
 
 
