@@ -56,7 +56,7 @@ class Gem extends Item {
 
     static as_kv() {
         return {
-            cls: 'Gem',
+            cls: this.name,
             kindSecretMap: Object.assign({}, this.kindSecretMap),
             discoveredKinds: Array.from(this.discoveredKinds),
         }

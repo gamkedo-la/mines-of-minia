@@ -1,4 +1,4 @@
-export { Inventory, InventoryData };
+export { Inventory, InventoryData, ItemSelect };
 
 import { DropAction } from './actions/drop.js';
 import { UseAction } from './actions/use.js';
@@ -532,9 +532,7 @@ class Inventory extends UxView {
                     xform: new XForm({ left: .7, top: .2, bottom: .2}),
                     item: item,
                 });
-                this.itemPopup.evt.dbg = true;
                 this.itemPopup.evt.listen(this.itemPopup.constructor.evtDestroyed, this.onPopupDestroy);
-                this.itemPopup.evt.dbg = false;
                 this.adopt(this.itemPopup);
                 this.markCompatibleSlots(item);
                 this.select(evt.actor);
@@ -752,6 +750,7 @@ class Inventory extends UxView {
         for (const button of Array.from(this.marked)) {
             button.unpressed = this.constructor.dfltUnpressed;
         }
+        this.marked = [];
         if (this.selected) this.unselect(this.selected);
         if (this.itemPopup) this.itemPopup.destroy();
     }
@@ -842,6 +841,22 @@ class Inventory extends UxView {
         // disable backpack slots
         for (let i=0; i<25; i++) {
             this.toggleSlot(`inv${i}`, (i<data.numSlots));
+        }
+    }
+
+    doUse(item) {
+        if (item.constructor.shootable) {
+            console.log(`${item} shootable`);
+            Events.trigger('handler.wanted', {which: 'aim', shooter: item});
+            this.parent.destroy();
+            this.destroy();
+        } else if (item.constructor.usable) {
+            let action = new UseAction({
+                target: item,
+            });
+            TurnSystem.postLeaderAction(action);
+            this.parent.destroy();
+            this.destroy();
         }
     }
 
@@ -972,7 +987,7 @@ class ItemPopup extends UxView {
             Events.trigger('handler.wanted', {which: 'aim', shooter: this.item});
             this.parent.destroy();
             this.destroy();
-        } else if (this.item.constructor.shootable) {
+        } else if (this.item.constructor.usable) {
             let action = new UseAction({
                 target: this.item,
             });
@@ -1003,6 +1018,45 @@ class ItemPopup extends UxView {
         this.kind.text = `-- ${item.constructor.slot} --`;
         this.description.text = item.description;
         this.item = item;
+    }
+
+}
+
+class ItemSelect extends UxView {
+    cpost(spec) {
+        super.cpost(spec);
+        // create item select popup
+        this.adopt(new UxPanel({
+            sketch: Assets.get('oframe.red', true),
+            children: [
+            ],
+        }));
+
+        // event handlers
+        this.onKeyDown = this.onKeyDown.bind(this);
+        //this.onUseClicked = this.onUseClicked.bind(this);
+        //this.onDropClicked = this.onDropClicked.bind(this);
+        //this.onThrowClicked = this.onThrowClicked.bind(this);
+        Events.listen(Keys.evtDown, this.onKeyDown);
+        //this.useButton.evt.listen(this.useButton.constructor.evtMouseClicked, this.onUseClicked);
+        //this.dropButton.evt.listen(this.dropButton.constructor.evtMouseClicked, this.onDropClicked);
+        //this.throwButton.evt.listen(this.throwButton.constructor.evtMouseClicked, this.onThrowClicked);
+    }
+
+    onKeyDown(evt) {
+        if (!this.active) return;
+        console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
+        switch (evt.key) {
+            case 'Escape': {
+                this.destroy();
+                break;
+            }
+        }
+    }
+
+    destroy() {
+        super.destroy();
+        Events.ignore(Keys.evtDown, this.onKeyDown);
     }
 
 }

@@ -72,17 +72,6 @@ let miniaAssets = [
     }),
 
     Shape.xspec({
-        tag: 'gem.gold',
-        fill: true,
-        verts: [ 
-            {x:8, y:2}, {x:14, y:8}, {x:8, y:14}, {x:2, y:8},
-        ],
-        border: 1,
-        color: 'gold',
-        borderColor: 'red',
-    }),
-
-    Shape.xspec({
         tag: 'key.gold',
         fill: true,
         verts: [ 
@@ -153,12 +142,6 @@ let miniaAssets = [
         },
         state: 'armed',
     }),
-
-    Animation.xspec({tag: 'gem.blue', jitter: true, x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
-    ]}),
 
     Animation.xspec({tag: 'reactor.1.carry', jitter: true, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/reactor.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 350 }),
@@ -882,5 +865,45 @@ let miniaAssets = [
     }),
 
     Template.varsprite('img/rock-area-clutter.png', 'rock.clutter', [[0,0]], {width: 16, height: 16}),
+
+    // -- gems
+    Shape.xspec({
+        tag: 'gem.gold',
+        fill: true,
+        verts: [ 
+            {x:8, y:2}, {x:14, y:8}, {x:8, y:14}, {x:2, y:8},
+        ],
+        border: 1,
+        color: 'gold',
+        borderColor: 'red',
+    }),
+    Animation.xspec({tag: 'gem.blue', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
+    ]}),
+
+    // -- cogs
+    Shape.xspec({
+        tag: 'cog.four',
+        fill: true,
+        verts: [ 
+            {x:4, y:3}, {x:11, y:4}, {x:10, y:11}, {x:3, y:10},
+        ],
+        border: 1,
+        color: 'silver',
+        borderColor: 'red',
+    }),
+    Shape.xspec({
+        tag: 'cog.six',
+        fill: true,
+        verts: [ 
+            {x:7, y:3}, {x:11, y:5}, {x:11, y:10}, {x:7, y:12}, {x: 3, y: 10}, {x:3, y: 5},
+        ],
+        border: 1,
+        color: 'silver',
+        borderColor: 'red',
+    }),
+
 
 ];

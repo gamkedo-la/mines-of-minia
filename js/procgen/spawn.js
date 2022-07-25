@@ -7,6 +7,7 @@ import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { Chest } from '../entities/chest.js';
 import { Clutter } from '../entities/clutter.js';
+import { Cog } from '../entities/cog.js';
 import { Door } from '../entities/door.js';
 import { Fuelcell } from '../entities/fuelcell.js';
 import { Funguy } from '../entities/funguy.js';
@@ -338,6 +339,14 @@ class Spawn {
             Gem.xspec({
                 name: 'test.gem',
                 kind: 'test',
+            }),
+            Cog.xspec({
+                name: 'test.cog',
+                kind: 'test',
+            }),
+            Cog.xspec({
+                name: 'identify.cog',
+                kind: 'identify',
             }),
             Key.xspec({
                 name: 'gold.key',
