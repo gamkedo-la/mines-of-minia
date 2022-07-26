@@ -864,7 +864,7 @@ let miniaAssets = [
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
-    Template.varsprite('img/rock-area-clutter.png', 'rock.clutter', [[0,0]], {width: 16, height: 16}),
+    Template.varsprite('img/rock-area-clutter.png', 'rock.clutter', [[0,0], [1,0]], {width: 16, height: 16}),
 
     // -- gems
     Shape.xspec({
