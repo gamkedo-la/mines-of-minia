@@ -93,7 +93,7 @@ class AimHandler extends Entity {
         if (this.shooter.constructor.shootable) {
             // check for power requirements
             if (this.shooter.power > this.player.power) {
-                Events.trigger(OverlaySystem.evtWarn, { actor: this.player, which: 'insufficient power'});
+                Events.trigger(OverlaySystem.evtNotify, { actor: this.player, which: 'warn', msg: 'insufficient power'});
                 return;
             }
             action = new ShootAction({

@@ -44,6 +44,8 @@ class Item extends MiniaModel {
         if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
         // -- loot
         this.loot = spec.loot || [];
+        // -- identifiable
+        this.identifiable = spec.hasOwnProperty('identifiable') ? spec.identifiable : false;
 
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);

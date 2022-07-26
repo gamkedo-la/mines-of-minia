@@ -322,23 +322,11 @@ class Spawn {
                 kind: 'poke',
                 name: 'poke.1',
                 x_sketch: Assets.get('poke.1'),
-            }),
-            Weapon.xspec({
-                kind: 'hack',
-                name: 'hack.1',
-                x_sketch: Assets.get('hack.1'),
+                identifiable: true,
             }),
             Gem.xspec({
                 name: 'health.gem',
                 kind: 'health',
-            }),
-            Gem.xspec({
-                name: 'health.gem',
-                kind: 'health',
-            }),
-            Gem.xspec({
-                name: 'test.gem',
-                kind: 'test',
             }),
             Cog.xspec({
                 name: 'test.cog',
@@ -348,19 +336,7 @@ class Spawn {
                 name: 'identify.cog',
                 kind: 'identify',
             }),
-            Key.xspec({
-                name: 'gold.key',
-                x_sketch: Assets.get('key.gold'),
-            }),
-            Reactor.xspec({
-                name: 'reactor.1',
-                x_sketch: Assets.get('reactor.1'),
-            }),
-            Token.xspec({
-                name: 'token',
-                x_sketch: Assets.get('token'),
-                count: 5,
-            }),
+            /*
             Funguy.xspec({
                 name: 'funguy',
                 loot: [
@@ -371,6 +347,7 @@ class Spawn {
                     }),
                 ],
             }),
+            */
 
             /*
             Cog.xspec({
@@ -400,11 +377,6 @@ class Spawn {
                 baseDamageMin: 15,
                 baseDamageMax: 20,
                 projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.ice')}),
-            }),
-
-            Growth.xspec({
-                name: 'growth.test',
-                x_sketch: Assets.get('growth.test'),
             }),
 
         ];

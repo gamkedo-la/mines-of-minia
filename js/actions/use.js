@@ -11,6 +11,7 @@ class UseAction extends Action {
     constructor(spec={}) {
         super(spec);
         this.ttl = spec.ttl || this.constructor.dfltTTL;
+        this.item = spec.item;
         this.target = spec.target;
         this.sfx = spec.sfx;
         this.onTimer = this.onTimer.bind(this);
@@ -24,8 +25,8 @@ class UseAction extends Action {
     onTimer(evt) {
         if (this.dbg) console.log(`${this} is done`);
         // item gets used
-        if (this.target.use && typeof(this.target.use) === "function") {
-            this.target.use(this.actor);
+        if (this.item.use && typeof(this.item.use) === "function") {
+            this.item.use(this.actor, this.target);
         } else {
             console.log(`ERROR: attempt to use unusable item`);
         }

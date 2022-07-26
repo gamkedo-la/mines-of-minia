@@ -1,14 +1,16 @@
 export { Cog };
 
 import { Assets } from '../base/assets.js';
+import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
+import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Item } from './item.js';
 
 
 class Cog extends Item {
     // STATIC VARIABLES ----------------------------------------------------
-    static slot = 'belt';
     static stackable = true;
     static discoverable = true;
     static usable = true;
@@ -27,7 +29,7 @@ class Cog extends Item {
     static descriptionMap = {
         'test': 'a test cog',
         'identify': 'a cog that allows identification of equipment, other cogs, and gems',
-    }
+    };
 
     // -- maps kind->secretKind
     static kindSecretMap = {}
@@ -94,6 +96,7 @@ class Cog extends Item {
 
     static discover(kind) {
         this.discoveredKinds.add(kind);
+        Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `discovered ${kind} cog`});
     }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
@@ -104,6 +107,7 @@ class Cog extends Item {
     cpost(spec) {
         super.cpost(spec);
         this.kind = spec.kind || this.constructor.dfltKind;
+        this.useFilter = this.useFilter.bind(this);
         // -- override properties for discovery
         Object.defineProperty(this, 'name', {
             enumerable: false,
@@ -124,18 +128,30 @@ class Cog extends Item {
         });
     }
 
-    // EVENT HANDLERS ------------------------------------------------------
-    use(actor) {
+    // PROPERTIES ----------------------------------------------------------
+    get requiresTarget() {
+        return (this.kind === 'identify');
+    }
+
+    // METHODS -------------------------------------------------------------
+    useFilter(item) {
         switch (this.kind) {
-            /*
             case 'identify': {
-                let health = Math.min(actor.healthMax, actor.health+10);
-                if (health !== actor.health) {
-                    UpdateSystem.eUpdate(actor, {health: health });
+                return item && item.identifiable;
+            }
+        }
+        return false;
+    }
+
+    use(actor, target=null) {
+        switch (this.kind) {
+            case 'identify': {
+                if (target) {
+                    console.log(`identifying: ${target}`);
+                    UpdateSystem.eUpdate(target, { identifiable: false});
                 }
                 break;
             }
-            */
         }
 
         // update discovery

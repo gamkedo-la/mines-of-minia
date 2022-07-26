@@ -138,7 +138,7 @@ class Hud extends UxView {
                 Events.trigger('handler.wanted', {which: 'aim', shooter: item});
             } else {
                 let action = new UseAction({
-                    target: item,
+                    item: item,
                 });
                 TurnSystem.postLeaderAction(action);
             }

@@ -1,4 +1,4 @@
-export { Inventory, InventoryData, ItemSelect };
+export { Inventory, InventoryData };
 
 import { DropAction } from './actions/drop.js';
 import { UseAction } from './actions/use.js';
@@ -423,6 +423,7 @@ class Inventory extends UxView {
         this.setData(spec.data || new InventoryData);
         this.selected;
         this.marked = [];
+        this.filtered = [];
 
         // disable excess belts
         for (let i=4; i+1>this.data.beltSlots; i--) {
@@ -470,6 +471,10 @@ class Inventory extends UxView {
     onSlotClick(evt) {
         //console.log(`onSlotClick: ${Fmt.ofmt(evt)} selected: ${this.selected}`);
         let item = this.getItemForSlot(evt.actor.tag);
+        if (this.wantUseTarget && this.itemPopup) {
+            this.itemPopup.setTarget(item);
+            return;
+        }
         if (this.selected) {
             let selectedItem = this.getItemForSlot(this.selected.tag);
             // -- self: unselect
@@ -531,6 +536,7 @@ class Inventory extends UxView {
                 this.itemPopup = new ItemPopup({
                     xform: new XForm({ left: .7, top: .2, bottom: .2}),
                     item: item,
+                    handleUse: this.handleUse.bind(this),
                 });
                 this.itemPopup.evt.listen(this.itemPopup.constructor.evtDestroyed, this.onPopupDestroy);
                 this.adopt(this.itemPopup);
@@ -746,11 +752,33 @@ class Inventory extends UxView {
         }
     }
 
+    filterButtons(filter) {
+        if (!filter) filter = (v) => true;
+        for (const slot of ['reactor', 'weapon', 'shielding', 'gadget0', 'gadget1', 'gadget2']) {
+            let item = this.getItemForSlot(slot);
+            if (!filter(item)) {
+                this.toggleSlot(slot, false);
+                this.filtered.push(slot);
+            }
+        }
+        for (let i=0; i<this.data.numSlots; i++) {
+            let slot = `inv${i}`;
+            let item = this.getItemForSlot(slot);
+            if (!filter(item)) {
+                this.toggleSlot(slot, false);
+                this.filtered.push(slot);
+            }
+        }
+    }
+
     reset() {
         for (const button of Array.from(this.marked)) {
             button.unpressed = this.constructor.dfltUnpressed;
         }
-        this.marked = [];
+        for (const slot of Array.from(this.filtered)) {
+            this.toggleSlot(slot, true);
+        }
+        this.filtered = [];
         if (this.selected) this.unselect(this.selected);
         if (this.itemPopup) this.itemPopup.destroy();
     }
@@ -768,7 +796,6 @@ class Inventory extends UxView {
         } else if (slot.startsWith('belt')) {
             updateCount = false;
             item = this.getItemForSlot(slot)
-            console.log(`belt: ${slot} item: ${item}`);
         } else {
             item = this.getItemForSlot(slot)
             if (item) count = item.count;
@@ -844,20 +871,45 @@ class Inventory extends UxView {
         }
     }
 
-    doUse(item) {
-        if (item.constructor.shootable) {
+    handleUse(item) {
+        if (!item.constructor.usable) return;
+        if (item.requiresTarget) {
+            // set want target state
+            this.wantUseTarget = true;
+            // filter buttons for target
+            this.filterButtons(item.useFilter);
+            // popup item select view
+            this.itemPopup = new ItemPopup({
+                title: `select ${item.kind} target`,
+                xform: new XForm({ left: .7, top: .2, bottom: .2}),
+                item: item,
+                wantTarget: true,
+                handleUse: this.handleUseTarget.bind(this),
+            });
+            this.itemPopup.evt.listen(this.itemPopup.constructor.evtDestroyed, this.onPopupDestroy);
+            this.adopt(this.itemPopup);
+        } else if (item.constructor.shootable) {
             console.log(`${item} shootable`);
             Events.trigger('handler.wanted', {which: 'aim', shooter: item});
-            this.parent.destroy();
             this.destroy();
-        } else if (item.constructor.usable) {
+        } else {
             let action = new UseAction({
-                target: item,
+                item: item,
             });
             TurnSystem.postLeaderAction(action);
-            this.parent.destroy();
             this.destroy();
         }
+    }
+
+    handleUseTarget(item, target) {
+        console.log(`handleUseTarget: ${item} target: ${target}`);
+        this.wantUseTarget = false;
+        let action = new UseAction({
+            item: item,
+            target: this.target,
+        });
+        TurnSystem.postLeaderAction(action);
+        this.destroy();
     }
 
 }
@@ -866,14 +918,25 @@ class ItemPopup extends UxView {
 
     cpost(spec) {
         super.cpost(spec);
+        this.handleUse = spec.handleUse;
+        let title = spec.title || 'info';
+        this.wantTarget = spec.wantTarget;
+        this.item;
+        this.target;
 
         this.panel = new UxPanel({
             sketch: Assets.get('oframe.red', true),
             children: [
+                // title
+                new UxText({
+                    tag: 'title',
+                    xform: new XForm({offset: 5, bottom: .9}),
+                    text: new Text({ text: title, color: invTextColor}),
+                }),
 
                 // top panel
                 new UxPanel({
-                    xform: new XForm({bottom: .8}),
+                    xform: new XForm({top: .1, bottom: .7}),
                     sketch: Sketch.zero,
                     children: [
                         new UxPanel({
@@ -905,7 +968,7 @@ class ItemPopup extends UxView {
 
                 // description
                 new UxPanel({
-                    xform: new XForm({top: .225, bottom: .225}),
+                    xform: new XForm({top: .325, bottom: .225}),
                     sketch: Sketch.zero,
                     children: [
                         new UxText({
@@ -924,17 +987,27 @@ class ItemPopup extends UxView {
                         new UxButton({
                             tag: 'item.use',
                             xform: new XForm({offset: 10, right:.67}),
-                            text: new Text({text: '   use   '})
+                            text: new Text({text: '   use   '}),
+                        }),
+                        new UxButton({
+                            tag: 'item.confirm',
+                            xform: new XForm({offset: 10, right:.67}),
+                            text: new Text({text: ' confirm '}),
                         }),
                         new UxButton({
                             tag: 'item.drop',
                             xform: new XForm({offset: 10, left:.33, right:.33}),
-                            text: new Text({text: '  drop  '})
+                            text: new Text({text: '  drop  '}),
                         }),
                         new UxButton({
                             tag: 'item.throw',
                             xform: new XForm({offset: 10, left:.67}),
-                            text: new Text({text: ' throw '})
+                            text: new Text({text: ' throw '}),
+                        }),
+                        new UxButton({
+                            tag: 'item.cancel',
+                            xform: new XForm({offset: 10, left:.67}),
+                            text: new Text({text: ' cancel '}),
                         }),
                     ]
                 }),
@@ -943,6 +1016,7 @@ class ItemPopup extends UxView {
         this.adopt(this.panel);
 
         // ui elements
+        this.title = Hierarchy.find(this, (v) => v.tag === 'title');
         this.picture = Hierarchy.find(this, (v) => v.tag === 'item.picture');
         this.name = Hierarchy.find(this, (v) => v.tag === 'item.name');
         this.kind = Hierarchy.find(this, (v) => v.tag === 'item.kind');
@@ -950,18 +1024,40 @@ class ItemPopup extends UxView {
         this.useButton = Hierarchy.find(this, (v) => v.tag === 'item.use');
         this.dropButton = Hierarchy.find(this, (v) => v.tag === 'item.drop');
         this.throwButton = Hierarchy.find(this, (v) => v.tag === 'item.throw');
+        this.confirmButton = Hierarchy.find(this, (v) => v.tag === 'item.confirm');
+        this.cancelButton = Hierarchy.find(this, (v) => v.tag === 'item.cancel');
+        // set button state
+        // -- want target state... hide use/drop/throw
+        if (this.wantTarget) {
+            this.useButton.active = this.useButton.visible = false;
+            this.dropButton.active = this.dropButton.visible = false;
+            this.throwButton.active = this.throwButton.visible = false;
+            // -- disable confirm
+            this.confirmButton.active = false;
+        // item info state... hide confirm/cancel
+        } else {
+            this.confirmButton.active = this.confirmButton.visible = false;
+            this.cancelButton.active = this.cancelButton.visible = false;
+            // disable use button
+            this.useButton.active = false;
+        }
 
         // event handlers
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onUseClicked = this.onUseClicked.bind(this);
         this.onDropClicked = this.onDropClicked.bind(this);
         this.onThrowClicked = this.onThrowClicked.bind(this);
+        this.onConfirmClicked = this.onConfirmClicked.bind(this);
+        this.onCancelClicked = this.onCancelClicked.bind(this);
         Events.listen(Keys.evtDown, this.onKeyDown);
         this.useButton.evt.listen(this.useButton.constructor.evtMouseClicked, this.onUseClicked);
         this.dropButton.evt.listen(this.dropButton.constructor.evtMouseClicked, this.onDropClicked);
         this.throwButton.evt.listen(this.throwButton.constructor.evtMouseClicked, this.onThrowClicked);
+        this.confirmButton.evt.listen(this.confirmButton.constructor.evtMouseClicked, this.onConfirmClicked);
+        this.cancelButton.evt.listen(this.cancelButton.constructor.evtMouseClicked, this.onCancelClicked);
 
-        if (spec.item) this.setItem(spec.item);
+        this.item = spec.item;
+        if (spec.item && !this.wantTarget) this.setItem(spec.item);
 
     }
 
@@ -982,19 +1078,10 @@ class ItemPopup extends UxView {
     }
 
     onUseClicked(evt) {
-        if (this.item.constructor.shootable) {
-            console.log(`${this.item} shootable`);
-            Events.trigger('handler.wanted', {which: 'aim', shooter: this.item});
-            this.parent.destroy();
-            this.destroy();
-        } else if (this.item.constructor.usable) {
-            let action = new UseAction({
-                target: this.item,
-            });
-            TurnSystem.postLeaderAction(action);
-            this.parent.destroy();
-            this.destroy();
-        }
+        // destroy window
+        this.destroy();
+        // call function to handle use
+        this.handleUse(this.item);
     }
 
     onDropClicked(evt) {
@@ -1011,7 +1098,22 @@ class ItemPopup extends UxView {
         Events.trigger('handler.wanted', {which: 'aim', shooter: this.item});
     }
 
+    onConfirmClicked(evt) {
+        console.log(`onConfirmClicked`);
+        this.destroy();
+        this.handleUse(this.item, this.target);
+    }
+
+    onCancelClicked(evt) {
+        console.log(`onCancelClicked`);
+        this.destroy();
+    }
+
     setItem(item) {
+        // enable use button if item is usable
+        if (item.constructor.usable) {
+            this.useButton.active = true;
+        }
         // picture
         this.picture.sketch = Assets.get(item.sketch.tag, true, { lockRatio: true, state: 'carry'}) || Sketch.zero;
         this.name.text = item.name;
@@ -1020,43 +1122,15 @@ class ItemPopup extends UxView {
         this.item = item;
     }
 
-}
-
-class ItemSelect extends UxView {
-    cpost(spec) {
-        super.cpost(spec);
-        // create item select popup
-        this.adopt(new UxPanel({
-            sketch: Assets.get('oframe.red', true),
-            children: [
-            ],
-        }));
-
-        // event handlers
-        this.onKeyDown = this.onKeyDown.bind(this);
-        //this.onUseClicked = this.onUseClicked.bind(this);
-        //this.onDropClicked = this.onDropClicked.bind(this);
-        //this.onThrowClicked = this.onThrowClicked.bind(this);
-        Events.listen(Keys.evtDown, this.onKeyDown);
-        //this.useButton.evt.listen(this.useButton.constructor.evtMouseClicked, this.onUseClicked);
-        //this.dropButton.evt.listen(this.dropButton.constructor.evtMouseClicked, this.onDropClicked);
-        //this.throwButton.evt.listen(this.throwButton.constructor.evtMouseClicked, this.onThrowClicked);
-    }
-
-    onKeyDown(evt) {
-        if (!this.active) return;
-        console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
-        switch (evt.key) {
-            case 'Escape': {
-                this.destroy();
-                break;
-            }
-        }
-    }
-
-    destroy() {
-        super.destroy();
-        Events.ignore(Keys.evtDown, this.onKeyDown);
+    setTarget(item) {
+        // -- enable confirm
+        this.confirmButton.active = true;
+        // picture
+        this.picture.sketch = Assets.get(item.sketch.tag, true, { lockRatio: true, state: 'carry'}) || Sketch.zero;
+        this.name.text = item.name;
+        this.kind.text = `-- ${item.constructor.slot} --`;
+        this.description.text = item.description;
+        this.target = item;
     }
 
 }
