@@ -43,6 +43,7 @@ import { Trap } from "./entities/trap.js";
 import { SpikeTrap } from "./entities/spikeTrap.js";
 import { Growth } from "./entities/growth.js";
 import { Clutter } from "./entities/clutter.js";
+import { Prompt } from "./prompt.js";
 
 class Minia extends Game {
     static states = {
@@ -131,6 +132,7 @@ class Minia extends Game {
             Level,
             Player,
             Projectile,
+            Prompt,
             RangedWeapon,
             Reactor,
             Rous,

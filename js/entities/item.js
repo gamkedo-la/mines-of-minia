@@ -36,7 +36,7 @@ class Item extends MiniaModel {
     cpost(spec) {
         super.cpost(spec);
         this.name = spec.name || 'item';
-        this.description = spec.description || this.constructor.dfltDescription;
+        this._description = spec.description || this.constructor.dfltDescription;
         // -- for stackable items...
         this.count = spec.count || 1;
         // -- charms (buffs/debuffs)
@@ -81,6 +81,12 @@ class Item extends MiniaModel {
         }
     }
 
+    // override in subclasses
+    get description() {
+        return this._description;
+    }
+
+    // EVENT HANDLERS ------------------------------------------------------
     onSketchUpdate(evt) {
         // update xform width/height
         this.xform.width = this.sketch.width;

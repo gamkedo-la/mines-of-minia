@@ -27,6 +27,18 @@ class Weapon extends Item {
         3: 2.5,
     };
 
+    static getSkillLevel(skill) {
+        if (skill <= 10) return 'low';
+        if (skill <= 15) return 'medium';
+        return 'high';
+    }
+
+    static getDamageLevel(damage) {
+        if (damage <= 10) return 'low';
+        if (skill <= 20) return 'medium';
+        return 'high';
+    }
+
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
@@ -34,7 +46,6 @@ class Weapon extends Item {
         this.kind = spec.kind || this.constructor.dfltKind;
         this.tier = spec.tier || this.constructor.dfltTier;
         this.lvl = spec.lvl || this.constructor.dfltLvl;
-        this.identified = spec.hasOwnProperty('identified') ? spec.identified : false;
         // -- required strength
         this.brawn = spec.brawn || this.constructor.dfltBrawn;
         // -- damage
@@ -48,7 +59,6 @@ class Weapon extends Item {
             kind: this.kind,
             tier: this.tier,
             lvl: this.lvl,
-            identified: this.identified,
             brawn: this.brawn,
             baseDamageMin: this.baseDamageMin,
             baseDamageMax: this.baseDamageMax,
@@ -62,6 +72,24 @@ class Weapon extends Item {
     }
     get damageMax() {
         return Math.round(this.baseDamageMax*this.lvl*(this.damageScale-1));
+    }
+
+    get description() {
+        let d = `a *tier ${this.tier}* weapon that does *${this.kind}* damage. `
+        if (this.identifiable) {
+            d += `requires a *${this.constructor.getSkillLevel(this.brawn)}* level of brawn to wield effectively and does a *${this.constructor.getDamageLevel(this.damageMin)}* amount of damage. `;
+            d += `it has a *level* but you're not sure what it is. `
+            d += `it may or may not have a *charm* applied. `
+            d += `...identify to determine exact stats...`
+        } else {
+            d += `requires *${this.brawn}* brawn to wield effectively and does *${this.damageMin}-${this.damageMax}* damage. `;
+            d += `it is a level *${this.lvl}* weapon. `
+            // append charm descriptions
+            for (const charm of this.charms) {
+                d += charm.description;
+            }
+        }
+        return d;
     }
 
     // METHODS -------------------------------------------------------------

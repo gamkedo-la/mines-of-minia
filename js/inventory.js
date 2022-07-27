@@ -16,6 +16,7 @@ import { UxText } from './base/uxText.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
 import { Key } from './entities/key.js';
+import { Prompt } from './prompt.js';
 import { TurnSystem } from './systems/turnSystem.js';
 
 const invTextColor = "yellow";
@@ -906,7 +907,7 @@ class Inventory extends UxView {
         this.wantUseTarget = false;
         let action = new UseAction({
             item: item,
-            target: this.target,
+            target: target,
         });
         TurnSystem.postLeaderAction(action);
         this.destroy();
@@ -1106,7 +1107,20 @@ class ItemPopup extends UxView {
 
     onCancelClicked(evt) {
         console.log(`onCancelClicked`);
-        this.destroy();
+        if (!this.item.constructor.isDiscovered(this.item.kind)) {
+            let prompt = new Prompt({
+                xform: new XForm({ border: .3 }),
+                title: 'confirm',
+                prompt: `*${this.item.name}* has just been discovered. canceling now will still consume the item without applying its effect. are you sure?`,
+                handleConfirm: () => {
+                    this.handleUse(this.item, null);
+                    this.destroy();
+                }
+            });
+            this.parent.adopt(prompt);
+        } else {
+            this.destroy();
+        }
     }
 
     setItem(item) {

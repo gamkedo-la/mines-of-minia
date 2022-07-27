@@ -13,11 +13,29 @@ class Reactor extends Item {
     static dfltFuelPerAP = .1;
     static dfltAnimState = 'free';
 
+    static getFuelRating(perap) {
+        if (perap <= .05) return 'low';
+        if (perap <= .1) return 'medium';
+        return 'high';
+    }
+
+    static getHealthRating(perap) {
+        if (perap <= .05) return 'low';
+        if (perap <= .1) return 'medium';
+        return 'high';
+    }
+
+    static getPowerRating(perap) {
+        if (perap <= .05) return 'low';
+        if (perap <= .1) return 'medium';
+        return 'high';
+    }
+
+    // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
         this.tier = spec.tier || this.constructor.dfltTier;
-        this.lvl = spec.lvl || this.dfltLvl;
-        this.identified = spec.hasOwnProperty('identified') ? spec.identified : false;
+        this.lvl = spec.lvl || this.constructor.dfltLvl;
         this.powerPerAP = spec.powerPerAP || this.constructor.dfltPowerPerAP;
         this.healthPerAP = spec.healthPerAP || this.constructor.dfltHealthPerAP;
         this.fuelPerAP = spec.fuelPerAP || this.constructor.dfltFuelPerAP;
@@ -35,13 +53,34 @@ class Reactor extends Item {
         return Object.assign({}, super.as_kv(), {
             tier: this.tier,
             lvl: this.lvl,
-            identified: this.identified,
             powerPerAP: this.powerPerAP,
             healthPerAP: this.healthPerAP,
             fuelPerAP: this.fuelPerAP,
         });
     }
 
+    // PROPERTIES ----------------------------------------------------------
+    get description() {
+        let d = `a *tier ${this.tier}* reactor core providing power to your bot. `
+        if (this.identifiable) {
+            d += `this reactor provides a *${this.constructor.getHealthRating(this.healthPerAP)}* health and a *${this.constructor.getPowerRating(this.powerPerAP)}* power regen rate `
+            d += `and consumes fuel at a *${this.constructor.getFuelRating(this.fuelPerAP)}* rate. `
+            d += `it has a *level* but you're not sure what it is. `
+            d += `it may or may not have a *charm* applied. `
+            d += `...identify to determine exact stats...`
+        } else {
+            d += `this reactor has a *${Math.round(this.healthPerAP*100)}* health and a *${Math.round(this.powerPerAP*100)}* power regen rating `
+            d += `and consumes fuel at a rating of *${Math.round(1/this.fuelPerAP)}*. `
+            d += `it is a level *${this.lvl}* reactor. `
+            // append charm descriptions
+            for (const charm of this.charms) {
+                d += charm.description;
+            }
+        }
+        return d;
+    }
+
+    // EVENT HANDLERS ------------------------------------------------------
     onEquip(evt) {
         console.log(`${this} onEquip: ${Fmt.ofmt(evt)}`);
         let player = evt.actor;
