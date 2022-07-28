@@ -88,9 +88,25 @@ class ProcTemplate {
         this.spawn.stairsUp = Util.getpath(spec, 'spawn.stairsUp');
         this.spawn.stairsDown = Util.getpath(spec, 'spawn.stairsDown');
         this.spawn.door = Util.getpath(spec, 'spawn.door');
+        // -- enemy
         this.spawn.enemyList = Util.getpath(spec, 'spawn.enemyList', []);
-        this.spawn.roomSpawnChance = Util.getpath(spec, 'spawn.roomSpawnChance', .5);
-        //this.spawn.roomTrapChance = Util.getpath(spec, 'spawn.roomTrapChance', .5);
+        this.spawn.enemyLvlOptions = Util.getpath(spec, 'spawn.enemyLvlOptions', [
+            { weight: .5, delta: 0 },
+            { weight: .25, delta: 1 },
+            { weight: .25, delta: -1 },
+            { weight: .1, delta: 5 },
+        ]);
+        this.spawn.enemyRoomOptions = Util.getpath(spec, 'spawn.enemyRoomOptions', [
+            { weight: .2, chance: 0 },
+            { weight: .6, chance: 1, min: 1, max: 3 },
+            { weight: .2, chance: 1, min: 3, max: 7 },
+        ]);
+        this.spawn.enemyHallOptions = Util.getpath(spec, 'spawn.enemyHallOptions', [
+            { weight: .5, chance: 0 },
+            { weight: .5, chance: 1, min: 1, max: 2 },
+        ]);
+        //this.spawn.roomSpawnChance = Util.getpath(spec, 'spawn.roomSpawnChance', .5);
+        // -- traps
         this.spawn.trapList = Util.getpath(spec, 'spawn.trapList', []);
         this.spawn.roomTrapOptions = Util.getpath(spec, 'spawn.roomTrapOptions', [
             { weight: .25, chance: 0 },

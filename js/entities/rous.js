@@ -1,21 +1,16 @@
 export { Rous };
 
 import { Assets } from '../base/assets.js';
-import { Prng } from '../base/prng.js';
+import { LvlVar } from '../lvlVar.js';
 import { Enemy } from './enemy.js';
 
 class Rous extends Enemy{
+    static gHealth = new LvlVar({ baseMin: 2, baseMax: 7, perLvlMin: 1, perLvlMax: 3 } );
+    static gXp = new LvlVar({ base: 2, perLvl: 1 } );
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
-        // parse lvl
-        let lvl = spec.lvl || 1;
-        // health
-        let health = Prng.rangeInt(3,8);
-        for (let i=1; i<lvl; i++) health += Prng.rangeInt(1,3);
         // final spec
         return Object.assign( this.spec, {
-            xp: 5,
-            healthMax: health,
             x_sketch: Assets.get('enemy'),
         }, spec);
     }

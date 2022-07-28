@@ -74,6 +74,7 @@ class Minia extends Game {
         fowEnabled: true,
         tileSize: 16,
         scale: 4,
+        maxLvl: 21,
 
         template: new ProcTemplate({
             doyield: true,
@@ -100,7 +101,7 @@ class Minia extends Game {
                 doNoise: true,
             },
             spawn: {
-                enemyList: [ Rous ],
+                enemyList: [ Rous, Funguy ],
                 trapList: [ SpikeTrap ],
                 growth: 'growth.test',
                 growthFreePct: .1,

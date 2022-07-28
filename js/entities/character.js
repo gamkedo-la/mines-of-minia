@@ -2,6 +2,7 @@ export { Character };
 
 import { DropLootAction } from "../actions/loot.js";
 import { DestroyAction } from "../base/actions/destroy.js";
+import { Config } from "../base/config.js";
 import { Direction } from "../base/dir.js";
 import { Fmt } from "../base/fmt.js";
 import { Rect } from "../base/rect.js";
@@ -11,7 +12,6 @@ import { Util } from "../base/util.js";
 import { MiniaModel } from "./miniaModel.js";
 import { RangedWeapon } from "./rangedWeapon.js";
 import { Weapon } from "./weapon.js";
-
 
 class Character extends MiniaModel {
     // STATIC VARIABLES ----------------------------------------------------
@@ -31,6 +31,20 @@ class Character extends MiniaModel {
     static dfltDeathTTL = 200;
     static dfltHealth = 1;
     static mobile = true;
+
+    static get dfltMaxSpeed() {
+        // distance over time
+        // -- how long to traverse configured tile size
+        return Config.tileSize/.3/1000;
+    }
+
+    static get dfltLosRange() {
+        return Config.tileSize * 5;
+    }
+
+    static get dfltAggroRange() {
+        return Config.tileSize * 5;
+    }
 
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSketch() {
@@ -57,7 +71,7 @@ class Character extends MiniaModel {
         this.xform.width = this.sketch.width;
         this.xform.height = this.sketch.height;
         // -- movement
-        this.maxSpeed = spec.maxSpeed || 0;
+        this.maxSpeed = spec.maxSpeed || this.constructor.dfltMaxSpeed;
         this.speed = 0;
         this.heading = Direction.asHeading(Direction.south);
         this.facing = Direction.east;
@@ -71,10 +85,10 @@ class Character extends MiniaModel {
         this.damageReduction = spec.damageReduction || this.constructor.dfltDamageReduction;
         this.resistances = Object.assign(this.constructor.dfltResistances, spec.resistances);
         // -- line of sight
-        this.losRange = spec.losRange || 0;
+        this.losRange = spec.losRange || this.constructor.dfltLosRange;
         this.losIdxs = [];
         // -- aggro
-        this.aggroRange = spec.aggroRange || 0;
+        this.aggroRange = spec.aggroRange || this.constructor.dfltAggroRange;
         this.aggroTag = spec.aggroTag || this.constructor.dfltAggroTag;
         this.aggroIdx = -1;
         this.team = spec.team || this.constructor.dfltTeam;

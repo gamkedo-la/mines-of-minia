@@ -4,6 +4,7 @@ import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
+import { Mathf } from '../base/math.js';
 import { Prng } from '../base/prng.js';
 import { Chest } from '../entities/chest.js';
 import { Clutter } from '../entities/clutter.js';
@@ -20,6 +21,7 @@ import { Reactor } from '../entities/reactor.js';
 import { Stairs } from '../entities/stairs.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
+import { ProcTemplate } from './ptemplate.js';
 
 class Spawn {
 
@@ -250,56 +252,76 @@ class Spawn {
 
     }
 
+    static genEnemy(template, pstate) {
+        let x_spawn = template.spawn || {};
+        // pick enemy class
+        let enemyClass = Prng.choose(x_spawn.enemyList);
+        // -- level
+        let lvl = template.index;
+        let option = Prng.chooseWeightedOption(x_spawn.enemyLvlOptions);
+        console.log(`option: ${Fmt.ofmt(option)}`);
+        lvl += option.delta;
+        lvl = Mathf.clampInt(lvl, 1, Config.maxLvl);
+        let x_enemy = enemyClass.xspec({
+            lvl: lvl,
+            healthMax: enemyClass.gHealth.calculate(lvl),
+            xp: enemyClass.gXp.calculate(lvl),
+            attackRating: enemyClass.gAttackRating.calculate(lvl),
+            defenseRating: enemyClass.gDefenseRating.calculate(lvl),
+            damageMin: enemyClass.gDamageMin.calculate(lvl),
+            damageMax: enemyClass.gDamageMax.calculate(lvl),
+        });
+        return x_enemy;
+    }
+
+    static spawnEnemiesForRoom(template, pstate, proom, options) {
+        let plvl = pstate.plvl;
+        // pick spawn options for room
+        let option = Prng.chooseWeightedOption(options);
+        //console.log(`option: ${Fmt.ofmt(option)} from: ${Fmt.ofmt(options)}`);
+        let chance = option.hasOwnProperty('chance') ? option.chance : 1;
+        let min = option.hasOwnProperty('min') ? option.min : 1;
+        let max = option.hasOwnProperty('max') ? option.max : 1;
+        // spawn check
+        if (!Prng.flip(chance)) return;
+        // spawn count
+        let count = Prng.rangeInt(min, max);
+        for (let i=0; i<count; i++) {
+            // choose index
+            let idx;
+            for (let i=0; i<100; i++) {
+                // -- randomly choose index from room
+                idx = Prng.choose(proom.idxs);
+                // -- test index to make sure nothing is there..
+                if (!this.checkSpawnIdx(plvl, idx)) continue;
+                // choose trap class
+                let x_enemy = Object.assign(this.genEnemy(template, pstate), {
+                    idx: idx,
+                    z: template.fgZed,
+                });
+                console.log(`enemy: ${Fmt.ofmt(x_enemy)}`);
+                plvl.entities.push(x_enemy);
+                break;
+            }
+        }
+    }
+
     static spawnEnemies(template, pstate) {
         // -- pull data
         let x_spawn = template.spawn || {};
         let plvl = pstate.plvl;
-        let plvlo = pstate.plvlo;
+        //let plvlo = pstate.plvlo;
         let prooms = pstate.prooms || [];
+        let phalls = pstate.phalls || [];
         if (x_spawn.enemyList.length === 0) return;
 
         // iterate through rooms
         for (const proom of prooms) {
-            // roll for spawn
-            if (!Prng.flip(x_spawn.roomSpawnChance)) continue;
-            //console.log(`flip ok`);
-
-            // choose appropriate index within room
-            let possible = Array.from(proom.idxs);
-            let spawnIdx = -1;
-            let tries = 20;
-            while(possible.length) {
-                if (tries-- <= 0) break;
-                //console.log(`possible.length: ${possible.length}`);
-                let i = Prng.rangeInt(0, possible.length);
-                let testIdx = possible[i];
-                let kind = plvlo.data.getidx(testIdx);
-                let ok = true;
-                if (kind !== 'floor') ok = false;
-                if (testIdx === plvl.startIdx) ok = false;
-                if (testIdx === plvl.exitIdx) ok = false;
-                if (ok) {
-                    spawnIdx = testIdx;
-                    break;
-                } else {
-                    possible.splice(i, 1);
-                }
-            }
-
-            if (spawnIdx === -1) continue;
-
-            // choose enemy class
-            let enemyClass = Prng.choose(x_spawn.enemyList);
-            let x_enemy = enemyClass.xspec({
-                idx: spawnIdx,
-                z: template.fgZed,
-                maxSpeed: .25,
-                losRange: Config.tileSize*8,
-                aggroRange: Config.tileSize*5,
-            });
-            //console.log(`enemy: ${Fmt.ofmt(x_enemy)}`);
-
-            plvl.entities.push(x_enemy);
+            this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
+        }
+        // iterate through rooms
+        for (const proom of phalls) {
+            this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyHallOptions);
         }
 
     }
@@ -331,6 +353,10 @@ class Spawn {
             Cog.xspec({
                 name: 'test.cog',
                 kind: 'test',
+            }),
+            Cog.xspec({
+                name: 'identify.cog',
+                kind: 'identify',
             }),
             Cog.xspec({
                 name: 'identify.cog',

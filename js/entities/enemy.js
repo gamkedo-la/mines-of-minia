@@ -6,11 +6,11 @@ import { AiMoveTowardsTargetDirective } from '../ai/aiMoveTowardsTargetDirective
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { LvlVar } from '../lvlVar.js';
 import { Character } from './character.js';
 
 class Enemy extends Character {
     // default aggro range (in pixels)
-    static dfltAggroRange = 80;
     static dfltMeleeRange = 31;
     static dfltAttackRating = 10;
     static dfltDefenseRating = 10;
@@ -18,18 +18,22 @@ class Enemy extends Character {
     static dfltHealth = 1;
     static dfltDamage = 1;
     static dfltXp= 1;
+    // generator info
+    static gHealth = new LvlVar({ base: 1 });
+    static gXp = new LvlVar({ base: 1 });
+    static gAttackRating = new LvlVar({ base: 10 });
+    static gDefenseRating = new LvlVar({ base: 10 });
+    static gDamageMin = new LvlVar({ base: 1 });
+    static gDamageMax = new LvlVar({ base: 1 });
 
     // STATIC METHODS ------------------------------------------------------
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec={}) {
         super.cpost(spec);
-        this.aggroRange = spec.aggroRange || this.constructor.dfltAggroRange;
         this.meleeRange = spec.meleeRange || this.constructor.dfltMeleeRange;
         this.attackRating = spec.attackRating || this.constructor.dfltAttackRating;
         this.defenseRating = spec.defenseRating || this.constructor.dfltDefenseRating;
-        //this.statemgr = new AiStateManager();
-        this.actions;
         // -- xp value
         this.xp = spec.xp || this.constructor.dfltXp;
         // -- damage
@@ -44,6 +48,7 @@ class Enemy extends Character {
         this.evt.listen(this.constructor.evtAggroGained, this.onAggro);
         this.evt.listen(this.constructor.evtAggroLost, this.onAggroLost);
         this.active = false;
+        this.actions;
     }
 
     destroy() {
@@ -53,10 +58,11 @@ class Enemy extends Character {
 
     as_kv() {
         return Object.assign({}, super.as_kv(), {
-            aggroRange: this.aggroRange,
             meleeRange: this.meleeRange,
             attackRating: this.attackRating,
             defenseRating: this.defenseRating,
+            xp: this.xp,
+            attackKind: this.attackKind,
             damageMin: this.damageMin,
             damageMax: this.damageMax,
         });
