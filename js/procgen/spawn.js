@@ -7,6 +7,7 @@ import { Fmt } from '../base/fmt.js';
 import { Mathf } from '../base/math.js';
 import { Prng } from '../base/prng.js';
 import { BooCharm } from '../charms/boo.js';
+import { Charm } from '../charms/charm.js';
 import { FieryCharm } from '../charms/fiery.js';
 import { Chest } from '../entities/chest.js';
 import { Clutter } from '../entities/clutter.js';
@@ -256,7 +257,7 @@ class Spawn {
 
     static genWeapon(template, pstate) {
         // weapon template
-        let wtmp = {
+        let tmpl = {
             kinds: Weapon.kinds,
             lvlOptions: [
                 { weight: .1, delta: -1 },
@@ -307,33 +308,33 @@ class Spawn {
         };
         let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
         // -- kind
-        let kind = Prng.choose(wtmp.kinds);
+        let kind = Prng.choose(tmpl.kinds);
         // -- lvl
-        let lvl = Math.max(1, lvlTier + Prng.chooseWeightedOption(wtmp.lvlOptions).delta);
+        let lvl = Math.max(1, lvlTier + Prng.chooseWeightedOption(tmpl.lvlOptions).delta);
         // -- tier
-        let tier = Prng.chooseWeightedOption(wtmp.tierByLTier[lvlTier]).tier;
+        let tier = Prng.chooseWeightedOption(tmpl.tierByLTier[lvlTier]).tier;
         // -- brawn
-        let brawn = Prng.rangeInt(wtmp.brawnPerTier[tier].min, wtmp.brawnPerTier[tier].max);
-        let brawnReductionPerLvl = wtmp.brawnReductionPerLvl;
+        let brawn = Prng.rangeInt(tmpl.brawnPerTier[tier].min, tmpl.brawnPerTier[tier].max);
+        let brawnReductionPerLvl = tmpl.brawnReductionPerLvl;
         // -- damage
-        let baseDamageMin = Prng.rangeInt(wtmp.damagePerTier[tier].minRange.min, wtmp.damagePerTier[tier].minRange.max);
-        let baseDamageMax = Prng.rangeInt(wtmp.damagePerTier[tier].maxRange.min, wtmp.damagePerTier[tier].maxRange.max);
-        let damageScale = wtmp.damagePerTier[tier].scale;
+        let baseDamageMin = Prng.rangeInt(tmpl.damagePerTier[tier].minRange.min, tmpl.damagePerTier[tier].minRange.max);
+        let baseDamageMax = Prng.rangeInt(tmpl.damagePerTier[tier].maxRange.min, tmpl.damagePerTier[tier].maxRange.max);
+        let damageScale = tmpl.damagePerTier[tier].scale;
         // -- charms
         let charms = [];
-        if (Prng.flip(wtmp.charmPct)) {
+        if (Prng.flip(tmpl.charmPct)) {
             // pick charm
-            let cls = Prng.choose(wtmp.charms);
+            let cls = Prng.choose(tmpl.charms);
             charms.push( new cls() );
             // -- roll for curse
-            if (Prng.flip(wtmp.cursePct)) {
-                let cls = Prng.choose(wtmp.curses);
+            if (Prng.flip(tmpl.cursePct)) {
+                let cls = Prng.choose(tmpl.curses);
                 // pick curse
                 charms.push( new cls() );
             }
         }
         // -- identifiable
-        let identifiablePct = wtmp.identifiableByTier[tier];
+        let identifiablePct = tmpl.identifiableByTier[tier];
         if (charms.length) {
             identifiablePct += .2;
         }
@@ -354,6 +355,107 @@ class Spawn {
         });
 
         return x_wpn;
+    }
+
+    static genReactor(template, pstate) {
+        // reactor template
+        let tmpl = {
+            lvlOptions: [
+                { weight: .1, delta: -1 },
+                { weight: .3, delta: 0 },
+                { weight: .2, delta: 1 },
+                { weight: .2, delta: 2 },
+                { weight: .1, delta: 3 },
+                { weight: .1, delta: 4 },
+                { weight: .1, delta: 5 },
+            ],
+            tierByLTier: {
+                1: [
+                    { weight: .7, tier: 1 },
+                    { weight: .25, tier: 2 },
+                    { weight: .05, tier: 3 },
+                ],
+                2: [
+                    { weight: .1, tier: 1 },
+                    { weight: .7, tier: 2 },
+                    { weight: .2, tier: 3 },
+                ],
+                3: [
+                    { weight: .1, tier: 1 },
+                    { weight: .2, tier: 2 },
+                    { weight: .7, tier: 3 },
+                ],
+            },
+            fuelPerTier: {
+                1: { min: .09, max: .15, scale: 0.9 },
+                2: { min: .08, max: .12, scale: 0.8 },
+                3: { min: .07, max: .11, scale: 0.7 },
+            },
+            powerPerTier: {
+                1: { min: .07, max: .11, scale: 1.1 },
+                2: { min: .08, max: .12, scale: 1.2 },
+                3: { min: .09, max: .15, scale: 1.3 },
+            },
+            healthPerTier: {
+                1: { min: .07, max: .11, scale: 1.1 },
+                2: { min: .08, max: .12, scale: 1.2 },
+                3: { min: .09, max: .15, scale: 1.3 },
+            },
+            charmPct: .5,
+            cursePct: .25,
+            charms: [ Charm ],
+            curses: [ BooCharm ],
+            identifiableByTier: {
+                1: .25,
+                2: .5,
+                3: .75,
+            },
+        };
+        let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
+        // -- lvl
+        let lvl = Math.max(1, lvlTier + Prng.chooseWeightedOption(tmpl.lvlOptions).delta);
+        // -- tier
+        let tier = Prng.chooseWeightedOption(tmpl.tierByLTier[lvlTier]).tier;
+        // -- fuel per ap
+        let fuelPerAP = Prng.range(tmpl.fuelPerTier[tier].min, tmpl.fuelPerTier[tier].max);
+        let fuelScale = tmpl.fuelPerTier[tier].scale;
+        // -- power per ap
+        let powerPerAP = Prng.range(tmpl.powerPerTier[tier].min, tmpl.powerPerTier[tier].max);
+        let powerScale = tmpl.powerPerTier[tier].scale;
+        // -- health per ap
+        let healthPerAP = Prng.range(tmpl.healthPerTier[tier].min, tmpl.healthPerTier[tier].max);
+        let healthScale = tmpl.healthPerTier[tier].scale;
+        // -- charms
+        let charms = [];
+        if (Prng.flip(tmpl.charmPct)) {
+            // pick charm
+            let cls = Prng.choose(tmpl.charms);
+            charms.push( new cls() );
+            // -- roll for curse
+            if (Prng.flip(tmpl.cursePct)) {
+                let cls = Prng.choose(tmpl.curses);
+                // pick curse
+                charms.push( new cls() );
+            }
+        }
+        // -- identifiable
+        let identifiablePct = tmpl.identifiableByTier[tier];
+        if (charms.length) {
+            identifiablePct += .2;
+        }
+        let identifiable = Prng.flip(identifiablePct);
+        return Reactor.xspec({
+            tier: tier,
+            lvl: lvl,
+            fuelPerAP: fuelPerAP,
+            fuelScale: fuelScale,
+            powerPerAP: powerPerAP,
+            powerScale: powerScale,
+            healthPerAP: healthPerAP,
+            healthScale: healthScale,
+            identifiable: identifiable,
+            charms: charms,
+        });
     }
 
     static genItem(template, pstate) {
@@ -508,6 +610,7 @@ class Spawn {
             }),
 
             this.genWeapon(template, pstate),
+            this.genReactor(template, pstate),
 
             RangedWeapon.xspec({
                 name: 'ice.gun.3',
