@@ -1,5 +1,6 @@
 export { Weapon };
 
+import { Assets } from '../base/assets.js';
 import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
 import { Item } from './item.js';
@@ -35,8 +36,17 @@ class Weapon extends Item {
 
     static getDamageLevel(damage) {
         if (damage <= 10) return 'low';
-        if (skill <= 20) return 'medium';
+        if (damage <= 20) return 'medium';
         return 'high';
+    }
+
+    static xspec(spec={}) {
+        let kind = spec.kind || this.dfltKind;
+        let tier = spec.tier || this.dfltTier;
+        // final spec
+        return Object.assign( {}, this.spec, {
+            x_sketch: Assets.get(`${kind}.${tier}`),
+        }, spec);
     }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------

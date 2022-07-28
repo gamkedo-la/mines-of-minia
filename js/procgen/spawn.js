@@ -252,6 +252,12 @@ class Spawn {
 
     }
 
+    static genItem(template, pstate) {
+        let x_spawn = template.spawn || {};
+        // pick item class
+        let itemClass = Prng.choose(x_spawn.itemList);
+    }
+
     static genEnemy(template, pstate) {
         let x_spawn = template.spawn || {};
         // pick enemy class

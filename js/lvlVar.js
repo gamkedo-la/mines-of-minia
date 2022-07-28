@@ -16,6 +16,6 @@ class LvlVar {
         for (let i=0; i<lvl; i++) {
             v += (this.perLvlMax || this.perLvlMin) ? Prng.rangeInt(this.perLvlMin, this.perLvlMax) : this.perLvl;
         }
-        return v;
+        return Math.round(v);
     }
 }
