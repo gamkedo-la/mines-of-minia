@@ -57,7 +57,8 @@ class Weapon extends Item {
         this.tier = spec.tier || this.constructor.dfltTier;
         this.lvl = spec.lvl || this.constructor.dfltLvl;
         // -- required strength
-        this.brawn = spec.brawn || this.constructor.dfltBrawn;
+        this._brawn = spec.brawn || this.constructor.dfltBrawn;
+        this.brawnReductionPerLvl = spec.brawnReductionPerLvl || 0;
         // -- damage
         this.baseDamageMin = spec.baseDamageMin || this.constructor.dfltBaseDamageMin;
         this.baseDamageMax = spec.baseDamageMax || this.constructor.dfltBaseDamageMax;
@@ -69,7 +70,8 @@ class Weapon extends Item {
             kind: this.kind,
             tier: this.tier,
             lvl: this.lvl,
-            brawn: this.brawn,
+            brawn: this._brawn,
+            brawnReductionPerLvl: this.brawnReductionPerLvl,
             baseDamageMin: this.baseDamageMin,
             baseDamageMax: this.baseDamageMax,
             damageScale: this.damageScale,
@@ -84,6 +86,11 @@ class Weapon extends Item {
         return Math.round(this.baseDamageMax*this.lvl*(this.damageScale-1));
     }
 
+    get brawn() {
+        let b = Math.round(this._brawn - this.lvl*this.brawnReductionPerLvl);
+        return b;
+    }
+
     get description() {
         let d = `a *tier ${this.tier}* weapon that does *${this.kind}* damage. `
         if (this.identifiable) {
@@ -94,9 +101,10 @@ class Weapon extends Item {
         } else {
             d += `requires *${this.brawn}* brawn to wield effectively and does *${this.damageMin}-${this.damageMax}* damage. `;
             d += `it is a level *${this.lvl}* weapon. `
+            if (this.charms) d += `\n -- charms --\n`;
             // append charm descriptions
             for (const charm of this.charms) {
-                d += charm.description;
+                d += charm.description + '\n';
             }
         }
         return d;

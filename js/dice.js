@@ -53,4 +53,14 @@ class Dice {
         let v = rolls.slice(s,e).reduce((p,c) => p+c, 0);
         return v+this.mod;
     }
+
+    toString() {
+        let str = `${this.num}d${this.sides}`;
+        if (this.hi) str += `H${this.hi}`;
+        if (this.lo) str += `L${this.lo}`;
+        if (this.mod > 0) str += `+${this.mod}`;
+        if (this.mod < 0) str += `${this.mod}`;
+        return str;
+    }
+
 }

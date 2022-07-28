@@ -105,6 +105,42 @@ let miniaAssets = [
         borderColor: 'red',
     }),
 
+    Shape.xspec({
+        tag: 'bonk.1',
+        fill: true,
+        verts: [ 
+            {x:2, y:6}, {x:10, y:6}, {x:10, y:4}, {x:14, y:4},
+            {x:14, y: 12}, {x:10, y: 12}, {x: 10, y: 10}, { x: 2, y: 10},
+        ],
+        border: 1,
+        color: 'rgba(155,171,178,1)',
+        borderColor: 'red',
+    }),
+
+    Shape.xspec({
+        tag: 'bonk.2',
+        fill: true,
+        verts: [ 
+            {x:2, y:6}, {x:10, y:6}, {x:10, y:4}, {x:14, y:4},
+            {x:14, y: 12}, {x:10, y: 12}, {x: 10, y: 10}, { x: 2, y: 10},
+        ],
+        border: 1,
+        color: 'rgba(247,150,23,1)',
+        borderColor: 'red',
+    }),
+
+    Shape.xspec({
+        tag: 'bonk.3',
+        fill: true,
+        verts: [ 
+            {x:2, y:6}, {x:10, y:6}, {x:10, y:4}, {x:14, y:4},
+            {x:14, y: 12}, {x:10, y: 12}, {x: 10, y: 10}, { x: 2, y: 10},
+        ],
+        border: 1,
+        color: 'rgba(145,219,105,1)',
+        borderColor: 'red',
+    }),
+
     Rect.xspec({tag: 'fuelcell', width: 8, height: 12, color: 'blue', borderColor: 'red', border: 1}),
     Rect.xspec({tag: 'reticle.aim.ok', width: 12, height: 12, borderColor: 'green', border: 1, fill: false}),
     Rect.xspec({tag: 'reticle.aim.nok', width: 12, height: 12, borderColor: 'red', border: 1, fill: false}),

@@ -10,6 +10,7 @@ class FieryCharm extends Charm {
     constructor(spec={}) {
         super(spec);
         this.damageDice = Dice.fromStr(spec.damageDice || this.constructor.dfltDamageDice);
+        this.description = `a fiery charm that deals *${this.damageDice}* of fire damage per attack.`;
         // -- events
         this.onAttacked = this.onAttacked.bind(this);
     }

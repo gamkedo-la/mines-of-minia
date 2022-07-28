@@ -8,6 +8,8 @@ class Charm {
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     constructor(spec={}) {
         this.actor;
+        this.curse = spec.hasOwnProperty('curse') ? spec.curse : false;
+        this.description = 'a generic charm';
     }
     destroy() {
         this.unlink();

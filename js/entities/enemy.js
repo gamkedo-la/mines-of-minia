@@ -128,7 +128,7 @@ class Enemy extends Character {
 
     onAggro(evt) {
         if (!this.active) return;
-        console.log(`${this} aggrod ${Fmt.ofmt(evt)}}`);
+        //console.log(`${this} aggrod ${Fmt.ofmt(evt)}}`);
         this.move.target = evt.target;
         this.attack.target = evt.target;
         UpdateSystem.eUpdate(this, {state: 'melee'});
@@ -137,7 +137,7 @@ class Enemy extends Character {
 
     onAggroLost(evt) {
         if (!this.active) return;
-        console.log(`${this} aggro lost ${Fmt.ofmt(evt)}}`);
+        //console.log(`${this} aggro lost ${Fmt.ofmt(evt)}}`);
         this.search.targetIdx = evt.lastIdx;
         UpdateSystem.eUpdate(this, {state: 'search'});
         this.actionStream = this.run();

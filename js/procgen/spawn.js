@@ -6,6 +6,8 @@ import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
 import { Mathf } from '../base/math.js';
 import { Prng } from '../base/prng.js';
+import { BooCharm } from '../charms/boo.js';
+import { FieryCharm } from '../charms/fiery.js';
 import { Chest } from '../entities/chest.js';
 import { Clutter } from '../entities/clutter.js';
 import { Cog } from '../entities/cog.js';
@@ -246,10 +248,112 @@ class Spawn {
             up: true,
             idx: plvl.exitIdx,
             x_sketch: Assets.get(upTag),
-            z: 2,
+            z: template.fgZed,
             blocks: 0,
         }));
 
+    }
+
+    static genWeapon(template, pstate) {
+        // weapon template
+        let wtmp = {
+            kinds: Weapon.kinds,
+            lvlOptions: [
+                { weight: .1, delta: -1 },
+                { weight: .3, delta: 0 },
+                { weight: .2, delta: 1 },
+                { weight: .2, delta: 2 },
+                { weight: .1, delta: 3 },
+                { weight: .1, delta: 4 },
+                { weight: .1, delta: 5 },
+            ],
+            tierByLTier: {
+                1: [
+                    { weight: .7, tier: 1 },
+                    { weight: .25, tier: 2 },
+                    { weight: .05, tier: 3 },
+                ],
+                2: [
+                    { weight: .1, tier: 1 },
+                    { weight: .7, tier: 2 },
+                    { weight: .2, tier: 3 },
+                ],
+                3: [
+                    { weight: .1, tier: 1 },
+                    { weight: .2, tier: 2 },
+                    { weight: .7, tier: 3 },
+                ],
+            },
+            brawnPerTier: {
+                1: { min: 8, max: 12},
+                2: { min: 10, max: 14},
+                3: { min: 13, max: 16},
+            },
+            damagePerTier: {
+                1: { minRange: { min: 1, max: 3}, maxRange: {min: 4, max: 6}, scale: 1.5 },
+                2: { minRange: { min: 2, max: 5}, maxRange: {min: 6, max: 12}, scale: 2 },
+                3: { minRange: { min: 3, max: 7}, maxRange: {min: 8, max: 18}, scale: 2.5 },
+            },
+            brawnReductionPerLvl: .25,
+            charmPct: .5,
+            cursePct: .25,
+            charms: [ FieryCharm ],
+            curses: [ BooCharm ],
+            identifiableByTier: {
+                1: .25,
+                2: .5,
+                3: .75,
+            },
+        };
+        let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
+        // -- kind
+        let kind = Prng.choose(wtmp.kinds);
+        // -- lvl
+        let lvl = Math.max(1, lvlTier + Prng.chooseWeightedOption(wtmp.lvlOptions).delta);
+        // -- tier
+        let tier = Prng.chooseWeightedOption(wtmp.tierByLTier[lvlTier]).tier;
+        // -- brawn
+        let brawn = Prng.rangeInt(wtmp.brawnPerTier[tier].min, wtmp.brawnPerTier[tier].max);
+        let brawnReductionPerLvl = wtmp.brawnReductionPerLvl;
+        // -- damage
+        let baseDamageMin = Prng.rangeInt(wtmp.damagePerTier[tier].minRange.min, wtmp.damagePerTier[tier].minRange.max);
+        let baseDamageMax = Prng.rangeInt(wtmp.damagePerTier[tier].maxRange.min, wtmp.damagePerTier[tier].maxRange.max);
+        let damageScale = wtmp.damagePerTier[tier].scale;
+        // -- charms
+        let charms = [];
+        if (Prng.flip(wtmp.charmPct)) {
+            // pick charm
+            let cls = Prng.choose(wtmp.charms);
+            charms.push( new cls() );
+            // -- roll for curse
+            if (Prng.flip(wtmp.cursePct)) {
+                let cls = Prng.choose(wtmp.curses);
+                // pick curse
+                charms.push( new cls() );
+            }
+        }
+        // -- identifiable
+        let identifiablePct = wtmp.identifiableByTier[tier];
+        if (charms.length) {
+            identifiablePct += .2;
+        }
+        let identifiable = Prng.flip(identifiablePct);
+
+        // build spec
+        let x_wpn = Weapon.xspec({
+            kind: kind,
+            lvl: lvl,
+            tier: tier,
+            brawn: brawn,
+            brawnReductionPerLvl: brawnReductionPerLvl,
+            baseDamageMin: baseDamageMin,
+            baseDamageMax: baseDamageMax,
+            damageScale: damageScale,
+            charms: charms,
+            identifiable: identifiable,
+        });
+
+        return x_wpn;
     }
 
     static genItem(template, pstate) {
@@ -265,7 +369,7 @@ class Spawn {
         // -- level
         let lvl = template.index;
         let option = Prng.chooseWeightedOption(x_spawn.enemyLvlOptions);
-        console.log(`option: ${Fmt.ofmt(option)}`);
+        //console.log(`option: ${Fmt.ofmt(option)}`);
         lvl += option.delta;
         lvl = Mathf.clampInt(lvl, 1, Config.maxLvl);
         let x_enemy = enemyClass.xspec({
@@ -300,12 +404,12 @@ class Spawn {
                 idx = Prng.choose(proom.idxs);
                 // -- test index to make sure nothing is there..
                 if (!this.checkSpawnIdx(plvl, idx)) continue;
-                // choose trap class
+                // choose class
                 let x_enemy = Object.assign(this.genEnemy(template, pstate), {
                     idx: idx,
                     z: template.fgZed,
                 });
-                console.log(`enemy: ${Fmt.ofmt(x_enemy)}`);
+                //console.log(`enemy: ${Fmt.ofmt(x_enemy)}`);
                 plvl.entities.push(x_enemy);
                 break;
             }
@@ -402,6 +506,8 @@ class Spawn {
                 name: 'fuelcell',
                 x_sketch: Assets.get('fuelcell'),
             }),
+
+            this.genWeapon(template, pstate),
 
             RangedWeapon.xspec({
                 name: 'ice.gun.3',

@@ -166,7 +166,7 @@ class AttackRollAction extends Action {
 
     setup() {
         this.timer = new Timer({ttl: this.ttl, cb: () => this.finish() });
-        let weapon = this.actor.weapon;
+        let weapon = (this.actor && this.actor.inventory) ? this.actor.inventory.weapon : null;
         // roll for hit
         let hit = Attack.hit(this.actor, this.target, weapon);
         if (hit) {
