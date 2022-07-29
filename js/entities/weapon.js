@@ -18,7 +18,7 @@ class Weapon extends Item {
     static dfltKind = 'bonk';
     static dfltTier = 1;
     static dfltLvl = 1;
-    static dfltBrawn = 10;
+    static dfltSpry = 10;
     static dfltBaseDamageMin = 1;
     static dfltBaseDamageMax = 2;
     static dfltDescription = 'a rather basic weapon';
@@ -57,8 +57,8 @@ class Weapon extends Item {
         this.tier = spec.tier || this.constructor.dfltTier;
         this.lvl = spec.lvl || this.constructor.dfltLvl;
         // -- required strength
-        this._brawn = spec.brawn || this.constructor.dfltBrawn;
-        this.brawnReductionPerLvl = spec.brawnReductionPerLvl || 0;
+        this._spry = spec.spry || this.constructor.dfltSpry;
+        this.spryReductionPerLvl = spec.spryReductionPerLvl || 0;
         // -- damage
         this.baseDamageMin = spec.baseDamageMin || this.constructor.dfltBaseDamageMin;
         this.baseDamageMax = spec.baseDamageMax || this.constructor.dfltBaseDamageMax;
@@ -70,8 +70,8 @@ class Weapon extends Item {
             kind: this.kind,
             tier: this.tier,
             lvl: this.lvl,
-            brawn: this._brawn,
-            brawnReductionPerLvl: this.brawnReductionPerLvl,
+            spry: this._spry,
+            spryReductionPerLvl: this.spryReductionPerLvl,
             baseDamageMin: this.baseDamageMin,
             baseDamageMax: this.baseDamageMax,
             damageScale: this.damageScale,
@@ -86,20 +86,20 @@ class Weapon extends Item {
         return Math.round(this.baseDamageMax*this.lvl*(this.damageScale-1));
     }
 
-    get brawn() {
-        let b = Math.round(this._brawn - this.lvl*this.brawnReductionPerLvl);
+    get spry() {
+        let b = Math.round(this._spry - this.lvl*this.spryReductionPerLvl);
         return b;
     }
 
     get description() {
         let d = `a *tier ${this.tier}* weapon that does *${this.kind}* damage. `
         if (this.identifiable) {
-            d += `requires a *${this.constructor.getSkillLevel(this.brawn)}* level of brawn to wield effectively and does a *${this.constructor.getDamageLevel(this.damageMin)}* amount of damage. `;
+            d += `requires a *${this.constructor.getSkillLevel(this.spry)}* level of spry to wield effectively and does a *${this.constructor.getDamageLevel(this.damageMin)}* amount of damage. `;
             d += `it has a *level* but you're not sure what it is. `
             d += `it may or may not have a *charm* applied. `
             d += `...identify to determine exact stats...`
         } else {
-            d += `requires *${this.brawn}* brawn to wield effectively and does *${this.damageMin}-${this.damageMax}* damage. `;
+            d += `requires *${this.spry}* spry to wield effectively and does *${this.damageMin}-${this.damageMax}* damage. `;
             d += `it is a level *${this.lvl}* weapon. `
             if (this.charms) d += `\n -- charms --\n`;
             // append charm descriptions

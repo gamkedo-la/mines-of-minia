@@ -82,7 +82,7 @@ class Character extends MiniaModel {
         // -- attack/defense
         this.attackRolls = spec.attackRolls || this.constructor.dfltAttackRolls;
         this.defenseRolls = spec.defenseRolls || this.constructor.dfltDefenseRolls;
-        this.damageReduction = spec.damageReduction || this.constructor.dfltDamageReduction;
+        this._damageReduction = spec.damageReduction || this.constructor.dfltDamageReduction;
         this.resistances = Object.assign(this.constructor.dfltResistances, spec.resistances);
         // -- line of sight
         this.losRange = spec.losRange || this.constructor.dfltLosRange;
@@ -133,7 +133,7 @@ class Character extends MiniaModel {
             deathTTL: this.deathTTL,
             attackRolls: this.attackRolls,
             defenseRolls: this.defenseRolls,
-            damageReduction: this.damageReduction,
+            damageReduction: this._damageReduction,
             resistances: this.resistances,
             losRange: this.losRange,
             aggroRange: this.aggroRange,
@@ -145,6 +145,9 @@ class Character extends MiniaModel {
     }
 
     // PROPERTIES ----------------------------------------------------------
+    get damageReduction() {
+        return this._damageReduction;
+    }
     get sketch() {
         return this._sketch;
     }

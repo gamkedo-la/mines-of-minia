@@ -21,6 +21,7 @@ import { Key } from '../entities/key.js';
 import { Projectile } from '../entities/projectile.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
 import { Reactor } from '../entities/reactor.js';
+import { Shielding } from '../entities/shielding.js';
 import { Stairs } from '../entities/stairs.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
@@ -285,7 +286,7 @@ class Spawn {
                     { weight: .7, tier: 3 },
                 ],
             },
-            brawnPerTier: {
+            spryPerTier: {
                 1: { min: 8, max: 12},
                 2: { min: 10, max: 14},
                 3: { min: 13, max: 16},
@@ -295,7 +296,7 @@ class Spawn {
                 2: { minRange: { min: 2, max: 5}, maxRange: {min: 6, max: 12}, scale: 2 },
                 3: { minRange: { min: 3, max: 7}, maxRange: {min: 8, max: 18}, scale: 2.5 },
             },
-            brawnReductionPerLvl: .25,
+            spryReductionPerLvl: .25,
             charmPct: .5,
             cursePct: .25,
             charms: [ FieryCharm ],
@@ -313,9 +314,9 @@ class Spawn {
         let lvl = Math.max(1, lvlTier + Prng.chooseWeightedOption(tmpl.lvlOptions).delta);
         // -- tier
         let tier = Prng.chooseWeightedOption(tmpl.tierByLTier[lvlTier]).tier;
-        // -- brawn
-        let brawn = Prng.rangeInt(tmpl.brawnPerTier[tier].min, tmpl.brawnPerTier[tier].max);
-        let brawnReductionPerLvl = tmpl.brawnReductionPerLvl;
+        // -- spry
+        let spry = Prng.rangeInt(tmpl.spryPerTier[tier].min, tmpl.spryPerTier[tier].max);
+        let spryReductionPerLvl = tmpl.spryReductionPerLvl;
         // -- damage
         let baseDamageMin = Prng.rangeInt(tmpl.damagePerTier[tier].minRange.min, tmpl.damagePerTier[tier].minRange.max);
         let baseDamageMax = Prng.rangeInt(tmpl.damagePerTier[tier].maxRange.min, tmpl.damagePerTier[tier].maxRange.max);
@@ -345,8 +346,8 @@ class Spawn {
             kind: kind,
             lvl: lvl,
             tier: tier,
-            brawn: brawn,
-            brawnReductionPerLvl: brawnReductionPerLvl,
+            spry: spry,
+            spryReductionPerLvl: spryReductionPerLvl,
             baseDamageMin: baseDamageMin,
             baseDamageMax: baseDamageMax,
             damageScale: damageScale,
@@ -453,6 +454,100 @@ class Spawn {
             powerScale: powerScale,
             healthPerAP: healthPerAP,
             healthScale: healthScale,
+            identifiable: identifiable,
+            charms: charms,
+        });
+    }
+
+    static genShielding(template, pstate) {
+        // reactor template
+        let tmpl = {
+            lvlOptions: [
+                { weight: .1, delta: -1 },
+                { weight: .3, delta: 0 },
+                { weight: .2, delta: 1 },
+                { weight: .2, delta: 2 },
+                { weight: .1, delta: 3 },
+                { weight: .1, delta: 4 },
+                { weight: .1, delta: 5 },
+            ],
+            brawnPerTier: {
+                1: { min: 8, max: 12},
+                2: { min: 10, max: 14},
+                3: { min: 13, max: 16},
+            },
+            brawnReductionPerLvl: .25,
+            tierByLTier: {
+                1: [
+                    { weight: .7, tier: 1 },
+                    { weight: .25, tier: 2 },
+                    { weight: .05, tier: 3 },
+                ],
+                2: [
+                    { weight: .1, tier: 1 },
+                    { weight: .7, tier: 2 },
+                    { weight: .2, tier: 3 },
+                ],
+                3: [
+                    { weight: .1, tier: 1 },
+                    { weight: .2, tier: 2 },
+                    { weight: .7, tier: 3 },
+                ],
+            },
+            reductionPerTier: {
+                1: { minRange: { min: 1, max: 3}, maxRange: {min: 4, max: 6}, scale: 1.1 },
+                2: { minRange: { min: 2, max: 5}, maxRange: {min: 6, max: 12}, scale: 1.3 },
+                3: { minRange: { min: 3, max: 7}, maxRange: {min: 8, max: 18}, scale: 1.5 },
+            },
+            charmPct: .5,
+            cursePct: .25,
+            charms: [ Charm ],
+            curses: [ BooCharm ],
+            identifiableByTier: {
+                1: .25,
+                2: .5,
+                3: .75,
+            },
+        };
+        let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
+        // -- lvl
+        let lvl = Math.max(1, lvlTier + Prng.chooseWeightedOption(tmpl.lvlOptions).delta);
+        // -- tier
+        let tier = Prng.chooseWeightedOption(tmpl.tierByLTier[lvlTier]).tier;
+        // -- brawn
+        let brawn = Prng.rangeInt(tmpl.brawnPerTier[tier].min, tmpl.brawnPerTier[tier].max);
+        let brawnReductionPerLvl = tmpl.brawnReductionPerLvl;
+        // -- reduction
+        let reductionMin = Prng.rangeInt(tmpl.reductionPerTier[tier].minRange.min, tmpl.reductionPerTier[tier].minRange.max);
+        let reductionMax = Prng.rangeInt(tmpl.reductionPerTier[tier].maxRange.min, tmpl.reductionPerTier[tier].maxRange.max);
+        let reductionScale = tmpl.reductionPerTier[tier].scale;
+        // -- charms
+        let charms = [];
+        if (Prng.flip(tmpl.charmPct)) {
+            // pick charm
+            let cls = Prng.choose(tmpl.charms);
+            charms.push( new cls() );
+            // -- roll for curse
+            if (Prng.flip(tmpl.cursePct)) {
+                let cls = Prng.choose(tmpl.curses);
+                // pick curse
+                charms.push( new cls() );
+            }
+        }
+        // -- identifiable
+        let identifiablePct = tmpl.identifiableByTier[tier];
+        if (charms.length) {
+            identifiablePct += .2;
+        }
+        let identifiable = Prng.flip(identifiablePct);
+        return Shielding.xspec({
+            tier: tier,
+            lvl: lvl,
+            brawn: brawn,
+            brawnReductionPerLvl: brawnReductionPerLvl,
+            damageReductionMin: reductionMin,
+            damageReductionMax: reductionMax,
+            damageReductionScale: reductionScale,
             identifiable: identifiable,
             charms: charms,
         });
@@ -611,6 +706,7 @@ class Spawn {
 
             this.genWeapon(template, pstate),
             this.genReactor(template, pstate),
+            this.genShielding(template, pstate),
 
             RangedWeapon.xspec({
                 name: 'ice.gun.3',

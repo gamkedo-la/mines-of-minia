@@ -141,6 +141,39 @@ let miniaAssets = [
         borderColor: 'red',
     }),
 
+    Shape.xspec({
+        tag: 'shielding.1',
+        fill: true,
+        verts: [ 
+            {x:4, y:4}, {x:12, y:4}, {x:12, y:12}, {x:4, y:12},
+        ],
+        border: 1,
+        color: 'rgba(155,171,178,1)',
+        borderColor: 'red',
+    }),
+
+    Shape.xspec({
+        tag: 'shielding.2',
+        fill: true,
+        verts: [ 
+            {x:4, y:4}, {x:12, y:4}, {x:12, y:12}, {x:4, y:12},
+        ],
+        border: 1,
+        color: 'rgba(247,150,23,1)',
+        borderColor: 'red',
+    }),
+
+    Shape.xspec({
+        tag: 'shielding.3',
+        fill: true,
+        verts: [ 
+            {x:4, y:4}, {x:12, y:4}, {x:12, y:12}, {x:4, y:12},
+        ],
+        border: 1,
+        color: 'rgba(145,219,105,1)',
+        borderColor: 'red',
+    }),
+
     Rect.xspec({tag: 'fuelcell', width: 8, height: 12, color: 'blue', borderColor: 'red', border: 1}),
     Rect.xspec({tag: 'reticle.aim.ok', width: 12, height: 12, borderColor: 'green', border: 1, fill: false}),
     Rect.xspec({tag: 'reticle.aim.nok', width: 12, height: 12, borderColor: 'red', border: 1, fill: false}),

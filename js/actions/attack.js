@@ -77,12 +77,12 @@ class Attack {
         // -- hit bonus/penalty
         let hitbp = actor.hitbp || 0;
         atkr += hitbp;
-        // -- strength to wield
+        // -- spry to wield
         if (weapon) {
-            let brawn = actor.brawn || 1;
-            let wpnBrawn = weapon.brawn || 1;
-            if (wpnBrawn > brawn) {
-                let diff = Math.min(wpnBrawn-brawn, 4);
+            let spry = actor.spry || 1;
+            let wpnSpry = weapon.spry || 1;
+            if (wpnSpry > spry) {
+                let diff = Math.min(wpnSpry-spry, 4);
                 let penalty = diff*diff*5;
                 atkr -= penalty;
             }

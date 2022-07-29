@@ -7,7 +7,9 @@ import { Character } from './character.js';
 import { Weapon } from './weapon.js';
 
 
+// =========================================================================
 class Player extends Character {
+    // STATIC VARIABLES ----------------------------------------------------
     static dfltBrawn = 10;
     static dfltSpry = 10;
     static dfltSavvy = 10;
@@ -36,6 +38,7 @@ class Player extends Character {
         baseDamageMax: 8,
     });
 
+    // CONSTRUCTOR ---------------------------------------------------------
     cpost(spec) {
         super.cpost(spec);
         this.weaponxps = spec.weaponxps || {};
@@ -45,15 +48,15 @@ class Player extends Character {
         // -- fuel
         this.fuelMax = spec.fuelMax || this.constructor.dfltFuelMax;
         this.fuel = spec.fuel || this.fuelMax;
-        this.fuelPerAP = spec.fuelPerAP || 0;
+        //this.fuelPerAP = spec.fuelPerAP || 0;
         // -- power
         this.powerMax = spec.powerMax || this.constructor.dfltPowerMax;
         this.power = spec.power || this.powerMax;
-        this.powerPerAP = spec.powerPerAP || 0;
+        //this.powerPerAP = spec.powerPerAP || 0;
         // -- xp gained
         this.xp = spec.xp || 0;
         // -- health regen
-        this.healthPerAP = spec.healthPerAP || 0;
+        //this.healthPerAP = spec.healthPerAP || 0;
         // -- hit bonus/penalty
         this.hitbp = spec.hitbp || 0;
         this.weapon = spec.weapon || this.constructor.dfltWeapon;
@@ -67,6 +70,22 @@ class Player extends Character {
         this.xform.offy = Config.tileSize*.5 - this.xform.height;
         //this.dbg = { xform: true };
     }
+
+    // PROPERTIES ----------------------------------------------------------
+    // -- properties from equipment
+    get powerPerAP() {
+        return (this.inventory && this.inventory.reactor) ? this.inventory.reactor.powerPerAP : 0;
+    }
+    get fuelPerAP() {
+        return (this.inventory && this.inventory.reactor) ? this.inventory.reactor.fuelPerAP : 0;
+    }
+    get healthPerAP() {
+        return (this.inventory && this.inventory.reactor) ? this.inventory.reactor.healthPerAP : 0;
+    }
+    get damageReduction() {
+        return (this.inventory && this.inventory.shielding) ? this.inventory.shielding.damageReduction : 0;
+    }
+
 
     // FIXME: add serialization
 

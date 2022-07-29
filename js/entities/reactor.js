@@ -5,8 +5,9 @@ import { Fmt } from '../base/fmt.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Item } from './item.js';
 
-
+// =========================================================================
 class Reactor extends Item {
+    // STATIC VARIABLES ----------------------------------------------------
     static slot = 'reactor';
     static dfltTier = 1;
     static dfltLvl = 1;
@@ -15,6 +16,7 @@ class Reactor extends Item {
     static dfltFuelPerAP = .1;
     static dfltAnimState = 'free';
 
+    // STATIC METHODS ------------------------------------------------------
     static getFuelRating(perap) {
         if (perap <= .05) return 'low';
         if (perap <= .1) return 'medium';
@@ -53,7 +55,7 @@ class Reactor extends Item {
         this._fuelPerAP = spec.fuelPerAP || this.constructor.dfltFuelPerAP;
         this.fuelScale = spec.fuelScale || 1;
         this.animState = spec.animState || this.constructor.dfltAnimState;
-        // FIXME: scaling for level
+        this.target;
         // event handlers
         this.onEquip = this.onEquip.bind(this);
         this.onUnequip = this.onUnequip.bind(this);
@@ -112,25 +114,24 @@ class Reactor extends Item {
         console.log(`${this} onEquip: ${Fmt.ofmt(evt)}`);
         let player = evt.actor;
         if (!player) return;
-        // adjust player stats
-        let update = {};
-        if (this.powerPerAP) update.powerPerAP = player.powerPerAP + this.powerPerAP;
-        if (this.healthPerAP) update.healthPerAP = player.healthPerAP + this.healthPerAP;
-        if (this.fuelPerAP) update.fuelPerAP = player.fuelPerAP + this.fuelPerAP;
-        UpdateSystem.eUpdate(player, update);
-        console.log(`update: ${Fmt.ofmt(update)}`);
+        // set target
+        this.target = player;
+        // apply charms
+        for (const charm of this.charms) {
+            charm.link(player);
+        }
     }
 
     onUnequip(evt) {
         console.log(`${this} onUnequip: ${Fmt.ofmt(evt)}`);
         let player = evt.actor;
         if (!player) return;
-        // adjust player stats
-        let update = {};
-        if (this.powerPerAP) update.powerPerAP = player.powerPerAP - this.powerPerAP;
-        if (this.healthPerAP) update.healthPerAP = player.healthPerAP - this.healthPerAP;
-        if (this.fuelPerAP) update.fuelPerAP = player.fuelPerAP - this.fuelPerAP;
-        UpdateSystem.eUpdate(player, update);
+        // clear target
+        this.target = null;
+        // remove charms
+        for (const charm of this.charms) {
+            charm.unlink(player);
+        }
     }
 
 }
