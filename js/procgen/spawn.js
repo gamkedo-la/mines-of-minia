@@ -15,6 +15,7 @@ import { Cog } from '../entities/cog.js';
 import { Door } from '../entities/door.js';
 import { Fuelcell } from '../entities/fuelcell.js';
 import { Funguy } from '../entities/funguy.js';
+import { Gadget } from '../entities/gadget.js';
 import { Gem } from '../entities/gem.js';
 import { Growth } from '../entities/growth.js';
 import { Key } from '../entities/key.js';
@@ -553,6 +554,65 @@ class Spawn {
         });
     }
 
+    static genGadget(template, pstate) {
+        // template
+        let tmpl = {
+            tierByLTier: {
+                1: [
+                    { weight: .7, tier: 1 },
+                    { weight: .25, tier: 2 },
+                    { weight: .05, tier: 3 },
+                ],
+                2: [
+                    { weight: .1, tier: 1 },
+                    { weight: .7, tier: 2 },
+                    { weight: .2, tier: 3 },
+                ],
+                3: [
+                    { weight: .1, tier: 1 },
+                    { weight: .2, tier: 2 },
+                    { weight: .7, tier: 3 },
+                ],
+            },
+            cursePct: .25,
+            charmsByTier: {
+                1: [ Charm ],
+                2: [ Charm ],
+                3: [ Charm ],
+            },
+            curses: [ BooCharm ],
+            identifiableByTier: {
+                1: .25,
+                2: .5,
+                3: .75,
+            },
+        };
+        let charms = [];
+        let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
+        // -- tier
+        let tier = Prng.chooseWeightedOption(tmpl.tierByLTier[lvlTier]).tier;
+        // pick charm
+        let cls = Prng.choose(tmpl.charmsByTier[tier]);
+        charms.push( new cls() );
+        // -- roll for curse
+        if (Prng.flip(tmpl.cursePct)) {
+            let cls = Prng.choose(tmpl.curses);
+            // pick curse
+            charms.push( new cls() );
+        }
+        // -- identifiable
+        let identifiablePct = tmpl.identifiableByTier[tier];
+        if (charms.length) {
+            identifiablePct += .2;
+        }
+        let identifiable = Prng.flip(identifiablePct);
+        return Gadget.xspec({
+            tier: tier,
+            identifiable: identifiable,
+            charms: charms,
+        });
+    }
+
     static genItem(template, pstate) {
         let x_spawn = template.spawn || {};
         // pick item class
@@ -707,6 +767,7 @@ class Spawn {
             this.genWeapon(template, pstate),
             this.genReactor(template, pstate),
             this.genShielding(template, pstate),
+            this.genGadget(template, pstate),
 
             RangedWeapon.xspec({
                 name: 'ice.gun.3',
