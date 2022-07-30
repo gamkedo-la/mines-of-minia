@@ -19,6 +19,7 @@ import { Gadget } from '../entities/gadget.js';
 import { Gem } from '../entities/gem.js';
 import { Growth } from '../entities/growth.js';
 import { Key } from '../entities/key.js';
+import { Magma } from '../entities/magma.js';
 import { Projectile } from '../entities/projectile.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
 import { Reactor } from '../entities/reactor.js';
@@ -762,6 +763,10 @@ class Spawn {
             Fuelcell.xspec({
                 name: 'fuelcell',
                 x_sketch: Assets.get('fuelcell'),
+            }),
+
+            Magma.xspec({
+                name: 'funguy',
             }),
 
             this.genWeapon(template, pstate),

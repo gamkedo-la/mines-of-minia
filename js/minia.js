@@ -44,6 +44,7 @@ import { SpikeTrap } from "./entities/spikeTrap.js";
 import { Growth } from "./entities/growth.js";
 import { Clutter } from "./entities/clutter.js";
 import { Prompt } from "./prompt.js";
+import { Magma } from "./entities/magma.js";
 
 class Minia extends Game {
     static states = {
@@ -131,6 +132,7 @@ class Minia extends Game {
             Key,
             Inventory,
             Level,
+            Magma,
             Player,
             Projectile,
             Prompt,
