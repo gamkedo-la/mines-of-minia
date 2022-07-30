@@ -8,9 +8,6 @@ import { Trap } from './trap.js';
 class SpikeTrap extends Trap {
     static dfltAttackKind = 'poke';
     static dfltDamage = 5;
-    static get dfltSketch() {
-        return Assets.get('trap.test', true);
-    }
 
     cpost(spec) {
         super.cpost(spec);

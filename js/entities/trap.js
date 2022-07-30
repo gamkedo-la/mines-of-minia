@@ -12,7 +12,7 @@ class Trap extends MiniaModel {
 
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSketch() {
-        return new Rect({ width: 10, height: 10, borderColor: 'rgba(255,255,0,.75)', fill: false, border: 1 });
+        return Assets.get('trap', true);
     }
 
     static get dfltTriggerSfx() {

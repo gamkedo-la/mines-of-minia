@@ -261,6 +261,7 @@ class Assets {
                     spec = Object.assign({}, spec, v);
                     // generate asset
                     let asset = this.generator.generate(spec);
+                    //console.log(`-- resolved ${v.tag} with ${asset}`);
                     // swap reference
                     o[k] = asset;
                 }

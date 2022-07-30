@@ -1007,5 +1007,28 @@ let miniaAssets = [
         borderColor: 'red',
     }),
 
+    // -- trap
+    Animation.xspec({ tag: 'trap.armed', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/trap.png', width: 16, height: 16, x: 16*0, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/trap.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/trap.png', width: 16, height: 16, x: 16*4, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/trap.png', width: 16, height: 16, x: 16*6, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/trap.png', width: 16, height: 16, x: 16*8, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/trap.png', width: 16, height: 16, x: 16*10, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/trap.png', width: 16, height: 16, x: 16*12, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/trap.png', width: 16, height: 16, x: 16*14, y: 0})}), ttl: 100 }),
+    ]}),
+    Animation.xspec({ tag: 'trap.inactive', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/trap.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 100 }),
+    ]}),
+    Animator.xspec({
+        tag: 'trap',
+        sketches: {
+            'armed': new AssetRef({tag: 'trap.armed'}),
+            'inactive': new AssetRef({tag: 'trap.inactive'}),
+        },
+        state: 'armed',
+    }),
+
 
 ];
