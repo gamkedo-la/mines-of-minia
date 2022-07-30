@@ -103,7 +103,7 @@ class Minia extends Game {
             spawn: {
                 enemyList: [ Rous, Funguy ],
                 trapList: [ SpikeTrap ],
-                growth: 'growth.test',
+                growth: 'rock.growth',
                 growthFreePct: .1,
                 growthNoisePct: .25,
                 clutter: 'rock.clutter',

@@ -40,11 +40,17 @@ class Generator {
                         let obj = this.generate(xchild);
                         if (obj) nv.push(obj);
                     }
-                } else {
+                } else if (v.hasOwnProperty('cls')) {
                     if (v.cls === 'AssetRef') {
                         nv = Assets.get(v.tag, true);
                     } else {
                         nv = this.generate(v);
+                    }
+                } else {
+                    nv = {};
+                    for (const [key, spec] of Object.entries(v)) {
+                        let obj = this.generate(spec);
+                        nv[key] = obj;
                     }
                 }
                 let nk = k.slice(2);

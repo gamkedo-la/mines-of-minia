@@ -1,6 +1,8 @@
 export { Growth };
 
 import { Assets } from '../base/assets.js';
+import { Config } from '../base/config.js';
+import { Fmt } from '../base/fmt.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Trap } from './trap.js';
 
@@ -18,6 +20,7 @@ class Growth extends Trap {
     }
     cpost(spec) {
         super.cpost(spec);
+        this.bgoZed = spec.bgoZed || 2;
         // -- los state
         this.blocksLoS = (this.state === 'armed');
     }
@@ -25,7 +28,7 @@ class Growth extends Trap {
     trigger(actor) {
         super.trigger(actor);
         // once triggered, growth no longer blocks LoS
-        UpdateSystem.eUpdate(this, { blocksLoS: false });
+        UpdateSystem.eUpdate(this, { blocksLoS: false, z: this.bgoZed });
     }
 
 }

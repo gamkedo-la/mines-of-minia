@@ -1030,5 +1030,13 @@ let miniaAssets = [
         state: 'armed',
     }),
 
+    Animator.xspec({
+        tag: 'rock.growth',
+        x_sketches: {
+            'armed': Template.varsprite('img/shroom-growth.png', 'rock.growth.armed', [[0,0], [1,0], [2,0], [3,0]], {width: 20, height: 32}),
+            'inactive': Sprite.xspec({img: new SheetRef({src: 'img/shroom-growth.png', width: 20, height: 32, x: 20*4, y: 0})}),
+        },
+        state: 'armed',
+    }),
 
 ];
