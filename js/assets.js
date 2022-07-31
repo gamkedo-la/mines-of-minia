@@ -606,7 +606,7 @@ let miniaAssets = [
     }),
     Sfx.xspec({ tag: 'test.sound', audio: new SfxRef({src: 'snd/test.mp3'}) }),
     Sfx.xspec({ tag: 'gem.break', audio: new SfxRef({src: 'snd/gem-break.mp3'}) }),
-    Sfx.xspec({ tag: 'trap.trigger', audio: new SfxRef({src: 'snd/pick-up-item.mp3'}), volume: .5 }),
+    Sfx.xspec({ tag: 'trap.trigger', audio: new SfxRef({src: 'snd/trap_triggered_short.mp3'}), volume: .5 }),
     Sfx.xspec({ tag: 'growth.trigger', audio: new SfxRef({src: 'snd/step-thud.mp3'}), volume: .5 }),
     Sfx.xspec({ tag: 'player.pickup', audio: new SfxRef({src: 'snd/pickup-ding.mp3'}), volume: .25 }),
     Sfx.xspec({ tag: 'blip.1', audio: new SfxRef({src: 'snd/blip-1.mp3'}) }),
@@ -617,6 +617,8 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'item.throwHit', audio: new SfxRef({src: 'snd/hit-bolt.mp3'}), volume: .5, loop: false }),
     Sfx.xspec({ tag: 'item.loot', audio: new SfxRef({src: 'snd/uncork-flask.mp3'}), volume: .4, loop: false }),
     Sfx.xspec({ tag: 'item.lootThud', audio: new SfxRef({src: 'snd/hard-bump.mp3'}), volume: .4, loop: false }),
+    Sfx.xspec({ tag: 'action.failed', audio: new SfxRef({src: 'snd/failed_action_short.mp3'}), volume: .4, loop: false }),
+    Sfx.xspec({ tag: 'cog.use', audio: new SfxRef({src: 'snd/cog_use.mp3'}), volume: .4, loop: false }),
 
     ...Template.walls('img/rock-walls.png', 'rock.wall'),
     ...Template.tiles('img/rock-floor.png', 'rock.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
