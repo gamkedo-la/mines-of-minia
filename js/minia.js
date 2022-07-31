@@ -45,16 +45,18 @@ import { Growth } from "./entities/growth.js";
 import { Clutter } from "./entities/clutter.js";
 import { Prompt } from "./prompt.js";
 import { Magma } from "./entities/magma.js";
+import { MenuState } from "./menuState.js";
 
 class Minia extends Game {
     static states = {
         'title': new TitleState(),
+        'menu': new MenuState(),
         'fiddle': new FiddleState(),
         'testproc': new TestProcState(),
         'play': new PlayState(),
         'testnoise': new TestNoiseState(),
     }
-    static startStateTag = 'title';
+    static startStateTag = 'menu';
     static assetRefs = miniaAssets;
 
     static config = {
