@@ -19,6 +19,7 @@ import { UxGrid } from './uxGrid.js';
 import { UxInput } from './uxInput.js';
 import { UxMask } from './uxMask.js';
 import { UxPanel } from './uxPanel.js';
+import { UxSlider } from './uxSlider.js';
 import { UxText } from './uxText.js';
 import { UxToggle } from './uxToggle.js';
 import { VarSprite } from './varSprite.js';
@@ -46,6 +47,7 @@ class Registry {
         ['UxInput', UxInput],
         ['UxMask', UxMask],
         ['UxPanel', UxPanel],
+        ['UxSlider', UxSlider],
         ['UxText', UxText],
         ['UxToggle', UxToggle],
         ['VarSprite', VarSprite],

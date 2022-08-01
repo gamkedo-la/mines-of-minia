@@ -14,6 +14,7 @@ import { UxButton } from './base/uxButton.js';
 import { UxPanel } from './base/uxPanel.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
+import { PlayOptions } from './playOptions.js';
 import { TurnSystem } from './systems/turnSystem.js';
 
 
@@ -159,6 +160,14 @@ class Hud extends UxView {
 
     onOptionsClicked(evt) {
         console.log(`${this} onOptionsClicked: ${Fmt.ofmt(evt)}}`)
+        //this.view.active = false;
+        let options = new PlayOptions({
+            xform: new XForm({border: .2}),
+        });
+        this.adopt(options);
+        options.evt.listen(options.constructor.evtDestroyed, () => {
+            //this.view.active = true;
+        });
     }
     onWaitClicked(evt) {
         if (this.getCurrentHandler() !== 'interact') return;

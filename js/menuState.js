@@ -15,6 +15,20 @@ import { UxCanvas } from './base/uxCanvas.js';
 import { UxPanel } from './base/uxPanel.js';
 import { UxText } from './base/uxText.js';
 import { XForm } from './base/xform.js';
+import { Options } from './options.js';
+import { PlayOptions } from './playOptions.js';
+import { Resurrect64 } from './resurrect64.js';
+
+function button(text, spec) {
+    return Object.assign({}, UxButton.xspec({
+        x_textXform: XForm.xspec({offset: 10}),
+        highlight: Sketch.zero,
+        unpressed: Sketch.zero,
+        pressed: Sketch.zero,
+        text: new Text({text: text, color: Resurrect64.colors[0]}),
+        hltext: new Text({text: text, color: Resurrect64.colors[10]}),
+    }), spec);
+}
 
 class MenuState extends GameState {
     onNewClicked(evt) {
@@ -28,6 +42,15 @@ class MenuState extends GameState {
 
     onOptionsClicked(evt) {
         console.log(`${this} onOptionsClicked: ${Fmt.ofmt(evt)}`);
+        // disable
+        this.view.active = false;
+        let options = new PlayOptions({
+            xform: new XForm({border: .2}),
+        });
+        this.view.adopt(options);
+        options.evt.listen(options.constructor.evtDestroyed, () => {
+            this.view.active = true;
+        });
     }
 
     onHelpClicked(evt) {
@@ -39,9 +62,6 @@ class MenuState extends GameState {
     }
 
     async ready() {
-        //this.onAdvance = this.onAdvance.bind(this);
-        //Events.listen(Keys.evtDown, this.onAdvance);
-        //Events.listen(MouseSystem.evtClicked, this.onAdvance);
         let x_view = UxCanvas.xspec({
             cvsid: 'game.canvas',
             tag: 'cvs.0',
@@ -52,39 +72,15 @@ class MenuState extends GameState {
                 }),
                 // -- button panel
                 UxPanel.xspec({
+                    tag: 'menu.panel',
                     sketch: Sketch.zero,
                     x_xform: XForm.xspec({top: .2, bottom: .2, left: .3, right: .3}),
                     x_children: [
-                        UxButton.xspec({
-                            tag: 'menu.new',
-                            x_xform: XForm.xspec({top: 0, bottom: .8}),
-                            x_textXform: XForm.xspec({offset: 10}),
-                            text: new Text({text: '   new   '}),
-                        }),
-                        UxButton.xspec({
-                            tag: 'menu.load',
-                            x_xform: XForm.xspec({top: .2, bottom: .6}),
-                            x_textXform: XForm.xspec({offset: 10}),
-                            text: new Text({text: '   load   '}),
-                        }),
-                        UxButton.xspec({
-                            tag: 'menu.options',
-                            x_xform: XForm.xspec({top: .4, bottom: .4}),
-                            x_textXform: XForm.xspec({offset: 10}),
-                            text: new Text({text: '   options   '}),
-                        }),
-                        UxButton.xspec({
-                            tag: 'menu.help',
-                            x_xform: XForm.xspec({top: .6, bottom: .2}),
-                            x_textXform: XForm.xspec({offset: 10}),
-                            text: new Text({text: '   help   '}),
-                        }),
-                        UxButton.xspec({
-                            tag: 'menu.credits',
-                            x_xform: XForm.xspec({top: .8, bottom: 0}),
-                            x_textXform: XForm.xspec({offset: 10}),
-                            text: new Text({text: '   credits   '}),
-                        }),
+                        button('   new   ', { tag: 'menu.new', x_xform: XForm.xspec({top: 0, bottom: .8}), }),
+                        button('   load   ', { tag: 'menu.load', x_xform: XForm.xspec({top: .2, bottom: .6}), }),
+                        button('   options   ', { tag: 'menu.options', x_xform: XForm.xspec({top: .4, bottom: .4}), }),
+                        button('   help   ', { tag: 'menu.help', x_xform: XForm.xspec({top: .6, bottom: .2}), }),
+                        button('   credits   ', { tag: 'menu.credits', x_xform: XForm.xspec({top: .8, bottom: 0}), }),
                     ],
                 }),
                 /*
@@ -97,6 +93,7 @@ class MenuState extends GameState {
         });
         this.view = Generator.generate(x_view);
         // -- ui elements
+        this.panel = Hierarchy.find(this.view, (v) => v.tag === 'menu.panel');
         this.newButton = Hierarchy.find(this.view, (v) => v.tag === 'menu.new');
         this.loadButton = Hierarchy.find(this.view, (v) => v.tag === 'menu.load');
         this.optionsButton = Hierarchy.find(this.view, (v) => v.tag === 'menu.options');

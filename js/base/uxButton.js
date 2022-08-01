@@ -29,6 +29,7 @@ class UxButton extends UxView {
         this.evt.listen(this.constructor.evtMouseUp, this.onMouseToggle);
         // -- link sketches to gizmo
         this._text = spec.text || this.constructor.dfltText;
+        this._hltext = spec.hltext;
         this._linkSketch('_unpressed', spec.unpressed || this.constructor.dfltUnpressed, false);
         this._linkSketch('_pressed', spec.pressed || this.constructor.dfltPressed, false);
         this._linkSketch('_highlight', spec.highlight || this.constructor.dfltHighlight, false);
@@ -111,11 +112,13 @@ class UxButton extends UxView {
         this.sketch.show();
         this._highlight.show();
         this._text.show();
+        if (this._hltext) this._hltext.show();
     }
     hide() {
         this.sketch.hide();
         this._highlight.hide();
         this._text.hide();
+        if (this._hltext) this._hltext.hide();
     }
 
     _render(ctx) {
@@ -133,9 +136,15 @@ class UxButton extends UxView {
         // apply text transform
         this.textXform.apply(ctx, false);
         // render text
-        this._text.width = this.textXform.width;
-        this._text.height = this.textXform.height;
-        this._text.render(ctx, this.textXform.minx, this.textXform.miny);
+        if (this._hltext && this.mouseOver && !this.mouseDown) {
+            this._hltext.width = this.textXform.width;
+            this._hltext.height = this.textXform.height;
+            this._hltext.render(ctx, this.textXform.minx, this.textXform.miny);
+        } else {
+            this._text.width = this.textXform.width;
+            this._text.height = this.textXform.height;
+            this._text.render(ctx, this.textXform.minx, this.textXform.miny);
+        }
         this.textXform.revert(ctx, false);
     }
 }

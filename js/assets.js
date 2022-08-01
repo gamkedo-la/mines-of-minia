@@ -10,6 +10,7 @@ import { Sketch } from './base/sketch.js';
 import { Sprite } from './base/sprite.js';
 import { StretchSprite } from './base/stretchSprite.js';
 import { Weapon } from './entities/weapon.js';
+import { Resurrect64 } from './resurrect64.js';
 import { Template } from './template.js';
 
 let miniaAssets = [
@@ -1100,5 +1101,8 @@ let miniaAssets = [
         state: 'idler',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
+
+    // -- menu
+    Rect.xspec({tag: 'options.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
 
 ];
