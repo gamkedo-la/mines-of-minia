@@ -63,6 +63,18 @@ class AudioSystem extends Gizmo {
         }
     }
 
+    static createChannel(tag, volume=1) {
+        this.main.createChannel(tag, volume);
+    }
+
+    static getVolume(tag) {
+        return this.main.getVolume(tag);
+    }
+
+    static setVolume(tag, value) {
+        this.main.setVolume(tag, value);
+    }
+
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
@@ -71,15 +83,9 @@ class AudioSystem extends Gizmo {
         this.ctx;
         // -- setup channels
         this.channels = {};
-        let dfltChannel = spec.dfltChannel || new AudioChannel({asys: this});
-        this.dfltChannel = dfltChannel.tag;
+        let dfltChannel = spec.dfltChannel || new AudioChannel({asys: this, tag: 'channel.dflt'});
+        this.dfltChannelTag = dfltChannel.tag;
         this.channels[dfltChannel.tag] = dfltChannel;
-        for (const channel of (spec.channels || [])) {
-            if (this.channels.hasOwnProperty(channel.tag)) {
-                console.error(`skipping duplicate audio channel: ${channel}`);
-                continue;
-            }
-        }
 
         // -- event handling
         const evtInteracted = Game.evtInteracted;
@@ -89,6 +95,7 @@ class AudioSystem extends Gizmo {
         } else {
             this.initialize();
         }
+        if (!this.constructor._main) this.constructor._main = this;
 
     }
 
@@ -113,14 +120,23 @@ class AudioSystem extends Gizmo {
         }
     }
 
+    createChannel(tag, volume=1) {
+        if (this.channels[tag]) return;
+        this.channels[tag] = new AudioChannel({
+            asys: this,
+            tag: tag,
+            volume: volume,
+        });
+    }
+
     getChannelForSfx(sfx) {
         let tag = (sfx) ? sfx.channel : undefined;
         let channel = this.channels[tag];
-        if (!channel) channel = this.channels[this.dfltChannel];
+        if (!channel) channel = this.channels[this.dfltChannelTag];
         return channel;
     }
 
-    getVolume(tag, value) {
+    getVolume(tag) {
         let channel = this.channels[tag];
         return (channel) ? channel.volume : 0;
     }

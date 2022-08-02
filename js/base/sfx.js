@@ -10,12 +10,14 @@ import { EvtStream } from './event.js';
 class Sfx extends Gizmo {
     // STATIC VARIABLES ----------------------------------------------------
     static evtDone = 'sfx.done';
+    static dfltChannel = 'sfx';
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
         this.asys = spec.hasOwnProperty('asys') ? spec.asys : AudioSystem.main;
         this.audio = spec.audio || new ArrayBuffer();
+        this.channel = spec.channel || this.constructor.dfltChannel;
         this.decoded;
         this.initialized = false;
         this.loop = spec.hasOwnProperty('loop') ? spec.loop : false;

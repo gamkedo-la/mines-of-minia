@@ -46,6 +46,7 @@ import { Clutter } from "./entities/clutter.js";
 import { Prompt } from "./prompt.js";
 import { Magma } from "./entities/magma.js";
 import { MenuState } from "./menuState.js";
+import { AudioSystem } from "./base/systems/audioSystem.js";
 
 class Minia extends Game {
     static states = {
@@ -153,6 +154,8 @@ class Minia extends Game {
         Font.dfltFamily = "Gugi";
         //Font.dfltFamily = "Rubik Moonrocks";
         //Font.dfltFamily = "Aldrich";
+        AudioSystem.createChannel('sfx');
+        AudioSystem.createChannel('music');
     }
 
     static ready() {
