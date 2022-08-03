@@ -19,6 +19,7 @@ class Key extends Item {
         this.kind = spec.kind || this.constructor.dfltKind;
     }
 
+    // SERIALIZATION -------------------------------------------------------
     as_kv() {
         return Object.assign({}, super.as_kv(), {
             kind: this.kind,

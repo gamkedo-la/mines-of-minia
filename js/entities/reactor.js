@@ -64,6 +64,7 @@ class Reactor extends Item {
 
     }
 
+    // SERIALIZATION -------------------------------------------------------
     as_kv() {
         return Object.assign({}, super.as_kv(), {
             tier: this.tier,
@@ -74,6 +75,7 @@ class Reactor extends Item {
             healthScale: this.healthScale,
             fuelPerAP: this._fuelPerAP,
             fuelScale: this.fuelScale,
+            animState: this.animState,
         });
     }
 

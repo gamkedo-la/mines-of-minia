@@ -16,6 +16,15 @@ class SpikeTrap extends Trap {
         this.damageMax = spec.damageMax || this.constructor.dfltDamage;
     }
 
+    // SERIALIZATION -------------------------------------------------------
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            attackKind: this.attackKind,
+            damageMin: this.damageMin,
+            damageMax: this.damageMax,
+        });
+    }
+
     trigger(actor) {
         super.trigger(actor);
         // apply damage

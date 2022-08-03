@@ -34,6 +34,14 @@ class Magma extends Enemy{
         this.rangeMin = spec.rangeMin || Config.tileSize*2;
         this.rangeMax = spec.rangeMax || Config.tileSize*4;
     }
+    
+    // SERIALIZATION -------------------------------------------------------
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            rangeMin: this.rangeMin,
+            rangeMax: this.rangeMax,
+        });
+    }
 
     // EVENT HANDLERS ------------------------------------------------------
     onLevelLoaded(evt) {

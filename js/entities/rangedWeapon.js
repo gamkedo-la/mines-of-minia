@@ -42,6 +42,21 @@ class RangedWeapon extends Item {
         this.projectileSpec = spec.projectileSpec;
     }
 
+    // SERIALIZATION -------------------------------------------------------
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            kind: this.kind,
+            lvl: this.lvl,
+            tier: this.tier,
+            savvy: this.savvy,
+            damageScale: this.damageScale,
+            baseDamageMin: this.baseDamageMin,
+            baseDamageMax: this.baseDamageMax,
+            power: this.power,
+            projectileSpec: this.projectileSpec,
+        });
+    }
+
     // PROPERTIES ----------------------------------------------------------
     get damageMin() {
         return Math.round(this.baseDamageMin*this.lvl*(this.damageScale-1));

@@ -25,6 +25,7 @@ class Gadget extends Item {
         this.evt.listen(this.constructor.evtUnequipped, this.onUnequip);
     }
 
+    // SERIALIZATION -------------------------------------------------------
     as_kv() {
         return Object.assign({}, super.as_kv(), {
             tier: this.tier,

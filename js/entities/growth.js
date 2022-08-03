@@ -24,6 +24,13 @@ class Growth extends Trap {
         // -- los state
         this.blocksLoS = (this.state === 'armed');
     }
+ 
+    // SERIALIZATION -------------------------------------------------------
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            bgoZed: this.bgoZed,
+        });
+    }
 
     trigger(actor) {
         super.trigger(actor);

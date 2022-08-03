@@ -59,7 +59,7 @@ class Player extends Character {
         //this.healthPerAP = spec.healthPerAP || 0;
         // -- hit bonus/penalty
         this.hitbp = spec.hitbp || 0;
-        this.weapon = spec.weapon || this.constructor.dfltWeapon;
+        //this.weapon = spec.weapon || this.constructor.dfltWeapon;
         this.inventory = spec.inventory || new InventoryData();
         this.inventory.actor = this;
         this.blockRating = spec.blockRating || this.dfltBlockRating;
@@ -69,6 +69,24 @@ class Player extends Character {
         this.xform.offx = -this.xform.width*.5;
         this.xform.offy = Config.tileSize*.5 - this.xform.height;
         //this.dbg = { xform: true };
+    }
+
+    // SERIALIZATION -------------------------------------------------------
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            weaponxps: this.weaponxps,
+            brawn: this.brawn,
+            spry: this.spry,
+            savvy: this.savvy,
+            fuelMax: this.fuelMax,
+            fuel: this.fuel,
+            powerMax: this.powerMax,
+            power: this.power,
+            xp: this.xp,
+            hitbp: this.hitbp,
+            blockRating: this.blockRating,
+            x_inventory: this.inventory.as_kv(),
+        });
     }
 
     // PROPERTIES ----------------------------------------------------------
@@ -85,9 +103,6 @@ class Player extends Character {
     get damageReduction() {
         return (this.inventory && this.inventory.shielding) ? this.inventory.shielding.damageReduction : 0;
     }
-
-
-    // FIXME: add serialization
 
 
 }

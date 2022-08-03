@@ -96,7 +96,6 @@ class Character extends MiniaModel {
         // -- action stream
         this.actionStream = this.dfltActionGenerator();
         // -- state management
-        this.states = {};
         this.state = spec.state || this.constructor.dfltState;
         this.animState = spec.animState || this.constructor.dfltAnimState;
         // -- charms (buffs/debuffs)
@@ -126,7 +125,6 @@ class Character extends MiniaModel {
     as_kv() {
         return Object.assign({}, super.as_kv(), {
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
-            x_charms: this.charms.map((v) => v.as_kv()),
             maxSpeed: this.maxSpeed,
             healthMax: this.healthMax,
             health: this.health,
@@ -141,6 +139,9 @@ class Character extends MiniaModel {
             team: this.team,
             lvl: this.lvl,
             state: this.state,
+            animState: this.animState,
+            x_charms: this.charms.map((v) => v.as_kv()),
+            loot: this.loot,
         });
     }
 

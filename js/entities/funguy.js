@@ -34,6 +34,14 @@ class Funguy extends Enemy{
         this.rangeMin = spec.rangeMin || Config.tileSize*3;
         this.rangeMax = spec.rangeMax || Config.tileSize*5;
     }
+    
+    // SERIALIZATION -------------------------------------------------------
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            rangeMin: this.rangeMin,
+            rangeMax: this.rangeMax,
+        });
+    }
 
     // EVENT HANDLERS ------------------------------------------------------
     onLevelLoaded(evt) {

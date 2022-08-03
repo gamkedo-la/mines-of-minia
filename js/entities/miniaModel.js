@@ -20,7 +20,8 @@ class MiniaModel extends Model {
         this.blockedBy = spec.hasOwnProperty('blockedBy') ? spec.blockedBy : this.constructor.block.all;
         this.blocks = spec.hasOwnProperty('blocks') ? spec.blocks : this.constructor.block.all;
     }
-
+    
+    // SERIALIZATION -------------------------------------------------------
     as_kv() {
         return {
             cls: this.cls,

@@ -46,7 +46,6 @@ class Item extends MiniaModel {
         this.loot = spec.loot || [];
         // -- identifiable
         this.identifiable = spec.hasOwnProperty('identifiable') ? spec.identifiable : false;
-
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
         this._sketch.link(this);
@@ -60,13 +59,16 @@ class Item extends MiniaModel {
         super.destroy();
     }
 
+    // SERIALIZATION -------------------------------------------------------
     as_kv() {
         return Object.assign({}, super.as_kv(), {
-            x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
-            x_charms: this.charms.map((v) => v.as_kv()),
             name: this.name,
-            description: this.description,
+            description: this._description,
             count: this.count,
+            x_charms: this.charms.map((v) => v.as_kv()),
+            loot: this.loot,
+            identifiable: this.identifiable,
+            x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
         });
     }
 
