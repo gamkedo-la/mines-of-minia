@@ -68,6 +68,8 @@ class Player extends Character {
         // -- xform tweaks
         this.xform.offx = -this.xform.width*.5;
         this.xform.offy = Config.tileSize*.5 - this.xform.height;
+        this.xform.stretchx = false;
+        this.xform.stretchy = false;
         //this.dbg = { xform: true };
     }
 

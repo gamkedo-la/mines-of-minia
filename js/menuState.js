@@ -38,6 +38,7 @@ class MenuState extends GameState {
 
     onLoadClicked(evt) {
         console.log(`${this} onLoadClicked: ${Fmt.ofmt(evt)}`);
+        Events.trigger(Game.evtStateChanged, {state: 'play', data: {load: true}});
     }
 
     onOptionsClicked(evt) {

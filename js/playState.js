@@ -45,7 +45,8 @@ import { TriggerSystem } from './systems/triggerSystem.js';
 import { Serialization } from './serialization.js';
 
 class PlayState extends GameState {
-    async ready() {
+    async ready(data={}) {
+        console.log(`-- play state data: ${Fmt.ofmt(data)}`);
 
         this.controlsActive = true;
 
@@ -141,8 +142,15 @@ class PlayState extends GameState {
         Systems.get('los').lvl = this.lvl;
         Systems.get('close').lvl = this.lvl;
 
-        // -- FIXME: player generation needs to get moved to procedural generation
-        this.player = ProcGen.genPlayer(Config.template);
+        // load player
+        if (data && data.load) {
+            this.player = Serialization.loadPlayer();
+            this.setPlayerIdx = false;
+        } else {
+            this.player = ProcGen.genPlayer(Config.template);
+            this.setPlayerIdx = true;
+        }
+        console.log(`-- player: ${Fmt.ofmt(this.player)}`);
 
         // -- FIXME: remove test charm
         this.player.addCharm( new FieryCharm() );
@@ -200,7 +208,9 @@ class PlayState extends GameState {
         
     onLevelLoaded(evt) {
         // update player position
-        let idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
+        let idx = this.player.idx;
+        //if (this.setPlayerIdx) idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
+        idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
         let wantx = this.lvl.grid.xfromidx(idx, true);
         let wanty = this.lvl.grid.yfromidx(idx, true);
         UpdateSystem.eUpdate(this.player, { idx: idx, xform: {x: wantx, y: wanty }});

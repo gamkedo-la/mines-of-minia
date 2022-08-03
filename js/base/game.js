@@ -102,8 +102,9 @@ class Game {
     static onStateChanged(evt) {
         console.log(`onStateChanged: ${Fmt.ofmt(evt)}`);
         let newState = evt.state;
+        let data = evt.data;
         if (newState && newState !== this.currentState) {
-            new Timer({ttl: 0, cb: () => {this.startState(newState)}});
+            new Timer({ttl: 0, cb: () => {this.startState(newState, data)}});
         }
     }
 
@@ -118,7 +119,7 @@ class Game {
         this.startState(this.startStateTag);
     }
 
-    static startState(tag) {
+    static startState(tag, data) {
         console.log(`startState`);
         let state = this.states[tag];
         if (!state) {
@@ -130,7 +131,7 @@ class Game {
             this.currentState.stop();
         }
         // start new state
-        state.start();
+        state.start(data);
         this.currentState = state;
     }
 

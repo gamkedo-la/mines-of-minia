@@ -1,3 +1,5 @@
+import { Fmt } from './base/fmt.js';
+import { Generator } from './base/generator.js';
 import { Storage } from './base/storage.js';
 import { Cog } from './entities/cog.js';
 import { Gem } from './entities/gem.js';
@@ -55,6 +57,15 @@ class Serialization {
         // -- cog state
         this.saveCogState();
 
+    }
+
+    static loadPlayer() {
+        let key = `player`;
+        let x_player = Storage.getItem(key);
+        console.log(`x_player: ${Fmt.ofmt(x_player)}`);
+        // FIXME
+        x_player.idx = 0;
+        return Generator.generate(x_player);
     }
 
     static load() {

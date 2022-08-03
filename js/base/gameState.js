@@ -45,52 +45,52 @@ class GameState {
     // EVENT HANDLERS ------------------------------------------------------
 
     // METHODS -------------------------------------------------------------
-    async _init() {
+    async _init(data) {
         if (this.dbg) console.log(`${this} starting initialization`);
-        await this.init();
+        await this.init(data);
         if (this.dbg) console.log(`${this} initialization complete`);
         this.initialized = true;
         return Promise.resolve();
     }
-    async init() {
+    async init(data) {
         return Promise.resolve();
     }
 
-    async _load() {
+    async _load(data) {
         if (this.dbg) console.log(`${this} starting loading`);
         await this.assets.load();
-        await this.load();
+        await this.load(data);
         if (this.dbg) console.log(`${this} loading complete`);
         this.loaded = true;
         return Promise.resolve();
     }
-    async load() {
+    async load(data) {
         return Promise.resolve();
     }
 
-    async _ready() {
+    async _ready(data) {
         if (this.dbg) console.log(`${this} starting ready`);
-        await this.ready();
+        await this.ready(data);
         if (this.dbg) console.log(`${this} ready complete`);
         this.readied = true;
         return Promise.resolve();
     }
-    async ready() {
+    async ready(data) {
         return Promise.resolve();
     }
 
-    async start() {
+    async start(data) {
         // initialization
         if (!this.initialized) {
-            await this._init();
+            await this._init(data);
         }
         // load
         if (!this.loaded) {
-            await this._load();
+            await this._load(data);
         }
         // ready
         if (!this.readied) {
-            await this._ready();
+            await this._ready(data);
         }
     }
 
