@@ -15,6 +15,13 @@ class Charm {
         this.unlink();
     }
 
+    as_kv() {
+        return {
+            cls: this.constructor.name,
+            curse: this.curse,
+        }
+    }
+
     // METHODS -------------------------------------------------------------
     link(actor) {
         this.actor = actor;

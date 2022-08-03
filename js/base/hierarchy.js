@@ -95,11 +95,11 @@ class Hierarchy {
     }
 
     static *children(obj, filter) {
-        for (const child of (obj.children || [])) {
-            if (!filter || filter(child)) yield child;
+        for (const child of (Array.from(obj.children || []))) {
             if (child.children) {
                 yield *this.children(child, filter);
             }
+            if (!filter || filter(child)) yield child;
         }
     }
 

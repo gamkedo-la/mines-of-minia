@@ -237,7 +237,7 @@ class InventoryData {
     }
 
     as_kv() {
-        spec = {
+        let spec = {
             cls: this.constructor.name,
             x_slots: this.slots.map((v) => (v) ? v.as_kv() : null),
             numSlots: this.numSlots,

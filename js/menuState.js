@@ -114,6 +114,12 @@ class MenuState extends GameState {
     }
 
     stop() {
+        console.log(`${this} stop view children: ${this.view.children}`);
+        //let children = Array.from(Hierarchy.children(this.view));
+        for (const child of Hierarchy.children(this.view)) {
+            console.log(`destroy: ${child}`);
+            child.destroy();
+        }
         this.view.destroy();
         Events.ignore(Keys.evtDown, this.onAdvance);
         Events.ignore(MouseSystem.evtClicked, this.onAdvance);

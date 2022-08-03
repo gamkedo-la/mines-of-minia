@@ -15,6 +15,12 @@ class FieryCharm extends Charm {
         this.onAttacked = this.onAttacked.bind(this);
     }
 
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            damageDice: this.damageDice.toString(),
+        });
+    }
+
     link(actor) {
         super.link(actor);
         this.actor.evt.listen(this.actor.constructor.evtAttacked, this.onAttacked);

@@ -1,5 +1,6 @@
-import { Cog } from "./entities/cog.js";
-import { Gem } from "./entities/gem.js";
+import { Storage } from './base/storage.js';
+import { Cog } from './entities/cog.js';
+import { Gem } from './entities/gem.js';
 
 export { Serialization };
 

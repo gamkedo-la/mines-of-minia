@@ -1,6 +1,6 @@
 export { Hud };
 
-    import { UseAction } from './actions/use.js';
+import { UseAction } from './actions/use.js';
 import { WaitAction } from './base/actions/wait.js';
 import { Assets } from './base/assets.js';
 import { Events } from './base/event.js';
@@ -24,6 +24,7 @@ class Hud extends UxView {
         super.cpost(spec);
         this.getCurrentHandler = spec.getCurrentHandler || (() => 'interact');
         this.player;
+        this.doSave = spec.doSave;
         // build out hud
         this.adopt( new UxPanel({
             sketch: Assets.get('hud.border', true),
@@ -160,13 +161,14 @@ class Hud extends UxView {
 
     onOptionsClicked(evt) {
         console.log(`${this} onOptionsClicked: ${Fmt.ofmt(evt)}}`)
-        //this.view.active = false;
+        Events.trigger('handler.wanted', {which: 'none'});
         let options = new PlayOptions({
+            doSave: this.doSave,
             xform: new XForm({border: .2}),
         });
         this.adopt(options);
         options.evt.listen(options.constructor.evtDestroyed, () => {
-            //this.view.active = true;
+            Events.trigger('handler.wanted', {which: 'interact'});
         });
     }
     onWaitClicked(evt) {

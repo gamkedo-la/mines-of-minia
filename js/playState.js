@@ -42,6 +42,7 @@ import { InteractHandler } from './interactHandler.js';
 import { Hud } from './hud.js';
 import { OverlaySystem } from './systems/overlaySystem.js';
 import { TriggerSystem } from './systems/triggerSystem.js';
+import { Serialization } from './serialization.js';
 
 class PlayState extends GameState {
     async ready() {
@@ -100,6 +101,7 @@ class PlayState extends GameState {
                     x_children: [
                         Hud.xspec({
                             tag: 'hud',
+                            doSave: this.doSave.bind(this),
                             getCurrentHandler: () => this.currentHandler,
                         }),
                     ],
@@ -356,4 +358,11 @@ class PlayState extends GameState {
         Events.ignore(Game.evtTock, this.onTock);
         this.view.destroy();
     }
+
+    doSave() {
+        console.log(`-- doSave`);
+        Serialization.save(this);
+        Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `game saved`});
+    }
+
 }

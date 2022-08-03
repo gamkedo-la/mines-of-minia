@@ -14,6 +14,7 @@ import { UxText } from './base/uxText.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
 import { Resurrect64 } from './resurrect64.js';
+import { Serialization } from './serialization.js';
 
 let titleColor = Resurrect64.colors[7];
 let textColor = Resurrect64.colors[11];
@@ -36,6 +37,7 @@ class PlayOptions extends UxView {
     cpost(spec) {
         super.cpost(spec);
         console.log(`starting volumes: music: ${AudioSystem.getVolume('music')} sfx: ${AudioSystem.getVolume('sfx')}`);
+        this.doSave = spec.doSave;
         this.adopt(new UxPanel({
             sketch: Assets.get('options.bg', true),
             children: [
@@ -109,6 +111,7 @@ class PlayOptions extends UxView {
 
     onSaveClicked(evt) {
         console.log(`onSaveClicked`);
+        if (this.doSave) this.doSave();
     }
 
     onQuitClicked(evt) {
