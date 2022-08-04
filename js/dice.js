@@ -12,7 +12,6 @@ class Dice {
         // -- +5: modifier for final result (+/- added to total dice roll)
         let re = /([0-9]+)d([0-9]+)(([H|L])([0-9]+))*([+-][0-9]+)*/;
         let m = str.match(re);
-        console.log(`m: ${m}`);
         let x_roll = {};
         if (m) {
             x_roll.num = parseInt(m[1]);

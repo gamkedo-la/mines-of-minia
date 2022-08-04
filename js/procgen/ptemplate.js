@@ -16,7 +16,8 @@ class ProcTemplate {
         this.seed = spec.seed || 0;
         this.noiseXScale || .04;
         this.noiseYScale || .05;
-        this.dospawn = spec.hasOwnProperty('dospawn') ? SecurityPolicyViolationEvent.dospawn : true;
+        this.dodiscovery = spec.hasOwnProperty('dodiscovery') ? spec.dodiscovery : true;
+        this.dospawn = spec.hasOwnProperty('dospawn') ? spec.dospawn : true;
         // -- level dimensions
         this.maxCols = spec.maxCols || 250;
         this.maxRows = spec.maxRows || 200;

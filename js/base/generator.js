@@ -55,6 +55,7 @@ class Generator {
                 }
                 let nk = k.slice(2);
                 spec[nk] = nv;
+                if (this.dbg) console.log(`generator: resolve ${k}->${Fmt.ofmt(v)} to ${nk}->${nv}`);
                 delete spec[k];
             }
         }

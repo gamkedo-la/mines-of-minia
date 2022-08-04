@@ -63,7 +63,6 @@ class Camera {
 
     onTargetUpdate(evt) {
         if (evt.actor !== this.target) return;
-        //console.log(`onTargetUpdate: ${Fmt.ofmt(evt)}`);
         this.updateTrack();
     }
 

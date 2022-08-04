@@ -322,6 +322,13 @@ class Level extends UxGrid {
     _postrender(ctx) {
         // render fog of war
         if (this.fowEnabled) {
+            //console.log(`losidxs: ${this.losIdxs} fow: ${this.fowIdxs}`);
+            /*
+            let idx0 = this.fowIdxs[0];
+            for (const view of this.grid.getidx(idx0)) {
+                console.log(`${idx0} view: ${view}: filter ${this.renderFilter(idx0, view)}`);
+            }
+            */
             for (const idx of this.fowIdxs) {
                 // skip fog-of-war if in line-of-sight
                 if (this.losIdxs.includes(idx)) continue;

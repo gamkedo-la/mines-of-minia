@@ -23,7 +23,7 @@ import { ProcTemplate } from "./procgen/ptemplate.js";
 import { Stairs } from "./entities/stairs.js";
 import { Rous } from "./entities/rous.js";
 import { Door } from "./entities/door.js";
-import { Inventory } from "./inventory.js";
+import { Inventory, InventoryData } from "./inventory.js";
 import { Gem } from "./entities/gem.js";
 import { Shielding } from "./entities/shielding.js";
 import { Cog } from "./entities/cog.js";
@@ -63,6 +63,9 @@ class Minia extends Game {
     static config = {
         dbg: {
             system: {
+                los: {
+                    console: false,
+                },
                 ctrl: false,
                 update: false,
                 mouse: false,
@@ -134,6 +137,7 @@ class Minia extends Game {
             Hud,
             Key,
             Inventory,
+            InventoryData,
             Level,
             Magma,
             Player,

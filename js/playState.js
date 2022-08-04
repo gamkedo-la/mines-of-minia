@@ -150,7 +150,7 @@ class PlayState extends GameState {
             this.player = ProcGen.genPlayer(Config.template);
             this.setPlayerIdx = true;
         }
-        console.log(`-- player: ${Fmt.ofmt(this.player)}`);
+        //console.log(`-- player: ${Fmt.ofmt(this.player)}`);
 
         // -- FIXME: remove test charm
         this.player.addCharm( new FieryCharm() );
@@ -182,7 +182,13 @@ class PlayState extends GameState {
         Events.listen(TurnSystem.evtDone, this.onTurnDone)
 
         // -- load level
-        Events.trigger(LevelSystem.evtWanted, { level: 1 });
+        // what level?
+        let lvl = 1;
+        if (data && data.load) {
+            let gameState = Serialization.loadGameState();
+            lvl = gameState.index;
+        }
+        Events.trigger(LevelSystem.evtWanted, { level: lvl, load: data && data.load });
 
         // setup input handler
         this.handler;
@@ -207,25 +213,29 @@ class PlayState extends GameState {
     }
         
     onLevelLoaded(evt) {
+        //console.log(`${this} onLevelLoaded`);
         // update player position
         let idx = this.player.idx;
-        //if (this.setPlayerIdx) idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
-        idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
+        if (this.setPlayerIdx) idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
+        //idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
         let wantx = this.lvl.grid.xfromidx(idx, true);
         let wanty = this.lvl.grid.yfromidx(idx, true);
         UpdateSystem.eUpdate(this.player, { idx: idx, xform: {x: wantx, y: wanty }});
+        // force update to player los
+        Systems.get('los').setLoS(this.player);
         // re-enable controls
         this.controlsActive = true;
     }
 
     onLoSUpdate(evt) {
         if (evt.actor === this.player) {
+            //console.log(`${this} onLoSUpdate`);
             this.lvl.updateLoS(this.player.losIdxs);
         }
     }
 
     onHandlerWanted(evt) {
-        console.log(`-- ${this} onHandlerWanted: ${Fmt.ofmt(evt)}`);
+        //console.log(`-- ${this} onHandlerWanted: ${Fmt.ofmt(evt)}`);
         this.loadHandler(evt.which, evt);
     }
 
@@ -242,7 +252,7 @@ class PlayState extends GameState {
         this.currentHandler = which;
         if (this.handler) {
             this.handler.destroy();
-            console.log(`-- clearing handler: ${this.handler}`);
+            //console.log(`-- clearing handler: ${this.handler}`);
             this.handler = null;
         }
         switch(which) {

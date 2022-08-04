@@ -89,7 +89,9 @@ class ProcGen {
         // -- translate level outline to level data
         yield *Translate.generator(template, pstate);
         // -- resolve discoverable items
-        yield *Discovery.generator(template, pstate);
+        console.log(`-- dodiscovery: ${template.dodiscovery}`);
+        if (template.dodiscovery) yield *Discovery.generator(template, pstate);
+        console.log(`-- dospawn: ${template.dospawn}`);
         // -- spawn non-tile entities
         if (template.dospawn) yield *Spawn.generator(template, pstate);
     }

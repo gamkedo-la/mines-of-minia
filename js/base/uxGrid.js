@@ -120,6 +120,7 @@ class UxGrid extends UxView {
         for (const view of this.grid.getidx(idx)) {
             rendered = true;
             if (this.renderFilter(idx, view)) view.render(this.sliceCtx);
+            //console.log(`    >> render ${view} ${this.renderFilter(idx, view)}`);
         }
         this.sliceCtx.translate(-tx, -ty);
         //console.log(`renderSlice: ${idx} dx: ${dx} dy: ${dy} rendered: ${rendered}`);
@@ -137,7 +138,7 @@ class UxGrid extends UxView {
         let gidupdates = Array.from(this.gidupdates);
         this.gidupdates.clear();
         for (const idx of gidupdates) {
-            // FIXME: add view filtering?
+            //console.log(`  >> render slice for ${idx}`);
             this.renderSlice(idx);
         }
         //console.log(`--- after renderslices: ${Array.from(this.gidupdates).sort()}`);

@@ -20,7 +20,6 @@ class StretchSprite extends Sketch {
         this.left = spec.left || 0;
         this.right = spec.right || 0;
         if (spec.border) this.top = this.bottom = this.left = this.right = spec.border;
-        console.log(`${Fmt.ofmt(spec)}`);
     }
 
     // METHODS -------------------------------------------------------------

@@ -4,13 +4,12 @@ import { Config } from '../base/config.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Generator } from '../base/generator.js';
-import { Hierarchy } from '../base/hierarchy.js';
-import { Storage } from '../base/storage.js';
 import { System } from '../base/system.js';
 import { XForm } from '../base/xform.js';
 import { Item } from '../entities/item.js';
 import { Level } from '../level.js';
 import { ProcGen } from '../procgen/procgen.js';
+import { Serialization } from '../serialization.js';
 
 class LevelSystem extends System {
 
@@ -34,8 +33,6 @@ class LevelSystem extends System {
         this.onItemEmerged = this.onItemEmerged.bind(this);
         this.evt.listen(this.constructor.evtWanted, this.onLevelWanted);
         this.evt.listen(Item.evtEmerged, this.onItemEmerged);
-        // FIXME: remove
-        this.reset();
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -43,6 +40,7 @@ class LevelSystem extends System {
         //console.log(`${this} onLevelWanted: ${Fmt.ofmt(evt)}`);
         if (evt.level !== this.constructor.currentLevelIndex) {
             this.wantLevel = evt.level;
+            this.loadLevel = evt.load || false;
             this.active = true;
         }
     }
@@ -50,13 +48,6 @@ class LevelSystem extends System {
     onItemEmerged(evt) {
         //console.log(`item emerged: ${Fmt.ofmt(evt)}`);
         this.lvl.adopt(evt.actor);
-    }
-
-    reset() {
-        for (let i=1; i<this.maxLevel; i++) {
-            let key = `lvl${i}`;
-            Storage.removeItem(key);
-        }
     }
 
     finalize(evt) {
@@ -69,38 +60,32 @@ class LevelSystem extends System {
     handleLevelRequest(index) {
         // save and clear current level
         if (this.constructor.currentLevelIndex) {
-            // FIXME
-            let cacheInfo = {
-                entities: [],
-                fowIdxs: Array.from(this.lvl.fowIdxs),
-            }
+            console.log(`saving level: ${this.constructor.currentLevelIndex}`);
+            // save current level data
+            Serialization.saveLevel(this.lvl);
+            // clear level data
             for (const e of this.lvl.grid) {
-                if (e.cls !== 'Player') {
-                    if (e.cls !== 'Tile') {
-                        let spec = e.as_kv();
-                        console.log(`e is not tile: ${e} spec: ${Fmt.ofmt(spec)}`);
-                        cacheInfo.entities.push(spec);
-                    }
-                    e.destroy();
-                }
+                if (e.cls === 'Player') continue;
+                e.destroy();
             }
-
-            let key = `lvl${this.constructor.currentLevelIndex}`;
-            Storage.setItem(key, cacheInfo);
         }
 
+        // look up level by index
+        let cachedLvl = Serialization.loadLevel(index);
+        let doload = (cachedLvl) ? true : false;
+
         // is level to load cached?
-        let cacheInfo = Storage.getItem(`lvl${index}`);
         let template = Object.assign( {}, Config.template, {
             index: index,
-            dospawn: (cacheInfo) ? false : true,
+            dodiscovery: !doload,
+            dospawn: !doload,
         });
 
         // generate level
         let plvl = ProcGen.genLvl(template);
         // update level info w/ cached info (if available)
-        if (cacheInfo) {
-            plvl.entities = plvl.entities.concat(cacheInfo.entities);
+        if (cachedLvl) {
+            plvl.entities = plvl.entities.concat(cachedLvl.entities);
         }
 
         // instantiate level
@@ -112,7 +97,11 @@ class LevelSystem extends System {
         this.lvl.index = plvl.index;
 
         // update fow
-        this.lvl.fowIdxs = (cacheInfo) ? cacheInfo.fowIdxs : [];
+        this.lvl.fowIdxs = (cachedLvl) ? cachedLvl.fowIdxs : [];
+        this.lvl.fowMasks = (cachedLvl) ? cachedLvl.fowMasks : {};
+        if (cachedLvl) {
+            console.log(`assign fowMasks: ${this.lvl.fowMasks}`);
+        }
 
         // trigger load complete
         Events.trigger(this.constructor.evtLoaded, {plvl: plvl, lvl: this.lvl, goingUp: goingUp});

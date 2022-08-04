@@ -18,6 +18,7 @@ import { XForm } from './base/xform.js';
 import { Options } from './options.js';
 import { PlayOptions } from './playOptions.js';
 import { Resurrect64 } from './resurrect64.js';
+import { Serialization } from './serialization.js';
 
 function button(text, spec) {
     return Object.assign({}, UxButton.xspec({
@@ -32,6 +33,9 @@ function button(text, spec) {
 
 class MenuState extends GameState {
     onNewClicked(evt) {
+        // FIXME: add prompt
+        // reset game state
+        Serialization.reset();
         console.log(`${this} onNewClicked: ${Fmt.ofmt(evt)}`);
         Events.trigger(Game.evtStateChanged, {state: 'play'});
     }
@@ -115,10 +119,10 @@ class MenuState extends GameState {
     }
 
     stop() {
-        console.log(`${this} stop view children: ${this.view.children}`);
+        //console.log(`${this} stop view children: ${this.view.children}`);
         //let children = Array.from(Hierarchy.children(this.view));
         for (const child of Hierarchy.children(this.view)) {
-            console.log(`destroy: ${child}`);
+            //console.log(`destroy: ${child}`);
             child.destroy();
         }
         this.view.destroy();

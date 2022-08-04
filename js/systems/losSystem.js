@@ -35,9 +35,6 @@ class LoSSystem extends System {
     }
 
     // EVENT HANDLERS ------------------------------------------------------
-    onLoadLevel(evt) {
-    }
-
     onDynamicLosUpdate(evt) {
         if (evt.update && evt.update.hasOwnProperty('blocksLoS')) {
             if (this.dbg && this.dbg.console) console.log(`-- ${this} on dynamic update ${Fmt.ofmt(evt)}`);

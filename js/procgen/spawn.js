@@ -730,25 +730,6 @@ class Spawn {
                 name: 'identify.cog',
                 kind: 'identify',
             }),
-            /*
-            Funguy.xspec({
-                name: 'funguy',
-                loot: [
-                    Token.xspec({
-                        name: 'token',
-                        x_sketch: Assets.get('token'),
-                        count: 5,
-                    }),
-                ],
-            }),
-            */
-
-            /*
-            Cog.xspec({
-                name: 'brass.cog',
-                x_sketch: Assets.get('cog_brass'),
-            }),
-            */
             Chest.xspec({
                 name: 'chest.brown',
                 x_sketch: Assets.get('chest.brown'),
@@ -766,7 +747,7 @@ class Spawn {
             }),
 
             Magma.xspec({
-                name: 'funguy',
+                name: 'magma',
             }),
 
             this.genWeapon(template, pstate),
@@ -781,6 +762,7 @@ class Spawn {
                 baseDamageMax: 20,
                 projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.ice')}),
             }),
+
 
         ];
         for (const x_spawn of x_spawns) {
