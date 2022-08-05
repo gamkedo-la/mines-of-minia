@@ -119,6 +119,8 @@ class Sketch extends Gizmo {
 
     link(target) {
     }
+    unlink() {
+    }
 
     /**
      * convert to string

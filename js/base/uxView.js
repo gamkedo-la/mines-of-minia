@@ -295,6 +295,7 @@ class UxView extends Entity {
         this[att] = sketch;
         if (this.onSketchUpdate) sketch.evt.listen(sketch.constructor.evtUpdated, this.onSketchUpdate);
         if (this.closeOnSketchDone) sketch.evt.listen(sketch.constructor.evtDone, this.onSketchDone);
+        sketch.link(this);
         // -- trigger updates
         if (update) {
             if (this.visible) sketch.show();
@@ -312,6 +313,7 @@ class UxView extends Entity {
         if (sketch) {
             if (this.onSketchUpdate) sketch.evt.ignore(sketch.constructor.evtUpdated, this.onSketchUpdate);
             if (this.onSketchDone) sketch.evt.ignore(sketch.constructor.evtDone, this.onSketchDone);
+            sketch.unlink();
             sketch.hide();
         }
     }

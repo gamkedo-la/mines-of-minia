@@ -25,7 +25,7 @@ class Chest extends MiniaModel {
         this.state = spec.state || this.constructor.dfltState;
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
-        this._sketch.link(this);
+        //this._sketch.link(this);
         // -- loot
         this.loot = spec.loot || [];
         // -- sync xform to match sketch dimensions

@@ -64,12 +64,7 @@ class Character extends MiniaModel {
     // CONSTRUCTOR ---------------------------------------------------------
     cpost(spec={}) {
         super.cpost(spec);
-        // -- sketch
-        this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
-        this._sketch.link(this);
-        // -- sync xform to match sketch dimensions
-        this.xform.width = this.sketch.width;
-        this.xform.height = this.sketch.height;
+        //this._sketch.link(this);
         // -- movement
         this.maxSpeed = spec.maxSpeed || this.constructor.dfltMaxSpeed;
         this.speed = 0;
@@ -103,6 +98,11 @@ class Character extends MiniaModel {
         if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
         // -- loot
         this.loot = spec.loot || [];
+        // -- sketch
+        this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
+        // -- sync xform to match sketch dimensions
+        this.xform.width = this.sketch.width;
+        this.xform.height = this.sketch.height;
         // -- events
         this.onDamaged = this.onDamaged.bind(this);
         this.onDeath = this.onDeath.bind(this);

@@ -48,7 +48,7 @@ class Item extends MiniaModel {
         this.identifiable = spec.hasOwnProperty('identifiable') ? spec.identifiable : false;
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
-        this._sketch.link(this);
+        //this._sketch.link(this);
         // -- sync xform to match sketch dimensions
         this.xform.width = this.sketch.width;
         this.xform.height = this.sketch.height;

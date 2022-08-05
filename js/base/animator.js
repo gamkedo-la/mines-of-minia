@@ -104,6 +104,20 @@ class Animator extends Sketch {
         this.upEvt = target.evt;
         this.upEvtUpdated = target.constructor.evtUpdated;
         this.upEvt.listen(this.upEvtUpdated, this.onStateChange);
+        // -- set initial sketch state
+        // FIXME: set accessor?
+        let wantState = (target.hasOwnProperty('animState')) ? target.animState : target.state;
+        console.log(`${this} link to ${target} wantState: ${wantState}`);
+        if (this.state !== wantState) {
+            let sketch = this.sketches[wantState] || Sketch.zero;
+            this.state = wantState;
+            this.setSketch(sketch);
+        }
+    }
+    unlink() {
+        if (this.upEvt) {
+            this.upEvt.ignore(this.upEvtUpdated, this.onStateChange);
+        }
     }
 
     show() {
