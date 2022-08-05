@@ -88,9 +88,6 @@ class ProcGen {
         } while (!validLevel);
         // -- translate level outline to level data
         yield *Translate.generator(template, pstate);
-        // -- resolve discoverable items
-        console.log(`-- dodiscovery: ${template.dodiscovery}`);
-        if (template.dodiscovery) yield *Discovery.generator(template, pstate);
         console.log(`-- dospawn: ${template.dospawn}`);
         // -- spawn non-tile entities
         if (template.dospawn) yield *Spawn.generator(template, pstate);
@@ -116,6 +113,16 @@ class ProcGen {
         let pstate = {};
         for (const step of this.levelGenerator(template, pstate));
         return pstate.plvl;
+    }
+
+    static *discoveryGenerator(template={}, pstate={}) {
+        // -- resolve discoverable items
+        yield *Discovery.generator(template, pstate);
+    }
+
+    static genDiscovery(template) {
+        let pstate = {};
+        for (const step of this.discoveryGenerator(template, pstate));
     }
     
     static genRandomRooms(spec={}) {

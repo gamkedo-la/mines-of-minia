@@ -39,7 +39,7 @@ class Gem extends Item {
             this.kindSecretMap = Object.assign({}, spec.kindSecretMap);
         }
         if (spec.discoveredKinds) {
-            this.discoveredKinds = new Set(this.discoveredKinds);
+            this.discoveredKinds = new Set(spec.discoveredKinds);
         }
     }
 

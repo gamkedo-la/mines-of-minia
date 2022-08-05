@@ -6,6 +6,8 @@ import { Fmt } from '../base/fmt.js';
 import { Generator } from '../base/generator.js';
 import { System } from '../base/system.js';
 import { XForm } from '../base/xform.js';
+import { Cog } from '../entities/cog.js';
+import { Gem } from '../entities/gem.js';
 import { Item } from '../entities/item.js';
 import { Level } from '../level.js';
 import { ProcGen } from '../procgen/procgen.js';
@@ -77,7 +79,6 @@ class LevelSystem extends System {
         // is level to load cached?
         let template = Object.assign( {}, Config.template, {
             index: index,
-            dodiscovery: !doload,
             dospawn: !doload,
         });
 

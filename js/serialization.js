@@ -91,6 +91,14 @@ class Serialization {
         return x_lvl;
     }
 
+    static loadGemState() {
+        return Storage.getItem('gems');
+    }
+
+    static loadCogState() {
+        return Storage.getItem('cogs');
+    }
+
     static reset() {
         //console.log(`-- reset`);
         // level data

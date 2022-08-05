@@ -43,6 +43,8 @@ import { Hud } from './hud.js';
 import { OverlaySystem } from './systems/overlaySystem.js';
 import { TriggerSystem } from './systems/triggerSystem.js';
 import { Serialization } from './serialization.js';
+import { Cog } from './entities/cog.js';
+import { Gem } from './entities/gem.js';
 
 class PlayState extends GameState {
     async ready(data={}) {
@@ -187,6 +189,13 @@ class PlayState extends GameState {
         if (data && data.load) {
             let gameState = Serialization.loadGameState();
             lvl = gameState.index;
+            let cogState = Serialization.loadCogState();
+            console.log(`cogState: ${Fmt.ofmt(cogState)}`);
+            Cog.init(cogState);
+            let gemState = Serialization.loadGemState();
+            Gem.init(gemState);
+        } else {
+            ProcGen.genDiscovery(Config.template);
         }
         Events.trigger(LevelSystem.evtWanted, { level: lvl, load: data && data.load });
 

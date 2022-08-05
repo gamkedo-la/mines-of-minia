@@ -41,7 +41,8 @@ class Cog extends Item {
             this.kindSecretMap = Object.assign({}, spec.kindSecretMap);
         }
         if (spec.discoveredKinds) {
-            this.discoveredKinds = new Set(this.discoveredKinds);
+            this.discoveredKinds = new Set(spec.discoveredKinds);
+            console.log(`setting discovered: ${Array.from(this.discoveredKinds)}`);
         }
     }
 
