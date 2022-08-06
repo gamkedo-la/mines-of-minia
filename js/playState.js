@@ -47,11 +47,8 @@ import { Cog } from './entities/cog.js';
 import { Gem } from './entities/gem.js';
 
 class PlayState extends GameState {
-    async ready(data={}) {
-        console.log(`-- play state data: ${Fmt.ofmt(data)}`);
-
-        this.controlsActive = true;
-
+    async init(data={}) {
+        // -- initialize systems
         Systems.add('update', new UpdateSystem({dbg: Util.getpath(Config, 'dbg.system.update')}));
         Systems.add('move', new MoveSystem({ dbg: Util.getpath(Config, 'dbg.system.move')}));
         Systems.add('los', new LoSSystem({ dbg: Util.getpath(Config, 'dbg.system.los')}));
@@ -64,6 +61,13 @@ class PlayState extends GameState {
         Systems.add('xp', new XPSystem({ dbg: Util.getpath(Config, 'dbg.system.xp')}));
         Systems.add('overlay', new OverlaySystem({ dbg: Util.getpath(Config, 'dbg.system.overlay')}));
         Systems.add('trigger', new TriggerSystem({ dbg: Util.getpath(Config, 'dbg.system.trigger')}));
+        Systems.add('level', new LevelSystem({ dbg: Util.getpath(Config, 'dbg.system.level')}));
+    }
+
+    async ready(data={}) {
+        console.log(`-- play state data: ${Fmt.ofmt(data)}`);
+
+        this.controlsActive = true;
 
         let x_view = UxCanvas.xspec({
             cvsid: 'game.canvas',
@@ -133,14 +137,14 @@ class PlayState extends GameState {
         this.slider = Hierarchy.find(this.view, (v) => v.tag === 'slider');
         this.viewport = Hierarchy.find(this.view, (v) => v.tag === 'viewport');
         this.lvl = Hierarchy.find(this.view, (v) => v.tag === 'lvl');
-        //this.inventory = Hierarchy.find(this.view, (v) => v.tag === 'inventory');
         this.overlay = Hierarchy.find(this.view, (v) => v.tag === 'overlay');
         this.hudroot = Hierarchy.find(this.view, (v) => v.tag === 'hudroot');
         this.dbgroot = Hierarchy.find(this.view, (v) => v.tag === 'dbgroot');
         this.hud = Hierarchy.find(this.view, (v) => v.tag === 'hud');
 
         // -- link UI elements to systems
-        Systems.add('level', new LevelSystem({ slider: this.slider, lvl: this.lvl, dbg: Util.getpath(Config, 'dbg.system.level')}));
+        Systems.get('level').lvl = this.lvl;
+        Systems.get('level').slider = this.slider;
         Systems.get('los').lvl = this.lvl;
         Systems.get('close').lvl = this.lvl;
 
@@ -152,12 +156,7 @@ class PlayState extends GameState {
             this.player = ProcGen.genPlayer(Config.template);
             this.setPlayerIdx = true;
         }
-        //console.log(`-- player: ${Fmt.ofmt(this.player)}`);
-
-        // -- FIXME: remove test charm
-        this.player.addCharm( new FieryCharm() );
         this.lvl.adopt(this.player);
-        //this.inventory.setData(this.player.inventory);
         Systems.get('turn').leader = this.player;
         this.hud.linkPlayer(this.player);
 
@@ -203,17 +202,6 @@ class PlayState extends GameState {
         this.handler;
         this.loadHandler('interact');
 
-    }
-
-    // FIXME
-    destroy() {
-        super.destroy();
-        Events.ignore(Keys.evtDown, this.onKeyDown);
-        Events.ignore(Game.evtTock, this.onTock);
-        Events.ignore('handler.wanted', this.onHandlerWanted);
-        Events.ignore(LevelSystem.evtWanted, this.onLevelWanted);
-        Events.ignore(LevelSystem.evtLoaded, this.onLevelLoaded);
-        Events.ignore(TurnSystem.evtDone, this.onTurnDone)
     }
 
     onLevelWanted(evt) {
@@ -386,10 +374,15 @@ class PlayState extends GameState {
         for (const child of Hierarchy.children(this.view)) {
             child.destroy();
         }
+        this.view.destroy();
+        this.camera.destroy();
         Events.ignore(Keys.evtDown, this.onKeyDown);
         Events.ignore(Game.evtTock, this.onTock);
-        this.view.destroy();
-        this.destroy();
+        Events.ignore('handler.wanted', this.onHandlerWanted);
+        Events.ignore(LevelSystem.evtWanted, this.onLevelWanted);
+        Events.ignore(LevelSystem.evtLoaded, this.onLevelLoaded);
+        Events.ignore(TurnSystem.evtDone, this.onTurnDone)
+        LevelSystem.currentLevelIndex = 0;
     }
 
     doSave() {

@@ -20,7 +20,6 @@ class LevelSystem extends System {
     static evtLoaded = 'lvl.loaded';
 
     static currentLevelIndex = 0;
-    static dfltMaxLevel = 21;
     static dfltIterateTTL = 0;
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
@@ -29,7 +28,7 @@ class LevelSystem extends System {
         this.lvl = spec.lvl || new Level();
         this.slider = spec.slider;
         this.wantLevel = 0;
-        this.maxLevel = spec.maxLevel || this.constructor.dfltMaxLevel;
+        this.maxLevel = spec.maxLevel || Config.maxLvl;
         // event handlers
         this.onLevelWanted = this.onLevelWanted.bind(this);
         this.onItemEmerged = this.onItemEmerged.bind(this);

@@ -113,7 +113,7 @@ class Character extends MiniaModel {
     }
 
     destroy() {
-        console.log(`=== ${this} destroy called`)
+        //console.log(`=== ${this} destroy called`)
         this._unlinkSketch('_sketch');
         for (const charm of this.charms) {
             charm.unlink();

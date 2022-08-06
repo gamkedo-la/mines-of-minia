@@ -4,6 +4,13 @@ import { Assets } from "./assets.js";
 import { Events } from "./event.js";
 import { Fmt } from "./fmt.js";
 
+/**
+ * A generic game state
+ * Lifecycle
+ * -- init -> load -> ready -> started -V
+ *                     ^-  stopped <-
+ *                    
+ */
 class GameState {
     // STATIC VARIABLES ----------------------------------------------------
     static assetRefs = [];
@@ -45,6 +52,13 @@ class GameState {
     // EVENT HANDLERS ------------------------------------------------------
 
     // METHODS -------------------------------------------------------------
+    /**
+     * init is called only once during state lifetime (when state is first started, before any other setup)
+     * -- intended to create required state/variables for the given game state
+     * -- override init() for state specific init functionality
+     * @param {*} data 
+     * @returns 
+     */
     async _init(data) {
         if (this.dbg) console.log(`${this} starting initialization`);
         await this.init(data);
@@ -56,6 +70,13 @@ class GameState {
         return Promise.resolve();
     }
 
+    /**
+     * load is called once during state lifetime (when state is first started but after initialization)
+     * -- intended to load assets or other setup that needs to occur after initial state setup.
+     * -- override load() for state specific load functionality
+     * @param {*} data 
+     * @returns 
+     */
     async _load(data) {
         if (this.dbg) console.log(`${this} starting loading`);
         await this.assets.load();
@@ -68,6 +89,11 @@ class GameState {
         return Promise.resolve();
     }
 
+    /**
+     * ready is called every time a state is started
+     * @param {*} data 
+     * @returns 
+     */
     async _ready(data) {
         if (this.dbg) console.log(`${this} starting ready`);
         await this.ready(data);
@@ -89,9 +115,7 @@ class GameState {
             await this._load(data);
         }
         // ready
-        if (!this.readied) {
-            await this._ready(data);
-        }
+        await this._ready(data);
     }
 
     stop() {

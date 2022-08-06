@@ -81,7 +81,7 @@ class Camera {
 
     stopTrack() {
         if (this.target) {
-            this.target.evt.ignore(target.constructor.evtUpdated, this.onTargetUpdate);
+            this.target.evt.ignore(this.target.constructor.evtUpdated, this.onTargetUpdate);
             this.target = undefined;
         }
     }
@@ -230,7 +230,7 @@ class Camera {
 
     stopPan() {
         this.panSpeed = 0;
-        Events.listen(this.evtTock, this.onTock);
+        Events.ignore(this.evtTock, this.onTock);
         this.panTarget = undefined;
     }
 

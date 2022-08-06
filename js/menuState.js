@@ -16,7 +16,6 @@ import { UxPanel } from './base/uxPanel.js';
 import { UxText } from './base/uxText.js';
 import { XForm } from './base/xform.js';
 import { Options } from './options.js';
-import { PlayOptions } from './playOptions.js';
 import { Prompt } from './prompt.js';
 import { Resurrect64 } from './resurrect64.js';
 import { Serialization } from './serialization.js';
@@ -61,7 +60,7 @@ class MenuState extends GameState {
         console.log(`${this} onOptionsClicked: ${Fmt.ofmt(evt)}`);
         // disable
         this.view.active = false;
-        let options = new PlayOptions({
+        let options = new Options({
             xform: new XForm({border: .2}),
         });
         this.view.adopt(options);
@@ -136,10 +135,7 @@ class MenuState extends GameState {
     }
 
     stop() {
-        //console.log(`${this} stop view children: ${this.view.children}`);
-        //let children = Array.from(Hierarchy.children(this.view));
         for (const child of Hierarchy.children(this.view)) {
-            //console.log(`destroy: ${child}`);
             child.destroy();
         }
         this.view.destroy();

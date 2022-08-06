@@ -4,6 +4,7 @@ import { Events } from './base/event.js';
 import { Game } from './base/game.js';
 import { GameState } from './base/gameState.js';
 import { Generator } from './base/generator.js';
+import { Hierarchy } from './base/hierarchy.js';
 import { Keys } from './base/keys.js';
 import { MouseSystem } from './base/systems/mouseSystem.js';
 import { Text } from './base/text.js';
@@ -39,6 +40,9 @@ class TitleState extends GameState {
     }
 
     stop() {
+        for (const child of Hierarchy.children(this.view)) {
+            child.destroy();
+        }
         this.view.destroy();
         Events.ignore(Keys.evtDown, this.onAdvance);
         Events.ignore(MouseSystem.evtClicked, this.onAdvance);
