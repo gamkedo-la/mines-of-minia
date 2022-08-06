@@ -113,7 +113,7 @@ class Reactor extends Item {
 
     // EVENT HANDLERS ------------------------------------------------------
     onEquip(evt) {
-        console.log(`${this} onEquip: ${Fmt.ofmt(evt)}`);
+        //console.log(`${this} onEquip: ${Fmt.ofmt(evt)}`);
         let player = evt.actor;
         if (!player) return;
         // set target
@@ -125,7 +125,7 @@ class Reactor extends Item {
     }
 
     onUnequip(evt) {
-        console.log(`${this} onUnequip: ${Fmt.ofmt(evt)}`);
+        //console.log(`${this} onUnequip: ${Fmt.ofmt(evt)}`);
         let player = evt.actor;
         if (!player) return;
         // clear target

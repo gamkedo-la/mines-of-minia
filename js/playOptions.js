@@ -2,6 +2,7 @@ export { PlayOptions };
 
 import { Assets } from './base/assets.js';
 import { Events } from './base/event.js';
+import { Game } from './base/game.js';
 import { Hierarchy } from './base/hierarchy.js';
 import { Keys } from './base/keys.js';
 import { Sketch } from './base/sketch.js';
@@ -13,6 +14,7 @@ import { UxSlider } from './base/uxSlider.js';
 import { UxText } from './base/uxText.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
+import { Prompt } from './prompt.js';
 import { Resurrect64 } from './resurrect64.js';
 import { Serialization } from './serialization.js';
 
@@ -115,7 +117,15 @@ class PlayOptions extends UxView {
     }
 
     onQuitClicked(evt) {
-        console.log(`onQuitClicked`);
+        let prompt = new Prompt({
+            xform: new XForm({ border: .3 }),
+            title: 'confirm',
+            prompt: `quit game? unsaved progress will be lost`,
+            handleConfirm: () => {
+                Events.trigger(Game.evtStateChanged, {state: 'menu'});
+            },
+        });
+        this.parent.adopt(prompt);
     }
 
     onMusicVolumeUpdated(evt) {

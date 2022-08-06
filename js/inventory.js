@@ -31,7 +31,6 @@ class InventoryData {
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     constructor(spec={}) {
-        console.log(`inventory spec: ${Fmt.ofmt(spec)}`);
         // -- equip
         this.shielding = spec.shielding;
         this.reactor = spec.reactor;

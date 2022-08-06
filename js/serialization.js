@@ -85,6 +85,7 @@ class Serialization {
         return Storage.getItem('game');
     }
 
+
     static loadLevel(lvl) {
         let key = `lvl${lvl}`;
         let x_lvl = Storage.getItem(key);
@@ -116,6 +117,11 @@ class Serialization {
         // game
         Storage.removeItem('game');
 
+    }
+
+    static hasSaveGame() {
+        let state = Storage.getItem('game');
+        return state !== null;
     }
 
 }

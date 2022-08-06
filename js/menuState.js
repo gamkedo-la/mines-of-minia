@@ -17,6 +17,7 @@ import { UxText } from './base/uxText.js';
 import { XForm } from './base/xform.js';
 import { Options } from './options.js';
 import { PlayOptions } from './playOptions.js';
+import { Prompt } from './prompt.js';
 import { Resurrect64 } from './resurrect64.js';
 import { Serialization } from './serialization.js';
 
@@ -33,11 +34,22 @@ function button(text, spec) {
 
 class MenuState extends GameState {
     onNewClicked(evt) {
-        // FIXME: add prompt
-        // reset game state
-        Serialization.reset();
-        console.log(`${this} onNewClicked: ${Fmt.ofmt(evt)}`);
-        Events.trigger(Game.evtStateChanged, {state: 'play'});
+        if (Serialization.hasSaveGame()) {
+            let prompt = new Prompt({
+                xform: new XForm({ border: .3 }),
+                title: 'confirm',
+                prompt: `previous save game will be lost if new game started, proceed?`,
+                handleConfirm: () => {
+                    Serialization.reset();
+                    Events.trigger(Game.evtStateChanged, {state: 'play'});
+                },
+            });
+            this.view.adopt(prompt);
+        } else {
+            Serialization.reset();
+            console.log(`${this} onNewClicked: ${Fmt.ofmt(evt)}`);
+            Events.trigger(Game.evtStateChanged, {state: 'play'});
+        }
     }
 
     onLoadClicked(evt) {
@@ -97,6 +109,7 @@ class MenuState extends GameState {
             ]
         });
         this.view = Generator.generate(x_view);
+        console.log(`${this} view: ${this.view}`);
         // -- ui elements
         this.panel = Hierarchy.find(this.view, (v) => v.tag === 'menu.panel');
         this.newButton = Hierarchy.find(this.view, (v) => v.tag === 'menu.new');
@@ -104,6 +117,10 @@ class MenuState extends GameState {
         this.optionsButton = Hierarchy.find(this.view, (v) => v.tag === 'menu.options');
         this.helpButton = Hierarchy.find(this.view, (v) => v.tag === 'menu.help');
         this.creditsButton = Hierarchy.find(this.view, (v) => v.tag === 'menu.credits');
+        // -- disable load if no game is saved...
+        if (!Serialization.hasSaveGame()) {
+            this.loadButton.active = false;
+        }
         // -- bind event handlers
         this.onNewClicked = this.onNewClicked.bind(this);
         this.onLoadClicked = this.onLoadClicked.bind(this);

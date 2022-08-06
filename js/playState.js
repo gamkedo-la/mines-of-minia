@@ -383,9 +383,13 @@ class PlayState extends GameState {
     }
 
     stop() {
+        for (const child of Hierarchy.children(this.view)) {
+            child.destroy();
+        }
         Events.ignore(Keys.evtDown, this.onKeyDown);
         Events.ignore(Game.evtTock, this.onTock);
         this.view.destroy();
+        this.destroy();
     }
 
     doSave() {
