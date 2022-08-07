@@ -15,6 +15,7 @@ class Item extends MiniaModel {
     static discoverable = false;
     static usable = false;
     static dfltDescription = 'an unremarkable item';
+    static dfltState = 'free';
     static evtEquipped = 'item.equipped';
     static evtUnequipped = 'item.unequipped';
     static evtUse = 'item.use';
@@ -44,6 +45,7 @@ class Item extends MiniaModel {
         if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
         // -- loot
         this.loot = spec.loot || [];
+        this.state = spec.state || this.constructor.dfltState;
         // -- identifiable
         this.identifiable = spec.hasOwnProperty('identifiable') ? spec.identifiable : false;
         // -- sketch
@@ -67,6 +69,7 @@ class Item extends MiniaModel {
             count: this.count,
             x_charms: this.charms.map((v) => v.as_kv()),
             loot: this.loot,
+            state: this.state,
             identifiable: this.identifiable,
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
         });

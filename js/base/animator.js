@@ -41,6 +41,7 @@ class Animator extends Sketch {
         //-- current sketch
         let sketch = this.sketches[this.state] || Sketch.zero;
         this.setSketch(sketch);
+        if (this.tag === 'token') console.log(`-- creating token animator`);
     }
 
     destroy() {
@@ -108,7 +109,7 @@ class Animator extends Sketch {
         // FIXME: set accessor?
         let wantState = (target.hasOwnProperty('animState')) ? target.animState : target.state;
         //console.log(`${this} link to ${target} wantState: ${wantState}`);
-        if (this.state !== wantState) {
+        if (wantState && this.state !== wantState) {
             let sketch = this.sketches[wantState] || Sketch.zero;
             this.state = wantState;
             this.setSketch(sketch);

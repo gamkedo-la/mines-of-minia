@@ -83,6 +83,7 @@ let miniaAssets = [
         color: 'gold',
         borderColor: 'red',
     }),
+    /*
     Shape.xspec({
         tag: 'key.blue',
         fill: true,
@@ -105,6 +106,7 @@ let miniaAssets = [
         color: 'rgba(75,75,75,1)',
         borderColor: 'red',
     }),
+    */
 
     Shape.xspec({
         tag: 'bonk.1',
@@ -222,8 +224,6 @@ let miniaAssets = [
     Rect.xspec({tag: 'frame.green', width: 16, height: 16, borderColor: 'green', border: 3, fill: false}),
     Rect.xspec({tag: 'frame.green.2', width: 16, height: 16, borderColor: 'green', border: 6, fill: false}),
 
-    Rect.xspec({tag: 'door.close', width: 16, height: 16, color: 'red'}),
-    Rect.xspec({tag: 'door.open', width: 16, height: 16, borderColor: 'green', fill: false, border: 2}),
     Rect.xspec({tag: 'idle', width: 12, height: 12, color: 'green'}),
     Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
     Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
@@ -260,12 +260,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'reactor.1',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'reactor.1.carry'}),
             'free': new AssetRef({tag: 'reactor.1.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'reactor.2.carry', jitter: true, x_cels: [
@@ -282,12 +282,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'reactor.2',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'reactor.2.carry'}),
             'free': new AssetRef({tag: 'reactor.2.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'reactor.3.carry', jitter: true, x_cels: [
@@ -304,12 +304,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'reactor.3',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'reactor.3.carry'}),
             'free': new AssetRef({tag: 'reactor.3.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'poke.1.carry', jitter: true, x_cels: [
@@ -326,12 +326,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'poke.1',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'poke.1.carry'}),
             'free': new AssetRef({tag: 'poke.1.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'poke.2.carry', jitter: true, x_cels: [
@@ -348,12 +348,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'poke.2',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'poke.2.carry'}),
             'free': new AssetRef({tag: 'poke.2.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'poke.3.carry', jitter: true, x_cels: [
@@ -370,12 +370,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'poke.3',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'poke.3.carry'}),
             'free': new AssetRef({tag: 'poke.3.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'hack.1.carry', jitter: true, x_cels: [
@@ -392,12 +392,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'hack.1',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'hack.1.carry'}),
             'free': new AssetRef({tag: 'hack.1.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'hack.2.carry', jitter: true, x_cels: [
@@ -414,12 +414,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'hack.2',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'hack.2.carry'}),
             'free': new AssetRef({tag: 'hack.2.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'hack.3.carry', jitter: true, x_cels: [
@@ -436,47 +436,95 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'hack.3',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'hack.3.carry'}),
             'free': new AssetRef({tag: 'hack.3.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Sprite.xspec({tag: 'chest.brown.close', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*0, y: 0})}),
     Sprite.xspec({tag: 'chest.brown.open', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*1, y: 0})}),
     Animation.xspec({tag: 'chest.brown.opening', loop: false, x_cels: [
-        Cel.xspec({sketch: new AssetRef({tag: 'chest.brown.open'}), ttl: 300 }),
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.brown.open'}), ttl: 300 }),
         Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
-        Cel.xspec({sketch: new AssetRef({tag: 'chest.brown.open'}), ttl: 200 }),
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.brown.open'}), ttl: 200 }),
         Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
-        Cel.xspec({sketch: new AssetRef({tag: 'chest.brown.open'}), ttl: 200 }),
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.brown.open'}), ttl: 200 }),
         Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
     ]}),
     Animator.xspec({
         tag: 'chest.brown',
-        sketches: {
+        x_sketches: {
             'close': new AssetRef({tag: 'chest.brown.close'}),
             'open': new AssetRef({tag: 'chest.brown.opening'}),
         },
         state: 'close',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
-    //Sprite.xspec({tag: 'blueChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*1, y: 0}),
-    //Sprite.xspec({tag: 'greyChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*2, y: 0}),
-    //Sprite.xspec({tag: 'greenChest.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*3, y: 0}),
-    //Sprite.xspec({tag: 'brownChestopen.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*0, y: 16})}),
-    //Sprite.xspec({tag: 'blueChestopen.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*1, y: 16}),
-    //Sprite.xspec({tag: 'greyChestopen.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*2, y: 16}),
-    //Sprite.xspec({tag: 'greenChestopen.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 32*3, y: 16}),
-    
-    //Sprite.xspec({tag: 'brownChestKey.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32*0, y: 32})}),
-    //Sprite.xspec({tag: 'blueChestKey.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32*1, y: 32})}),
-    //Sprite.xspec({tag: 'greyChestKey.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32*2, y: 32})}),
-    //Sprite.xspec({tag: 'greenChestKey.test', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32*3, y: 32})}),
-    Sprite.xspec({tag: 'player_portrait', img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 32*0, y: 0})}),
 
+    Sprite.xspec({tag: 'chest.blue.close', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*0, y: 32})}),
+    Sprite.xspec({tag: 'chest.blue.open', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*1, y: 32})}),
+    Animation.xspec({tag: 'chest.blue.opening', loop: false, x_cels: [
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.blue.open'}), ttl: 300 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.blue.open'}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.blue.open'}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'chest.blue',
+        x_sketches: {
+            'close': new AssetRef({tag: 'chest.blue.close'}),
+            'open': new AssetRef({tag: 'chest.blue.opening'}),
+        },
+        state: 'close',
+    }),
+
+    Sprite.xspec({tag: 'chest.dark.close', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*0, y: 64})}),
+    Sprite.xspec({tag: 'chest.dark.open', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*1, y: 64})}),
+    Animation.xspec({tag: 'chest.dark.opening', loop: false, x_cels: [
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.dark.open'}), ttl: 300 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.dark.open'}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.dark.open'}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'chest.dark',
+        x_sketches: {
+            'close': new AssetRef({tag: 'chest.dark.close'}),
+            'open': new AssetRef({tag: 'chest.dark.opening'}),
+        },
+        state: 'close',
+    }),
+
+    Sprite.xspec({tag: 'chest.green.close', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*0, y: 96})}),
+    Sprite.xspec({tag: 'chest.green.open', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*1, y: 96})}),
+    Animation.xspec({tag: 'chest.green.opening', loop: false, x_cels: [
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.green.open'}), ttl: 300 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.green.open'}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+        Cel.xspec({x_sketch: new AssetRef({tag: 'chest.green.open'}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'chest.green',
+        x_sketches: {
+            'close': new AssetRef({tag: 'chest.green.close'}),
+            'open': new AssetRef({tag: 'chest.green.opening'}),
+        },
+        state: 'close',
+    }),
+
+    Sprite.xspec({tag: 'key.blue', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32, y: 32})}),
+    Sprite.xspec({tag: 'key.dark', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32, y: 64})}),
+    Sprite.xspec({tag: 'key.green', img: new SheetRef({src: 'img/chest.png', width: 16, height: 16, x: 32, y: 96})}),
+
+    Sprite.xspec({tag: 'player_portrait', img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 32*0, y: 0})}),
     Animation.xspec({tag: 'player_idler', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
@@ -496,7 +544,7 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'player',
-        sketches: {
+        x_sketches: {
             'idler': new AssetRef({tag: 'player_idler'}),
             'idlel': new AssetRef({tag: 'player_idlel'}),
             'mover': new AssetRef({tag: 'player_mover'}),
@@ -570,7 +618,7 @@ let miniaAssets = [
 
     Animator.xspec({
         tag: 'golem',
-        sketches: {
+        x_sketches: {
             'idler': new AssetRef({tag: 'golem_idler'}),
             'idlel': new AssetRef({tag: 'golem_idlel'}),
             'mover': new AssetRef({tag: 'golem_mover'}),
@@ -588,17 +636,53 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 32, y: 0})}), ttl: 150 }),
     ]}),
 
+    Rect.xspec({tag: 'door.brown.close', width: 16, height: 16, color: 'brown'}),
+    Rect.xspec({tag: 'door.brown.open', width: 16, height: 16, borderColor: 'brown', fill: false, border: 2}),
     Animator.xspec({
-        tag: 'door',
-        sketches: {
-            'close': new AssetRef({tag: 'door.close'}),
-            'open': new AssetRef({tag: 'door.open'}),
+        tag: 'door.brown',
+        x_sketches: {
+            'close': new AssetRef({tag: 'door.brown.close'}),
+            'open': new AssetRef({tag: 'door.brown.open'}),
         },
         state: 'close',
     }),
+
+    Rect.xspec({tag: 'door.blue.close', width: 16, height: 16, color: 'blue'}),
+    Rect.xspec({tag: 'door.blue.open', width: 16, height: 16, borderColor: 'blue', fill: false, border: 2}),
+    Animator.xspec({
+        tag: 'door.blue',
+        x_sketches: {
+            'close': new AssetRef({tag: 'door.blue.close'}),
+            'open': new AssetRef({tag: 'door.blue.open'}),
+        },
+        state: 'close',
+    }),
+
+    Rect.xspec({tag: 'door.dark.close', width: 16, height: 16, color: 'gray'}),
+    Rect.xspec({tag: 'door.dark.open', width: 16, height: 16, borderColor: 'gray', fill: false, border: 2}),
+    Animator.xspec({
+        tag: 'door.dark',
+        x_sketches: {
+            'close': new AssetRef({tag: 'door.dark.close'}),
+            'open': new AssetRef({tag: 'door.dark.open'}),
+        },
+        state: 'close',
+    }),
+
+    Rect.xspec({tag: 'door.green.close', width: 16, height: 16, color: 'green'}),
+    Rect.xspec({tag: 'door.green.open', width: 16, height: 16, borderColor: 'green', fill: false, border: 2}),
+    Animator.xspec({
+        tag: 'door.green',
+        x_sketches: {
+            'close': new AssetRef({tag: 'door.green.close'}),
+            'open': new AssetRef({tag: 'door.green.open'}),
+        },
+        state: 'close',
+    }),
+
     Animator.xspec({
         tag: 'enemy',
-        sketches: {
+        x_sketches: {
             'idle': new AssetRef({tag: 'idle'}),
             'melee': new AssetRef({tag: 'melee'}),
             'dying': new AssetRef({tag: 'dying'}),
@@ -668,7 +752,7 @@ let miniaAssets = [
 
     Animator.xspec({
         tag: 'funguy',
-        sketches: {
+        x_sketches: {
             'idler': new AssetRef({tag: 'funguy.idler'}),
             'idlel': new AssetRef({tag: 'funguy.idlel'}),
             'mover': new AssetRef({tag: 'funguy.mover'}),
@@ -696,12 +780,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'token',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'token.carry'}),
             'free': new AssetRef({tag: 'token.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'dark.gun.1.carry', jitter: true, x_cels: [
@@ -718,12 +802,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'dark.gun.1',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'dark.gun.1.carry'}),
             'free': new AssetRef({tag: 'dark.gun.1.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'dark.gun.2.carry', jitter: true, x_cels: [
@@ -740,12 +824,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'dark.gun.2',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'dark.gun.2.carry'}),
             'free': new AssetRef({tag: 'dark.gun.2.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'dark.gun.3.carry', jitter: true, x_cels: [
@@ -762,12 +846,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'dark.gun.3',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'dark.gun.3.carry'}),
             'free': new AssetRef({tag: 'dark.gun.3.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'ice.gun.1.carry', jitter: true, x_cels: [
@@ -784,12 +868,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'ice.gun.1',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'ice.gun.1.carry'}),
             'free': new AssetRef({tag: 'ice.gun.1.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'ice.gun.2.carry', jitter: true, x_cels: [
@@ -806,12 +890,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'ice.gun.2',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'ice.gun.2.carry'}),
             'free': new AssetRef({tag: 'ice.gun.2.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'ice.gun.3.carry', jitter: true, x_cels: [
@@ -828,12 +912,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'ice.gun.3',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'ice.gun.3.carry'}),
             'free': new AssetRef({tag: 'ice.gun.3.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
 
@@ -851,12 +935,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'fire.gun.1',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'fire.gun.1.carry'}),
             'free': new AssetRef({tag: 'fire.gun.1.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'fire.gun.2.carry', jitter: true, x_cels: [
@@ -873,12 +957,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'fire.gun.2',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'fire.gun.2.carry'}),
             'free': new AssetRef({tag: 'fire.gun.2.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'fire.gun.3.carry', jitter: true, x_cels: [
@@ -895,12 +979,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'fire.gun.3',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'fire.gun.3.carry'}),
             'free': new AssetRef({tag: 'fire.gun.3.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'shock.gun.1.carry', jitter: true, x_cels: [
@@ -917,12 +1001,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'shock.gun.1',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'shock.gun.1.carry'}),
             'free': new AssetRef({tag: 'shock.gun.1.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'shock.gun.2.carry', jitter: true, x_cels: [
@@ -939,12 +1023,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'shock.gun.2',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'shock.gun.2.carry'}),
             'free': new AssetRef({tag: 'shock.gun.2.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'shock.gun.3.carry', jitter: true, x_cels: [
@@ -961,12 +1045,12 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'shock.gun.3',
-        sketches: {
+        x_sketches: {
             'carry': new AssetRef({tag: 'shock.gun.3.carry'}),
             'free': new AssetRef({tag: 'shock.gun.3.free'}),
         },
         state: 'free',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Template.varsprite('img/rock-area-clutter.png', 'rock.clutter', [[0,0], [1,0]], {width: 16, height: 16}),
@@ -1026,7 +1110,7 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'trap',
-        sketches: {
+        x_sketches: {
             'armed': new AssetRef({tag: 'trap.armed'}),
             'inactive': new AssetRef({tag: 'trap.inactive'}),
         },
@@ -1090,7 +1174,7 @@ let miniaAssets = [
     ]}),
     Animator.xspec({
         tag: 'magma',
-        sketches: {
+        x_sketches: {
             'idler': new AssetRef({tag: 'magma.idler'}),
             'idlel': new AssetRef({tag: 'magma.idlel'}),
             'mover': new AssetRef({tag: 'magma.mover'}),

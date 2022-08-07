@@ -6,6 +6,8 @@ import { Action } from '../base/actions/action.js';
 import { Mathf } from '../base/math.js';
 import { Timer } from '../base/timer.js';
 import { Direction } from '../base/dir.js';
+import { OverlaySystem } from '../systems/overlaySystem.js';
+import { Events } from '../base/event.js';
 
 
 class DoOpenAction extends Action {
@@ -18,8 +20,18 @@ class DoOpenAction extends Action {
 
     setup() {
         this.timer = new Timer({ttl: this.ttl, cb: () => this.finish() });
+        // check for locked state, and required keys...
+        let unlocked = true;
+        if (this.target.locked) {
+            // what key is required?
+            let kind = this.target.kind;
+            if (!this.actor.inventory || !this.actor.inventory.hasKey(kind)) {
+                unlocked = false;
+                Events.trigger(OverlaySystem.evtNotify, { actor: this.player, which: 'warn', msg: `need ${kind} key to unlock` });
+            }
+        }
         // update target to open state
-        this.target.open();
+        if (unlocked) this.target.open(this.actor);
     }
 }
 

@@ -2,6 +2,8 @@ export { Chest };
 
 import { DropLootAction } from '../actions/loot.js';
 import { DestroyAction } from '../base/actions/destroy.js';
+import { Assets } from '../base/assets.js';
+import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
@@ -13,14 +15,39 @@ class Chest extends MiniaModel {
     static openable = true;
     static dfltOpenTTL = 1000;
 
+    static kinds = [
+        'brown',
+        'blue',
+        'dark',
+        'green',
+    ];
+    static dfltKind = 'brown';
+
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSketch() {
         return new Rect({ width: 16, height: 16, color: 'rgba(255,255,0,.75)' });
     }
 
+    // STATIC METHODS ------------------------------------------------------
+    static xspec(spec={}) {
+        // parse kind
+        let kind = spec.kind || this.dfltKind;
+        let locked = (kind !== 'brown');
+        // final spec
+        return Object.assign( {}, this.spec, {
+            kind: kind,
+            locked: locked,
+            x_sketch: Assets.get(`chest.${kind}`),
+        }, spec);
+    }
+
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
+        // -- kind associated w/ chest
+        this.kind = spec.kind || this.constructor.dfltKind;
+        // -- is chest locked?
+        this.locked = spec.hasOwnProperty('locked') ? spec.locked : false;
         // -- general properties
         this.state = spec.state || this.constructor.dfltState;
         // -- sketch
@@ -43,6 +70,7 @@ class Chest extends MiniaModel {
 
     as_kv() {
         return Object.assign({}, super.as_kv(), {
+            kind: this.kind,
             state: this.state,
             loot: this.loot,
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
@@ -61,8 +89,12 @@ class Chest extends MiniaModel {
     }
 
     // METHODS -------------------------------------------------------------
-    open() {
+    open(actor) {
         UpdateSystem.eUpdate(this, { state: 'open', blocksLoS: false });
+        // lock management
+        if (this.locked && actor.inventory) {
+            actor.inventory.removeKey(this.kind);
+        }
         // spawn any loot
         for (let loot of (this.loot || [])) {
             ActionSystem.assign(this, new DropLootAction({

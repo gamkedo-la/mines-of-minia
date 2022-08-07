@@ -260,10 +260,10 @@ class Assets {
                     // apply AssetRef overrides to asset specification
                     spec = Object.assign({}, spec, v);
                     // generate asset
-                    let asset = this.generator.generate(spec);
+                    //let asset = this.generator.generate(spec);
                     //console.log(`-- resolved ${v.tag} with ${asset}`);
                     // swap reference
-                    o[k] = asset;
+                    o[k] = spec;
                 }
             }
         }

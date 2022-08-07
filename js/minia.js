@@ -57,7 +57,7 @@ class Minia extends Game {
         'play': new PlayState(),
         'testnoise': new TestNoiseState(),
     }
-    static startStateTag = 'menu';
+    static startStateTag = 'play';
     static assetRefs = miniaAssets;
 
     static config = {

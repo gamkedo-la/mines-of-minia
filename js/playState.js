@@ -65,8 +65,6 @@ class PlayState extends GameState {
     }
 
     async ready(data={}) {
-        console.log(`-- play state data: ${Fmt.ofmt(data)}`);
-
         this.controlsActive = true;
 
         let x_view = UxCanvas.xspec({

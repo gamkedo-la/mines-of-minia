@@ -37,11 +37,11 @@ class Spawn {
         // -- stairs
         this.spawnStairs(template, pstate);
         // -- enemies
-        this.spawnEnemies(template, pstate);
+        //this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
-        this.spawnGrowth(template, pstate);
+        //this.spawnGrowth(template, pstate);
         // -- clutter
         this.spawnClutter(template, pstate);
         // -- test objects
@@ -52,16 +52,15 @@ class Spawn {
     static spawnDoors(template, pstate) {
         // -- pull data
         let x_spawn = template.spawn || {};
-        let doorTag = x_spawn.door || 'door';
+        //let doorTag = x_spawn.door || 'door';
         let plvl = pstate.plvl;
         // iterate through halls
         let phalls = pstate.phalls || [];
         for (const phall of phalls) {
-
             for (const idx of phall.exits) {
                 plvl.entities.push(Door.xspec({
                     idx: idx,
-                    x_sketch: Assets.get(doorTag),
+                    //x_sketch: Assets.get(doorTag),
                     z: 2,
                     blocks: 0,
                 }));
@@ -730,6 +729,7 @@ class Spawn {
                 name: 'identify.cog',
                 kind: 'identify',
             }),
+
             Chest.xspec({
                 name: 'chest.brown',
                 x_sketch: Assets.get('chest.brown'),
@@ -741,14 +741,33 @@ class Spawn {
                     }),
                 ],
             }),
+
+            Chest.xspec({
+                name: 'chest.blue',
+                kind: 'blue',
+                loot: [
+                    Token.xspec({
+                        name: 'token',
+                        x_sketch: Assets.get('token'),
+                        count: 5,
+                    }),
+                ],
+            }),
+
+            Key.xspec({
+                kind: 'blue',
+            }),
+
             Fuelcell.xspec({
                 name: 'fuelcell',
                 x_sketch: Assets.get('fuelcell'),
             }),
 
+            /*
             Magma.xspec({
                 name: 'magma',
             }),
+            */
 
             this.genWeapon(template, pstate),
             this.genReactor(template, pstate),

@@ -35,7 +35,7 @@ class LevelGraph {
             let blocked = false;
             for (const other of this.lvl.findidx(nidx, (gzo) => gzo !== e)) {
                 // is the other object a locked door?
-                if ((other instanceof Door) && other.locked) continue;
+                if ((other instanceof Door) && !other.locked) continue;
                 // does the other object block pathfinding entity (e)
                 if (!this.blocks(e, other)) continue;
                 // otherwise... blocked
