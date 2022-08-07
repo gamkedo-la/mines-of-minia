@@ -48,7 +48,6 @@ class Animation extends Sketch {
         this._done = false;
         // bind event handlers
         this.onTimer = this.onTimer.bind(this);
-        if (this.tag === 'token.free') console.log(`token animation construct`);
     }
 
     destroy() {

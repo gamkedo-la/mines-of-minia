@@ -41,7 +41,6 @@ class Animator extends Sketch {
         //-- current sketch
         let sketch = this.sketches[this.state] || Sketch.zero;
         this.setSketch(sketch);
-        if (this.tag === 'token') console.log(`-- creating token animator`);
     }
 
     destroy() {
