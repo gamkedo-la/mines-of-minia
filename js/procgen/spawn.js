@@ -729,6 +729,15 @@ class Spawn {
                 name: 'identify.cog',
                 kind: 'identify',
             }),
+            Cog.xspec({
+                kind: 'brawn',
+            }),
+            Cog.xspec({
+                kind: 'spry',
+            }),
+            Cog.xspec({
+                kind: 'savvy',
+            }),
 
             Chest.xspec({
                 name: 'chest.brown',

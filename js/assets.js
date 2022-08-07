@@ -1083,11 +1083,43 @@ let miniaAssets = [
         color: 'silver',
         borderColor: 'red',
     }),
+
     Shape.xspec({
         tag: 'cog.six',
         fill: true,
         verts: [ 
             {x:7, y:3}, {x:11, y:5}, {x:11, y:10}, {x:7, y:12}, {x: 3, y: 10}, {x:3, y: 5},
+        ],
+        border: 1,
+        color: 'silver',
+        borderColor: 'red',
+    }),
+    Shape.xspec({
+        tag: 'cog.cam',
+        fill: true,
+        verts: [ 
+            {x:3, y:2}, {x:13, y:2}, {x:13, y:12}, {x:11, y:13}, {x:10, y: 5}, {x:2, y:4},
+        ],
+        border: 1,
+        color: 'silver',
+        borderColor: 'red',
+    }),
+    Shape.xspec({
+        tag: 'cog.three',
+        fill: true,
+        verts: [ 
+            {x:8, y:3}, {x:12, y:12}, {x:3, y:12}, {x:7, y:3},
+        ],
+        border: 1,
+        color: 'silver',
+        borderColor: 'red',
+    }),
+    Shape.xspec({
+        tag: 'cog.five',
+        fill: true,
+        verts: [ 
+            {x:8, y:1}, {x:10, y:5}, {x:14, y:5}, {x:10, y:9}, {x:12, y:14}, {x:8, y:11},
+            {x:7, y:11}, {x:3, y:14}, {x:5, y:9}, {x:1, y:5}, {x:5, y:5}, {x:7, y:1},
         ],
         border: 1,
         color: 'silver',

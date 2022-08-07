@@ -19,11 +19,17 @@ class Cog extends Item {
     static kinds = [
         'test',
         'identify',
+        'spry',
+        'savvy',
+        'brawn',
     ];
     static dfltSecret = 'four';
     static secretKinds = [
         'four',
         'six',
+        'cam',
+        'three',
+        'five'
     ];
     static dfltDescription = 'a strangely encoded cog';
     static descriptionMap = {
@@ -151,6 +157,21 @@ class Cog extends Item {
                     console.log(`identifying: ${target}`);
                     UpdateSystem.eUpdate(target, { identifiable: false});
                 }
+                break;
+            }
+            case 'spry': {
+                UpdateSystem.eUpdate(actor, { spry: actor.spry+1});
+                Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `spry +1`});
+                break;
+            }
+            case 'brawn': {
+                UpdateSystem.eUpdate(actor, { brawn: actor.brawn+1});
+                Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `brawn +1`});
+                break;
+            }
+            case 'savvy': {
+                UpdateSystem.eUpdate(actor, { savvy: actor.savvy+1});
+                Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `savvy +1`});
                 break;
             }
         }
