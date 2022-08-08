@@ -147,6 +147,7 @@ class PlayState extends GameState {
         Systems.get('level').slider = this.slider;
         Systems.get('los').lvl = this.lvl;
         Systems.get('close').lvl = this.lvl;
+        Systems.get('overlay').overlay = this.overlay;
 
         // load player
         if (data && data.load) {

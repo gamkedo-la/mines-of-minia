@@ -44,7 +44,7 @@ class RevealAction extends Action {
         this.timer = new Timer({ttl: this.ttl, cb: this.onTimer});
         // create vfx
         if (this.vfx) {
-            Events.trigger(OverlaySystem.evtNotify, { actor: this.player, which: 'vfx', vfx: this.vfx });
+            Events.trigger(OverlaySystem.evtNotify, { actor: this.actor, which: 'vfx', vfx: this.vfx });
         }
         // play sfx at start of reveal
         if (this.sfx) this.sfx.play();

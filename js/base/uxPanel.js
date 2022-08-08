@@ -45,7 +45,6 @@ class UxPanel extends UxView {
         // update sketch dimensions
         this._sketch.width = this.xform.width;
         this._sketch.height = this.xform.height;
-        //if (this.tag.startsWith('tile')) console.log(`${this} render @ ${this.xform.minx},${this.xform.miny}`);
         // render
         if (this._sketch && this._sketch.render) this._sketch.render(ctx, this.xform.minx, this.xform.miny);
     }
