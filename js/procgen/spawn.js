@@ -99,13 +99,15 @@ class Spawn {
             for (let i=0; i<100; i++) {
                 // -- randomly choose index from room
                 idx = Prng.choose(proom.idxs);
-                //console.log(`-- try index: ${idx}`);
                 // -- test index to make sure nothing is there..
                 if (!this.checkSpawnIdx(plvl, idx)) continue;
                 // choose trap class
                 let cls = Prng.choose(x_spawn.trapList);
+                // is trap hidden?
+                let hidden = Prng.flip(x_spawn.trapHiddenPct);
                 let x_trap = cls.xspec({
                     idx: idx,
+                    hidden: hidden,
                     z: template.bgoZed,
                 });
                 //console.log(`trap: ${Fmt.ofmt(x_trap)}`);

@@ -81,8 +81,8 @@ class Hud extends UxView {
                 }),
 
                 new UxButton({
-                    tag: 'hud.find',
-                    text: new Text({text: '    find    '}),
+                    tag: 'hud.scan',
+                    text: new Text({text: '    scan    '}),
                     pressed: Assets.get('hud.gbutton.pressed', true),
                     unpressed: Assets.get('hud.gbutton.unpressed', true),
                     highlight: Assets.get('hud.gbutton.highlight', true),
@@ -104,7 +104,7 @@ class Hud extends UxView {
         // ui elements
         this.optionsButton = Hierarchy.find(this, (v) => v.tag === 'hud.options');
         this.waitButton = Hierarchy.find(this, (v) => v.tag === 'hud.wait');
-        this.findButton = Hierarchy.find(this, (v) => v.tag === 'hud.find');
+        this.scanButton = Hierarchy.find(this, (v) => v.tag === 'hud.scan');
         this.cancelButton = Hierarchy.find(this, (v) => v.tag === 'hud.cancel');
 
         // bind event handlers
@@ -113,12 +113,12 @@ class Hud extends UxView {
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onOptionsClicked = this.onOptionsClicked.bind(this);
         this.onWaitClicked = this.onWaitClicked.bind(this);
-        this.onFindClicked = this.onFindClicked.bind(this);
+        this.onScanClicked = this.onScanClicked.bind(this);
         this.onCancelClicked = this.onCancelClicked.bind(this);
 
         this.optionsButton.evt.listen(this.optionsButton.constructor.evtMouseClicked, this.onOptionsClicked);
         this.waitButton.evt.listen(this.waitButton.constructor.evtMouseClicked, this.onWaitClicked);
-        this.findButton.evt.listen(this.findButton.constructor.evtMouseClicked, this.onFindClicked);
+        this.scanButton.evt.listen(this.scanButton.constructor.evtMouseClicked, this.onScanClicked);
         this.cancelButton.evt.listen(this.cancelButton.constructor.evtMouseClicked, this.onCancelClicked);
     }
 
@@ -175,8 +175,8 @@ class Hud extends UxView {
         if (this.getCurrentHandler() !== 'interact') return;
         TurnSystem.postLeaderAction(new WaitAction());
     }
-    onFindClicked(evt) {
-        console.log(`${this} onFindClicked: ${Fmt.ofmt(evt)}}`)
+    onScanClicked(evt) {
+        console.log(`${this} onScanClicked: ${Fmt.ofmt(evt)}}`)
     }
     onCancelClicked(evt) {
         console.log(`${this} onCancelClicked: ${Fmt.ofmt(evt)}}`)

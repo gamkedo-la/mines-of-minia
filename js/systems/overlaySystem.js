@@ -14,6 +14,20 @@ class OverlaySystem extends System {
     }
 
     onNotify(evt) {
-        console.log(`-- ${this} warning: ${Fmt.ofmt(evt)}`);
+        switch (evt.which) {
+            case 'info': {
+                console.log(`-- ${this} info: ${evt.msg}`);
+                break;
+            }
+            case 'warn': {
+                console.log(`-- ${this} warn: ${evt.msg}`);
+                break;
+            }
+            case 'vfx': {
+                console.log(`-- ${this} start vfx: ${evt.vfx}`);
+                break;
+            }
+        }
+
     }
 }

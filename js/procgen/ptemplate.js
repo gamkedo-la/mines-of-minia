@@ -109,6 +109,7 @@ class ProcTemplate {
         //this.spawn.roomSpawnChance = Util.getpath(spec, 'spawn.roomSpawnChance', .5);
         // -- traps
         this.spawn.trapList = Util.getpath(spec, 'spawn.trapList', []);
+        this.spawn.trapHiddenPct = Util.getpath(spec, 'spawn.trapHiddenPct', .75);
         this.spawn.roomTrapOptions = Util.getpath(spec, 'spawn.roomTrapOptions', [
             { weight: .25, chance: 0 },
             { weight: .5, chance: 1, min: 1, max: 2 },

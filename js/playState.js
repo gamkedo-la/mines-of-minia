@@ -45,6 +45,7 @@ import { TriggerSystem } from './systems/triggerSystem.js';
 import { Serialization } from './serialization.js';
 import { Cog } from './entities/cog.js';
 import { Gem } from './entities/gem.js';
+import { DetectSystem } from './systems/detectSystem.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -62,6 +63,7 @@ class PlayState extends GameState {
         Systems.add('overlay', new OverlaySystem({ dbg: Util.getpath(Config, 'dbg.system.overlay')}));
         Systems.add('trigger', new TriggerSystem({ dbg: Util.getpath(Config, 'dbg.system.trigger')}));
         Systems.add('level', new LevelSystem({ dbg: Util.getpath(Config, 'dbg.system.level')}));
+        Systems.add('detect', new DetectSystem({ dbg: Util.getpath(Config, 'dbg.system.detect')}));
     }
 
     async ready(data={}) {

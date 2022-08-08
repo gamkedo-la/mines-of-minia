@@ -33,9 +33,10 @@ class Trap extends MiniaModel {
         super.cpost(spec);
         // -- general properties
         this.state = spec.state || this.constructor.dfltState;
+        // -- hidden from player view?
+        this.hidden = spec.hasOwnProperty('hidden') ? spec.hidden : false;
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
-        //this._sketch.link(this);
         // -- sfx
         this.triggerSfx = (spec.hasOwnProperty('triggerSfx')) ? spec.triggerSfx : this.constructor.dfltTriggerSfx;
         // -- sync xform to match sketch dimensions
@@ -51,6 +52,7 @@ class Trap extends MiniaModel {
     as_kv() {
         return Object.assign({}, super.as_kv(), {
             state: this.state,
+            hidden: this.hidden,
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
         });
     }
@@ -72,7 +74,7 @@ class Trap extends MiniaModel {
         // trigger trap event
         this.evt.trigger(this.constructor.evtTriggered, { actor: actor, trigger: this });
         // update trap state
-        UpdateSystem.eUpdate(this, { state: 'inactive' });
+        UpdateSystem.eUpdate(this, { state: 'inactive', hidden: false });
         // trigger sfx
         if (this.triggerSfx) this.triggerSfx.play();
     }
@@ -91,6 +93,11 @@ class Trap extends MiniaModel {
         this._sketch.height = this.xform.height;
         // render
         if (this._sketch && this._sketch.render) this._sketch.render(ctx, this.xform.minx, this.xform.miny);
+        // FIXME
+        if (this.hidden) {
+            let r = new Rect({ width: 16, height: 16, border: 1, borderColor: 'rgba(100,100,100,.4)', fill: false});
+            r.render(ctx, this.xform.minx, this.xform.miny);
+        }
     }
 
 }

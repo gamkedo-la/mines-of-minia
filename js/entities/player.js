@@ -17,6 +17,7 @@ class Player extends Character {
     static dfltInvSlots = 16;
     static dfltFuelMax = 50;
     static dfltPowerMax = 20;
+    static dfltScanDistance = 48;
     // FIXME
     static xpReqsByLvl = {
         1: 10,
@@ -63,6 +64,8 @@ class Player extends Character {
         this.inventory = spec.inventory || new InventoryData();
         this.inventory.actor = this;
         this.blockRating = spec.blockRating || this.dfltBlockRating;
+        // -- scan distance for detecting secrets/traps
+        this.scanDistance = spec.scanDistance || this.constructor.dfltScanDistance;
         // -- sfx
         this.moveSfx = spec.moveSfx || Assets.get('player.step', true);
         // -- xform tweaks
@@ -87,6 +90,7 @@ class Player extends Character {
             xp: this.xp,
             hitbp: this.hitbp,
             blockRating: this.blockRating,
+            scanDistance: this.scanDistance,
             x_inventory: this.inventory.as_kv(),
         });
     }
