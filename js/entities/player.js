@@ -17,7 +17,7 @@ class Player extends Character {
     static dfltInvSlots = 16;
     static dfltFuelMax = 50;
     static dfltPowerMax = 20;
-    static dfltScanDistance = 48;
+    static dfltScanRange = 48;
     // FIXME
     static xpReqsByLvl = {
         1: 10,
@@ -65,7 +65,7 @@ class Player extends Character {
         this.inventory.actor = this;
         this.blockRating = spec.blockRating || this.dfltBlockRating;
         // -- scan distance for detecting secrets/traps
-        this.scanDistance = spec.scanDistance || this.constructor.dfltScanDistance;
+        this.scanRange = spec.scanRange || this.constructor.dfltScanRange;
         // -- sfx
         this.moveSfx = spec.moveSfx || Assets.get('player.step', true);
         // -- xform tweaks

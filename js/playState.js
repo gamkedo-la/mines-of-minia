@@ -46,6 +46,7 @@ import { Serialization } from './serialization.js';
 import { Cog } from './entities/cog.js';
 import { Gem } from './entities/gem.js';
 import { DetectSystem } from './systems/detectSystem.js';
+import { ScanAction } from './actions/scan.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -109,6 +110,7 @@ class PlayState extends GameState {
                         Hud.xspec({
                             tag: 'hud',
                             doSave: this.doSave.bind(this),
+                            doScan: this.doScan.bind(this),
                             getCurrentHandler: () => this.currentHandler,
                         }),
                     ],
@@ -390,6 +392,15 @@ class PlayState extends GameState {
         console.log(`-- doSave`);
         Serialization.save(this);
         Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `game saved`});
+    }
+
+    doScan() {
+        console.log(`-- doScan`);
+        if (!this.currentHandler === 'interact') return;
+        let action = new ScanAction({
+            lvl: this.lvl,
+        });
+        TurnSystem.postLeaderAction(action);
     }
 
 }

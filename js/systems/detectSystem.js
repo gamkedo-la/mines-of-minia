@@ -64,9 +64,9 @@ class DetectSystem extends System {
     iterate(evt, e) {
         if (!this.player) return;
         // detect distance comes from player
-        let scanDistance = this.player.scanDistance;
+        let scanRange = this.player.scanRange;
         let distance = Mathf.distance(this.player.xform.x, this.player.xform.y, e.xform.x, e.xform.y);
-        if (distance > scanDistance) return;
+        if (distance > scanRange) return;
         // roll for player detection
         // -- detect chance based on player savvy
         let detectChance = Mathf.lerp(8, 21, .1, .5, this.player.savvy);
