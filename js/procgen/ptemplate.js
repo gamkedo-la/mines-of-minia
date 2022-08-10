@@ -89,6 +89,16 @@ class ProcTemplate {
         this.spawn.stairsUp = Util.getpath(spec, 'spawn.stairsUp');
         this.spawn.stairsDown = Util.getpath(spec, 'spawn.stairsDown');
         this.spawn.door = Util.getpath(spec, 'spawn.door');
+        // -- loot
+        this.spawn.enemyLootOptions = Util.getpath(spec, 'spawn.enemyLootOptions', [
+            { weight: .5, kind: 'tokens'},
+            { weight: .2, kind: 'cog'},
+            { weight: .2, kind: 'gem'},
+            { weight: .1, kind: 'weapon'},
+            { weight: .1, kind: 'reactor'},
+            { weight: .1, kind: 'shielding'},
+            { weight: .1, kind: 'gadget'},
+        ]);
         // -- enemy
         this.spawn.enemyList = Util.getpath(spec, 'spawn.enemyList', []);
         this.spawn.enemyLvlOptions = Util.getpath(spec, 'spawn.enemyLvlOptions', [

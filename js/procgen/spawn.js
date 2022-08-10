@@ -6,6 +6,7 @@ import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
 import { Mathf } from '../base/math.js';
 import { Prng } from '../base/prng.js';
+import { Util } from '../base/util.js';
 import { BooCharm } from '../charms/boo.js';
 import { Charm } from '../charms/charm.js';
 import { FieryCharm } from '../charms/fiery.js';
@@ -37,7 +38,7 @@ class Spawn {
         // -- stairs
         this.spawnStairs(template, pstate);
         // -- enemies
-        //this.spawnEnemies(template, pstate);
+        this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
@@ -615,10 +616,73 @@ class Spawn {
         });
     }
 
-    static genItem(template, pstate) {
-        let x_spawn = template.spawn || {};
+    static genTokens(template, pstate) {
+        // -- level
+        let lvl = template.index;
+        // min tokens
+        let minTokens = Math.round(Mathf.lerp(1, Config.maxLvl, 1, 80, lvl));
+        let maxTokens = Math.round(Mathf.lerp(1, Config.maxLvl, 5, 120, lvl));
+        // roll for tokens
+        let tokens = Prng.rangeInt(minTokens, maxTokens);
+        return Token.xspec({
+            name: 'token',
+            x_sketch: Assets.get('token'),
+            count: tokens,
+        });
+    }
+
+    static genGem(template, pstate) {
+        // pick kind
+        let kind = Prng.choose(Gem.kinds);
+        return Gem.xspec({
+            kind: kind,
+        });
+    }
+
+    static genCog(template, pstate) {
+        // pick kind
+        let kind = Prng.choose(Cog.kinds);
+        return Cog.xspec({
+            kind: kind,
+        });
+    }
+
+    static genLoot(template, pstate, options) {
+        // -- pick loot option
+        let option = Prng.chooseWeightedOption(options);
+        let loot = [];
         // pick item class
-        let itemClass = Prng.choose(x_spawn.itemList);
+        switch (option.kind) {
+            case 'tokens': {
+                loot.push(this.genTokens(template, pstate));
+                break;
+            }
+            case 'weapon': {
+                loot.push(this.genWeapon(template, pstate));
+                break;
+            }
+            case 'reactor': {
+                loot.push(this.genReactor(template, pstate));
+                break;
+            }
+            case 'shielding': {
+                loot.push(this.genShielding(template, pstate));
+                break;
+            }
+            case 'gadget': {
+                loot.push(this.genGadget(template, pstate));
+                break;
+            }
+            case 'gem': {
+                loot.push(this.genGem(template, pstate));
+                break;
+            }
+            case 'cog': {
+                loot.push(this.genCog(template, pstate));
+                break;
+            }
+        }
+        return loot;
     }
 
     static genEnemy(template, pstate) {
@@ -639,6 +703,7 @@ class Spawn {
             defenseRating: enemyClass.gDefenseRating.calculate(lvl),
             damageMin: enemyClass.gDamageMin.calculate(lvl),
             damageMax: enemyClass.gDamageMax.calculate(lvl),
+            loot: this.genLoot(template, pstate, x_spawn.enemyLootOptions),
         });
         return x_enemy;
     }
