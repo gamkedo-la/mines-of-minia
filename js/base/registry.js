@@ -15,6 +15,7 @@ import { Text } from "./text.js";
 import { UxButton } from './uxButton.js';
 import { UxCanvas } from './uxCanvas.js';
 import { UxDbg } from './uxDbg.js';
+import { UxFader } from './uxFader.js';
 import { UxGrid } from './uxGrid.js';
 import { UxInput } from './uxInput.js';
 import { UxMask } from './uxMask.js';
@@ -43,6 +44,7 @@ class Registry {
         ['UxButton', UxButton],
         ['UxCanvas', UxCanvas],
         ['UxDbg', UxDbg],
+        ['UxFader', UxFader],
         ['UxGrid', UxGrid],
         ['UxInput', UxInput],
         ['UxMask', UxMask],
