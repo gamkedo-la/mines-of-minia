@@ -21,10 +21,8 @@ class UxFader extends UxView {
         // !fadein => visible to transparent
         this.fadein = spec.fadein || false;
         this.ttl = spec.ttl || this.constructor.dfltTTL;
-
         this.alpha = (this.fadein) ? 0 : 1;
         this.elapsed = 0;
-
         this.timer;
         // -- event handlers
         this.onTimer = this.onTimer.bind(this);

@@ -4,11 +4,13 @@ import { DropLootAction } from "../actions/loot.js";
 import { DestroyAction } from "../base/actions/destroy.js";
 import { Config } from "../base/config.js";
 import { Direction } from "../base/dir.js";
+import { Events } from "../base/event.js";
 import { Fmt } from "../base/fmt.js";
 import { Rect } from "../base/rect.js";
 import { ActionSystem } from "../base/systems/actionSystem.js";
 import { UpdateSystem } from "../base/systems/updateSystem.js";
 import { Util } from "../base/util.js";
+import { OverlaySystem } from "../systems/overlaySystem.js";
 import { MiniaModel } from "./miniaModel.js";
 import { RangedWeapon } from "./rangedWeapon.js";
 import { Weapon } from "./weapon.js";
@@ -163,6 +165,7 @@ class Character extends MiniaModel {
     onDamaged(evt) {
         let health = this.health - evt.damage;
         //console.log(`${this} onDamaged: ${Fmt.ofmt(evt)} health: ${health}`);
+        Events.trigger(OverlaySystem.evtNotify, {which: 'popup', actor: this, msg: `-${evt.damage}`});
         if (health > 0) {
             UpdateSystem.eUpdate(this, { health: health });
         } else {

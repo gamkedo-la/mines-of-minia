@@ -24,6 +24,7 @@ import { UxSlider } from './uxSlider.js';
 import { UxText } from './uxText.js';
 import { UxToggle } from './uxToggle.js';
 import { VarSprite } from './varSprite.js';
+import { Vfx } from './vfx.js';
 import { XForm } from './xform.js';
 
 class Registry {
@@ -53,6 +54,7 @@ class Registry {
         ['UxText', UxText],
         ['UxToggle', UxToggle],
         ['VarSprite', VarSprite],
+        ['Vfx', Vfx],
         ['XForm', XForm],
     ]);
 

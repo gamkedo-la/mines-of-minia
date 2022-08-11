@@ -2,9 +2,13 @@ export { OverlaySystem };
 
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
+import { Font } from '../base/font.js';
 import { System } from '../base/system.js';
+import { Text } from '../base/text.js';
+import { TextVfx } from '../base/textVfx.js';
 import { UxPanel } from '../base/uxPanel.js';
 import { XForm } from '../base/xform.js';
+import { Resurrect64 } from '../resurrect64.js';
 
 class OverlaySystem extends System {
     static evtNotify = 'overlay.notify';
@@ -18,6 +22,19 @@ class OverlaySystem extends System {
 
     onNotify(evt) {
         switch (evt.which) {
+            case 'popup': {
+                console.log(`-- ${this} popup: ${evt.msg}`);
+                let popup = new TextVfx({
+                    actor: evt.actor,
+                    text: new Text({color: Resurrect64.colors[15], wrap: true, text: evt.msg, font: new Font({size: 10})}),
+                    //textStr: evt.msg,
+                    xform: new XForm({width: 20, height: 20, stretch: false, offx: -10, offy: -10}),
+                    float: 16,
+                    fade: true,
+                });
+                this.overlay.adopt(popup);
+                break;
+            }
             case 'info': {
                 console.log(`-- ${this} info: ${evt.msg}`);
                 break;
