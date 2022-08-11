@@ -42,10 +42,6 @@ class TextVfx extends Vfx {
         // -- event handlers
         this.onTimer = this.onTimer.bind(this);
         this.onTock = this.onTock.bind(this);
-        // handle float
-        if (this.float) {
-            Events.listen(Game.evtTock, this.onTock);
-        }
     }
 
     destroy() {
@@ -75,5 +71,7 @@ class TextVfx extends Vfx {
     // METHODS -------------------------------------------------------------
     show() {
         this.timer = new Timer({ttl: this.ttl, cb: this.onTimer});
+        // handle float
+        if (this.float) Events.listen(Game.evtTock, this.onTock);
     }
 }
