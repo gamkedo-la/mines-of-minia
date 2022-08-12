@@ -1,6 +1,9 @@
 export { ScanVfx };
 
-    import { Mathf } from './base/math.js';
+import { Events } from './base/event.js';
+import { Game } from './base/game.js';
+import { Mathf } from './base/math.js';
+import { Timer } from './base/timer.js';
 import { Vfx } from './base/vfx.js';
 
 class ScanVfx extends Vfx {
@@ -23,6 +26,8 @@ class ScanVfx extends Vfx {
     }
 
     onTock(evt) {
+        this.elapsed += evt.deltaTime;
+        if (this.elapsed > this.ttl) this.elapsed = this.ttl;
         // lerp radius
         this.radius = Mathf.lerp(0, this.ttl, 0, this.actor.scanRange, this.elapsed);
         this.evt.trigger(this.constructor.evtUpdated, {actor: this});
@@ -46,11 +51,15 @@ class ScanVfx extends Vfx {
     _render(ctx) {
         // update sketch dimensions
         ctx.beginPath();
-        ctx.arc(x, y, radius, startAngle, endAngle);
-        ctx.strokeStyle = 'red';
+        ctx.arc(this.xform.minx, this.xform.miny, this.radius, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(155,171,178,.15)';
         ctx.stroke();
-        // render
-        if (this._sketch && this._sketch.render) this._sketch.render(ctx, this.xform.minx, this.xform.miny);
+        ctx.arc(this.xform.minx, this.xform.miny, this.radius+1, 0, Math.PI*2);
+        if (this.radius > 2) {
+            ctx.arc(this.xform.minx, this.xform.miny, this.radius-1, 0, Math.PI*2);
+        }
+        ctx.strokeStyle = 'rgba(155,171,178,.05)';
+        ctx.stroke();
     }
 
 }

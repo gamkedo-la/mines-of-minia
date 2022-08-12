@@ -50,5 +50,7 @@ class ScanAction extends Action {
         this.timer = new Timer({ttl: this.ttl, cb: this.onTimer});
         // play scan sfx
         if (this.sfx) this.sfx.play();
+        // start scan vfx
+        Events.trigger(OverlaySystem.evtNotify, { actor: this.actor, which: 'scan' });
     }
 }

@@ -27,7 +27,6 @@ class UxFader extends UxView {
         // -- event handlers
         this.onTimer = this.onTimer.bind(this);
         this.onTock = this.onTock.bind(this);
-        console.log(`ontock bind`);
     }
 
     destroy() {
@@ -40,7 +39,6 @@ class UxFader extends UxView {
         // start timer
         this.timer = new Timer({ttl: this.ttl, cb: this.onTimer});
         Events.listen(Game.evtTock, this.onTock);
-        console.log(`ontock listen`);
     }
 
     onTock(evt) {

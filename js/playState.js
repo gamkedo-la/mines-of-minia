@@ -389,13 +389,11 @@ class PlayState extends GameState {
     }
 
     doSave() {
-        console.log(`-- doSave`);
         Serialization.save(this);
         Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `game saved`});
     }
 
     doScan() {
-        console.log(`-- doScan`);
         if (!this.currentHandler === 'interact') return;
         let action = new ScanAction({
             lvl: this.lvl,

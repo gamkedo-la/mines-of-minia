@@ -9,6 +9,7 @@ import { TextVfx } from '../base/textVfx.js';
 import { UxPanel } from '../base/uxPanel.js';
 import { XForm } from '../base/xform.js';
 import { Resurrect64 } from '../resurrect64.js';
+import { ScanVfx } from '../scanVfx.js';
 
 class OverlaySystem extends System {
     static evtNotify = 'overlay.notify';
@@ -23,7 +24,6 @@ class OverlaySystem extends System {
     onNotify(evt) {
         switch (evt.which) {
             case 'popup': {
-                console.log(`-- ${this} popup: ${evt.msg}`);
                 let popup = new TextVfx({
                     actor: evt.actor,
                     text: new Text({color: Resurrect64.colors[15], wrap: true, text: evt.msg, font: new Font({size: 10})}),
@@ -44,16 +44,21 @@ class OverlaySystem extends System {
                 break;
             }
             case 'vfx': {
-                console.log(`-- ${this} start vfx: ${evt.vfx}`);
                 this.startAnimation(evt.actor, evt.vfx);
+                break;
+            }
+            case 'scan': {
+                let vfx = new ScanVfx({
+                    actor: evt.actor,
+                    xform: new XForm({stretch: false}),
+                });
+                this.overlay.adopt(vfx);
                 break;
             }
         }
     }
 
     startAnimation(actor, anim) {
-        console.log(`actor: ${actor}`);
-        console.log(`anim: ${anim}`);
         // create panel for vfx
         let panel = new UxPanel({
             tag: 'vfx',
@@ -70,8 +75,6 @@ class OverlaySystem extends System {
             }),
         });
         this.overlay.adopt(panel);
-        //console.log(`-- panel: ${panel} x,y: ${panel.xform.x},${panel.xform.y}`);
-
         // track actor state
         let onActorUpdate = (evt) => {
             if (evt.update && evt.update.xform && (evt.update.xform.hasOwnProperty('x') || evt.update.xform.hasOwnProperty('y'))) {
@@ -90,7 +93,6 @@ class OverlaySystem extends System {
 
         // track animation state
         let onAnimDone = (evt) => {
-            //console.log(`onAnimDone`);
             actor.evt.ignore(actor.constructor.evtUpdate, onActorUpdate);
             actor.evt.ignore(actor.constructor.evtDestroyed, onActorDestroyed);
             anim.evt.ignore(anim.constructor.evtDone, onAnimDone);
