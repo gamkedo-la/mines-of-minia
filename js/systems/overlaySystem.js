@@ -55,6 +55,10 @@ class OverlaySystem extends System {
                 this.overlay.adopt(vfx);
                 break;
             }
+            case 'alert': {
+                this.startAnimation(evt.actor, evt.vfx);
+                break;
+            }
         }
     }
 

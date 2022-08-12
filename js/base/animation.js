@@ -83,6 +83,10 @@ class Animation extends Sketch {
         return this.cidx;
     }
 
+    get duration() {
+        return this.cels.reduce((pv, cv) => pv+cv.ttl, 0);
+    }
+
     // EVENT HANDLERS ------------------------------------------------------
     onTimer(evt) {
         this.timer = null;
