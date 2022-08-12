@@ -839,11 +839,11 @@ class Spawn {
                 x_sketch: Assets.get('fuelcell'),
             }),
 
-            /*
-            Magma.xspec({
-                name: 'magma',
+            Token.xspec({
+                name: 'token',
+                x_sketch: Assets.get('token'),
+                count: 8,
             }),
-            */
 
             this.genWeapon(template, pstate),
             this.genReactor(template, pstate),

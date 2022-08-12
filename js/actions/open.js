@@ -8,6 +8,7 @@ import { Timer } from '../base/timer.js';
 import { Direction } from '../base/dir.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Events } from '../base/event.js';
+import { Assets } from '../base/assets.js';
 
 
 class DoOpenAction extends Action {
@@ -16,29 +17,43 @@ class DoOpenAction extends Action {
         super(spec);
         this.target = spec.target;
         this.ttl = spec.ttl || this.constructor.dfltTTL;
+        if (this.target.cls === 'Chest') {
+            this.sfx = Assets.get('chest.open', true);
+        }
+        this.failedSfx = spec.failedSfx || Assets.get('action.failed', true);
+        this.unlocked = true;
+        this.onTimer = this.onTimer.bind(this);
+    }
+
+    onTimer(evt) {
+        // update target to open state
+        if (this.unlocked) this.target.open(this.actor);
+        this.finish();
     }
 
     setup() {
-        this.timer = new Timer({ttl: this.ttl, cb: () => this.finish() });
+        this.timer = new Timer({ttl: this.ttl, cb: this.onTimer});
         // check for locked state, and required keys...
-        let unlocked = true;
         if (this.target.locked) {
             // what key is required?
             let kind = this.target.kind;
             if (!this.actor.inventory || !this.actor.inventory.hasKey(kind)) {
-                unlocked = false;
+                this.unlocked = false;
                 Events.trigger(OverlaySystem.evtNotify, { actor: this.player, which: 'warn', msg: `need ${kind} key to unlock` });
+                if (this.failedSfx) this.failedSfx.play();
             }
         }
-        // update target to open state
-        if (unlocked) this.target.open(this.actor);
+        // start open sound if unlocked
+        if (this.unlocked && this.sfx) {
+            this.sfx.play();
+        }
     }
 }
 
 class OpenAction extends SerialAction {
     // STATIC VARIABLES ----------------------------------------------------
     static dfltPoints = 1;
-    static dfltTTL = 100;
+    static dfltTTL = 300;
     static dfltNudge = 8;
     static dfltNudgeSpeed = .2;
     static dfltNudgeAccel = .2;

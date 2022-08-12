@@ -3,6 +3,7 @@ export { PickupAction, DoPickupAction }
 import { Action } from '../base/actions/action.js';
 import { MoveAction } from '../base/actions/move.js';
 import { SerialAction } from '../base/actions/serialAction.js';
+import { Assets } from '../base/assets.js';
 import { Direction } from '../base/dir.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 
@@ -10,7 +11,11 @@ class DoPickupAction extends Action {
     constructor(spec) {
         super(spec);
         this.target = spec.target;
-        this.sfx = spec.sfx;
+        if (this.target.cls === 'Token') {
+            this.sfx = Assets.get('currency.pickup', true);
+        } else {
+            this.sfx = spec.sfx;
+        }
     }
     setup() {
         // this is an instant action
