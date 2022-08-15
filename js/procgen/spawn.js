@@ -39,6 +39,10 @@ class Spawn {
         this.spawnDoors(template, pstate);
         // -- stairs
         this.spawnStairs(template, pstate);
+        // -- chests
+        this.spawnChests(template, pstate);
+        // -- lock and key
+        this.spawnLockAndKeys(template, pstate);
         // -- enemies
         //this.spawnEnemies(template, pstate);
         // -- traps
@@ -260,6 +264,65 @@ class Spawn {
             blocks: 0,
         }));
 
+    }
+
+    static spawnChests(template, pstate) {
+        let prooms = pstate.prooms || [];
+        let plvl = pstate.plvl;
+        let x_spawn = template.spawn || {};
+        let quota = Prng.rangeInt(x_spawn.chestMin, x_spawn.chestMax);
+        console.log(`quota: ${quota}`);
+
+        // chests will not appear along critical path (stair to stair)
+        let choices = prooms.filter((v) => !v.critical);
+        let iterations = 500;
+
+        while (iterations-- > 0 && quota > 0) {
+            // pick candidate room
+            let proom = Prng.choose(choices);
+
+            // chests have higher chance if room is terminal
+            let spawn = false;
+            if (proom.connections.length === 1) {
+                // roll for chest
+                if (Prng.flip(x_spawn.chestTermRoomPct)) {
+                    spawn = true;
+                }
+            } else {
+                // roll for chest
+                if (Prng.flip(x_spawn.chestRoomPct)) {
+                    spawn = true;
+                }
+            }
+
+            if (spawn) {
+                // choose index
+                let idx;
+                for (let i=0; i<100; i++) {
+                    // -- randomly choose index from room
+                    idx = Prng.choose(proom.idxs);
+                    // -- test index to make sure nothing is there..
+                    if (!this.checkSpawnIdx(plvl, idx)) continue;
+                    break;
+                }
+                // spawn
+                if (idx !== undefined) {
+                    quota--;
+                    console.log(`spawn chest in proom: ${proom} idx: ${idx}`);
+                    plvl.entities.push(Chest.xspec({
+                        idx: idx,
+                        z: template.fgZed,
+                        loot: this.genLoot(template, pstate, x_spawn.chestLootOptions),
+                    }));
+                }
+
+            }
+
+        }
+    }
+
+    static spawnLockAndKeys(template, pstate) {
+        let prooms = pstate.prooms || [];
     }
 
     static genWeapon(template, pstate) {
