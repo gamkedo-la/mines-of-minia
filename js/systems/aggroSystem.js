@@ -69,11 +69,13 @@ class AggroSystem extends System {
                 if (this.dbg) console.log(`${this} ${e} lost aggro for ${e.aggroTarget} - lost los`);
                 e.evt.trigger(e.constructor.evtAggroLost, {actor: e, target: e.aggroTarget, lastIdx: e.aggroIdx});
                 UpdateSystem.eUpdate(e, {aggroTarget: null, aggroIdx: -1});
+                Events.trigger(OverlaySystem.evtNotify, { actor: e, which: 'aggroLoss' });
             // check for loss of aggro due to range
             } else if (d > e.aggroRange) {
                 if (this.dbg) console.log(`${this} ${e} lost aggro for ${e.aggroTarget} - distance`);
                 e.evt.trigger(e.constructor.evtAggroLost, {actor: e, target: e.aggroTarget, lastIdx: e.aggroIdx});
                 UpdateSystem.eUpdate(e, {aggroTarget: null, aggroIdx: -1});
+                Events.trigger(OverlaySystem.evtNotify, { actor: e, which: 'aggroLoss' });
             // maintain aggro
             } else {
                 if (e.aggroTarget.idx !== e.aggroIdx) {

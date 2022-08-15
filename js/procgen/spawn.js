@@ -40,7 +40,7 @@ class Spawn {
         // -- stairs
         this.spawnStairs(template, pstate);
         // -- enemies
-        this.spawnEnemies(template, pstate);
+        //this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
@@ -847,7 +847,7 @@ class Spawn {
                 count: 8,
             }),
 
-            //Rous.xspec({}),
+            Rous.xspec({}),
 
             this.genWeapon(template, pstate),
             this.genReactor(template, pstate),

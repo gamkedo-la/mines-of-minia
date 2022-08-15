@@ -65,6 +65,15 @@ class OverlaySystem extends System {
                 this.overlay.adopt(vfx);
                 break;
             }
+            case 'aggroLoss': {
+                let vfx = new AnimVfx({
+                    actor: evt.actor,
+                    anim: Assets.get('vfx.aggroLoss', true),
+                });
+                this.overlay.adopt(vfx);
+                break;
+            }
+
         }
     }
 

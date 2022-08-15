@@ -71,7 +71,6 @@ class Animator extends Sketch {
     onStateChange(evt) {
         let wantState = this.evtAccessor(evt);
         if (!wantState) return;
-        if (this.tag === 'enemy') console.log(`${this} wantState: ${wantState} from ${Fmt.ofmt(evt)}`);
         let fromState = (this.pendingState) ? this.pendingState : this.state;
         // check for no state change
         if (fromState === wantState) return;
@@ -86,7 +85,6 @@ class Animator extends Sketch {
         // no transition
         } else {
             let sketch = this.sketches[wantState] || Sketch.zero;
-            if (this.tag === 'enemy') console.log(`sketches: ${Fmt.ofmt(this.sketches)} sketch for ${wantState}: ${Fmt.ofmt(sketch)}`);
             this.state = wantState;
             this.setSketch(sketch);
         }
@@ -107,10 +105,8 @@ class Animator extends Sketch {
         this.upEvtUpdated = target.constructor.evtUpdated;
         this.upEvt.listen(this.upEvtUpdated, this.onStateChange);
         // -- set initial sketch state
-        // FIXME: set accessor?
         let wantState = this.stateAccessor(target);
-        //let wantState = (target.hasOwnProperty('animState')) ? target.animState : target.state;
-        console.log(`${this} link to ${target} wantState: ${wantState}`);
+        //console.log(`${this} link to ${target} wantState: ${wantState}`);
         if (wantState && this.state !== wantState) {
             let sketch = this.sketches[wantState] || Sketch.zero;
             this.state = wantState;

@@ -22,7 +22,7 @@ class Vfx extends UxView {
             child.destroy();
         }
         if (this.actor) {
-            this.actor.evt.ignore(this.actor.constructor.evtUpdate, this.onActorUpdate);
+            this.actor.evt.ignore(this.actor.constructor.evtUpdated, this.onActorUpdate);
             this.actor.evt.ignore(this.actor.constructor.evtDestroyed, this.onActorDestroyed);
         }
         super.destroy();
@@ -38,7 +38,7 @@ class Vfx extends UxView {
 
     onActorDestroyed(evt) {
         if (this.actor) {
-            this.actor.evt.ignore(this.actor.constructor.evtUpdate, this.onActorUpdate);
+            this.actor.evt.ignore(this.actor.constructor.evtUpdated, this.onActorUpdate);
             this.actor.evt.ignore(this.actor.constructor.evtDestroyed, this.onActorDestroyed);
         }
         //anim.evt.ignore(anim.constructor.evtDone, onAnimDone);
@@ -48,11 +48,11 @@ class Vfx extends UxView {
     // METHODS -------------------------------------------------------------
     linkActor(actor) {
         if (this.actor) {
-            this.actor.evt.ignore(this.actor.constructor.evtUpdate, this.onActorUpdate);
+            this.actor.evt.ignore(this.actor.constructor.evtUpdated, this.onActorUpdate);
             this.actor.evt.ignore(this.actor.constructor.evtDestroyed, this.onActorDestroyed);
         }
         this.actor = actor;
-        this.actor.evt.listen(this.actor.constructor.evtUpdate, this.onActorUpdate);
+        this.actor.evt.listen(this.actor.constructor.evtUpdated, this.onActorUpdate);
         this.actor.evt.listen(this.actor.constructor.evtDestroyed, this.onActorDestroyed);
         this.xform.x = actor.xform.x;
         this.xform.y = actor.xform.y;

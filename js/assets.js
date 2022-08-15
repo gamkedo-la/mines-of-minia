@@ -1228,4 +1228,14 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 150 }),
     ]}),
 
+    Animation.xspec({tag: 'vfx.aggroLoss', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 32, y: 0})}), ttl: 850 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 32, y: 0})}), ttl: 150 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 32, y: 0})}), ttl: 150 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 32, y: 0})}), ttl: 150 }),
+    ]}),
+
 ];
