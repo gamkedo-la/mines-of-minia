@@ -14,6 +14,7 @@ import { Chest } from '../entities/chest.js';
 import { Clutter } from '../entities/clutter.js';
 import { Cog } from '../entities/cog.js';
 import { Door } from '../entities/door.js';
+import { Enemy } from '../entities/enemy.js';
 import { Fuelcell } from '../entities/fuelcell.js';
 import { Funguy } from '../entities/funguy.js';
 import { Gadget } from '../entities/gadget.js';
@@ -24,6 +25,7 @@ import { Magma } from '../entities/magma.js';
 import { Projectile } from '../entities/projectile.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
 import { Reactor } from '../entities/reactor.js';
+import { Rous } from '../entities/rous.js';
 import { Shielding } from '../entities/shielding.js';
 import { Stairs } from '../entities/stairs.js';
 import { Token } from '../entities/token.js';
@@ -38,7 +40,7 @@ class Spawn {
         // -- stairs
         this.spawnStairs(template, pstate);
         // -- enemies
-        this.spawnEnemies(template, pstate);
+        //this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
@@ -843,6 +845,9 @@ class Spawn {
                 name: 'token',
                 x_sketch: Assets.get('token'),
                 count: 8,
+            }),
+
+            Rous.xspec({
             }),
 
             this.genWeapon(template, pstate),

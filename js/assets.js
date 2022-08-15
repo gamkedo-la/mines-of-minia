@@ -224,9 +224,6 @@ let miniaAssets = [
     Rect.xspec({tag: 'frame.green', width: 16, height: 16, borderColor: 'green', border: 3, fill: false}),
     Rect.xspec({tag: 'frame.green.2', width: 16, height: 16, borderColor: 'green', border: 6, fill: false}),
 
-    Rect.xspec({tag: 'idle', width: 12, height: 12, color: 'green'}),
-    Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
-    Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
 
     Animator.xspec({
         tag: 'trap.test',
@@ -680,6 +677,9 @@ let miniaAssets = [
         state: 'close',
     }),
 
+    Rect.xspec({tag: 'idle', width: 12, height: 12, color: 'green'}),
+    Rect.xspec({tag: 'melee', width: 12, height: 12, color: 'red'}),
+    Rect.xspec({tag: 'dying', width: 12, height: 12, color: 'black'}),
     Animator.xspec({
         tag: 'enemy',
         x_sketches: {
@@ -688,7 +688,9 @@ let miniaAssets = [
             'dying': new AssetRef({tag: 'dying'}),
         },
         state: 'idle',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
+
     Sfx.xspec({ tag: 'test.sound', audio: new SfxRef({src: 'snd/test.mp3'}) }),
     Sfx.xspec({ tag: 'gem.break', audio: new SfxRef({src: 'snd/gem-break.mp3'}) }),
     Sfx.xspec({ tag: 'trap.trigger', audio: new SfxRef({src: 'snd/trap_triggered_short.mp3'}), volume: .5 }),
@@ -1233,6 +1235,16 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*5, y: 0})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*6, y: 0})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*7, y: 0})}), ttl: 150 }),
+    ]}),
+
+    Animation.xspec({tag: 'vfx.alert', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 850 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 150 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 150 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 150 }),
     ]}),
 
 ];

@@ -1,5 +1,7 @@
 export { OverlaySystem };
 
+    import { AnimVfx } from '../base/animVfx.js';
+import { Assets } from '../base/assets.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Font } from '../base/font.js';
@@ -56,7 +58,11 @@ class OverlaySystem extends System {
                 break;
             }
             case 'alert': {
-                this.startAnimation(evt.actor, evt.vfx);
+                let vfx = new AnimVfx({
+                    actor: evt.actor,
+                    anim: Assets.get('vfx.alert', true),
+                });
+                this.overlay.adopt(vfx);
                 break;
             }
         }

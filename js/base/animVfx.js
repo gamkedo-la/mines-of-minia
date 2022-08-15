@@ -1,19 +1,32 @@
 export { AnimVfx };
 
+    import { Config } from './config.js';
 import { Events } from './event.js';
 import { Game } from './game.js';
 import { Mathf } from './math.js';
 import { Sketch } from './sketch.js';
-import { Text } from './text.js';
 import { Timer } from './timer.js';
 import { UxFader } from './uxFader.js';
-import { UxText } from './uxText.js';
+import { UxPanel } from './uxPanel.js';
 import { Vfx } from './vfx.js';
+import { XForm } from './xform.js';
 
 class AnimVfx extends Vfx {
     static dfltTTL = 1000;
 
     // CONSTRUCTOR ---------------------------------------------------------
+    cpre(spec) {
+        super.cpre(spec);
+        if (!spec.xform && spec.anim) {
+            spec.xform = new XForm({
+                stretch: false, 
+                width: spec.anim.width, 
+                height: spec.anim.height, 
+                offx: -spec.anim.width*.5, 
+                offy: (spec.anim.height > Config.tileSize) ? Config.tileSize*.5-spec.anim.height : -spec.anim.height*.5,
+            });
+        }
+    }
     cpost(spec) {
         super.cpost(spec);
         this.fade = spec.hasOwnProperty('fade') ? spec.fade : false;
@@ -24,7 +37,6 @@ class AnimVfx extends Vfx {
         let dfltTTL = (this.anim.cls === 'Animation') ? this.anim.duration : this.constructor.dfltTTL;
         this.ttl = spec.ttl || dfltTTL;
         this.elapsed = 0;
-        if (spec.hasOwnProperty('textStr')) this.text.text = spec.textStr;
         let view = this;
         if (this.fade) {
             let fader = new UxFader({
@@ -63,13 +75,6 @@ class AnimVfx extends Vfx {
     onTimer(evt) {
         this.destroy();
     }
-
-    onAnimDone(evt) {
-        actor.evt.ignore(actor.constructor.evtUpdate, onActorUpdate);
-        actor.evt.ignore(actor.constructor.evtDestroyed, onActorDestroyed);
-        anim.evt.ignore(anim.constructor.evtDone, onAnimDone);
-        panel.destroy();
-    };
 
     // METHODS -------------------------------------------------------------
     show() {

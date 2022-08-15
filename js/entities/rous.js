@@ -1,6 +1,7 @@
 export { Rous };
 
 import { Assets } from '../base/assets.js';
+import { Fmt } from '../base/fmt.js';
 import { LvlVar } from '../lvlVar.js';
 import { Enemy } from './enemy.js';
 
@@ -18,6 +19,7 @@ class Rous extends Enemy{
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
+        //console.log(`Rous spec: ${Fmt.ofmt(spec)}`);
     }
 
 }

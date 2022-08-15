@@ -1,10 +1,12 @@
 export { AggroSystem };
 
+    import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Mathf } from '../base/math.js';
 import { System } from '../base/system.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Util } from '../base/util.js';
+import { OverlaySystem } from './overlaySystem.js';
 
 class AggroSystem extends System {
     static dfltAggroTag = 'player';
@@ -57,6 +59,8 @@ class AggroSystem extends System {
     }
 
     iterate(evt, e) {
+        // skip iteration for player
+        if (e.cls === 'Player') return;
         // is entity already tracking an aggro target?
         if (e.aggroTarget) {
             let d = Mathf.distance(e.xform.x, e.xform.y, e.aggroTarget.xform.x, e.aggroTarget.xform.y);
@@ -98,6 +102,7 @@ class AggroSystem extends System {
                     aggroIdx: target.idx,
                 });
                 e.evt.trigger(e.constructor.evtAggroGained, {actor: e, target: target});
+                Events.trigger(OverlaySystem.evtNotify, { actor: e, which: 'alert' });
             }
 
         }
