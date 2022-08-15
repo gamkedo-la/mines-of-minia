@@ -103,6 +103,7 @@ class Character extends MiniaModel {
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
         // -- sync xform to match sketch dimensions
+        if (this.cls === 'Rous') console.log(`sketch: ${this.sketch} dim: ${this.sketch.width},${this.sketch.height}`);
         this.xform.width = this.sketch.width;
         this.xform.height = this.sketch.height;
         // -- events

@@ -262,7 +262,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'reactor.1.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'reactor.2.carry', jitter: true, x_cels: [
@@ -284,7 +283,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'reactor.2.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'reactor.3.carry', jitter: true, x_cels: [
@@ -306,7 +304,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'reactor.3.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'poke.1.carry', jitter: true, x_cels: [
@@ -328,7 +325,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'poke.1.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'poke.2.carry', jitter: true, x_cels: [
@@ -350,7 +346,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'poke.2.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'poke.3.carry', jitter: true, x_cels: [
@@ -372,7 +367,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'poke.3.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'hack.1.carry', jitter: true, x_cels: [
@@ -394,7 +388,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'hack.1.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'hack.2.carry', jitter: true, x_cels: [
@@ -416,7 +409,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'hack.2.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'hack.3.carry', jitter: true, x_cels: [
@@ -438,7 +430,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'hack.3.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Sprite.xspec({tag: 'chest.brown.close', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*0, y: 0})}),
@@ -549,6 +540,7 @@ let miniaAssets = [
         },
         state: 'idler',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
     }),
 
     Animation.xspec({tag: 'golem_idler', x_cels: [
@@ -625,6 +617,7 @@ let miniaAssets = [
         },
         state: 'idler',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
     }),
 
     Animation.xspec({tag: 'cog_brass', x_cels: [
@@ -688,7 +681,6 @@ let miniaAssets = [
             'dying': new AssetRef({tag: 'dying'}),
         },
         state: 'idle',
-        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Sfx.xspec({ tag: 'test.sound', audio: new SfxRef({src: 'snd/test.mp3'}) }),
@@ -764,6 +756,7 @@ let miniaAssets = [
         },
         state: 'idler',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
     }),
 
     Animation.xspec({tag: 'token.carry', jitter: true, x_cels: [
@@ -789,7 +782,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'token.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'dark.gun.1.carry', jitter: true, x_cels: [
@@ -811,7 +803,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'dark.gun.1.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'dark.gun.2.carry', jitter: true, x_cels: [
@@ -833,7 +824,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'dark.gun.2.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'dark.gun.3.carry', jitter: true, x_cels: [
@@ -855,7 +845,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'dark.gun.3.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'ice.gun.1.carry', jitter: true, x_cels: [
@@ -877,7 +866,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'ice.gun.1.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'ice.gun.2.carry', jitter: true, x_cels: [
@@ -899,7 +887,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'ice.gun.2.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'ice.gun.3.carry', jitter: true, x_cels: [
@@ -921,7 +908,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'ice.gun.3.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
 
@@ -944,7 +930,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'fire.gun.1.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'fire.gun.2.carry', jitter: true, x_cels: [
@@ -966,7 +951,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'fire.gun.2.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'fire.gun.3.carry', jitter: true, x_cels: [
@@ -988,7 +972,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'fire.gun.3.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'shock.gun.1.carry', jitter: true, x_cels: [
@@ -1010,7 +993,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'shock.gun.1.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'shock.gun.2.carry', jitter: true, x_cels: [
@@ -1032,7 +1014,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'shock.gun.2.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Animation.xspec({tag: 'shock.gun.3.carry', jitter: true, x_cels: [
@@ -1054,7 +1035,6 @@ let miniaAssets = [
             'free': new AssetRef({tag: 'shock.gun.3.free'}),
         },
         state: 'free',
-        //evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
     }),
 
     Template.varsprite('img/rock-area-clutter.png', 'rock.clutter', [[0,0], [1,0]], {width: 16, height: 16}),
@@ -1220,6 +1200,7 @@ let miniaAssets = [
         },
         state: 'idler',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
     }),
 
     // -- menu

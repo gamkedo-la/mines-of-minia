@@ -32,6 +32,7 @@ class Animator extends Sketch {
         // -- upstream event handling
         // -- how to pull event update from event
         this.evtAccessor = spec.evtAccessor || ((evt) => (evt.update && evt.update.state) ? evt.update.state : null);
+        this.stateAccessor = spec.stateAccessor || ((e) => e.state);
         // -- the upstream event stream
         this.upEvt = spec.upEvt || Events.null;
         // -- the upstream update event
@@ -85,6 +86,7 @@ class Animator extends Sketch {
         // no transition
         } else {
             let sketch = this.sketches[wantState] || Sketch.zero;
+            if (this.tag === 'enemy') console.log(`sketches: ${Fmt.ofmt(this.sketches)} sketch for ${wantState}: ${Fmt.ofmt(sketch)}`);
             this.state = wantState;
             this.setSketch(sketch);
         }
@@ -106,8 +108,9 @@ class Animator extends Sketch {
         this.upEvt.listen(this.upEvtUpdated, this.onStateChange);
         // -- set initial sketch state
         // FIXME: set accessor?
-        let wantState = (target.hasOwnProperty('animState')) ? target.animState : target.state;
-        //console.log(`${this} link to ${target} wantState: ${wantState}`);
+        let wantState = this.stateAccessor(target);
+        //let wantState = (target.hasOwnProperty('animState')) ? target.animState : target.state;
+        console.log(`${this} link to ${target} wantState: ${wantState}`);
         if (wantState && this.state !== wantState) {
             let sketch = this.sketches[wantState] || Sketch.zero;
             this.state = wantState;
