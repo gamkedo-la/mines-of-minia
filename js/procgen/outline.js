@@ -435,6 +435,8 @@ class Outline {
     static carveDoor(lvl, phall, proom, idx, dir, width, doorTile='door') {
         phall.exits.push(idx);
         proom.exits.push(idx);
+        phall.exitMap[idx] = proom;
+        proom.exitMap[idx] = phall;
         let i = lvl.data.ifromidx(idx);
         let j = lvl.data.jfromidx(idx);
         let widthDir = (dir === Direction.east || dir === Direction.west) ? Direction.south : Direction.east;

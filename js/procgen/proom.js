@@ -60,8 +60,10 @@ class ProcRoom extends ProcModel {
         this.overlaps = {};
         // edge tiles
         this.edges = [];
-        this.exits = [];
         this.pois = [];
+        // exit map of exit/door index to adjacent room (ProcRoom)
+        this.exits = [];
+        this.exitMap = {};
         // center index
         this.cidx = 0;
         // dimensions
@@ -98,8 +100,7 @@ class ProcRoom extends ProcModel {
         if (i !== -1) this.idxs.splice(i, 1);
         i = this.edges.indexOf(idx);
         if (i !== -1) this.edges.splice(i, 1);
-        i = this.exits.indexOf(idx);
-        if (i !== -1) this.exits.splice(i, 1);
+        delete this.exits[idx];
     }
 
     draw(tag) {

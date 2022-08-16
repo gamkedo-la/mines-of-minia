@@ -46,9 +46,10 @@ class Door extends MiniaModel {
         this.state = spec.state || this.constructor.dfltState;
         // -- is door locked?
         this.locked = spec.hasOwnProperty('locked') ? spec.locked : false;
+        // -- hidden from player view?
+        this.hidden = spec.hasOwnProperty('hidden') ? spec.hidden : false;
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
-        //this._sketch.link(this);
         // -- sync xform to match sketch dimensions
         this.xform.width = this.sketch.width;
         this.xform.height = this.sketch.height;
@@ -65,6 +66,7 @@ class Door extends MiniaModel {
         return Object.assign({}, super.as_kv(), {
             kind: this.kind,
             state: this.state,
+            hidden: this.hidden,
             locked: this.locked,
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
         });
@@ -113,6 +115,11 @@ class Door extends MiniaModel {
         this._sketch.height = this.xform.height;
         // render
         if (this._sketch && this._sketch.render) this._sketch.render(ctx, this.xform.minx, this.xform.miny);
+        // FIXME
+        if (this.hidden) {
+            let r = new Rect({ width: 16, height: 16, border: 1, borderColor: 'rgba(255,255,0,1)', fill: false});
+            r.render(ctx, this.xform.minx, this.xform.miny);
+        }
     }
 
 }

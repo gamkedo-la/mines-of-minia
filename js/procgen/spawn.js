@@ -41,6 +41,8 @@ class Spawn {
         this.spawnStairs(template, pstate);
         // -- chests
         this.spawnChests(template, pstate);
+        // -- hide rooms/caches
+        this.hideRooms(template, pstate);
         // -- lock and key
         this.spawnLockAndKeys(template, pstate);
         // -- enemies
@@ -65,6 +67,7 @@ class Spawn {
         let phalls = pstate.phalls || [];
         for (const phall of phalls) {
             for (const idx of phall.exits) {
+                console.log(`-- spawn door @ ${idx}`);
                 plvl.entities.push(Door.xspec({
                     idx: idx,
                     //x_sketch: Assets.get(doorTag),
@@ -321,8 +324,75 @@ class Spawn {
         }
     }
 
+    static hideRoom(template, pstate, proom) {
+        let plvl = pstate.plvl;
+        proom.secret = true;
+        console.log(`hide room: ${proom} exits: ${Fmt.ofmt(proom.exitMap)}`);
+        for (const [idx,hall] of Object.entries(proom.exitMap)) {
+            console.log(`-- hall: ${hall}`);
+            // find outer doorway of hall leading to room
+            for (const didx of Object.keys(hall.exitMap)) {
+                console.log(`  door idx: ${didx} room: ${hall.exitMap[didx]}`);
+                for (const e of plvl.entities) {
+                    if (e.idx === didx) {
+                        console.log(`  idx: ${didx} found ${e}`);
+                    }
+                }
+                if (hall.exitMap[didx] !== proom) {
+                    let door = plvl.entities.find((v) => v.idx === didx && v.cls === 'Door');
+                    console.log(`  door: ${door}`);
+                    if (door) {
+                        door.hidden = true;
+                    }
+                }
+            }
+        }
+    }
+
+    static hideRooms(template, pstate) {
+        let x_spawn = template.spawn || {};
+        let prooms = pstate.prooms || [];
+        let quota = Prng.rangeInt(x_spawn.secretRoomMin, x_spawn.secretRoomMax);
+        console.log(`secret room quota: min: ${x_spawn.secretRoomMin} max: ${x_spawn.secretRoomMax} ${quota}`);
+        // find any terminal rooms
+        for (const proom of prooms) {
+            if (quota <= 0) break;
+            // skip room if critical
+            if (proom.critical) continue;
+            if (Object.keys(proom.exitMap).length === 1) {
+                // roll for secret
+                if (Prng.flip(x_spawn.secretTermRoomPct)) {
+                    // make room hidden
+                    this.hideRoom(template, pstate, proom);
+                    quota--;
+                }
+            }
+        }
+
+        // find any other non-critical room
+        for (const proom of prooms) {
+            if (quota <= 0) break;
+            // skip room if critical
+            if (proom.critical) continue;
+            if (proom.secret) continue;
+                // roll for secret
+            if (Prng.flip(x_spawn.secretRoomPct)) {
+                // make room hidden
+                this.hideRoom(template, pstate, proom);
+                quota--;
+            }
+        }
+
+    }
+
     static spawnLockAndKeys(template, pstate) {
         let prooms = pstate.prooms || [];
+        let plvl = pstate.plvl;
+
+        let proom = Prng.choose(prooms);
+        let exit = Object.keys(proom.exitMap)[0];
+        let door = plvl.entities.find((v) => v.idx === exit);
+        console.log(`room: ${proom} exit: ${exit} door: ${Fmt.ofmt(door)}`);
     }
 
     static genWeapon(template, pstate) {
@@ -910,7 +980,7 @@ class Spawn {
                 count: 8,
             }),
 
-            Rous.xspec({}),
+            //Rous.xspec({}),
 
             this.genWeapon(template, pstate),
             this.genReactor(template, pstate),

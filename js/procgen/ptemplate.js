@@ -116,6 +116,12 @@ class ProcTemplate {
             { weight: .1, kind: 'gadget'},
         ]);
 
+        // -- secrets
+        this.spawn.secretRoomMin = Util.getpath(spec, 'spawn.secretRoomMin', 1);
+        this.spawn.secretRoomMax = Util.getpath(spec, 'spawn.secretRoomMax', 4);
+        this.spawn.secretTermRoomPct = Util.getpath(spec, 'spawn.secretTermRoomPct', .5);
+        this.spawn.secretRoomPct = Util.getpath(spec, 'spawn.secretRoomPct', .1);
+
         // -- enemy
         this.spawn.enemyList = Util.getpath(spec, 'spawn.enemyList', []);
         this.spawn.enemyLvlOptions = Util.getpath(spec, 'spawn.enemyLvlOptions', [
