@@ -310,7 +310,7 @@ class Spawn {
                 // spawn
                 if (idx !== undefined) {
                     quota--;
-                    console.log(`spawn chest in proom: ${proom} idx: ${idx}`);
+                    //console.log(`spawn chest in proom: ${proom} idx: ${idx}`);
                     plvl.entities.push(Chest.xspec({
                         idx: idx,
                         z: template.fgZed,
@@ -325,7 +325,7 @@ class Spawn {
 
     static hideRoom(template, pstate, proom) {
         let plvl = pstate.plvl;
-        proom.secret = true;
+        proom.hidden = true;
         for (const [idx,hall] of Object.entries(proom.exitMap)) {
             // find outer doorway of hall leading to room
             for (let didx of Object.keys(hall.exitMap)) {
@@ -386,14 +386,114 @@ class Spawn {
 
     }
 
+    static chooseSpawnIdx(plvl, idxs, tries=100) {
+        let choices = Array.from(idxs);
+        for (let i=0; i<tries; i++) {
+            // -- randomly choose index from room
+            let idx = Prng.choose(choices);
+            // -- test index to make sure nothing is there..
+            if (!this.checkSpawnIdx(plvl, idx)) {
+                let i = choices.indexOf(idx);
+                choices.splice(i, 1);
+                continue;
+            }
+            return idx;
+        }
+        return -1;
+    }
+
+    static lockRoom(template, pstate, proom, key) {
+        let plvl = pstate.plvl;
+        // lock the doors leading to room
+        let locks = [];
+        let keys = [];
+        let ok = true;
+        for (const idx of proom.exits) {
+            let door = plvl.entities.find((v) => v.idx === idx && v.cls === 'Door');
+            if (door) {
+                door.kind = key;
+                door.x_sketch = Assets.get(`door.${key}`);
+                door.locked = true;
+                //console.log(`found door to lock: ${Fmt.ofmt(door)}`)
+                locks.push(door);
+            }
+        }
+        // distribute keys within the room (<number of exits>-1)
+        // -- a key will be required to enter the room... distribute keys so the rest of the doors to the room can also be unlocked
+        for (let i=0; i<proom.exits.length-1; i++) {
+            // -- randomly choose index from room
+            let idx = this.chooseSpawnIdx(plvl, proom.idxs);
+            if (idx !== -1) {
+                let x_key = Key.xspec({
+                    kind: key,
+                    idx: idx,
+                    z: template.fgZed,
+                });
+                keys.push(x_key);
+                //console.log(`key to spawn: ${Fmt.ofmt(x_key)}`);
+            } else {
+                ok = false;
+            }
+        }
+        // finish up
+        if (!ok) {
+            for (const lock of locks) {
+                lock.kind = 'brown';
+                lock.x_sketch = Assets.get(`door.brown`);
+                lock.locked = false;
+            }
+        } else {
+            plvl.entities.push(...keys);
+            proom.locked = true;
+        }
+        return ok;
+    }
+
     static spawnLockAndKeys(template, pstate) {
         let prooms = pstate.prooms || [];
         let plvl = pstate.plvl;
+        let x_spawn = template.spawn || {};
 
-        let proom = Prng.choose(prooms);
-        let exit = parseInt(Object.keys(proom.exitMap)[0]);
-        let door = plvl.entities.find((v) => v.idx === exit);
-        console.log(`room: ${proom} exit: ${exit} door: ${Fmt.ofmt(door)}`);
+        let keys = [];
+
+        // -- determine locked room quota
+        let quota = Prng.rangeInt(x_spawn.lockRoomMin, x_spawn.lockRoomMax);
+        //console.log(`lock room quota: ${quota}`);
+        // -- filter candidate rooms
+        let lrooms = prooms.filter((v) => !v.critical && !v.hidden);
+        // lock rooms
+        for (let i=0; i<quota; i++) {
+            let proom = Prng.choose(lrooms);
+            let j = lrooms.indexOf(proom);
+            lrooms.splice(j, 1);
+            let key = Prng.choose(Key.kinds);
+            // try to lock room... ensure success
+            if (this.lockRoom(template, pstate, proom, key)) {
+                keys.push(key);
+            }
+        }
+
+        // distribute keys along the critical path ... this ensures keys to enter rooms are accessible
+        // -- find critical rooms
+        let crooms = prooms.filter((v) => v.critical);
+        for (const key of keys) {
+            // pick room
+            for (let i=0; i<5; i++) {
+                let proom = Prng.choose(crooms);
+                let idx = this.chooseSpawnIdx(plvl, proom.idxs);
+                if (idx !== -1) {
+                    let x_key = Key.xspec({
+                        kind: key,
+                        idx: idx,
+                        z: template.fgZed,
+                    });
+                    //console.log(`spawn crit key: ${Fmt.ofmt(x_key)}`);
+                    plvl.entities.push(x_key);
+                    break;
+                }
+            }
+        }
+
     }
 
     static genWeapon(template, pstate) {
@@ -954,9 +1054,10 @@ class Spawn {
                 ],
             }),
 
+            /*
             Chest.xspec({
-                name: 'chest.blue',
-                kind: 'blue',
+                name: 'chest.green',
+                kind: 'green',
                 loot: [
                     Token.xspec({
                         name: 'token',
@@ -967,8 +1068,9 @@ class Spawn {
             }),
 
             Key.xspec({
-                kind: 'blue',
+                kind: 'green',
             }),
+            */
 
             Fuelcell.xspec({
                 name: 'fuelcell',
