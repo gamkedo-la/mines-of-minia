@@ -33,7 +33,9 @@ class ScanAction extends Action {
         for (const idx of this.lvl.idxsInRange(this.actor.idx, scanRange)) {
             for (const hidden of this.lvl.findidx(idx, (v) => v.hidden)) {
                 // setup reveal action on hidden object
-                let action = new RevealAction();
+                let action = new RevealAction({
+                    lvl: this.lvl,
+                });
                 ActionSystem.assign(hidden, action);
                 revealed = true;
             }

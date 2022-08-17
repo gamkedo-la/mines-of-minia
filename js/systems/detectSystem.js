@@ -1,6 +1,6 @@
 export { DetectSystem };
 
-    import { RevealAction } from '../actions/reveal.js';
+import { RevealAction } from '../actions/reveal.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Mathf } from '../base/math.js';
@@ -24,6 +24,7 @@ class DetectSystem extends System {
         this.onHiddenUpdate = this.onHiddenUpdate.bind(this);
         this.active = false;
         this.revealed = false;
+        this.lvl = spec.lvl;
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -72,7 +73,9 @@ class DetectSystem extends System {
         let detectChance = Mathf.lerp(8, 21, .1, .5, this.player.savvy);
         if (Random.flip(detectChance)) {
             // setup reveal action on entity
-            let action = new RevealAction();
+            let action = new RevealAction({
+                lvl: this.lvl,
+            });
             ActionSystem.assign(e, action);
             this.revealed = true;
         }

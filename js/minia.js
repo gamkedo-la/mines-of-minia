@@ -47,6 +47,7 @@ import { Prompt } from "./prompt.js";
 import { Magma } from "./entities/magma.js";
 import { MenuState } from "./menuState.js";
 import { AudioSystem } from "./base/systems/audioSystem.js";
+import { Facade } from "./entities/facade.js";
 
 class Minia extends Game {
     static states = {
@@ -128,6 +129,7 @@ class Minia extends Game {
             Cog,
             Door,
             Enemy,
+            Facade,
             Fuelcell,
             Funguy,
             Gadget,

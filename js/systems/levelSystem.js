@@ -137,7 +137,7 @@ class LevelSystem extends System {
             let e = Generator.generate(x_e);
             // center at x,y
             // FIXME
-            if (e.cls !== 'Tile') {
+            if (e.cls !== 'Tile' && e.cls !== 'Facade') {
                 let h = e.xform.height;
                 e.xform.offx = -e.xform.width*.5;
                 if (h > Config.tileSize) {

@@ -15,6 +15,7 @@ import { Clutter } from '../entities/clutter.js';
 import { Cog } from '../entities/cog.js';
 import { Door } from '../entities/door.js';
 import { Enemy } from '../entities/enemy.js';
+import { Facade } from '../entities/facade.js';
 import { Fuelcell } from '../entities/fuelcell.js';
 import { Funguy } from '../entities/funguy.js';
 import { Gadget } from '../entities/gadget.js';
@@ -67,7 +68,6 @@ class Spawn {
         let phalls = pstate.phalls || [];
         for (const phall of phalls) {
             for (const idx of phall.exits) {
-                console.log(`-- spawn door @ ${idx}`);
                 plvl.entities.push(Door.xspec({
                     idx: idx,
                     //x_sketch: Assets.get(doorTag),
@@ -274,7 +274,6 @@ class Spawn {
         let plvl = pstate.plvl;
         let x_spawn = template.spawn || {};
         let quota = Prng.rangeInt(x_spawn.chestMin, x_spawn.chestMax);
-        console.log(`quota: ${quota}`);
 
         // chests will not appear along critical path (stair to stair)
         let choices = prooms.filter((v) => !v.critical);
@@ -327,22 +326,24 @@ class Spawn {
     static hideRoom(template, pstate, proom) {
         let plvl = pstate.plvl;
         proom.secret = true;
-        console.log(`hide room: ${proom} exits: ${Fmt.ofmt(proom.exitMap)}`);
         for (const [idx,hall] of Object.entries(proom.exitMap)) {
-            console.log(`-- hall: ${hall}`);
             // find outer doorway of hall leading to room
-            for (const didx of Object.keys(hall.exitMap)) {
-                console.log(`  door idx: ${didx} room: ${hall.exitMap[didx]}`);
-                for (const e of plvl.entities) {
-                    if (e.idx === didx) {
-                        console.log(`  idx: ${didx} found ${e}`);
-                    }
-                }
+            for (let didx of Object.keys(hall.exitMap)) {
+                didx = parseInt(didx);
                 if (hall.exitMap[didx] !== proom) {
                     let door = plvl.entities.find((v) => v.idx === didx && v.cls === 'Door');
-                    console.log(`  door: ${door}`);
+                    //console.log(`  door: ${Fmt.ofmt(door)}`);
                     if (door) {
                         door.hidden = true;
+                        // create facade at same index
+                        let x_facade = Facade.xspec({
+                            kind: 'wall',
+                            tileSize: template.tileSize,
+                            baseAssetTag: template.translate.wall,
+                            z: template.fgZed,
+                            idx: didx,
+                        });
+                        plvl.entities.push(x_facade);
                     }
                 }
             }
@@ -390,7 +391,7 @@ class Spawn {
         let plvl = pstate.plvl;
 
         let proom = Prng.choose(prooms);
-        let exit = Object.keys(proom.exitMap)[0];
+        let exit = parseInt(Object.keys(proom.exitMap)[0]);
         let door = plvl.entities.find((v) => v.idx === exit);
         console.log(`room: ${proom} exit: ${exit} door: ${Fmt.ofmt(door)}`);
     }
