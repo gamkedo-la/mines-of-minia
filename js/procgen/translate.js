@@ -216,14 +216,15 @@ class Translate {
         let floorTag = t_spec.hasOwnProperty('floor') ? t_spec['floor'] : 'floor';
         if (proom.critical) {
             tags = {
-                floor: floorTag,
+                floor: 'punk.floor',
                 pit: t_spec.hasOwnProperty('pit') ? t_spec['pit'] : 'pit',
-                pitb: t_spec.hasOwnProperty('pitb') ? t_spec['pitb'] : floorTag,
-                wall: t_spec.hasOwnProperty('wall') ? t_spec['wall'] : 'wall',
+                pitb: 'punk.floor',
+                wall: 'punk.wall',
                 door: t_spec.hasOwnProperty('door') ? t_spec['door'] : 'door',
                 obs: t_spec.hasOwnProperty('obs') ? t_spec['obs'] : 'obs',
-                obsb: t_spec.hasOwnProperty('obsb') ? t_spec['obsb'] : floorTag,
+                obsb: 'punk.floor',
             };
+            console.log(`-- critical room tags: ${Fmt.ofmt(tags)}`);
         } else {
             tags = {
                 floor: floorTag,
@@ -257,7 +258,7 @@ class Translate {
                     break;
                 case 'floor':
                     bgKind = 'floor';
-                    bgTag = floorTag;
+                    bgTag = tags[kind];
                     break;
                 case 'wall':
                     fgKind = 'wall';
@@ -265,7 +266,7 @@ class Translate {
                     break;
                 case 'door':
                     bgKind = 'floor';
-                    bgTag = floorTag;
+                    bgTag = tags[kind];
                     break;
                 case 'obs':
                     fgKind = 'wall';
