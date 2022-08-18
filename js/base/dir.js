@@ -202,6 +202,28 @@ class Direction {
         return Direction.none;
     }
 
+    static adjacent(dir) {
+        switch(dir) {
+        case Direction.north:
+            return [Direction.northWest, Direction.northEast]
+        case Direction.south:
+            return [Direction.southWest, Direction.southEast]
+        case Direction.west:
+            return [Direction.southWest, Direction.northWest]
+        case Direction.east:
+            return [Direction.southEast, Direction.northEast]
+        case Direction.northWest:
+            return [Direction.north, Direction.west]
+        case Direction.southEast:
+            return [Direction.south, Direction.east]
+        case Direction.northEast:
+            return [Direction.north, Direction.east]
+        case Direction.southWest:
+            return [Direction.south, Direction.west]
+        }
+        return [];
+    }
+
     static *forEach(dirs) {
         for (const dir of this.all) {
             if (dir & dirs) yield dir;

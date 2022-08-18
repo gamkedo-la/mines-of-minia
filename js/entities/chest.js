@@ -48,6 +48,8 @@ class Chest extends MiniaModel {
         this.kind = spec.kind || this.constructor.dfltKind;
         // -- is chest locked?
         this.locked = spec.hasOwnProperty('locked') ? spec.locked : false;
+        // -- hidden from player view?
+        this.hidden = spec.hasOwnProperty('hidden') ? spec.hidden : false;
         // -- general properties
         this.state = spec.state || this.constructor.dfltState;
         // -- sketch
@@ -72,6 +74,8 @@ class Chest extends MiniaModel {
         return Object.assign({}, super.as_kv(), {
             kind: this.kind,
             state: this.state,
+            locked: this.locked,
+            hidden: this.hidden,
             loot: this.loot,
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
         });
@@ -116,6 +120,7 @@ class Chest extends MiniaModel {
     }
 
     _render(ctx) {
+        if (this.hidden) return;
         // update sketch dimensions
         this._sketch.width = this.xform.width;
         this._sketch.height = this.xform.height;

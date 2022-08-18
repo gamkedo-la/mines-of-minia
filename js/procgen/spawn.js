@@ -29,6 +29,7 @@ import { Reactor } from '../entities/reactor.js';
 import { Rous } from '../entities/rous.js';
 import { Shielding } from '../entities/shielding.js';
 import { Stairs } from '../entities/stairs.js';
+import { Tile } from '../entities/tile.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
 import { ProcTemplate } from './ptemplate.js';
@@ -44,6 +45,7 @@ class Spawn {
         this.spawnChests(template, pstate);
         // -- hide rooms/caches
         this.hideRooms(template, pstate);
+        this.hideCaches(template, pstate);
         // -- lock and key
         this.spawnLockAndKeys(template, pstate);
         // -- enemies
@@ -335,6 +337,7 @@ class Spawn {
                     //console.log(`  door: ${Fmt.ofmt(door)}`);
                     if (door) {
                         door.hidden = true;
+
                         // create facade at same index
                         let x_facade = Facade.xspec({
                             kind: 'wall',
@@ -344,6 +347,7 @@ class Spawn {
                             idx: didx,
                         });
                         plvl.entities.push(x_facade);
+
                     }
                 }
             }
@@ -354,7 +358,7 @@ class Spawn {
         let x_spawn = template.spawn || {};
         let prooms = pstate.prooms || [];
         let quota = Prng.rangeInt(x_spawn.secretRoomMin, x_spawn.secretRoomMax);
-        console.log(`secret room quota: min: ${x_spawn.secretRoomMin} max: ${x_spawn.secretRoomMax} ${quota}`);
+        console.log(`-- secret room quota: ${quota}`);
         // find any terminal rooms
         for (const proom of prooms) {
             if (quota <= 0) break;
@@ -384,6 +388,84 @@ class Spawn {
             }
         }
 
+    }
+
+    static hideCaches(template, pstate) {
+        let x_spawn = template.spawn || {};
+        let plvl = pstate.plvl;
+        let plvlo = pstate.plvlo;
+        let prooms = pstate.prooms || [];
+        let quota = Prng.rangeInt(x_spawn.secretCacheMin, x_spawn.secretCacheMax);
+        console.log(`-- secret cache quota: ${quota}`);
+        for (let i=0; i<quota; i++) {
+            // pick target room
+            let proom = Prng.choose(prooms);
+            // find target wall space
+            for (let i=0; i<100; i++) {
+                let widx = Prng.choose(proom.edges);
+                // -- step 1: validate wall is at wall index
+                if (!plvl.entities.some((v) => v.idx === widx && v.kind === 'wall')) {
+                    //console.log(`no wall @ ${widx} ... skipping`);
+                    continue;
+                }
+                // -- step 2: floor must be in a cardinal direction from wall
+                let floorDir;
+                for (const dir of Direction.cardinals) {
+                    let oidx = plvlo.data.idxfromdir(widx, dir);
+                    if (plvl.entities.some((v) => v.idx === oidx && v.kind === 'floor')) {
+                        floorDir = dir;
+                    }
+                }
+                if (!floorDir) {
+                    //console.log(`no adjacent floor @ ${widx} ... skipping`);
+                    continue;
+                }
+                // -- step 3: opposite from floor must be empty or wall
+                let oppOk = true;
+                for (const dir of [Direction.opposite(floorDir), ...Direction.adjacent(Direction.opposite(floorDir))]) {
+                    let oidx = plvlo.data.idxfromdir(widx, dir);
+                    if (plvl.entities.some((v) => v.idx === oidx && v.kind !== 'wall')) {
+                        oppOk = false;
+                        //console.log(`opposite @ ${oidx} is present and not a wall ... skipping`);
+                    }
+                }
+                // -- step 4: replace the wall with floor tile
+                let tile = plvl.entities.find((v) => v.idx === widx && v.kind === 'wall');
+                tile.kind = 'floor';
+                tile.baseAssetTag = template.translate.floor;
+                tile.z = template.bgZed;
+                // -- step 5: fill opposite wall
+                for (const dir of [Direction.opposite(floorDir), ...Direction.adjacent(Direction.opposite(floorDir))]) {
+                    let oidx = plvlo.data.idxfromdir(widx, dir);
+                    if (!plvl.entities.some((v) => v.idx === oidx && v.kind === 'wall')) {
+                        plvl.entities.push(Tile.xspec({
+                            kind: 'wall',
+                            tileSize: template.tileSize,
+                            baseAssetTag: template.translate.wall,
+                            idx: oidx,
+                            z: template.fgZed,
+                        }));
+                    }
+                }
+                // -- step 6: add cache chest
+                plvl.entities.push(Chest.xspec({
+                    idx: widx,
+                    z: template.fgZed,
+                    hidden: true,
+                    loot: this.genLoot(template, pstate, x_spawn.chestLootOptions),
+                }));
+                // step 7: create facade at same index
+                let x_facade = Facade.xspec({
+                    kind: 'wall',
+                    tileSize: template.tileSize,
+                    baseAssetTag: template.translate.wall,
+                    z: template.fgZed,
+                    idx: widx,
+                });
+                plvl.entities.push(x_facade);
+                break;
+            }
+        }
     }
 
     static chooseSpawnIdx(plvl, idxs, tries=100) {

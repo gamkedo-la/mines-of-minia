@@ -121,6 +121,8 @@ class ProcTemplate {
         this.spawn.secretRoomMax = Util.getpath(spec, 'spawn.secretRoomMax', 4);
         this.spawn.secretTermRoomPct = Util.getpath(spec, 'spawn.secretTermRoomPct', .5);
         this.spawn.secretRoomPct = Util.getpath(spec, 'spawn.secretRoomPct', .1);
+        this.spawn.secretCacheMin = Util.getpath(spec, 'spawn.secretCacheMin', 1);
+        this.spawn.secretCacheMax = Util.getpath(spec, 'spawn.secretCacheMax', 4);
 
         // -- locked
         this.spawn.lockRoomMin = Util.getpath(spec, 'spawn.lockRoomMin', 1);
