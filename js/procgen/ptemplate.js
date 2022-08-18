@@ -125,8 +125,7 @@ class ProcTemplate {
         // -- locked
         this.spawn.lockRoomMin = Util.getpath(spec, 'spawn.lockRoomMin', 1);
         this.spawn.lockRoomMax = Util.getpath(spec, 'spawn.lockRoomMax', 2);
-        //this.spawn.secretTermRoomPct = Util.getpath(spec, 'spawn.secretTermRoomPct', .5);
-        //this.spawn.secretRoomPct = Util.getpath(spec, 'spawn.secretRoomPct', .1);
+        this.spawn.lockChestPct = Util.getpath(spec, 'spawn.lockChestPct', .6);
 
         // -- enemy
         this.spawn.enemyList = Util.getpath(spec, 'spawn.enemyList', []);

@@ -473,6 +473,19 @@ class Spawn {
             }
         }
 
+        // lock chests
+        // -- iterate through chests... 
+        for (const chest of plvl.entities.filter((v) => v.cls === 'Chest')) {
+            // -- roll for lock
+            if (Prng.flip(x_spawn.lockChestPct)) {
+                let key = Prng.choose(Key.kinds);
+                chest.kind = key;
+                chest.x_sketch = Assets.get(`chest.${key}`);
+                chest.locked = true;
+                keys.push(key);
+            }
+        }
+
         // distribute keys along the critical path ... this ensures keys to enter rooms are accessible
         // -- find critical rooms
         let crooms = prooms.filter((v) => v.critical);
