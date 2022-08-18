@@ -124,7 +124,6 @@ class SheetRef extends BaseRef {
             let ctx = this.constructor.ctx;
             canvas.width = this.width*this.scalex;
             canvas.height = this.height*this.scaley;
-            if (this.scalex !== 1 || this.scaley !== 1) console.log(`dim: ${this.width},${this.height} resolved: ${canvas.width},${canvas.height}`)
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, this.x, this.y, this.width, this.height, 0, 0, canvas.width, canvas.height);
             return this.resolveImage(canvas.toDataURL(), false);

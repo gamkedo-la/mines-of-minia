@@ -224,7 +224,6 @@ class Translate {
                 obs: t_spec.hasOwnProperty('obs') ? t_spec['obs'] : 'obs',
                 obsb: 'punk.floor',
             };
-            console.log(`-- critical room tags: ${Fmt.ofmt(tags)}`);
         } else {
             tags = {
                 floor: floorTag,

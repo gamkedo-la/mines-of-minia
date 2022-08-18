@@ -177,7 +177,7 @@ class Hud extends UxView {
         TurnSystem.postLeaderAction(new WaitAction());
     }
     onScanClicked(evt) {
-        console.log(`${this} onScanClicked: ${Fmt.ofmt(evt)}}`)
+        //console.log(`${this} onScanClicked: ${Fmt.ofmt(evt)}}`)
         if (this.doScan) this.doScan();
     }
     onCancelClicked(evt) {
@@ -189,7 +189,6 @@ class Hud extends UxView {
         this.player = player;
         // disable inactive belt slots
         let inactive = 5-this.player.inventory.beltSlots;
-        console.log(`inactive: ${inactive} player inv: ${this.player.inventory}`);
         for (let i=0; i<inactive; i++) {
             let root = Hierarchy.find(this, (v) => v.tag === `belt.root.${i}`);
             root.active = false;

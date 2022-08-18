@@ -1137,6 +1137,7 @@ class Spawn {
                 kind: 'savvy',
             }),
 
+            /*
             Chest.xspec({
                 name: 'chest.brown',
                 x_sketch: Assets.get('chest.brown'),
@@ -1149,7 +1150,6 @@ class Spawn {
                 ],
             }),
 
-            /*
             Chest.xspec({
                 name: 'chest.green',
                 kind: 'green',
@@ -1172,13 +1172,17 @@ class Spawn {
                 x_sketch: Assets.get('fuelcell'),
             }),
 
+            /*
             Token.xspec({
                 name: 'token',
                 x_sketch: Assets.get('token'),
                 count: 8,
             }),
+            */
 
-            //Rous.xspec({}),
+            Rous.xspec({
+                healthMax: 50,
+            }),
 
             this.genWeapon(template, pstate),
             this.genReactor(template, pstate),

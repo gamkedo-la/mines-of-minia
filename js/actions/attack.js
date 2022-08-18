@@ -14,6 +14,8 @@ import { Projectile } from '../entities/projectile.js';
 import { Generator } from '../base/generator.js';
 import { ThrowToAction } from './throw.js';
 import { DestroyTargetAction } from '../base/actions/destroy.js';
+import { Events } from '../base/event.js';
+import { OverlaySystem } from '../systems/overlaySystem.js';
 
 class Attack {
 
@@ -150,10 +152,26 @@ class Attack {
             damage -= v;
         }
         if (damage < 0) damage = 0;
-        console.log(`== damage: base: [${min}-${max}]:${baseDamage} final: ${damage}`);
+        //console.log(`== damage: base: [${min}-${max}]:${baseDamage} final: ${damage}`);
         return damage;
     }
     
+}
+
+class AttackSwingAction extends Action {
+    constructor(spec) {
+        super(spec);
+        this.target = spec.target;
+    }
+    setup() {
+        let angle = Mathf.angle(this.actor.xform.x, this.actor.xform.y, this.target.xform.x, this.target.xform.y, true);
+        let x = Math.round(this.actor.xform.x + Math.cos(angle));
+        let facing = (x > this.actor.xform.x) ? Direction.east : (x < this.actor.xform.x) ? Direction.west : this.actor.facing;
+        // this is an instant action
+        this.done = true;
+        // trigger attack vfx
+        Events.trigger(OverlaySystem.evtNotify, {which: 'swing', actor: this.actor, facing: facing, angle: angle });
+    }
 }
 
 class AttackRollAction extends Action {
@@ -202,6 +220,10 @@ class MeleeAttackAction extends SerialAction {
     // METHODS -------------------------------------------------------------
     setup() {
         if (this.dbg) console.log(`starting ${this} action w ttl: ${this.ttl}`);
+        // -- setup swing vfx
+        this.subs.push( new AttackSwingAction({
+            target: this.target,
+        }));
         // -- nudge towards target
         if (this.nudge) {
             let angle = Mathf.angle(this.actor.xform.x, this.actor.xform.y, this.target.xform.x, this.target.xform.y, true);
@@ -254,7 +276,7 @@ class RangeAttackRollAction extends Action {
         //this.actor.evt.trigger(this.actor.constructor.evtAttacked, { actor: this.actor, target: this.target, weapon: weapon });
         // -- roll for damage
         let damage = Attack.damage(this.actor, this.target, this.weapon);
-        console.log(`${this} damage ${damage}`);
+        //console.log(`${this} damage ${damage}`);
         if (damage) {
             this.target.evt.trigger(this.target.constructor.evtDamaged, { actor: this.actor, target: this.target, damage: damage });
         }

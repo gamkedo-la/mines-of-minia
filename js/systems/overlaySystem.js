@@ -2,6 +2,7 @@ export { OverlaySystem };
 
     import { AnimVfx } from '../base/animVfx.js';
 import { Assets } from '../base/assets.js';
+import { AttackVfx } from '../base/attackVfx.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Font } from '../base/font.js';
@@ -69,6 +70,15 @@ class OverlaySystem extends System {
                 let vfx = new AnimVfx({
                     actor: evt.actor,
                     anim: Assets.get('vfx.aggroLoss', true),
+                });
+                this.overlay.adopt(vfx);
+                break;
+            }
+            case 'swing': {
+                let vfx = new AttackVfx({
+                    actor: evt.actor,
+                    facing: evt.facing,
+                    angle: evt.angle,
                 });
                 this.overlay.adopt(vfx);
                 break;
