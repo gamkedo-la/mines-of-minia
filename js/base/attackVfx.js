@@ -69,10 +69,7 @@ class AttackVfx extends Vfx {
         }
         let sx = (this.actor) ? this.actor.xform.x : 0;
         let sy = (this.actor) ? this.actor.xform.y : 0;
-        //console.log(`s: ${sx},${sy} d: ${dx},${dy}`);
         UpdateSystem.eUpdate(this, { xform: {x: sx+dx, y: sy+dy }});
-        //this.xform.x = sx + dx;
-        //this.xform.y = sy + dy;
     }
 
     onTimer(evt) {
