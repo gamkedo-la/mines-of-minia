@@ -210,7 +210,7 @@ let miniaAssets = [
         borderColor: 'red',
     }),
 
-    Rect.xspec({tag: 'fuelcell', width: 8, height: 12, color: 'blue', borderColor: 'red', border: 1}),
+    //Rect.xspec({tag: 'fuelcell', width: 8, height: 12, color: 'blue', borderColor: 'red', border: 1}),
     Rect.xspec({tag: 'reticle.aim.ok', width: 12, height: 12, borderColor: 'green', border: 1, fill: false}),
     Rect.xspec({tag: 'reticle.aim.nok', width: 12, height: 12, borderColor: 'red', border: 1, fill: false}),
 
@@ -1241,4 +1241,5 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 32, y: 0})}), ttl: 150 }),
     ]}),
 
+    Sprite.xspec({tag: 'fuelcell', img: new SheetRef({src: 'img/fuel-cell.png', width: 16, height: 16, x: 0, y: 0})}),
 ];
