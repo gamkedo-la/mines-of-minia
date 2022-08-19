@@ -1181,7 +1181,8 @@ class Spawn {
             */
 
             Rous.xspec({
-                healthMax: 50,
+                healthMax: 1,
+                xp: 10,
             }),
 
             this.genWeapon(template, pstate),

@@ -20,6 +20,7 @@ class OverlaySystem extends System {
     cpost(spec) {
         super.cpost(spec);
         this.overlay = spec.overlay || new UxPanel();
+        this.hud = spec.hud || new UxPanel();
         this.onNotify = this.onNotify.bind(this);
         this.evt.listen(this.constructor.evtNotify, this.onNotify)
     }
@@ -29,8 +30,8 @@ class OverlaySystem extends System {
             case 'popup': {
                 let popup = new TextVfx({
                     actor: evt.actor,
-                    text: new Text({color: Resurrect64.colors[15], wrap: true, text: evt.msg, font: new Font({size: 10})}),
-                    //textStr: evt.msg,
+                    fadedelay: 400,
+                    text: new Text({color: Resurrect64.colors[12], wrap: true, text: evt.msg, font: new Font({size: 8})}),
                     xform: new XForm({width: 20, height: 20, stretch: false, offx: -10, offy: -10}),
                     float: 16,
                     fade: true,
@@ -38,11 +39,68 @@ class OverlaySystem extends System {
                 this.overlay.adopt(popup);
                 break;
             }
+            case 'popup.green': {
+                let popup = new TextVfx({
+                    actor: evt.actor,
+                    fadedelay: 400,
+                    text: new Text({color: Resurrect64.colors[31], wrap: true, text: evt.msg, font: new Font({size: 8})}),
+                    xform: new XForm({width: 40, height: 20, stretch: false, offx: -20, offy: -10}),
+                    float: 16,
+                    fade: true,
+                });
+                this.overlay.adopt(popup);
+                break;
+            }
+            case 'popup.white': {
+                let popup = new TextVfx({
+                    actor: evt.actor,
+                    fadedelay: 400,
+                    text: new Text({color: 'white', wrap: true, text: evt.msg, font: new Font({size: 8})}),
+                    xform: new XForm({width: 40, height: 20, stretch: false, offx: -20, offy: -10}),
+                    float: 16,
+                    fade: true,
+                });
+                this.overlay.adopt(popup);
+                break;
+            }
+            case 'popup.yellow': {
+                let popup = new TextVfx({
+                    actor: evt.actor,
+                    fadedelay: 400,
+                    text: new Text({color: Resurrect64.colors[18], wrap: true, text: evt.msg, font: new Font({size: 8})}),
+                    xform: new XForm({width: 40, height: 20, stretch: false, offx: -20, offy: -10}),
+                    float: 16,
+                    fade: true,
+                });
+                this.overlay.adopt(popup);
+                break;
+            }
+
             case 'info': {
+                let x = Math.round(this.hud.xform.centerx-this.hud.xform.minx);
+                let y = Math.round((this.hud.xform.centery-this.hud.xform.miny) *.6);
+                let popup = new TextVfx({
+                    text: new Text({color: Resurrect64.colors[31], wrap: true, text: evt.msg, font: new Font({size: 30})}),
+                    xform: new XForm({x: x, y: y, width: 400, height: 20, stretch: false, offx: -200, offy: -10}),
+                    fade: true,
+                    ttl: 2000,
+                    fadedelay: 1000,
+                });
+                this.hud.adopt(popup);
                 console.log(`-- ${this} info: ${evt.msg}`);
                 break;
             }
             case 'warn': {
+                let x = Math.round(this.hud.xform.centerx-this.hud.xform.minx);
+                let y = Math.round((this.hud.xform.centery-this.hud.xform.miny) *.6);
+                let popup = new TextVfx({
+                    text: new Text({color: Resurrect64.colors[18], wrap: true, text: evt.msg, font: new Font({size: 30})}),
+                    xform: new XForm({x: x, y: y, width: 400, height: 20, stretch: false, offx: -200, offy: -10}),
+                    fade: true,
+                    ttl: 2000,
+                    fadedelay: 1000,
+                });
+                this.hud.adopt(popup);
                 console.log(`-- ${this} warn: ${evt.msg}`);
                 break;
             }

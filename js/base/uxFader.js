@@ -20,6 +20,7 @@ class UxFader extends UxView {
         // fadein => transparent to visible
         // !fadein => visible to transparent
         this.fadein = spec.fadein || false;
+        this.delay = spec.delay || 0;
         this.ttl = spec.ttl || this.constructor.dfltTTL;
         this.alpha = (this.fadein) ? 0 : 1;
         this.elapsed = 0;
@@ -43,10 +44,11 @@ class UxFader extends UxView {
 
     onTock(evt) {
         this.elapsed += evt.deltaTime;
+        if (this.elapsed < this.delay) return;
         if (this.fadein) {
-            this.alpha = Mathf.clamp(Mathf.lerp(0, this.ttl, 0, 1, this.elapsed), 0, 1);
+            this.alpha = Mathf.clamp(Mathf.lerp(this.delay, this.ttl, 0, 1, this.elapsed), 0, 1);
         } else {
-            this.alpha = Mathf.clamp(Mathf.lerp(0, this.ttl, 1, 0, this.elapsed), 0, 1);
+            this.alpha = Mathf.clamp(Mathf.lerp(this.delay, this.ttl, 1, 0, this.elapsed), 0, 1);
         }
     }
 

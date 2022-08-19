@@ -1,9 +1,11 @@
 export { XPSystem };
 
+    import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { System } from '../base/system.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Player } from '../entities/player.js';
+import { OverlaySystem } from './overlaySystem.js';
 
 class XPSystem extends System {
 
@@ -48,6 +50,7 @@ class XPSystem extends System {
     onEnemyDeath(evt) {
         if (this.dbg) console.log(`${this} on enemy death: ${evt.actor}`);
         if (this.player) {
+            Events.trigger(OverlaySystem.evtNotify, {which: 'popup.green', actor: this.player, msg: `+${evt.actor.xp} xp`});
             let update = {
                 xp: this.player.xp + evt.actor.xp,
             }
@@ -55,6 +58,7 @@ class XPSystem extends System {
             let needxp = Player.xpReqsByLvl[this.player.lvl];
             if (this.dbg) console.log(`-- need xp: ${needxp} update.xp: ${update.xp}`);
             if (needxp && update.xp >= needxp) {
+                Events.trigger(OverlaySystem.evtNotify, {which: 'info', actor: this.player, msg: `-- player level up --`});
                 update.lvl = this.player.lvl + 1;
                 // update player atts
                 let attUpdates = Player.attUpdatesByLvl[update.lvl];
