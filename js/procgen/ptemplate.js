@@ -169,6 +169,9 @@ class ProcTemplate {
         // -- clutter
         this.spawn.clutter = Util.getpath(spec, 'spawn.clutter');
         this.spawn.clutterFreePct = Util.getpath(spec, 'spawn.clutterFreePct', .05);
+        // -- machinery
+        this.spawn.machineTags = Util.getpath(spec, 'spawn.machineTags', []);
+        this.spawn.machineRoomPct = Util.getpath(spec, 'spawn.machineRoomPct', .3);
 
     }
 }

@@ -22,6 +22,7 @@ import { Gadget } from '../entities/gadget.js';
 import { Gem } from '../entities/gem.js';
 import { Growth } from '../entities/growth.js';
 import { Key } from '../entities/key.js';
+import { Machinery } from '../entities/machinery.js';
 import { Magma } from '../entities/magma.js';
 import { Projectile } from '../entities/projectile.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
@@ -54,6 +55,8 @@ class Spawn {
         this.spawnTraps(template, pstate);
         // -- growth
         //this.spawnGrowth(template, pstate);
+        // -- machinery
+        this.spawnMachinery(template, pstate);
         // -- clutter
         this.spawnClutter(template, pstate);
         // -- test objects
@@ -239,6 +242,44 @@ class Spawn {
         // iterate through halls
         for (const phall of phalls) {
             this.spawnClutterForRoom(template, pstate, phall);
+        }
+    }
+
+    static spawnMachinery(template, pstate) {
+        let x_spawn = template.spawn || {};
+        let prooms = pstate.prooms || [];
+        let plvl = pstate.plvl;
+        let plvlo = pstate.plvlo;
+        if (!x_spawn.machineTags.length) return;
+        for (const proom of prooms) {
+            // roll for machinery within room
+            if (!Prng.flip(x_spawn.machineRoomPct)) continue;
+
+            // try to place machinery next to wall
+            let cidxs = [];
+            for (const eidx of proom.edges) {
+                for (const dir of Direction.cardinals) {
+                    let oidx = plvlo.data.idxfromdir(eidx, dir);
+                    //console.log(`oidx: ${oidx}`);
+                    if (!proom.idxs.includes(oidx)) continue;
+                    if (!plvl.entities.some((v) => v.idx === oidx && v.kind === 'floor')) continue;
+                    if (proom.viablePath.includes(oidx)) continue;
+                    if (!this.checkSpawnIdx(plvl, oidx)) continue;
+                    cidxs.push(oidx);
+                }
+            }
+            // pick from candidate indices
+            if (!cidxs.length) return;
+            // pick machine asset
+            let machineTag = Prng.choose(x_spawn.machineTags);
+            let cidx = Prng.choose(cidxs);
+            let x_machine = Machinery.xspec({
+                idx: cidx,
+                z: template.fgZed,
+                x_sketch: Assets.get(machineTag),
+            });
+            //console.log(`machine: ${Fmt.ofmt(x_machine)}`);
+            plvl.entities.push(x_machine);
         }
     }
 

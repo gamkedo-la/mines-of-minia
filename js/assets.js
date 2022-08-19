@@ -620,7 +620,7 @@ let miniaAssets = [
         stateAccessor: (e) => e.animState,
     }),
 
-    Animation.xspec({tag: 'cog_brass', x_cels: [
+    Animation.xspec({tag: 'machine.gear', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 16, y: 0})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 32, y: 0})}), ttl: 150 }),

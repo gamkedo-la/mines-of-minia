@@ -175,30 +175,15 @@ class Translate {
                     let idx1 = poiIdxs[i];
                     let idx2 = poiIdxs[j];
                     let solution = plvlo.pathfinder.find({}, idx1, idx2);
-                    //console.log(`${idx1} to ${idx2} ${solution.path}`);
-                    /*
-                    if (!solution) {
-                        if (dbg) console.log(`${idx1} to ${idx2} no solution`);
-                    } else {
-                        if (dbg) console.log(`${idx1} to ${idx2} ${solution.path.map((v) => `${v}:${plvlo.data.getidx(v)}`)}`);
-                    }
-                    */
-                    //if (dbg) console.log(`${idx1} to ${idx2} ${Array.from(solution.path.map((v) => `${v}:${plvlo.data.getidx(v)}`))}`);
                     if (solution) {
-                    for (const pidx of solution.path) {
-                        let kind = plvlo.data.getidx(pidx);
-                        if (kind in swap) {
-                            let skind = swap[kind];
-                            plvlo.data.setidx(pidx, skind);
-                            /*
-                            for (const dir of Direction.all) {
-                                let nidx = plvlo.data.idxfromdir(pidx, dir);
-                                let nkind = plvlo.data.getidx(nidx);
-                                if (nkind in swap) plvlo.data.setidx(nidx, swap[nkind]);
+                        for (const pidx of solution.path) {
+                            if (!proom.viablePath.includes(pidx)) proom.viablePath.push(pidx);
+                            let kind = plvlo.data.getidx(pidx);
+                            if (kind in swap) {
+                                let skind = swap[kind];
+                                plvlo.data.setidx(pidx, skind);
                             }
-                            */
                         }
-                    }
                     }
                 }
             }

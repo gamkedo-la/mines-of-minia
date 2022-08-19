@@ -48,6 +48,7 @@ import { Magma } from "./entities/magma.js";
 import { MenuState } from "./menuState.js";
 import { AudioSystem } from "./base/systems/audioSystem.js";
 import { Facade } from "./entities/facade.js";
+import { Machinery } from "./entities/machinery.js";
 
 class Minia extends Game {
     static states = {
@@ -116,6 +117,7 @@ class Minia extends Game {
                 growthNoisePct: .25,
                 clutter: 'rock.clutter',
                 clutterFreePct: .1,
+                machineTags: ['machine.gear'],
             }
         }),
     };
@@ -141,6 +143,7 @@ class Minia extends Game {
             Inventory,
             InventoryData,
             Level,
+            Machinery,
             Magma,
             Player,
             Projectile,
