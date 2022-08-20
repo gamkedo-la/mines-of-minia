@@ -1,12 +1,16 @@
 export { Energy };
 
+import { DropLootAction } from '../actions/loot.js';
 import { AiMoveToIdxDirective } from '../ai/aiMoveToIdxDirective.js';
 import { AiMoveToRangeDirective } from '../ai/aiMoveToRangeDirective.js';
 import { AiRangeTargetDirective } from '../ai/aiRangeTargetDirective.js';
+import { DestroyAction } from '../base/actions/destroy.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
+import { ActionSystem } from '../base/systems/actionSystem.js';
+import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Util } from '../base/util.js';
 import { LvlVar } from '../lvlVar.js';
 import { Enemy } from './enemy.js';
