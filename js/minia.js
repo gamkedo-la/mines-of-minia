@@ -49,6 +49,7 @@ import { MenuState } from "./menuState.js";
 import { AudioSystem } from "./base/systems/audioSystem.js";
 import { Facade } from "./entities/facade.js";
 import { Machinery } from "./entities/machinery.js";
+import { Energy } from "./entities/energy.js";
 
 class Minia extends Game {
     static states = {
@@ -131,6 +132,7 @@ class Minia extends Game {
             Cog,
             Door,
             Enemy,
+            Energy,
             Facade,
             Fuelcell,
             Funguy,

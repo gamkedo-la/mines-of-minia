@@ -1242,4 +1242,49 @@ let miniaAssets = [
     ]}),
 
     Sprite.xspec({tag: 'fuelcell', img: new SheetRef({src: 'img/fuel-cell.png', width: 16, height: 16, x: 0, y: 0})}),
+
+    // energy sprite: shock
+    Animation.xspec({tag: 'energy-shock.idle', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*0, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*8, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*9, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*10, y: 0})}), ttl: 100 }),
+    ]}),
+    Animation.xspec({tag: 'energy-shock.dying', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*11, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*12, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*13, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*14, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*15, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*16, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*17, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*18, y: 0})}), ttl: 100 }),
+    ]}),
+    Animation.xspec({tag: 'energy-shock.move', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*19, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*20, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*21, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*22, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*23, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/energy-shock.png', width: 16, height: 32, x: 16*24, y: 0})}), ttl: 100 }),
+    ]}),
+    Animator.xspec({
+        tag: 'energy-shock',
+        x_sketches: {
+            'idle': new AssetRef({tag: 'energy-shock.idle'}),
+            'move': new AssetRef({tag: 'energy-shock.move'}),
+            'dying': new AssetRef({tag: 'energy-shock.dying'}),
+        },
+        state: 'idle',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
+    }),
+
 ];

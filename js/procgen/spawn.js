@@ -15,6 +15,7 @@ import { Clutter } from '../entities/clutter.js';
 import { Cog } from '../entities/cog.js';
 import { Door } from '../entities/door.js';
 import { Enemy } from '../entities/enemy.js';
+import { Energy } from '../entities/energy.js';
 import { Facade } from '../entities/facade.js';
 import { Fuelcell } from '../entities/fuelcell.js';
 import { Funguy } from '../entities/funguy.js';
@@ -1221,7 +1222,14 @@ class Spawn {
             }),
             */
 
+            /*
             Rous.xspec({
+                healthMax: 1,
+                xp: 10,
+            }),
+            */
+
+            Energy.xspec({
                 healthMax: 1,
                 xp: 10,
             }),
