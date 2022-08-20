@@ -250,7 +250,7 @@ class Translate {
                     break;
                 case 'door':
                     bgKind = 'floor';
-                    bgTag = tags[kind];
+                    bgTag = tags['floor'];
                     break;
                 case 'obs':
                     fgKind = 'wall';
