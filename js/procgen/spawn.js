@@ -203,7 +203,7 @@ class Spawn {
         let x_spawn = template.spawn || {};
         let plvlo = pstate.plvlo;
         let plvl = pstate.plvl;
-        let clutter = x_spawn.clutter || 'clutter.test';
+        let clutter = (room.critical) ? 'punk.clutter' : x_spawn.clutter || 'clutter.test';
         let clutterFreePct = x_spawn.clutterFreePct || 0;
         if (!clutterFreePct) return;
         // iterate indicies

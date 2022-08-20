@@ -1041,6 +1041,7 @@ let miniaAssets = [
     }),
 
     Template.varsprite('img/rock-area-clutter.png', 'rock.clutter', [[0,0], [1,0]], {width: 16, height: 16}),
+    Template.varsprite('img/punk-clutter.png', 'punk.clutter', [[0,0], [1,0], [2,0], [3,0], [0,1]], {width: 16, height: 16}),
 
     // -- gems
     Shape.xspec({
