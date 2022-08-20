@@ -1060,59 +1060,6 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
     ]}),
 
-    // -- cogs
-    Shape.xspec({
-        tag: 'cog.four',
-        fill: true,
-        verts: [ 
-            {x:4, y:3}, {x:11, y:4}, {x:10, y:11}, {x:3, y:10},
-        ],
-        border: 1,
-        color: 'silver',
-        borderColor: 'red',
-    }),
-
-    Shape.xspec({
-        tag: 'cog.six',
-        fill: true,
-        verts: [ 
-            {x:7, y:3}, {x:11, y:5}, {x:11, y:10}, {x:7, y:12}, {x: 3, y: 10}, {x:3, y: 5},
-        ],
-        border: 1,
-        color: 'silver',
-        borderColor: 'red',
-    }),
-    Shape.xspec({
-        tag: 'cog.cam',
-        fill: true,
-        verts: [ 
-            {x:3, y:2}, {x:13, y:2}, {x:13, y:12}, {x:11, y:13}, {x:10, y: 5}, {x:2, y:4},
-        ],
-        border: 1,
-        color: 'silver',
-        borderColor: 'red',
-    }),
-    Shape.xspec({
-        tag: 'cog.three',
-        fill: true,
-        verts: [ 
-            {x:8, y:3}, {x:12, y:12}, {x:3, y:12}, {x:7, y:3},
-        ],
-        border: 1,
-        color: 'silver',
-        borderColor: 'red',
-    }),
-    Shape.xspec({
-        tag: 'cog.five',
-        fill: true,
-        verts: [ 
-            {x:8, y:1}, {x:10, y:5}, {x:14, y:5}, {x:10, y:9}, {x:12, y:14}, {x:8, y:11},
-            {x:7, y:11}, {x:3, y:14}, {x:5, y:9}, {x:1, y:5}, {x:5, y:5}, {x:7, y:1},
-        ],
-        border: 1,
-        color: 'silver',
-        borderColor: 'red',
-    }),
 
     // -- trap
     Animation.xspec({ tag: 'trap.armed', jitter: true, x_cels: [
@@ -1286,6 +1233,87 @@ let miniaAssets = [
         state: 'idle',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
         stateAccessor: (e) => e.animState,
+    }),
+
+    // -- cogs
+    Sprite.xspec({tag: 'cog.four.carry', img: new SheetRef({src: 'img/cogs.png', width: 16, height: 16, x: 0, y: 0})}),
+    Animation.xspec({tag: 'cog.four.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 16*5*1, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 16*5*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 16*5*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'cog.four',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'cog.four.carry'}),
+            'free': new AssetRef({tag: 'cog.four.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'cog.three.carry', img: new SheetRef({src: 'img/cogs.png', width: 16, height: 16, x: 16, y: 0})}),
+    Animation.xspec({tag: 'cog.three.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 16, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 16+16*5*1, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 16+16*5*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 16+16*5*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'cog.three',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'cog.three.carry'}),
+            'free': new AssetRef({tag: 'cog.three.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'cog.six.carry', img: new SheetRef({src: 'img/cogs.png', width: 16, height: 16, x: 32, y: 0})}),
+    Animation.xspec({tag: 'cog.six.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 32, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 32+16*5*1, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 32+16*5*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 32+16*5*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'cog.six',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'cog.six.carry'}),
+            'free': new AssetRef({tag: 'cog.six.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'cog.cam.carry', img: new SheetRef({src: 'img/cogs.png', width: 16, height: 16, x: 48, y: 0})}),
+    Animation.xspec({tag: 'cog.cam.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 48, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 48+16*5*1, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 48+16*5*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 48+16*5*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'cog.cam',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'cog.cam.carry'}),
+            'free': new AssetRef({tag: 'cog.cam.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'cog.five.carry', img: new SheetRef({src: 'img/cogs.png', width: 16, height: 16, x: 64, y: 0})}),
+    Animation.xspec({tag: 'cog.five.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 64, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 64+16*5*1, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 64+16*5*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs.png', width: 16, height: 32, x: 64+16*5*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'cog.five',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'cog.five.carry'}),
+            'free': new AssetRef({tag: 'cog.five.free'}),
+        },
+        state: 'free',
     }),
 
 ];
