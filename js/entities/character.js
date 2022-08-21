@@ -163,6 +163,7 @@ class Character extends MiniaModel {
 
     // EVENT HANDLERS ------------------------------------------------------
     onDamaged(evt) {
+        if (this.damagedSfx) this.damagedSfx.play();
         let health = this.health - evt.damage;
         //console.log(`${this} onDamaged: ${Fmt.ofmt(evt)} health: ${health}`);
         Events.trigger(OverlaySystem.evtNotify, {which: 'popup', actor: this, msg: `-${evt.damage}`});
