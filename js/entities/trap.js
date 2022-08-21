@@ -88,16 +88,19 @@ class Trap extends MiniaModel {
     }
 
     _render(ctx) {
+        if (this.hidden) return;
         // update sketch dimensions
         this._sketch.width = this.xform.width;
         this._sketch.height = this.xform.height;
         // render
         if (this._sketch && this._sketch.render) this._sketch.render(ctx, this.xform.minx, this.xform.miny);
+        /*
         // FIXME
         if (this.hidden) {
             let r = new Rect({ width: 16, height: 16, border: 1, borderColor: 'rgba(100,100,100,.4)', fill: false});
             r.render(ctx, this.xform.minx, this.xform.miny);
         }
+        */
     }
 
 }
