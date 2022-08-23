@@ -55,9 +55,10 @@ class Minia extends Game {
     static states = {
         'title': new TitleState(),
         'menu': new MenuState(),
+        'play': new PlayState(),
+        // -- test states
         'fiddle': new FiddleState(),
         'testproc': new TestProcState(),
-        'play': new PlayState(),
         'testnoise': new TestNoiseState(),
     }
     static startStateTag = 'play';
@@ -91,7 +92,6 @@ class Minia extends Game {
             //seed: 3,
             // FIXME: known bad seeds...
             seed: 62183,
-            //seed: 3,
             unitSize: 6,
             maxCols: 140,
             maxRows: 100,

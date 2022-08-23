@@ -2,6 +2,7 @@ export { Layout };
 
 import { Mathf } from '../base/math.js';
 import { Prng } from '../base/prng.js';
+import { UxDbg } from '../base/uxDbg.js';
 import { ProcPie } from './ppie.js';
 import { ProcRoom } from './proom.js';
 
@@ -13,7 +14,79 @@ class Layout {
 
     static *generator(template={}, pstate={}) {
         // FIXME: layout generator can be specific to level...
-        yield *this.roomRingsGenerator(template, pstate);
+        //yield *this.roomRingsGenerator(template, pstate);
+        yield *this.roomRandomGenerator(template, pstate);
+    }
+
+    static *roomRandomGenerator(template, pstate) {
+        // pull rrooms config from template
+        let rrooms = template.rrooms || {};
+        let width = template.width || 400;
+        let height = template.height || 400;
+        let origx = Math.floor(width/2);
+        let origy = Math.floor(height/2);
+        let radius = Math.min(origx, origy);
+        let minUnits = template.roomMinUnits || 5;
+        let minRoomRadius = template.unitSize * minUnits;
+        let maxRoomRadius = rrooms.maxRoomRadius || minRoomRadius*2.5;
+        let minRooms = rrooms.minRooms || 8;
+        let maxRooms = rrooms.maxRooms || 18;
+        let nrooms = Prng.rangeInt(minRooms, maxRooms);
+        let rooms = [];
+        for (let i=0; i<nrooms; i++) {
+            let rorigx, rorigy, roomRadius;
+            let ok = false;
+            for (let iters=0; iters<100; iters++) {
+                let angle = Prng.range(0,Math.PI*2);
+                let range = Prng.range(0,radius);
+                rorigx = origx+Math.cos(angle)*range; 
+                rorigy = origy+Math.sin(angle)*range;
+                roomRadius = Prng.range(minRoomRadius,maxRoomRadius);
+                // check for overlap
+                if (rooms.some((v) => Mathf.distance(v.x, v.y, rorigx, rorigy) < v.radius+roomRadius)) continue;
+                ok = true;
+                break;
+            }
+            if (ok) {
+                let room = new ProcRoom({
+                    x: Math.round(rorigx), 
+                    y: Math.round(rorigy),
+                    radius: Math.round(roomRadius),
+                });
+                rooms.push(room);
+            }
+        }
+
+        // ## save state
+        pstate.prooms = rooms;
+        if (template.doyield) yield;
+
+        // ## merge rooms
+        let mrooms = this.mergeRooms(template, pstate.prooms);
+        pstate.prooms = mrooms;
+        if (template.doyield) yield;
+
+        // ## connect rooms
+        let crooms = this.connectRooms(template, pstate.prooms);
+        pstate.prooms = crooms;
+        if (template.doyield) yield;
+
+        // ## choose primary/secondary rooms
+        // -- top third of rooms farthest away are primary
+        // -- center rooms are secondary
+        let sorted = Array.from(pstate.prooms);
+        let top = Math.max(1, Math.floor(pstate.prooms.length/3));
+        sorted.sort((a,b) => {
+            let ad = Mathf.distance(a.x, a.y, origx, origy);
+            let bd = Mathf.distance(b.x, b.y, origx, origy);
+            return bd-ad;
+        });
+        for (let i=0; i<top; i++) {
+            let proom = sorted[i];
+            let d = Mathf.distance(proom.x, proom.y, origx, origy);
+            console.log(`${proom} d: ${d}`);
+            proom.primary = true;
+        }
     }
 
     /**
@@ -27,6 +100,7 @@ class Layout {
         // -- compute origin to be middle of level
         let width = template.width || 400;
         let height = template.height || 400;
+        console.log(`rings dim: ${width},${height}`);
         x_pie.x = Math.floor(width/2);
         x_pie.y = Math.floor(height/2);
         // -- radius is computed from min dimension
@@ -133,7 +207,7 @@ class Layout {
         if (template.doyield) yield;
 
         // ## step 6
-        // -- merge rooms
+        // -- connect rooms
         let crooms = this.connectRooms(template, pstate.prooms);
         pstate.prooms = crooms;
         if (template.doyield) yield;

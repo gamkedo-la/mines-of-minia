@@ -124,33 +124,6 @@ class ProcGen {
         let pstate = {};
         for (const step of this.discoveryGenerator(template, pstate));
     }
-    
-    static genRandomRooms(spec={}) {
-        let origx = spec.origx || 0;
-        let origy = spec.origy || 0;
-        //let radius = spec.radius || 300;
-        let radius = 400;
-        let minRoomRadius = spec.minRoomRadius || 20;
-        let maxRoomRadius = spec.maxRoomRadius || 40;
-        let minRooms = spec.minRooms || 8;
-        let maxRooms = spec.maxRooms || 18;
-        let nrooms = Prng.rangeInt(minRooms, maxRooms);
-        let rooms = [];
-        for (let i=0; i<nrooms; i++) {
-            let angle = Prng.range(0,Math.PI*2);
-            let range = Prng.range(0,radius);
-            let rorigx = origx+Math.cos(angle)*range; 
-            let rorigy = origy+Math.sin(angle)*range;
-            let roomRadius = Prng.range(minRoomRadius,maxRoomRadius);
-            let room = new ProcRoom({
-                x: Math.round(rorigx), 
-                y: Math.round(rorigy),
-                radius: Math.round(roomRadius),
-            });
-            rooms.push(room);
-        }
-        return rooms;
-    }
 
     static pickSpawnPoint(lvl, rooms) {
         // choose a starting room

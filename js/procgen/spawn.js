@@ -1147,6 +1147,7 @@ class Spawn {
         if (!sroom) return;
         // iterate items to spawn
         let x_spawns = [
+            /*
             Weapon.xspec({
                 kind: 'poke',
                 name: 'poke.1',
@@ -1178,6 +1179,7 @@ class Spawn {
             Cog.xspec({
                 kind: 'savvy',
             }),
+            */
 
             /*
             Chest.xspec({
@@ -1222,12 +1224,10 @@ class Spawn {
             }),
             */
 
-            /*
             Rous.xspec({
                 healthMax: 1,
                 xp: 10,
             }),
-            */
 
             Energy.xspec({
                 healthMax: 1,
