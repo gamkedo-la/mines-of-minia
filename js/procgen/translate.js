@@ -203,7 +203,7 @@ class Translate {
             tags = {
                 floor: 'punk.floor',
                 pit: t_spec.hasOwnProperty('pit') ? t_spec['pit'] : 'pit',
-                pitb: 'punk.floor',
+                pitb: 'punk.pit.border',
                 wall: 'punk.wall',
                 door: t_spec.hasOwnProperty('door') ? t_spec['door'] : 'door',
                 obs: t_spec.hasOwnProperty('obs') ? t_spec['obs'] : 'obs',
