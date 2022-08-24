@@ -72,6 +72,7 @@ let miniaAssets = [
         borderColor: 'red',
     }),
 
+    /*
     Shape.xspec({
         tag: 'key.gold',
         fill: true,
@@ -81,29 +82,6 @@ let miniaAssets = [
         ],
         border: 1,
         color: 'gold',
-        borderColor: 'red',
-    }),
-    /*
-    Shape.xspec({
-        tag: 'key.blue',
-        fill: true,
-        verts: [ 
-            {x:2, y:8}, {x:5, y:5}, {x:7, y:7}, {x:14, y:7},
-            {x:14, y:11}, {x:12, y: 11}, {x:12, y: 9}, {x:7, y:9}, {x:5, y:11}
-        ],
-        border: 1,
-        color: 'blue',
-        borderColor: 'red',
-    }),
-    Shape.xspec({
-        tag: 'key.dark',
-        fill: true,
-        verts: [ 
-            {x:2, y:8}, {x:5, y:5}, {x:7, y:7}, {x:14, y:7},
-            {x:14, y:11}, {x:12, y: 11}, {x:12, y: 9}, {x:7, y:9}, {x:5, y:11}
-        ],
-        border: 1,
-        color: 'rgba(75,75,75,1)',
         borderColor: 'red',
     }),
     */
@@ -626,46 +604,92 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 32, y: 0})}), ttl: 150 }),
     ]}),
 
-    Rect.xspec({tag: 'door.brown.close', width: 16, height: 16, color: 'brown'}),
-    Rect.xspec({tag: 'door.brown.open', width: 16, height: 16, borderColor: 'brown', fill: false, border: 2}),
+    // -- DOORS
+    Sprite.xspec({tag: 'door.ns.brown.close', img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 0, y: 0})}), 
+    Animation.xspec({tag: 'door.ns.brown.open', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 0, y: 32*1})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 0, y: 32*2})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 0, y: 32*3})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 0, y: 32*4})}), ttl: 150 }),
+    ]}),
     Animator.xspec({
-        tag: 'door.brown',
+        tag: 'door.ns.brown',
         x_sketches: {
-            'close': new AssetRef({tag: 'door.brown.close'}),
-            'open': new AssetRef({tag: 'door.brown.open'}),
+            'close': new AssetRef({tag: 'door.ns.brown.close'}),
+            'open': new AssetRef({tag: 'door.ns.brown.open'}),
+        },
+        state: 'close',
+    }),
+    Rect.xspec({tag: 'door.ew.brown.close', width: 16, height: 16, color: 'brown'}),
+    Rect.xspec({tag: 'door.ew.brown.open', width: 16, height: 16, borderColor: 'brown', fill: false, border: 2}),
+    Animator.xspec({
+        tag: 'door.ew.brown',
+        x_sketches: {
+            'close': new AssetRef({tag: 'door.ew.brown.close'}),
+            'open': new AssetRef({tag: 'door.ew.brown.open'}),
         },
         state: 'close',
     }),
 
-    Rect.xspec({tag: 'door.blue.close', width: 16, height: 16, color: 'blue'}),
-    Rect.xspec({tag: 'door.blue.open', width: 16, height: 16, borderColor: 'blue', fill: false, border: 2}),
+    Rect.xspec({tag: 'door.ns.blue.close', width: 16, height: 16, color: 'blue'}),
+    Rect.xspec({tag: 'door.ns.blue.open', width: 16, height: 16, borderColor: 'blue', fill: false, border: 2}),
     Animator.xspec({
-        tag: 'door.blue',
+        tag: 'door.ns.blue',
         x_sketches: {
-            'close': new AssetRef({tag: 'door.blue.close'}),
-            'open': new AssetRef({tag: 'door.blue.open'}),
+            'close': new AssetRef({tag: 'door.ns.blue.close'}),
+            'open': new AssetRef({tag: 'door.ns.blue.open'}),
+        },
+        state: 'close',
+    }),
+    Rect.xspec({tag: 'door.ew.blue.close', width: 16, height: 16, color: 'blue'}),
+    Rect.xspec({tag: 'door.ew.blue.open', width: 16, height: 16, borderColor: 'blue', fill: false, border: 2}),
+    Animator.xspec({
+        tag: 'door.ew.blue',
+        x_sketches: {
+            'close': new AssetRef({tag: 'door.ew.blue.close'}),
+            'open': new AssetRef({tag: 'door.ew.blue.open'}),
         },
         state: 'close',
     }),
 
-    Rect.xspec({tag: 'door.dark.close', width: 16, height: 16, color: 'gray'}),
-    Rect.xspec({tag: 'door.dark.open', width: 16, height: 16, borderColor: 'gray', fill: false, border: 2}),
+    Rect.xspec({tag: 'door.ns.dark.close', width: 16, height: 16, color: 'gray'}),
+    Rect.xspec({tag: 'door.ns.dark.open', width: 16, height: 16, borderColor: 'gray', fill: false, border: 2}),
     Animator.xspec({
-        tag: 'door.dark',
+        tag: 'door.ns.dark',
         x_sketches: {
-            'close': new AssetRef({tag: 'door.dark.close'}),
-            'open': new AssetRef({tag: 'door.dark.open'}),
+            'close': new AssetRef({tag: 'door.ns.dark.close'}),
+            'open': new AssetRef({tag: 'door.ns.dark.open'}),
+        },
+        state: 'close',
+    }),
+    Rect.xspec({tag: 'door.ew.dark.close', width: 16, height: 16, color: 'gray'}),
+    Rect.xspec({tag: 'door.ew.dark.open', width: 16, height: 16, borderColor: 'gray', fill: false, border: 2}),
+    Animator.xspec({
+        tag: 'door.ew.dark',
+        x_sketches: {
+            'close': new AssetRef({tag: 'door.ew.dark.close'}),
+            'open': new AssetRef({tag: 'door.ew.dark.open'}),
         },
         state: 'close',
     }),
 
-    Rect.xspec({tag: 'door.green.close', width: 16, height: 16, color: 'green'}),
-    Rect.xspec({tag: 'door.green.open', width: 16, height: 16, borderColor: 'green', fill: false, border: 2}),
+    Rect.xspec({tag: 'door.ns.green.close', width: 16, height: 16, color: 'green'}),
+    Rect.xspec({tag: 'door.ns.green.open', width: 16, height: 16, borderColor: 'green', fill: false, border: 2}),
     Animator.xspec({
-        tag: 'door.green',
+        tag: 'door.ns.green',
         x_sketches: {
-            'close': new AssetRef({tag: 'door.green.close'}),
-            'open': new AssetRef({tag: 'door.green.open'}),
+            'close': new AssetRef({tag: 'door.ns.green.close'}),
+            'open': new AssetRef({tag: 'door.ns.green.open'}),
+        },
+        state: 'close',
+    }),
+    Rect.xspec({tag: 'door.ew.green.close', width: 16, height: 16, color: 'green'}),
+    Rect.xspec({tag: 'door.ew.green.open', width: 16, height: 16, borderColor: 'green', fill: false, border: 2}),
+    Animator.xspec({
+        tag: 'door.ew.green',
+        x_sketches: {
+            'close': new AssetRef({tag: 'door.ew.green.close'}),
+            'open': new AssetRef({tag: 'door.ew.green.open'}),
         },
         state: 'close',
     }),

@@ -30,11 +30,14 @@ class Door extends MiniaModel {
         // parse kind
         let kind = spec.kind || this.dfltKind;
         let locked = (kind !== 'brown');
+        let facing = spec.facing || 'ns';
         // final spec
+        let tag = `door.${facing}.${kind}`;
         return Object.assign( {}, this.spec, {
             kind: kind,
+            facing: facing,
             locked: locked,
-            x_sketch: Assets.get(`door.${kind}`),
+            x_sketch: Assets.get(`door.${facing}.${kind}`),
         }, spec);
     }
 

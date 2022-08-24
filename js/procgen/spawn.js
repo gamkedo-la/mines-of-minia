@@ -68,18 +68,28 @@ class Spawn {
     static spawnDoors(template, pstate) {
         // -- pull data
         let x_spawn = template.spawn || {};
-        //let doorTag = x_spawn.door || 'door';
         let plvl = pstate.plvl;
+        let plvlo = pstate.plvlo;
         // iterate through halls
         let phalls = pstate.phalls || [];
         for (const phall of phalls) {
             for (const idx of phall.exits) {
-                plvl.entities.push(Door.xspec({
+                // determine which way the door is facing
+                let facing = 'ew';
+                if ( [Direction.north, Direction.south].some((dir) => {
+                    let oidx = plvlo.data.idxfromdir(idx, dir);
+                    if (plvl.entities.some((v) => v.idx === oidx && v.kind === 'floor')) return true;
+                    return false;
+                })) {
+                    facing = 'ns';
+                }
+                let x_door = Door.xspec({
                     idx: idx,
-                    //x_sketch: Assets.get(doorTag),
+                    facing: facing,
                     z: 2,
                     blocks: 0,
-                }));
+                });
+                plvl.entities.push(x_door);
             }
         }
     }
@@ -536,7 +546,7 @@ class Spawn {
             let door = plvl.entities.find((v) => v.idx === idx && v.cls === 'Door');
             if (door) {
                 door.kind = key;
-                door.x_sketch = Assets.get(`door.${key}`);
+                door.x_sketch = Assets.get(`door.${door.facing}.${key}`);
                 door.locked = true;
                 //console.log(`found door to lock: ${Fmt.ofmt(door)}`)
                 locks.push(door);
@@ -563,7 +573,7 @@ class Spawn {
         if (!ok) {
             for (const lock of locks) {
                 lock.kind = 'brown';
-                lock.x_sketch = Assets.get(`door.brown`);
+                lock.x_sketch = Assets.get(`door.${lock.facing}.brown`);
                 lock.locked = false;
             }
         } else {
@@ -1224,6 +1234,7 @@ class Spawn {
             }),
             */
 
+            /*
             Rous.xspec({
                 healthMax: 1,
                 xp: 10,
@@ -1233,6 +1244,7 @@ class Spawn {
                 healthMax: 1,
                 xp: 10,
             }),
+            */
 
             this.genWeapon(template, pstate),
             this.genReactor(template, pstate),

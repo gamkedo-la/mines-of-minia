@@ -272,6 +272,7 @@ class Assets {
     get(tag, generate=false, overrides={}) {
         let spec = this.assets[tag];
         if (!spec && this.extends) spec = this.extends.get(tag);
+        if (!spec) console.error(`-- missing asset for ${tag}`);
         spec = Object.assign({}, spec, overrides);
         if (generate) {
             return this.generator.generate(spec);
