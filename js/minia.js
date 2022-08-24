@@ -61,7 +61,7 @@ class Minia extends Game {
         'testproc': new TestProcState(),
         'testnoise': new TestNoiseState(),
     }
-    static startStateTag = 'play';
+    static startStateTag = 'testproc';
     static assetRefs = miniaAssets;
 
     static config = {

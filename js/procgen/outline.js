@@ -1,6 +1,7 @@
 export { Outline };
 
 import { Direction } from '../base/dir.js';
+import { Fmt } from '../base/fmt.js';
 import { Mathf } from '../base/math.js';
 import { Prng } from '../base/prng.js';
 import { Util } from '../base/util.js';
@@ -127,10 +128,13 @@ class Outline {
     }
 
     static carveRoomOutline(template, lvl, room, spec={}) {
-        let schemes = spec.schemes || [
+        let schemes = [
             {weight: .75, minWidthPct: .4, minHeightPct: .4},
             {weight: .25, minWidthPct: .2, minHeightPct: .2},
-        ]
+        ];
+        if (spec.schemes) schemes = spec.schemes;
+        if (room.outlineSchemes) schemes = room.outlineSchemes;
+        console.log(`schemes: ${Fmt.ofmt(schemes)}`);
         let colOverflow = spec.colOverflow || 0;
         let rowOverflow = spec.rowOverflow || 0;
         let minRoomDim = spec.minRoomDim || 4;
