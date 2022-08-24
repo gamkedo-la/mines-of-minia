@@ -631,8 +631,13 @@ let miniaAssets = [
         state: 'close',
     }),
 
-    Rect.xspec({tag: 'door.ns.blue.close', width: 16, height: 16, color: 'blue'}),
-    Rect.xspec({tag: 'door.ns.blue.open', width: 16, height: 16, borderColor: 'blue', fill: false, border: 2}),
+    Sprite.xspec({tag: 'door.ns.blue.close', img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16, y: 0})}), 
+    Animation.xspec({tag: 'door.ns.blue.open', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16, y: 32*1})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16, y: 32*2})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16, y: 32*3})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16, y: 32*4})}), ttl: 150 }),
+    ]}),
     Animator.xspec({
         tag: 'door.ns.blue',
         x_sketches: {
@@ -652,8 +657,13 @@ let miniaAssets = [
         state: 'close',
     }),
 
-    Rect.xspec({tag: 'door.ns.dark.close', width: 16, height: 16, color: 'gray'}),
-    Rect.xspec({tag: 'door.ns.dark.open', width: 16, height: 16, borderColor: 'gray', fill: false, border: 2}),
+    Sprite.xspec({tag: 'door.ns.dark.close', img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 48, y: 0})}), 
+    Animation.xspec({tag: 'door.ns.dark.open', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 48, y: 32*1})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 48, y: 32*2})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 48, y: 32*3})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 48, y: 32*4})}), ttl: 150 }),
+    ]}),
     Animator.xspec({
         tag: 'door.ns.dark',
         x_sketches: {
@@ -673,8 +683,13 @@ let miniaAssets = [
         state: 'close',
     }),
 
-    Rect.xspec({tag: 'door.ns.green.close', width: 16, height: 16, color: 'green'}),
-    Rect.xspec({tag: 'door.ns.green.open', width: 16, height: 16, borderColor: 'green', fill: false, border: 2}),
+    Sprite.xspec({tag: 'door.ns.green.close', img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 32, y: 0})}), 
+    Animation.xspec({tag: 'door.ns.green.open', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 32, y: 32*1})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 32, y: 32*2})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 32, y: 32*3})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 32, y: 32*4})}), ttl: 150 }),
+    ]}),
     Animator.xspec({
         tag: 'door.ns.green',
         x_sketches: {
