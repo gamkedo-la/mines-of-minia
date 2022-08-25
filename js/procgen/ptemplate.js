@@ -19,9 +19,9 @@ class ProcTemplate {
         this.dodiscovery = spec.hasOwnProperty('dodiscovery') ? spec.dodiscovery : true;
         this.dospawn = spec.hasOwnProperty('dospawn') ? spec.dospawn : true;
         // -- level dimensions
-        this.maxCols = spec.maxCols || 250;
-        this.maxRows = spec.maxRows || 200;
-        this.unitSize = spec.unitSize || 4;
+        this.maxCols = spec.maxCols || 140;
+        this.maxRows = spec.maxRows || 100;
+        this.unitSize = spec.unitSize || 6;
         this.width = this.maxCols*this.unitSize;
         this.height = this.maxRows*this.unitSize;
         this.doorWidth = spec.doorWidth || 1;
@@ -55,10 +55,10 @@ class ProcTemplate {
 
         // -- outline
         this.outline = {};
-        this.outline.colOverflow = Util.getpath(spec, 'outline.colOverflow', 3);
-        this.outline.rowOverflow = Util.getpath(spec, 'outline.rowOverflow', 3);
+        this.outline.colOverflow = Util.getpath(spec, 'outline.colOverflow', 1);
+        this.outline.rowOverflow = Util.getpath(spec, 'outline.rowOverflow', 1);
         this.outline.hallWidth = Util.getpath(spec, 'outline.hallWidth', 3);
-        this.outline.minRoomDim = Util.getpath(spec, 'outline.hallWidth', 6);
+        this.outline.minRoomDim = Util.getpath(spec, 'outline.minRoomDim', 6);
 
         // -- satellite rooms
         this.spie = {};
@@ -168,7 +168,7 @@ class ProcTemplate {
         this.spawn.growthFreePct = Util.getpath(spec, 'spawn.growthFreePct', 0);
         // -- clutter
         this.spawn.clutter = Util.getpath(spec, 'spawn.clutter');
-        this.spawn.clutterFreePct = Util.getpath(spec, 'spawn.clutterFreePct', .05);
+        this.spawn.clutterFreePct = Util.getpath(spec, 'spawn.clutterFreePct', .03);
         // -- machinery
         this.spawn.machineTags = Util.getpath(spec, 'spawn.machineTags', []);
         this.spawn.machineRoomPct = Util.getpath(spec, 'spawn.machineRoomPct', .3);

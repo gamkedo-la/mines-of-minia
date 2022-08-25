@@ -134,7 +134,6 @@ class Outline {
         ];
         if (spec.schemes) schemes = spec.schemes;
         if (room.outlineSchemes) schemes = room.outlineSchemes;
-        console.log(`schemes: ${Fmt.ofmt(schemes)}`);
         let colOverflow = spec.colOverflow || 0;
         let rowOverflow = spec.rowOverflow || 0;
         let minRoomDim = spec.minRoomDim || 4;
@@ -154,7 +153,7 @@ class Outline {
         let minWidth = Math.max(minRoomDim*unitSize, Math.round(scheme.minWidthPct*hyp));
         let minHeight = Math.max(minRoomDim*unitSize, Math.round(scheme.minHeightPct*hyp));
         let minLeg = Math.min(minWidth, minHeight);
-        let maxWidth = Math.floor(Math.sqrt(hyp*hyp - minLeg*minLeg));
+        let maxWidth = (scheme.maxWidthPct) ? scheme.maxWidthPct*hyp : Math.floor(Math.sqrt(hyp*hyp - minLeg*minLeg));
         let maxHeight = Math.floor(Math.sqrt(hyp*hyp - minLeg*minLeg));
         // width/height of outline must fit within ProcRoom radius
         let x = room.x-lvl.x;

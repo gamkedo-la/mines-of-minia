@@ -54,6 +54,8 @@ class ProcRoom extends ProcModel {
         this.connColor = spec.connColor || this.constructor.dfltConnColor;
         this.primary = spec.hasOwnProperty('primary') ? spec.primary : false;
         this.critical = spec.hasOwnProperty('critical') ? spec.critical : false;
+        this.outlineSchemes = spec.outlineSchemes;
+        this.boss = spec.hasOwnProperty('boss') ? spec.boss : false;
         // keep track of all indices in room that are considered part of viable paths
         // -- i.e.: paths between critical points of interest in room
         this.viablePath = [];

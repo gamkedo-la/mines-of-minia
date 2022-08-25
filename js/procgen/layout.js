@@ -29,22 +29,22 @@ class Layout {
         let radius = Math.min(origx, origy);
         let minUnits = template.roomMinUnits || 5;
         let minRoomRadius = template.unitSize * minUnits;
-        let maxRoomRadius = rrooms.maxRoomRadius || minRoomRadius*2;
+        let maxRoomRadius = rrooms.maxRoomRadius || minRoomRadius*1.5;
         let minRooms = rrooms.minRooms || 8;
         let maxRooms = rrooms.maxRooms || 12;
         let nrooms = Prng.rangeInt(minRooms, maxRooms);
         let rooms = [];
         // start with boss room in the middle
-        let r = (template.unitSize * 18);
+        let r = (template.unitSize * 14);
         let room = new ProcRoom({
             x: Math.round(origx), 
             y: Math.round(origy),
             radius: Math.round(r),
+            // ensures a square room
+            outlineSchemes: [ {weight: 1, minWidthPct: Math.SQRT2/2, minHeightPct: Math.SQRT2/2}, ],
             critical: true,
+            boss: true
         });
-        room.outlineSchemes = [
-            {weight: 1, minWidthPct: .5, minHeightPct: .5},
-        ],
         rooms.push(room);
         // create other random rooms around boss room
         for (let i=0; i<nrooms; i++) {

@@ -55,7 +55,7 @@ class Spawn {
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
-        //this.spawnGrowth(template, pstate);
+        this.spawnGrowth(template, pstate);
         // -- machinery
         this.spawnMachinery(template, pstate);
         // -- clutter
@@ -152,6 +152,8 @@ class Spawn {
         // -- iterate through rooms
         // iterate through rooms
         for (const proom of prooms) {
+            // do not spawn traps in boss room
+            if (proom.boss) continue;
             this.spawnTrapForRoom(template, pstate, proom, x_spawn.roomTrapOptions);
         }
         // iterate through halls
@@ -201,6 +203,8 @@ class Spawn {
         let prooms = pstate.prooms || [];
         let phalls = pstate.phalls || [];
         for (const proom of prooms) {
+            // do not spawn growth in boss room
+            if (proom.boss) continue;
             this.spawnGrowthForRoom(template, pstate, proom);
         }
         // iterate through halls
@@ -228,9 +232,9 @@ class Spawn {
                 if (kind === 'wall') return pv + 1
                 return (kind === 'wall') ? pv + 1 : pv;
             }, 0);
-            // -- check free spawn
-            // -- only will spawn against walls
-            let chance = clutterFreePct * walls;
+            // -- check for spawn
+            let chance = (walls) ? walls*4*clutterFreePct : clutterFreePct;
+            console.log(`walls: ${walls} chance: ${chance}`);
             let spawn = Prng.flip(chance);
             if (spawn) {
                 let x_growth = Clutter.xspec({
@@ -263,6 +267,8 @@ class Spawn {
         let plvlo = pstate.plvlo;
         if (!x_spawn.machineTags.length) return;
         for (const proom of prooms) {
+            // don't spawn machines in boss room
+            if (proom.boss) continue;
             // roll for machinery within room
             if (!Prng.flip(x_spawn.machineRoomPct)) continue;
 
@@ -328,6 +334,7 @@ class Spawn {
         let plvl = pstate.plvl;
         let x_spawn = template.spawn || {};
         let quota = Prng.rangeInt(x_spawn.chestMin, x_spawn.chestMax);
+        console.log(`-- chest quota: ${quota}`);
 
         // chests will not appear along critical path (stair to stair)
         let choices = prooms.filter((v) => !v.critical);
@@ -592,6 +599,7 @@ class Spawn {
 
         // -- determine locked room quota
         let quota = Prng.rangeInt(x_spawn.lockRoomMin, x_spawn.lockRoomMax);
+        console.log(`-- room lock quota: ${quota}`);
         //console.log(`lock room quota: ${quota}`);
         // -- filter candidate rooms
         let lrooms = prooms.filter((v) => !v.critical && !v.hidden);

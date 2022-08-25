@@ -64,8 +64,13 @@ class Translate {
     static noisifyFloor(template, pstate) {
         let noise = pstate.pnoise;
         let plvlo = pstate.plvlo;
+        let prooms = pstate.prooms || [];
+        // is there a boss room
+        let bossRoom = prooms.find((v) => v.boss);
         // iterate through all floor tiles
         for (let i=0; i<plvlo.data.nentries; i++) {
+            // skip noise for boss room
+            if (bossRoom && bossRoom.idxs.includes(i)) continue;
             let kind = plvlo.data.getidx(i);
             if (kind === 'floor') {
                 let nkind = this.sampleFloor(plvlo, noise, i)
@@ -96,13 +101,16 @@ class Translate {
         let endRoom;
         // -- choose target room
         // -- target room will be where the stairs up are
+        // -- if boss level, boss room is target room
         // -- chosen from a secondary room that is at minimum number of rooms away
         let best;
         for (let i=0; i<5; i++) {
-            endRoom = Prng.choose(secondary);
+            // -- look for boss room
+            endRoom = prooms.find((v) => v.boss);
+            // -- otherwise randomly choose from secondary rooms
+            if (!endRoom) endRoom = Prng.choose(secondary);
             let path = ProcRoom.findShortestPath(prooms, startRoom, endRoom);
-            //console.log(`try startRoom: ${startRoom} endRoom: ${endRoom} path: ${path}`);
-            if (path.length >= minCriticalPath) {
+            if (endRoom.boss || path.length >= minCriticalPath) {
                 best = path;
                 break;
             } else {

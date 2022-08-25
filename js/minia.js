@@ -50,6 +50,7 @@ import { AudioSystem } from "./base/systems/audioSystem.js";
 import { Facade } from "./entities/facade.js";
 import { Machinery } from "./entities/machinery.js";
 import { Energy } from "./entities/energy.js";
+import { MiniaTemplates } from "./procgen/templates.js";
 
 class Minia extends Game {
     static states = {
@@ -87,40 +88,7 @@ class Minia extends Game {
         scale: 4,
         maxLvl: 21,
 
-        template: new ProcTemplate({
-            doyield: true,
-            //seed: 3,
-            // FIXME: known bad seeds...
-            seed: 62183,
-            unitSize: 6,
-            maxCols: 140,
-            maxRows: 100,
-            tileSize: 16,
-            outline: {
-                hallWidth: 3,
-                colOverflow: 1,
-                rowOverflow: 1,
-            },
-            translate: {
-                floor: 'rock.floor',
-                wall: 'rock.wall',
-                pit: 'rock.pit',
-                pitb: 'rock.pit.border',
-                obs: 'rock.outcrop',
-                obsb: 'rock.outcrop.border',
-                doNoise: true,
-            },
-            spawn: {
-                enemyList: [ Rous, Funguy, Magma ],
-                trapList: [ SpikeTrap ],
-                growth: 'rock.growth',
-                growthFreePct: .1,
-                growthNoisePct: .25,
-                clutter: 'rock.clutter',
-                clutterFreePct: .1,
-                machineTags: ['machine.gear'],
-            }
-        }),
+        template: MiniaTemplates.rockBoss,
     };
 
     static init() {
