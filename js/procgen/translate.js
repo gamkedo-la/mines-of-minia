@@ -134,6 +134,12 @@ class Translate {
         //console.log(`critical path: ${best}`);
 
         // FIXME: remove
+        let bossRoom = prooms.find((v) => v.boss);
+        if (bossRoom) {
+            plvl.startIdx = bossRoom.cidx;
+        }
+
+        // FIXME: remove
         /*
         let idx = Array2D.idxfromdir(plvl.startIdx, Direction.north, plvl.cols, plvl.rows);
         idx = Array2D.idxfromdir(idx, Direction.north, plvl.cols, plvl.rows);

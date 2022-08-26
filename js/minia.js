@@ -51,6 +51,7 @@ import { Facade } from "./entities/facade.js";
 import { Machinery } from "./entities/machinery.js";
 import { Energy } from "./entities/energy.js";
 import { MiniaTemplates } from "./procgen/templates.js";
+import { RagingBull } from "./entities/ragingBull.js";
 
 class Minia extends Game {
     static states = {
@@ -118,6 +119,7 @@ class Minia extends Game {
             Player,
             Projectile,
             Prompt,
+            RagingBull,
             RangedWeapon,
             Reactor,
             Rous,

@@ -722,6 +722,18 @@ let miniaAssets = [
         state: 'idle',
     }),
 
+    Animator.xspec({
+        tag: 'bull',
+        x_sketches: {
+            'idle': new AssetRef({tag: 'idle'}),
+            'align': Rect.xspec({width: 12, height: 12, color: 'yellow'}),
+            'energize': Rect.xspec({width: 12, height: 12, color: 'orange'}),
+            'charge': Rect.xspec({width: 12, height: 12, color: 'red'}),
+            'dying': new AssetRef({tag: 'dying'}),
+        },
+        state: 'idle',
+    }),
+
     Sfx.xspec({ tag: 'test.sound', audio: new SfxRef({src: 'snd/test.mp3'}) }),
     Sfx.xspec({ tag: 'gem.break', audio: new SfxRef({src: 'snd/gem-break.mp3'}) }),
     Sfx.xspec({ tag: 'trap.trigger', audio: new SfxRef({src: 'snd/trap_triggered_short.mp3'}), volume: .5 }),

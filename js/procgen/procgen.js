@@ -125,12 +125,6 @@ class ProcGen {
         for (const step of this.discoveryGenerator(template, pstate));
     }
 
-    static pickSpawnPoint(lvl, rooms) {
-        // choose a starting room
-        let room = Prng.choose(rooms);
-        lvl.spawnIdx = room.cidx;
-    }
-
     static ijasxy(lvl, i, j) {
         return [lvl.x+i*lvl.tileSize, lvl.y+j*lvl.tileSize];
     }

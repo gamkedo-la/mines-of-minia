@@ -26,6 +26,7 @@ import { Key } from '../entities/key.js';
 import { Machinery } from '../entities/machinery.js';
 import { Magma } from '../entities/magma.js';
 import { Projectile } from '../entities/projectile.js';
+import { RagingBull } from '../entities/ragingBull.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
 import { Reactor } from '../entities/reactor.js';
 import { Rous } from '../entities/rous.js';
@@ -234,7 +235,6 @@ class Spawn {
             }, 0);
             // -- check for spawn
             let chance = (walls) ? walls*4*clutterFreePct : clutterFreePct;
-            console.log(`walls: ${walls} chance: ${chance}`);
             let spawn = Prng.flip(chance);
             if (spawn) {
                 let x_growth = Clutter.xspec({
@@ -1165,74 +1165,17 @@ class Spawn {
         if (!sroom) return;
         // iterate items to spawn
         let x_spawns = [
-            /*
-            Weapon.xspec({
-                kind: 'poke',
-                name: 'poke.1',
-                x_sketch: Assets.get('poke.1'),
-                identifiable: true,
-            }),
-            Gem.xspec({
-                name: 'health.gem',
-                kind: 'health',
-            }),
-            Cog.xspec({
-                name: 'test.cog',
-                kind: 'test',
-            }),
-            Cog.xspec({
-                name: 'identify.cog',
-                kind: 'identify',
-            }),
-            Cog.xspec({
-                name: 'identify.cog',
-                kind: 'identify',
-            }),
-            Cog.xspec({
-                kind: 'brawn',
-            }),
-            Cog.xspec({
-                kind: 'spry',
-            }),
-            Cog.xspec({
-                kind: 'savvy',
-            }),
-            */
-
-            /*
-            Chest.xspec({
-                name: 'chest.brown',
-                x_sketch: Assets.get('chest.brown'),
-                loot: [
-                    Token.xspec({
-                        name: 'token',
-                        x_sketch: Assets.get('token'),
-                        count: 5,
-                    }),
-                ],
-            }),
-
-            Chest.xspec({
-                name: 'chest.green',
-                kind: 'green',
-                loot: [
-                    Token.xspec({
-                        name: 'token',
-                        x_sketch: Assets.get('token'),
-                        count: 5,
-                    }),
-                ],
-            }),
-
-            Key.xspec({
-                kind: 'green',
-            }),
-            */
 
             Fuelcell.xspec({
                 name: 'fuelcell',
                 x_sketch: Assets.get('fuelcell'),
             }),
+
+            /*
+            RagingBull.xspec({
+                name: 'bull',
+            }),
+            */
 
             /*
             Token.xspec({
@@ -1244,11 +1187,6 @@ class Spawn {
 
             /*
             Rous.xspec({
-                healthMax: 1,
-                xp: 10,
-            }),
-
-            Energy.xspec({
                 healthMax: 1,
                 xp: 10,
             }),

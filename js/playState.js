@@ -218,7 +218,9 @@ class PlayState extends GameState {
         //console.log(`${this} onLevelLoaded`);
         // update player position
         let idx = this.player.idx;
-        if (this.setPlayerIdx) idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
+        if (this.setPlayerIdx) {
+            idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
+        }
         //idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
         let wantx = this.lvl.grid.xfromidx(idx, true);
         let wanty = this.lvl.grid.yfromidx(idx, true);
