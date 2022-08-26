@@ -31,16 +31,21 @@ class AiMoveToAlign extends AiDirective {
             let bestIdx;
             let bestd;
             for (let i=ti-range; i<ti+range; i++) {
+                // check if occupied
+                let idx = this.lvl.idxfromij(i,tj);
+                if (this.lvl.anyidx(idx, (e) => this.actor.blockedBy & e.blocks)) continue;
                 let d = Mathf.distance(i, tj, ai, aj);
                 if (!bestIdx || d < bestd) {
-                    bestIdx = this.lvl.idxfromij(i,tj);
+                    bestIdx = idx;
                     bestd = d;
                 }
             }
             for (let j=tj-range; j<tj+range; j++) {
+                let idx = this.lvl.idxfromij(ti,j);
+                if (this.lvl.anyidx(idx, (e) => this.actor.blockedBy & e.blocks)) continue;
                 let d = Mathf.distance(ti, j, ai, aj);
                 if (!bestIdx || d < bestd) {
-                    bestIdx = this.lvl.idxfromij(ti,j);
+                    bestIdx = idx;
                     bestd = d;
                 }
             }
@@ -49,9 +54,9 @@ class AiMoveToAlign extends AiDirective {
             let path = this.pathfinder.find(this.actor, this.actor.idx, bestIdx);
             // -- no path
             if (!path) {
+                console.log(`can't path to ${bestIdx}:${this.lvl.ifromidx(bestIdx)},${this.lvl.jfromidx(bestIdx)} a: ${ai},${aj} t: ${ti},${tj}`);
                 this.ok = false;
                 this.done = true;
-                console.log(`pathfinding failed`);
                 return null;
             }
 

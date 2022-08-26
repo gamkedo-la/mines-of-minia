@@ -1,7 +1,7 @@
 export { RagingBull };
 
-    import { AiChargeDirective } from '../ai/aiChargeDirective.js';
-    import { AiEnergizeDirective } from '../ai/aiEnergizeDirective.js';
+import { AiChargeDirective } from '../ai/aiChargeDirective.js';
+import { AiEnergizeDirective } from '../ai/aiEnergizeDirective.js';
 import { AiMoveToAlign } from '../ai/aiMoveToAlign.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
@@ -9,6 +9,14 @@ import { Prng } from '../base/prng.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Enemy } from './enemy.js';
 
+/**
+ * mechanical bull type enemy
+ * -- charges player pushing them to wall and does significant damage
+ * -- will try to align with player along cardinals, energizes, then charges
+ * -- if player engages in melee combat, behavior will change to reduce energize/charge timers and will charge on diagonals
+ * -- if charge fails to hit player, bull will be dazed for X rounds
+ * -- if charge hits player, player will be dazed for X rounds (and bull will engage in melee)
+ */
 class RagingBull extends Enemy{
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
@@ -76,41 +84,43 @@ class RagingBull extends Enemy{
             case 'idle':
                 yield null;
                 break;
+
             case 'align':
                 // attempt to move within range
                 yield *this.move.run();
                 // -- move ok
-                if (this.move.done) {
+                if (this.move.ok) {
+                    console.log(`-- bull move ok, running energize`);
                     UpdateSystem.eUpdate(this, {state: 'energize'});
-                    this.actionStream = this.run();
-                    yield null;
                 // -- move failed
                 } else {
+                    console.log(`-- bull move failed`);
+                    // FIXME: shouldn't go back to idle here... create a wait state?
                     UpdateSystem.eUpdate(this, {state: 'idle'});
-                    this.actionStream = this.run();
                     yield null;
                 }
                 break;
+
             case 'energize':
                 // energize charge
                 yield *this.energize.run();
+                console.log(`-- energize done`);
                 if (this.energize.ok) {
+                    console.log(`-- bull energize ok`);
                     UpdateSystem.eUpdate(this, {state: 'charge'});
-                    this.actionStream = this.run();
-                    yield null;
                 } else {
+                    console.log(`-- bull energize failed`);
                     UpdateSystem.eUpdate(this, {state: 'align'});
-                    this.actionStream = this.run();
-                    yield null;
                 }
-
                 break;
+
             case 'charge':
                 // perform charge
                 yield *this.charge.run();
+                console.log(`-- charge done start align again`);
                 UpdateSystem.eUpdate(this, {state: 'align'});
-                this.actionStream = this.run();
                 break;
+
             default:
                 yield null;
             }

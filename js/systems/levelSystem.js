@@ -71,21 +71,23 @@ class LevelSystem extends System {
             }
         }
 
-        // look up level by index
-        let cachedLvl = Serialization.loadLevel(index);
-        let doload = (cachedLvl) ? true : false;
-
         // is level to load cached?
         let template = Object.assign( {}, Config.template, {
             index: index,
-            dospawn: !doload,
+            dospawn: !this.loadLevel,
         });
 
         // generate level
         let plvl = ProcGen.genLvl(template);
-        // update level info w/ cached info (if available)
-        if (cachedLvl) {
-            plvl.entities = plvl.entities.concat(cachedLvl.entities);
+        // update level info w/ saved level data
+        let cachedLvl;
+        if (this.loadLevel) {
+            console.log(`-- loading level: ${index}`);
+            // look up level by index
+            cachedLvl = Serialization.loadLevel(index);
+            if (cachedLvl) {
+                plvl.entities = plvl.entities.concat(cachedLvl.entities);
+            }
         }
 
         // instantiate level
@@ -99,9 +101,6 @@ class LevelSystem extends System {
         // update fow
         this.lvl.fowIdxs = (cachedLvl) ? cachedLvl.fowIdxs : [];
         this.lvl.fowMasks = (cachedLvl) ? cachedLvl.fowMasks : {};
-        if (cachedLvl) {
-            console.log(`assign fowMasks: ${this.lvl.fowMasks}`);
-        }
 
         // trigger load complete
         Events.trigger(this.constructor.evtLoaded, {plvl: plvl, lvl: this.lvl, goingUp: goingUp});

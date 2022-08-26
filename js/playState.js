@@ -69,6 +69,7 @@ class PlayState extends GameState {
 
     async ready(data={}) {
         this.controlsActive = true;
+        this.maxIndex = 0;
 
         let x_view = UxCanvas.xspec({
             cvsid: 'game.canvas',
@@ -193,13 +194,16 @@ class PlayState extends GameState {
         if (data && data.load) {
             let gameState = Serialization.loadGameState();
             lvl = gameState.index;
+            this.maxIndex = gameState.maxIndex;
             let cogState = Serialization.loadCogState();
             console.log(`cogState: ${Fmt.ofmt(cogState)}`);
             Cog.init(cogState);
             let gemState = Serialization.loadGemState();
             Gem.init(gemState);
+            console.log(`-- level load`)
         } else {
             ProcGen.genDiscovery(Config.template);
+            console.log(`-- level new`)
         }
         Events.trigger(LevelSystem.evtWanted, { level: lvl, load: data && data.load });
 
@@ -216,6 +220,10 @@ class PlayState extends GameState {
         
     onLevelLoaded(evt) {
         //console.log(`${this} onLevelLoaded`);
+        if (this.lvl.index > this.maxIndex) {
+            this.maxIndex = this.lvl.index;
+            console.log(`-- new max level index: ${this.maxIndex}`);
+        }
         // update player position
         let idx = this.player.idx;
         if (this.setPlayerIdx) {

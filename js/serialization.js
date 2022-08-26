@@ -55,6 +55,7 @@ class Serialization {
         let key = `game`;
         let data = {
             index: state.lvl.index,
+            maxIndex: state.maxIndex,
         };
         Storage.setItem(key, data);
     }

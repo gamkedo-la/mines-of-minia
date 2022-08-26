@@ -11,6 +11,7 @@ import { Util } from '../base/util.js';
 class TurnSystem extends System {
     // STATIC VARIABLES ----------------------------------------------------
     static evtDone = 'turn.done';
+    static dfltIterateTTL = 0;
 
     // linked to the last instantiated system
     static _main;
@@ -80,12 +81,15 @@ class TurnSystem extends System {
             } else {
                 if (this.dbg) console.log(`--- leader free action`)
             }
-            //this.leaderPoints += evt.action.points;
         // check if action is tied to follower which has queued events
         } else if (evt.actor && this.store.has(evt.actor.gid)) {
             if (this.dbg) console.log(`follower action done ${Fmt.ofmt(evt)}`);
             this.followerActive.add(evt.actor.gid);
-            this.active = true
+            if (this.iterating) {
+                this.iterateAgain = true
+            } else {
+                this.active = true
+            }
         }
     }
 
@@ -96,6 +100,8 @@ class TurnSystem extends System {
 
     prepare(evt) {
         this.followersDone = true;
+        this.iterateAgain = false;
+        //console.log(`starting w/ all followers done`);
     }
 
     iterate(evt, e) {
@@ -106,6 +112,7 @@ class TurnSystem extends System {
         // -- skip non-active entities (if turn is not starting)
         if (!this.followerTurnStarting && !this.followerActive.has(e.gid)) {
             this.followersDone &= (spentPoints === this.turnPoints);
+            //console.log(`iterate ${e} inactive w/ ${this.followersDone}`);
             return;
         }
         if (spentPoints >= this.turnPoints) return;
@@ -119,10 +126,12 @@ class TurnSystem extends System {
             // -- pull from stream
             action = e.actionStream.next().value;
         }
+        //console.log(`follower ${e} action ${action}`);
         // -- if no next action (nothing to do)... so return
         if (!action) {
             // null action results in entity being done with turn
             this.followerPoints[e.gid] = this.turnPoints;
+            //console.log(`iterate ${e} no action exit w/ ${this.followersDone}`);
             return;
         }
         // check if action can be started
@@ -139,12 +148,14 @@ class TurnSystem extends System {
         // follower is done if they have spent all their points
         this.followersDone &= (spentPoints === this.turnPoints);
 
+        //console.log(`iterate ${e} end exit w/ ${this.followersDone} spent: ${spentPoints} turn: ${this.turnPoints}`);
+
     }
 
     finalize(evt) {
         // clear marked followers
         this.followerActive.clear();
-        this.active = false;
+        this.active = this.iterateAgain;
         this.followerTurnStarting = false;
         // check if all followers are done
         if (this.followersDone) {
