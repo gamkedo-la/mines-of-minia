@@ -32,6 +32,7 @@ import { Reactor } from '../entities/reactor.js';
 import { Rous } from '../entities/rous.js';
 import { Shielding } from '../entities/shielding.js';
 import { Stairs } from '../entities/stairs.js';
+import { StealthBot } from '../entities/stealthBot.js';
 import { Tile } from '../entities/tile.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
@@ -1171,8 +1172,8 @@ class Spawn {
                 x_sketch: Assets.get('fuelcell'),
             }),
 
-            RagingBull.xspec({
-                name: 'bull',
+            StealthBot.xspec({
+                name: 'test.boss',
                 healthMax: 50,
             }),
 

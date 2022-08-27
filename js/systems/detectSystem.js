@@ -7,8 +7,7 @@ import { Mathf } from '../base/math.js';
 import { Random } from '../base/random.js';
 import { System } from '../base/system.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
-import { UpdateSystem } from '../base/systems/updateSystem.js';
-import { Util } from '../base/util.js';
+import { MiniaModel } from '../entities/miniaModel.js';
 import { OverlaySystem } from './overlaySystem.js';
 
 /**
@@ -25,6 +24,11 @@ class DetectSystem extends System {
         this.active = false;
         this.revealed = false;
         this.lvl = spec.lvl;
+        Events.listen(MiniaModel.evtUpdated, this.onHiddenUpdate);
+    }
+    destroy() {
+        super.destroy();
+        Events.ignore(MiniaModel.evtUpdated, this.onHiddenUpdate);
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -35,13 +39,11 @@ class DetectSystem extends System {
         }
         if (this.matchPredicate(evt.actor)) {
             if (this.dbg) console.log(`${this} onEntityAdded: ${Fmt.ofmt(evt)} gid: ${evt.actor.gid}`);
-            evt.actor.evt.listen(evt.actor.constructor.evtUpdated, this.onHiddenUpdate);
             this.store.set(evt.actor.gid, evt.actor);
         }
     }
     onEntityRemoved(evt) {
         if (this.dbg) console.log(`${this} onEntityRemoved: ${Fmt.ofmt(evt)}`);
-        evt.actor.evt.ignore(evt.actor.constructor.evtUpdated, this.onHiddenUpdate);
         this.store.delete(evt.actor.gid);
     }
 
@@ -53,11 +55,17 @@ class DetectSystem extends System {
     }
 
     onHiddenUpdate(evt) {
-        // -- if no longer hidden, remove entity from tracked secret list
-        if (evt.update && evt.update.hasOwnProperty('hidden')) {
-            if (!evt.update.hidden) {
-                evt.actor.evt.ignore(evt.actor.constructor.evtUpdated, this.onHiddenUpdate);
+        // actor is tracked (hidden)
+        if (this.store.has(evt.actor.gid)) {
+            // -- if no longer hidden, remove entity from tracked secret list
+            if (evt.update && evt.update.hasOwnProperty('hidden') && !evt.update.hidden) {
                 this.store.delete(evt.actor.gid);
+            }
+        // actor is not currently tracked
+        } else {
+            // -- if newly hidden, add entity to tracked secret list
+            if (evt.update && evt.update.hasOwnProperty('hidden') && evt.update.hidden) {
+                this.store.set(evt.actor.gid, evt.actor);
             }
         }
     }

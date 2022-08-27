@@ -52,6 +52,7 @@ import { Machinery } from "./entities/machinery.js";
 import { Energy } from "./entities/energy.js";
 import { MiniaTemplates } from "./procgen/templates.js";
 import { RagingBull } from "./entities/ragingBull.js";
+import { StealthBot } from "./entities/stealthBot.js";
 
 class Minia extends Game {
     static states = {
@@ -126,6 +127,7 @@ class Minia extends Game {
             Shielding,
             SpikeTrap,
             Stairs,
+            StealthBot,
             Tile,
             Token,
             Trap,

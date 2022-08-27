@@ -735,6 +735,25 @@ let miniaAssets = [
         state: 'idle',
     }),
 
+    Animator.xspec({
+        tag: 'stealthBot',
+        x_sketches: {
+            'idle': Rect.xspec({width: 14, height: 14, color: 'green'}),
+            'stealth': Rect.xspec({width: 14, height: 14, color: 'grey'}),
+            'approach': Rect.xspec({width: 14, height: 14, color: 'orange'}),
+            'retreat': Rect.xspec({width: 14, height: 14, color: 'yellow'}),
+            'melee': Rect.xspec({width: 14, height: 14, color: 'blue'}),
+            'dying': new AssetRef({tag: 'dying'}),
+            /*
+            'energize': Rect.xspec({width: 14, height: 14, color: 'orange'}),
+            'melee': Rect.xspec({width: 14, height: 14, color: 'blue'}),
+            'charge': Rect.xspec({width: 14, height: 14, color: 'red'}),
+            'dying': new AssetRef({tag: 'dying'}),
+            */
+        },
+        state: 'idle',
+    }),
+
     Sfx.xspec({ tag: 'test.sound', audio: new SfxRef({src: 'snd/test.mp3'}) }),
     Sfx.xspec({ tag: 'gem.break', audio: new SfxRef({src: 'snd/gem-break.mp3'}) }),
     Sfx.xspec({ tag: 'trap.trigger', audio: new SfxRef({src: 'snd/trap_triggered_short.mp3'}), volume: .5 }),
@@ -1221,6 +1240,17 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*5, y: 0})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*6, y: 0})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*7, y: 0})}), ttl: 150 }),
+    ]}),
+
+    Animation.xspec({tag: 'vfx.hide', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*7, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*6, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*5, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*4, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*3, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*2, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 64*1, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
     ]}),
 
     Animation.xspec({tag: 'vfx.alert', loop: false, x_cels: [
