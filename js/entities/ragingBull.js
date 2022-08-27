@@ -8,6 +8,7 @@ import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Prng } from '../base/prng.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { DazedCharm } from '../charms/dazed.js';
 import { Enemy } from './enemy.js';
 
 /**
@@ -82,8 +83,8 @@ class RagingBull extends Enemy{
 
     onDamaged(evt) {
         super.onDamaged(evt);
-        // -- enrage
-        if (!this.enraged) {
+        // -- enrage (if not stunned)
+        if (!this.enraged && !DazedCharm.isDazed(this)) {
             console.log(`-- setting enraged`);
             UpdateSystem.eUpdate(this, {enraged: true});
             // stop current directive
