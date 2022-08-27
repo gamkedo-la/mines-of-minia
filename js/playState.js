@@ -47,6 +47,8 @@ import { Cog } from './entities/cog.js';
 import { Gem } from './entities/gem.js';
 import { DetectSystem } from './systems/detectSystem.js';
 import { ScanAction } from './actions/scan.js';
+import { DazedCharm } from './charms/dazed.js';
+import { WaitAction } from './base/actions/wait.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -254,6 +256,11 @@ class PlayState extends GameState {
     onTurnDone(evt) {
         //console.log(`-- ${this} onTurnDone: ${Fmt.ofmt(evt)}`);
         if (evt.which !== 'follower') return;
+        // handle dazed
+        if (DazedCharm.isDazed(this.player)) {
+            TurnSystem.postLeaderAction(new WaitAction());
+            return;
+        }
         // re-enable interact handler
         if (!this.handler) {
             this.loadHandler('interact');

@@ -5,6 +5,7 @@ import { MoveAction } from '../base/actions/move.js';
 import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { DazedCharm } from '../charms/dazed.js';
 import { Attack } from './attack.js';
 
 class ChargeAction extends GeneratorAction {
@@ -20,6 +21,7 @@ class ChargeAction extends GeneratorAction {
         this.attackKind = 'bonk';
         this.damageMin = spec.damageMin || 5;
         this.damageMax = spec.damageMax || 15;
+        this.applyDazed = spec.hasOwnProperty('applyDazed') ? spec.applyDazed : true;
         // -- setup event handlers
         this.onActorUpdate = this.onActorUpdate.bind(this);
     }
@@ -58,10 +60,14 @@ class ChargeAction extends GeneratorAction {
                 if (blocks.some((v) => !v.constructor.mobile)) {
                     // stop charge
                     for (const e of this.pushing) UpdateSystem.eUpdate(e, {idx: this.actor.idx, xform: {x: this.actor.xform.x, y: this.actor.xform.y}});
-                    // apply damage
+                    // apply damage and dazed
                     if (this.pushing.length) {
                         for (const e of this.pushing) {
                             if (e.health) {
+                                // apply dazed charm
+                                let dazed = new DazedCharm();
+                                e.addCharm(dazed);
+                                console.log(`applied ${dazed} to ${e}`);
                                 // roll for damage
                                 let dmg = Attack.damage(this, e);
                                 if (dmg) {
@@ -70,6 +76,11 @@ class ChargeAction extends GeneratorAction {
                                 }
                             }
                         }
+                    // if charge "missed", apply dazed to actor
+                    } else {
+                        let dazed = new DazedCharm();
+                        console.log(`applied ${dazed} to ${this.actor}`);
+                        this.actor.addCharm(dazed);
                     }
                     // nudge back if we were pushing something
                     if (this.pushing.length) {

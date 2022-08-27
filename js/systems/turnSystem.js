@@ -2,11 +2,13 @@ export { TurnSystem };
 
 import { EndTurnAction } from '../actions/endTurn.js';
 import { Action } from '../base/actions/action.js';
+import { WaitAction } from '../base/actions/wait.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { System } from '../base/system.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
 import { Util } from '../base/util.js';
+import { DazedCharm } from '../charms/dazed.js';
 
 class TurnSystem extends System {
     // STATIC VARIABLES ----------------------------------------------------
@@ -118,7 +120,9 @@ class TurnSystem extends System {
         if (spentPoints >= this.turnPoints) return;
         // -- determine next action
         let action;
-        if (this.followerQ.hasOwnProperty(e.gid)) {
+        if (DazedCharm.isDazed(e)) {
+            action = new WaitAction();
+        } else if (this.followerQ.hasOwnProperty(e.gid)) {
             // -- pull from q
             action = this.followerQ[e.gid];
             delete this.followerQ[e.gid];

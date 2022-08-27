@@ -231,12 +231,9 @@ class Character extends MiniaModel {
     }
 
     addCharm(charm) {
-        this.charms.push(charm);
         charm.link(this);
     }
     removeCharm(charm) {
-        let idx = this.charms.indexOf(charm);
-        if (idx !== -1) this.charms.splice(idx, 1);
         charm.unlink();
     }
 
