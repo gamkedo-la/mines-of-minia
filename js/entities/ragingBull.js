@@ -2,6 +2,7 @@ export { RagingBull };
 
 import { AiChargeDirective } from '../ai/aiChargeDirective.js';
 import { AiEnergizeDirective } from '../ai/aiEnergizeDirective.js';
+import { AiMeleeTargetDirective } from '../ai/aiMeleeTargetDirective.js';
 import { AiMoveToAlign } from '../ai/aiMoveToAlign.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
@@ -40,6 +41,7 @@ class RagingBull extends Enemy{
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
+        this.enraged = false;
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -53,6 +55,7 @@ class RagingBull extends Enemy{
         this.move = new AiMoveToAlign(x_dir);
         this.energize = new AiEnergizeDirective(x_dir);
         this.charge = new AiChargeDirective(x_dir);
+        this.attack = new AiMeleeTargetDirective(x_dir);
         this.actionStream = this.run();
         // activate
         this.active = true;
@@ -64,6 +67,7 @@ class RagingBull extends Enemy{
         this.move.target = evt.target;
         this.energize.target = evt.target;
         this.charge.target = evt.target;
+        this.attack.target = evt.target;
         UpdateSystem.eUpdate(this, {state: 'align'});
         this.actionStream = this.run();
     }
@@ -74,6 +78,11 @@ class RagingBull extends Enemy{
         //this.search.targetIdx = evt.lastIdx;
         UpdateSystem.eUpdate(this, {state: 'idle'});
         this.actionStream = this.run();
+    }
+
+    onDamaged(evt) {
+        super.onDamaged(evt);
+        this.enraged = true;
     }
 
     // METHODS -------------------------------------------------------------
@@ -118,6 +127,13 @@ class RagingBull extends Enemy{
                 // perform charge
                 yield *this.charge.run();
                 console.log(`-- charge done start align again`);
+                UpdateSystem.eUpdate(this, {state: 'melee'});
+                break;
+
+            case 'melee':
+                // perform charge
+                yield *this.attack.run();
+                console.log(`-- attack done start align again`);
                 UpdateSystem.eUpdate(this, {state: 'align'});
                 break;
 

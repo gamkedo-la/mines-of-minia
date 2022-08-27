@@ -728,6 +728,7 @@ let miniaAssets = [
             'idle': new AssetRef({tag: 'idle'}),
             'align': Rect.xspec({width: 12, height: 12, color: 'yellow'}),
             'energize': Rect.xspec({width: 12, height: 12, color: 'orange'}),
+            'melee': Rect.xspec({width: 12, height: 12, color: 'blue'}),
             'charge': Rect.xspec({width: 12, height: 12, color: 'red'}),
             'dying': new AssetRef({tag: 'dying'}),
         },
