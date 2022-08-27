@@ -11,6 +11,7 @@ class AiMoveToAlign extends AiDirective {
     cpost(spec) {
         super.cpost(spec);
         this.pathfinder = spec.pathfinder || this.lvl.pathfinder;
+        this.meleeRange = spec.meleeRange || this.actor.meleeRange;
     }
 
     *run() {
@@ -23,6 +24,10 @@ class AiMoveToAlign extends AiDirective {
             let ti = this.lvl.ifromidx(this.target.idx);
             let tj = this.lvl.jfromidx(this.target.idx);
             if (ai === ti || aj === tj) {
+                this.done = true;
+                return null;
+            }
+            if (this.getTargetRange() <= this.meleeRange) {
                 this.done = true;
                 return null;
             }

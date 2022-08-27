@@ -82,7 +82,17 @@ class RagingBull extends Enemy{
 
     onDamaged(evt) {
         super.onDamaged(evt);
-        this.enraged = true;
+        // -- enrage
+        if (!this.enraged) {
+            console.log(`-- setting enraged`);
+            UpdateSystem.eUpdate(this, {enraged: true});
+            // stop current directive
+            this.move.stop();
+            this.energize.stop();
+            this.attack.stop();
+            // set charge to include diagonals
+            this.charge.diagonal = true;
+        }
     }
 
     // METHODS -------------------------------------------------------------
@@ -97,8 +107,16 @@ class RagingBull extends Enemy{
             case 'align':
                 // attempt to move within range
                 yield *this.move.run();
+                // -- enraged
+                if (this.enraged) {
+                    console.log(`-- bull move stopped, enraged`);
+                    UpdateSystem.eUpdate(this, {state: 'charge'});
+                // -- within range
+                } else if (this.move.getTargetRange() <= this.meleeRange) {
+                    console.log(`-- bull move within range, running melee`);
+                    UpdateSystem.eUpdate(this, {state: 'melee'});
+                } else if (this.move.ok) {
                 // -- move ok
-                if (this.move.ok) {
                     console.log(`-- bull move ok, running energize`);
                     UpdateSystem.eUpdate(this, {state: 'energize'});
                 // -- move failed
@@ -114,8 +132,8 @@ class RagingBull extends Enemy{
                 // energize charge
                 yield *this.energize.run();
                 console.log(`-- energize done`);
-                if (this.energize.ok) {
-                    console.log(`-- bull energize ok`);
+                if (this.enraged || this.energize.ok) {
+                    console.log(`-- bull energize enraged or ok`);
                     UpdateSystem.eUpdate(this, {state: 'charge'});
                 } else {
                     console.log(`-- bull energize failed`);
@@ -127,7 +145,10 @@ class RagingBull extends Enemy{
                 // perform charge
                 yield *this.charge.run();
                 console.log(`-- charge done start align again`);
-                UpdateSystem.eUpdate(this, {state: 'melee'});
+                // transition to melee, reset enraged
+                UpdateSystem.eUpdate(this, {state: 'melee', enraged: false});
+                // reset charge direction
+                this.charge.diagonal = false;
                 break;
 
             case 'melee':

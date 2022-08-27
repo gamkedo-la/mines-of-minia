@@ -37,7 +37,9 @@ class AiDirective extends Gizmo {
     *run() {
     }
 
-    stop() {
+    stop(ok=false) {
+        this.ok = ok;
+        this.done = true;
     }
 
 }

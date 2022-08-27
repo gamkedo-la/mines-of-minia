@@ -1173,6 +1173,7 @@ class Spawn {
 
             RagingBull.xspec({
                 name: 'bull',
+                healthMax: 50,
             }),
 
             /*

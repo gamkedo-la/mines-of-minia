@@ -10,6 +10,7 @@ class AiChargeDirective extends AiDirective {
         super.cpost(spec);
         // -- delay for X rounds
         this.delay = spec.delay || 1;
+        this.diagonal = spec.hasOwnProperty('diagonal') ? spec.diagonal : true;
         this.elapsed = 0;
     }
 
@@ -25,7 +26,11 @@ class AiChargeDirective extends AiDirective {
         let aj = this.lvl.jfromidx(this.actor.idx);
         let ti = this.lvl.ifromidx(this.target.idx);
         let tj = this.lvl.jfromidx(this.target.idx);
-        this.chargeDir = Direction.cardinalFromXY(ti-ai, tj-aj);
+        if (this.diagonal) {
+            this.chargeDir = Direction.diagonalFromXY(ti-ai, tj-aj);
+        } else {
+            this.chargeDir = Direction.cardinalFromXY(ti-ai, tj-aj);
+        }
         console.log(`-- starting charge with dir: ${Direction.toString(this.chargeDir)}`);
         // iterate until directive is done
         while (!this.done) {
