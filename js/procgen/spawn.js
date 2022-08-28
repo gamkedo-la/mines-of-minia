@@ -88,7 +88,7 @@ class Spawn {
                 let x_door = Door.xspec({
                     idx: idx,
                     facing: facing,
-                    z: 2,
+                    z: template.fgZed,
                     blocks: 0,
                 });
                 plvl.entities.push(x_door);
