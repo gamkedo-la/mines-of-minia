@@ -1201,6 +1201,7 @@ class Spawn {
             }),
             */
 
+            /*
             this.genWeapon(template, pstate),
             this.genReactor(template, pstate),
             this.genShielding(template, pstate),
@@ -1213,6 +1214,7 @@ class Spawn {
                 baseDamageMax: 20,
                 projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.ice')}),
             }),
+            */
 
 
         ];
