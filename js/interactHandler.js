@@ -145,6 +145,8 @@ class InteractHandler extends Entity {
         let lmouse = this.lvl.xform.getLocal(new Vect(evt.mouse.x, evt.mouse.y));
         let idx = this.lvl.idxfromxy(lmouse.x, lmouse.y);
         console.log(`-- local: ${lmouse} idx: ${idx}`);
+        // FIXME
+        return;
         /*
         for (const other of this.lvl.findidx(idx, (v) => v.idx === idx)) {
             console.log(`other: ${other}`);
