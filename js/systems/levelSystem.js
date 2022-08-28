@@ -121,37 +121,37 @@ class LevelSystem extends System {
 
         // instantiate level entities
         for (const x_e of plvl.entities) {
-            // lookup index
-            let idx = x_e.idx || 0;
-            // override xform to position constructed entity at given index
-            let x = this.lvl.grid.xfromidx(idx, true);
-            let y = this.lvl.grid.yfromidx(idx, true);
-            x_e.x_xform = XForm.xspec({ x: x, y: y, stretch: false, });
-            // update lvl accessors
-            x_e.idxfromdir = this.lvl.idxfromdir.bind(this.lvl);
-            x_e.anyidx = this.lvl.anyidx.bind(this.lvl);
-            x_e.fowidx = this.lvl.fowidx.bind(this.lvl);
-            x_e.fowmask = this.lvl.fowmask.bind(this.lvl);
-            // generate
-            let e = Generator.generate(x_e);
-            // center at x,y
-            // FIXME
-            if (e.cls !== 'Tile' && e.cls !== 'Facade') {
-                let h = e.xform.height;
-                e.xform.offx = -e.xform.width*.5;
-                if (h > Config.tileSize) {
-                    //e.xform.offy = -Config.tileSize*.5;
-                    e.xform.offy = Config.tileSize*.5 - e.xform.height;
-                    // console.log(`${e} xform offy: ${e.xform.offy}`)
-                } else {
-                    e.xform.offy = -e.xform.height*.5;
-                    // console.log(`${e} xform offy: ${e.xform.offy}`)
-                }
-            }
-            //console.log(`x_e: ${Fmt.ofmt(x_e)} e: ${e}`);
-            this.lvl.adopt(e);
+            this.addEntity(x_e);
         }
 
+    }
+
+    addEntity(x_e) {
+        // lookup index
+        let idx = x_e.idx || 0;
+        // override xform to position constructed entity at given index
+        let x = this.lvl.grid.xfromidx(idx, true);
+        let y = this.lvl.grid.yfromidx(idx, true);
+        x_e.x_xform = XForm.xspec({ x: x, y: y, stretch: false, });
+        // update lvl accessors
+        x_e.idxfromdir = this.lvl.idxfromdir.bind(this.lvl);
+        x_e.anyidx = this.lvl.anyidx.bind(this.lvl);
+        x_e.fowidx = this.lvl.fowidx.bind(this.lvl);
+        x_e.fowmask = this.lvl.fowmask.bind(this.lvl);
+        // generate
+        let e = Generator.generate(x_e);
+        // center at x,y
+        if (e.cls !== 'Tile' && e.cls !== 'Facade') {
+            let h = e.xform.height;
+            e.xform.offx = -e.xform.width*.5;
+            if (h > Config.tileSize) {
+                e.xform.offy = Config.tileSize*.5 - e.xform.height;
+            } else {
+                e.xform.offy = -e.xform.height*.5;
+            }
+        }
+        //console.log(`x_e: ${Fmt.ofmt(x_e)} e: ${e}`);
+        this.lvl.adopt(e);
     }
     
 }

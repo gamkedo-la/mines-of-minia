@@ -52,6 +52,7 @@ class StealthBot extends Enemy {
         this.onAttackTarget = this.onAttackTarget.bind(this);
         this.evt.listen(this.constructor.evtAttacked, this.onAttackTarget);
         this.attackFromStealth = false;
+        if (spec.elvl) this.linkLevel(spec.elvl);
     }
     destroy(spec) {
         super.destroy();
@@ -68,20 +69,7 @@ class StealthBot extends Enemy {
 
     // EVENT HANDLERS ------------------------------------------------------
     onLevelLoaded(evt) {
-        let lvl = evt.lvl;
-        this.elvl = lvl;
-        // setup directives
-        let x_dir = {
-            lvl: lvl,
-            actor: this,
-        }
-        this.approach = new AiMoveTowardsTargetDirective(x_dir);
-        this.stealth = new AiHideDirective(x_dir);
-        this.retreat = new AiMoveToRangeDirective(x_dir);
-        this.attack = new AiMeleeTargetDirective(x_dir);
-        this.actionStream = this.run();
-        // activate
-        this.active = true;
+        this.linkLevel(evt.lvl);
     }
 
     onAggro(evt) {
@@ -111,6 +99,23 @@ class StealthBot extends Enemy {
     }
 
     // METHODS -------------------------------------------------------------
+
+    linkLevel(lvl) {
+        this.elvl = lvl;
+        // setup directives
+        let x_dir = {
+            lvl: lvl,
+            actor: this,
+        }
+        this.approach = new AiMoveTowardsTargetDirective(x_dir);
+        this.stealth = new AiHideDirective(x_dir);
+        this.retreat = new AiMoveToRangeDirective(x_dir);
+        this.attack = new AiMeleeTargetDirective(x_dir);
+        this.actionStream = this.run();
+        // activate
+        this.active = true;
+    }
+
     // run state action generator
     *run() {
         while (!this.done) {

@@ -49,6 +49,9 @@ import { DetectSystem } from './systems/detectSystem.js';
 import { ScanAction } from './actions/scan.js';
 import { DazedCharm } from './charms/dazed.js';
 import { WaitAction } from './base/actions/wait.js';
+import { RagingBull } from './entities/ragingBull.js';
+import { Direction } from './base/dir.js';
+import { StealthBot } from './entities/stealthBot.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -338,6 +341,38 @@ class PlayState extends GameState {
                 this.lvl.losEnabled = !toggle;
                 for (const gidx of this.lvl.grid.keys()) this.lvl.gidupdates.add(gidx);
                 this.lvl.evt.trigger(this.lvl.constructor.evtUpdated, {actor: this.lvl});
+                break;
+            }
+
+            // FIXME: remove
+            case '7': {
+
+                if (!this.FIXME1) {
+                    this.FIXME1 = true;
+                    let idx = this.lvl.idxfromdir(this.lvl.idxfromdir(this.player.idx, Direction.north), Direction.north);
+                    let x_e = RagingBull.xspec({
+                        name: 'test.boss',
+                        idx: idx,
+                        healthMax: 5,
+                        z: Config.template.fgZed,
+                        elvl: this.lvl,
+                    });
+                    console.log(`-- spawning: ${Fmt.ofmt(x_e)}`);
+                    Systems.get('level').addEntity(x_e);
+
+                } else if (!this.FIXME2) {
+                    this.FIXME2 = true;
+                    let idx = this.lvl.idxfromdir(this.lvl.idxfromdir(this.player.idx, Direction.north), Direction.north);
+                    let x_e = StealthBot.xspec({
+                        name: 'test.boss',
+                        idx: idx,
+                        healthMax: 5,
+                        z: Config.template.fgZed,
+                        elvl: this.lvl,
+                    });
+                    console.log(`-- spawning: ${Fmt.ofmt(x_e)}`);
+                    Systems.get('level').addEntity(x_e);
+                }
                 break;
             }
 

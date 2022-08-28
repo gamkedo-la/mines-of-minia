@@ -43,23 +43,12 @@ class RagingBull extends Enemy{
     cpost(spec) {
         super.cpost(spec);
         this.enraged = false;
+        if (spec.elvl) this.linkLevel(spec.elvl);
     }
 
     // EVENT HANDLERS ------------------------------------------------------
     onLevelLoaded(evt) {
-        let lvl = evt.lvl;
-        // setup directives
-        let x_dir = {
-            lvl: lvl,
-            actor: this,
-        }
-        this.move = new AiMoveToAlign(x_dir);
-        this.energize = new AiEnergizeDirective(x_dir);
-        this.charge = new AiChargeDirective(x_dir);
-        this.attack = new AiMeleeTargetDirective(x_dir);
-        this.actionStream = this.run();
-        // activate
-        this.active = true;
+        this.linkLevel(evt.lvl);
     }
 
     onAggro(evt) {
@@ -97,6 +86,23 @@ class RagingBull extends Enemy{
     }
 
     // METHODS -------------------------------------------------------------
+
+    linkLevel(lvl) {
+        if (!lvl) return;
+        // setup directives
+        let x_dir = {
+            lvl: lvl,
+            actor: this,
+        }
+        this.move = new AiMoveToAlign(x_dir);
+        this.energize = new AiEnergizeDirective(x_dir);
+        this.charge = new AiChargeDirective(x_dir);
+        this.attack = new AiMeleeTargetDirective(x_dir);
+        this.actionStream = this.run();
+        // activate
+        this.active = true;
+    }
+
     // run state action generator
     *run() {
         while (!this.done) {

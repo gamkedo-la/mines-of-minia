@@ -1180,6 +1180,13 @@ class Spawn {
             */
 
             /*
+            RagingBull.xspec({
+                name: 'test.boss',
+                healthMax: 50,
+            }),
+            */
+
+            /*
             Token.xspec({
                 name: 'token',
                 x_sketch: Assets.get('token'),
