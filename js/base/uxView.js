@@ -32,6 +32,8 @@ class UxView extends Entity {
         this.depth = spec.hasOwnProperty('depth') ? spec.depth : ((spec.hasOwnProperty('dfltDepth')) ? spec.dfltDepth : 0);
         this.layer = spec.hasOwnProperty('layer') ? spec.layer : ((spec.hasOwnProperty('dfltLayer')) ? spec.dfltLayer : 0);
         this.autocenter = spec.hasOwnProperty('autocenter') ? spec.autocenter : false;
+        this.mousePriority = spec.mousePriority || 0;
+        this.mouseBlock = spec.hasOwnProperty('mouseBlock') ? spec.mouseBlock : false;
         this.mouseOver = false;
         this.mouseDown = false;
         this.xform = spec.hasOwnProperty('xform') ? spec.xform : XForm.identity;

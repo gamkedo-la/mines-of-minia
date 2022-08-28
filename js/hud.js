@@ -58,6 +58,8 @@ class Hud extends UxView {
                     unpressed: Assets.get('hud.button.unpressed', true),
                     highlight: Assets.get('hud.button.highlight', true),
                     xform: new XForm({left: .925, bottom: .85, otop: 30, oright: 30, lockRatio: true, width: 10, height: 10, origx: 1, origy: 0}),
+                    mouseBlock: true,
+                    mousePriority: 1,
                 }),
 
                 new UxPanel({
@@ -79,6 +81,8 @@ class Hud extends UxView {
                     unpressed: Assets.get('hud.gbutton.unpressed', true),
                     highlight: Assets.get('hud.gbutton.highlight', true),
                     xform: new XForm({right: .925, top: .85, obottom: 30, oleft: 30, lockRatio: true, width: 10, height: 10, origx: 1, origy: 1}),
+                    mouseBlock: true,
+                    mousePriority: 1,
                 }),
 
                 new UxButton({
@@ -88,6 +92,8 @@ class Hud extends UxView {
                     unpressed: Assets.get('hud.gbutton.unpressed', true),
                     highlight: Assets.get('hud.gbutton.highlight', true),
                     xform: new XForm({left: .065, right: .86, top: .85, obottom: 30, oleft: 30, lockRatio: true, width: 10, height: 10, origx: 1, origy: 1}),
+                    mouseBlock: true,
+                    mousePriority: 1,
                 }),
 
                 new UxButton({
@@ -97,6 +103,8 @@ class Hud extends UxView {
                     unpressed: Assets.get('hud.button.unpressed', true),
                     highlight: Assets.get('hud.button.highlight', true),
                     xform: new XForm({left: .13, right: .795, top: .85, obottom: 30, oleft: 30, lockRatio: true, width: 10, height: 10, origx: 1, origy: 1}),
+                    mouseBlock: true,
+                    mousePriority: 1,
                 }),
 
             ],

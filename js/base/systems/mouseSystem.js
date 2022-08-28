@@ -93,6 +93,10 @@ class MouseSystem extends System {
         return e.cat === 'View';
     }
 
+    prepare(evt) {
+        this.clickedViews = [];
+    }
+
     iterate(evt, e) {
         // skip inactive entities
         if (!e.active) return;
@@ -109,8 +113,8 @@ class MouseSystem extends System {
             if (this.dbg) console.log(`mouse entered: ${e}`);
         }
         if (contains && this.clicked) {
-            if (e.constructor.evtMouseClicked) e.evt.trigger(e.constructor.evtMouseClicked, {actor: e, mouse: {x: this.x, y: this.y}});
-            if (this.dbg) console.log(`mouse clicked: ${e}`);
+            if (e.constructor.evtMouseClicked) this.clickedViews.push(e);
+            //if (e.constructor.evtMouseClicked) e.evt.trigger(e.constructor.evtMouseClicked, {actor: e, mouse: {x: this.x, y: this.y}});
         }
         if (!e.mouseDown && contains && this.down) {
             e.mouseDown = true;
@@ -125,6 +129,15 @@ class MouseSystem extends System {
     }
 
     finalize(evt) {
+        // handle clicked views
+        if (this.clickedViews.length) {
+            this.clickedViews.sort((a,b) => b.mousePriority-a.mousePriority);
+            for (const e of this.clickedViews) {
+                e.evt.trigger(e.constructor.evtMouseClicked, {actor: e, mouse: {x: this.x, y: this.y}});
+                if (this.dbg) console.log(`mouse clicked: ${e}`);
+                if (e.mouseBlock) break;
+            }
+        }
         // mouse system is only active if a mouse event is received
         this.active = false;
         this.clicked = false;
