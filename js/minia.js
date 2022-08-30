@@ -53,6 +53,8 @@ import { Energy } from "./entities/energy.js";
 import { MiniaTemplates } from "./procgen/templates.js";
 import { RagingBull } from "./entities/ragingBull.js";
 import { StealthBot } from "./entities/stealthBot.js";
+import { ThumpBot } from "./entities/thumpBot.js";
+import { Bomb } from "./entities/bomb.js";
 
 class Minia extends Game {
     static states = {
@@ -96,6 +98,7 @@ class Minia extends Game {
     static init() {
         console.log(`${this.name}.init`);
         Registry.extend([
+            Bomb,
             Character,
             Chest,
             Clutter,
@@ -129,6 +132,7 @@ class Minia extends Game {
             Stairs,
             StealthBot,
             Tile,
+            ThumpBot,
             Token,
             Trap,
             Weapon,

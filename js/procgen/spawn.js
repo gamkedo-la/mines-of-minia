@@ -10,6 +10,7 @@ import { Util } from '../base/util.js';
 import { BooCharm } from '../charms/boo.js';
 import { Charm } from '../charms/charm.js';
 import { FieryCharm } from '../charms/fiery.js';
+import { Bomb } from '../entities/bomb.js';
 import { Chest } from '../entities/chest.js';
 import { Clutter } from '../entities/clutter.js';
 import { Cog } from '../entities/cog.js';
@@ -33,6 +34,7 @@ import { Rous } from '../entities/rous.js';
 import { Shielding } from '../entities/shielding.js';
 import { Stairs } from '../entities/stairs.js';
 import { StealthBot } from '../entities/stealthBot.js';
+import { ThumpBot } from '../entities/thumpBot.js';
 import { Tile } from '../entities/tile.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
@@ -1172,10 +1174,23 @@ class Spawn {
                 x_sketch: Assets.get('fuelcell'),
             }),
 
+            /*
             StealthBot.xspec({
                 name: 'test.boss',
                 healthMax: 50,
             }),
+            */
+
+            ThumpBot.xspec({
+                name: 'test.boss',
+                healthMax: 50,
+            }),
+
+            /*
+            Bomb.xspec({
+                name: 'test.bomb',
+            }),
+            */
 
             /*
             RagingBull.xspec({

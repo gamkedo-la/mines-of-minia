@@ -77,6 +77,7 @@ class ThrowAction extends SerialAction {
         this.idx = spec.idx;
         this.x = spec.x;
         this.y = spec.y;
+        this.needsDrop = spec.hasOwnProperty('needsDrop') ? spec.needsDrop : true;
         this.throwsfx = spec.throwsfx || this.constructor.dfltThrowSfx;
         this.hitsfx = spec.hitsfx || this.constructor.dfltHitSfx;
     }
@@ -85,10 +86,18 @@ class ThrowAction extends SerialAction {
         if (this.dbg) console.log(`starting ${this} action w ttl: ${this.ttl}`);
         console.log(`throw item: ${this.item}`);
         // actor first "drops" item
-        this.subs.push( new DropAction({
-            item: this.item,
-            sfx: this.throwsfx,
-        }));
+        if (this.needsDrop) {
+            this.subs.push( new DropAction({
+                item: this.item,
+                sfx: this.throwsfx,
+            }));
+        } else {
+            if (this.throwsfx) {
+                this.subs.push( new PlaySfxAction({
+                    sfx: this.throwsfx,
+                }));
+            }
+        }
 
         // move to target
         this.subs.push( new ThrowToAction({

@@ -22,6 +22,20 @@ class LevelSystem extends System {
     static currentLevelIndex = 0;
     static dfltIterateTTL = 0;
 
+    // linked to the last instantiated system
+    static _main;
+
+    // STATIC PROPERTIES ---------------------------------------------------
+    static get main() {
+        if (!this._main) this._main = new LevelSystem();
+        return this._main;
+    }
+
+    // STATIC METHODS ------------------------------------------------------
+    static addEntity(x_e) {
+        return this.main.addEntity(x_e);
+    }
+
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec={}) {
         super.cpost(spec);
@@ -34,6 +48,8 @@ class LevelSystem extends System {
         this.onItemEmerged = this.onItemEmerged.bind(this);
         this.evt.listen(this.constructor.evtWanted, this.onLevelWanted);
         this.evt.listen(Item.evtEmerged, this.onItemEmerged);
+        // link as main system
+        this.constructor._main = this;
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -138,6 +154,7 @@ class LevelSystem extends System {
         x_e.anyidx = this.lvl.anyidx.bind(this.lvl);
         x_e.fowidx = this.lvl.fowidx.bind(this.lvl);
         x_e.fowmask = this.lvl.fowmask.bind(this.lvl);
+        x_e.elvl = this.lvl;
         // generate
         let e = Generator.generate(x_e);
         // center at x,y
@@ -152,6 +169,7 @@ class LevelSystem extends System {
         }
         //console.log(`x_e: ${Fmt.ofmt(x_e)} e: ${e}`);
         this.lvl.adopt(e);
+        return e;
     }
     
 }

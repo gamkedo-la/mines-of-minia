@@ -744,12 +744,19 @@ let miniaAssets = [
             'retreat': Rect.xspec({width: 14, height: 14, color: 'yellow'}),
             'melee': Rect.xspec({width: 14, height: 14, color: 'blue'}),
             'dying': new AssetRef({tag: 'dying'}),
-            /*
-            'energize': Rect.xspec({width: 14, height: 14, color: 'orange'}),
-            'melee': Rect.xspec({width: 14, height: 14, color: 'blue'}),
-            'charge': Rect.xspec({width: 14, height: 14, color: 'red'}),
+        },
+        state: 'idle',
+    }),
+
+    Animator.xspec({
+        tag: 'thumpBot',
+        x_sketches: {
+            'idle': Rect.xspec({width: 14, height: 14, color: 'green'}),
+            'melee': Rect.xspec({width: 14, height: 14, color: 'red'}),
+            'charging': Rect.xspec({width: 14, height: 14, color: 'yellow'}),
+            'thump': Rect.xspec({width: 14, height: 14, color: 'red'}),
+            'bomb': Rect.xspec({width: 14, height: 14, color: 'blue'}),
             'dying': new AssetRef({tag: 'dying'}),
-            */
         },
         state: 'idle',
     }),
@@ -1272,8 +1279,6 @@ let miniaAssets = [
         Cel.xspec({sketch: Sketch.zero, ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 32, y: 0})}), ttl: 150 }),
     ]}),
-
-    //Sprite.xspec({tag: 'fuelcell', img: new SheetRef({src: 'img/fuel-cell.png', width: 16, height: 16, x: 0, y: 0})}),
 
     Animation.xspec({tag: 'fuelcell', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fuel-cell.png', width: 16, height: 16, x: 16*0, y: 0})}), ttl: 100 }),
