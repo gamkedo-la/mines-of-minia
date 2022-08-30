@@ -1172,12 +1172,10 @@ class Spawn {
                 x_sketch: Assets.get('fuelcell'),
             }),
 
-            /*
             StealthBot.xspec({
                 name: 'test.boss',
                 healthMax: 50,
             }),
-            */
 
             /*
             RagingBull.xspec({

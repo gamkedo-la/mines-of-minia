@@ -86,7 +86,14 @@ class StealthBot extends Enemy {
         super.onDamaged(evt);
         if (this.hidden) ActionSystem.assign(this, new RevealAction({lvl: this.elvl}));
         // if attacking, stop attack
-        this.attack.stop();
+        if (this.state === 'approach') {
+            let dazed = new DazedCharm();
+            this.addCharm(dazed);
+            console.log(`-- caught by player, stun applied`);
+            this.approach.stop(false);
+        } else {
+            this.attack.stop();
+        }
     }
 
     onAttackTarget(evt) {
@@ -140,9 +147,14 @@ class StealthBot extends Enemy {
 
             case 'approach':
                 yield *this.approach.run();
-                // approach transitions to attack
-                console.log(`-- approach is done, melee`);
-                UpdateSystem.eUpdate(this, {state: 'melee'});
+                if (this.approach.ok) {
+                    // approach transitions to attack
+                    console.log(`-- approach is done, melee`);
+                    UpdateSystem.eUpdate(this, {state: 'melee'});
+                } else {
+                    console.log(`-- approach failed, retreat`);
+                    UpdateSystem.eUpdate(this, {state: 'retreat'});
+                }
                 break;
 
             case 'melee':
