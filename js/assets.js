@@ -761,6 +761,14 @@ let miniaAssets = [
         state: 'idle',
     }),
 
+    Animator.xspec({
+        tag: 'overbearer',
+        x_sketches: {
+            'idle': Rect.xspec({width: 14, height: 14, color: 'green'}),
+        },
+        state: 'idle',
+    }),
+
     Sfx.xspec({ tag: 'test.sound', audio: new SfxRef({src: 'snd/test.mp3'}) }),
     Sfx.xspec({ tag: 'gem.break', audio: new SfxRef({src: 'snd/gem-break.mp3'}) }),
     Sfx.xspec({ tag: 'trap.trigger', audio: new SfxRef({src: 'snd/trap_triggered_short.mp3'}), volume: .5 }),

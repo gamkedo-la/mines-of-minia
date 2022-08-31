@@ -56,6 +56,7 @@ import { StealthBot } from "./entities/stealthBot.js";
 import { ThumpBot } from "./entities/thumpBot.js";
 import { Bomb } from "./entities/bomb.js";
 import { Reticle } from "./entities/reticle.js";
+import { Overbearer } from "./entities/overbearer.js";
 
 class Minia extends Game {
     static states = {
@@ -121,6 +122,7 @@ class Minia extends Game {
             Level,
             Machinery,
             Magma,
+            Overbearer,
             Player,
             Projectile,
             Prompt,

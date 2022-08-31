@@ -26,6 +26,7 @@ import { Growth } from '../entities/growth.js';
 import { Key } from '../entities/key.js';
 import { Machinery } from '../entities/machinery.js';
 import { Magma } from '../entities/magma.js';
+import { Overbearer } from '../entities/overbearer.js';
 import { Projectile } from '../entities/projectile.js';
 import { RagingBull } from '../entities/ragingBull.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
@@ -1179,10 +1180,15 @@ class Spawn {
                 name: 'test.boss',
                 healthMax: 50,
             }),
-            */
 
             ThumpBot.xspec({
                 name: 'test.boss',
+                healthMax: 50,
+            }),
+            */
+
+            Overbearer.xspec({
+                name: 'bob',
                 healthMax: 50,
             }),
 
