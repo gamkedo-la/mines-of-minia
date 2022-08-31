@@ -64,6 +64,8 @@ class TurnSystem extends System {
 
     onActionDone(evt) {
         let action = evt.action;
+        // only handle turn events for actions marked with turn delimiter
+        if (!action.isTurn) return;
         // check if actor is leader
         if (this.leader && this.leader === evt.actor) {
             if (this.dbg) console.log(`leader action done: ${Fmt.ofmt(evt)}`);
@@ -138,6 +140,8 @@ class TurnSystem extends System {
             //console.log(`iterate ${e} no action exit w/ ${this.followersDone}`);
             return;
         }
+        // -- mark action as turn delimiter
+        action.isTurn = true;
         // check if action can be started
         if (spentPoints + action.points <= this.turnPoints) {
             ActionSystem.assign(e, action);
@@ -184,6 +188,8 @@ class TurnSystem extends System {
     }
 
     postLeaderAction(action) {
+        // -- mark action as turn delimiter
+        action.isTurn = true;
         if (!this.leader) return;
         // push action to leader queue
         this.leaderQ.push(action);

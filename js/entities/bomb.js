@@ -44,7 +44,6 @@ class Bomb extends Item {
     onTurnDone(evt) {
         let ap = evt.points || 0;
         this.elapsed += ap;
-        console.log(`onTurnDone ap: ${ap} elapsed: ${this.elapsed} ttl: ${this.apTL}`);
         if (this.elapsed >= this.apTL) {
             console.log(`-- ${this} boom!`);
             this.boom();
@@ -54,7 +53,6 @@ class Bomb extends Item {
 
     boom() {
         // find targets in range
-        console.log(`checking within ${this.blastRange}`);
         for (const idx of this.elvl.idxsInRange(this.idx, this.blastRange)) {
             // iterate through anything that has health
             for (const e of this.elvl.findidx(idx, (v) => v.health)) {

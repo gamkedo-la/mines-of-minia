@@ -1,12 +1,14 @@
 export { ParallelAction };
 
 import { Events } from '../event.js';
+import { Fmt } from '../fmt.js';
 import { Action } from './action.js';
 
 class ParallelAction extends Action {
 
     // CONSTRUCTOR ---------------------------------------------------------
     constructor(spec={}) {
+        super(spec);
         this.subs = spec.subs || [];
         this.onSubDone = this.onSubDone.bind(this);
     }

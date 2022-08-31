@@ -16,6 +16,9 @@ import { ThrowToAction } from './throw.js';
 import { DestroyTargetAction } from '../base/actions/destroy.js';
 import { Events } from '../base/event.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
+import { KnockbackAction } from './knockback.js';
+import { ApplyAction } from '../base/actions/apply.js';
+import { ParallelAction } from '../base/actions/parallelAction.js';
 
 class Attack {
 
@@ -210,6 +213,8 @@ class MeleeAttackAction extends SerialAction {
         this.nudgeSpeed = spec.nudgeSpeed || this.constructor.dfltNudgeSpeed;
         this.nudgeAccel = spec.nudgeAccel || this.constructor.dfltNudgeAccel;
         this.ttl = spec.ttl || this.constructor.dfltTTL;
+        this.knockback = spec.knockback || 0;
+        this.lvl = spec.lvl;
     }
 
     destroy() {
@@ -224,9 +229,9 @@ class MeleeAttackAction extends SerialAction {
         this.subs.push( new AttackSwingAction({
             target: this.target,
         }));
+        let angle = Mathf.angle(this.actor.xform.x, this.actor.xform.y, this.target.xform.x, this.target.xform.y, true);
         // -- nudge towards target
         if (this.nudge) {
-            let angle = Mathf.angle(this.actor.xform.x, this.actor.xform.y, this.target.xform.x, this.target.xform.y, true);
             let x = Math.round(this.actor.xform.x + Math.cos(angle) * this.nudge);
             let y = Math.round(this.actor.xform.y + Math.sin(angle) * this.nudge);
             let facing = (x > this.actor.xform.x) ? Direction.east : (x < this.actor.xform.x) ? Direction.west : 0;
@@ -246,8 +251,9 @@ class MeleeAttackAction extends SerialAction {
             ttl: this.ttl,
         }));
 
+        let parallelActions = [];
         if (this.nudge) {
-            this.subs.push( new MoveAction({
+            parallelActions.push( new MoveAction({
                 x: this.actor.xform.x,
                 y: this.actor.xform.y,
                 speed: this.nudgeSpeed,
@@ -256,6 +262,19 @@ class MeleeAttackAction extends SerialAction {
                 stopAtTarget: true,
                 snap: true,
             }));
+        }
+        if (this.knockback) {
+            parallelActions.push( new ApplyAction({
+                target: this.target,
+                action: new KnockbackAction({
+                    steps: this.knockback,
+                    dir: Direction.diagonalFromHeading(angle),
+                    lvl: this.lvl,
+                }),
+            }));
+        }
+        if (parallelActions.length) {
+            this.subs.push( new ParallelAction({ subs: parallelActions }));
         }
     }
 }

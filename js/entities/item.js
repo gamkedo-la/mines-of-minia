@@ -111,13 +111,6 @@ class Item extends MiniaModel {
         charm.unlink();
     }
 
-    _render(ctx) {
-        // update sketch dimensions
-        this._sketch.width = this.xform.width;
-        this._sketch.height = this.xform.height;
-        // render
-        if (this._sketch && this._sketch.render) this._sketch.render(ctx, this.xform.minx, this.xform.miny);
-    }
     show() {
         this._sketch.show();
     }

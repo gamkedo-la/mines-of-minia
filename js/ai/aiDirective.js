@@ -21,6 +21,11 @@ class AiDirective extends Gizmo {
         return d;
     }
 
+    getTargetDirection() {
+        let angle = Mathf.angle(this.actor.xform.x, this.actor.xform.y, this.target.xform.x, this.target.xform.y, true);
+        return Direction.diagonalFromHeading(angle);
+    }
+
     isTargetAdjacent() {
         for (const dir of Direction.all) {
             let idx = this.lvl.idxfromdir(this.actor.idx, dir);

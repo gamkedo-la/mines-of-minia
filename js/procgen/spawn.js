@@ -91,7 +91,7 @@ class Spawn {
                     idx: idx,
                     facing: facing,
                     z: template.fgZed,
-                    blocks: 0,
+                    //blocks: 0,
                 });
                 plvl.entities.push(x_door);
             }

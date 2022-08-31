@@ -84,7 +84,6 @@ class ThrowAction extends SerialAction {
 
     setup() {
         if (this.dbg) console.log(`starting ${this} action w ttl: ${this.ttl}`);
-        console.log(`throw item: ${this.item}`);
         // actor first "drops" item
         if (this.needsDrop) {
             this.subs.push( new DropAction({

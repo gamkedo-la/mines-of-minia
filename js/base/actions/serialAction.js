@@ -37,7 +37,6 @@ class SerialAction extends Action {
     }
 
     onSubDone(evt) {
-        //console.log(`onSubDone: ${Fmt.ofmt(evt)}`);
         // start next subaction
         if (this.subs.length) {
             let sub = this.subs.shift();

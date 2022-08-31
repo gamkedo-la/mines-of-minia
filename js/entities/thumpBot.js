@@ -1,8 +1,6 @@
 export { ThumpBot }
 
 import { AiBombTargetDirective } from '../ai/aiBombTargetDirective.js';
-import { AiEnergizeDirective } from '../ai/aiEnergizeDirective.js';
-import { AiMeleeTargetDirective } from '../ai/aiMeleeTargetDirective.js';
 import { AiThumpTargetDirective } from '../ai/aiThumpTargetDirective.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
@@ -15,7 +13,7 @@ import { Enemy } from './enemy.js';
  * stationary boss that throws bombs and thumps players in melee range
  * -- bombs thrown at player will take several turns to explode, giving player time to get out of blast radius
  * -- if player is in melee range, thump attack will charge
- * -- once charged, thump attack triggers and if it hits player will thump player back significant distance with significant damage
+ * -- once charged, thump attack triggers and if it hits player will thump player back a few tiles with significant damage
  */
 class ThumpBot extends Enemy {
     // STATIC METHODS ------------------------------------------------------
@@ -43,9 +41,6 @@ class ThumpBot extends Enemy {
         super.cpost(spec);
         this.bombRange = spec.bombRange || Config.tileSize*3;
         // event handlers
-        //this.onAttackTarget = this.onAttackTarget.bind(this);
-        //this.evt.listen(this.constructor.evtAttacked, this.onAttackTarget);
-        //this.attackFromStealth = false;
         if (spec.elvl) this.linkLevel(spec.elvl);
     }
     destroy(spec) {
@@ -72,6 +67,12 @@ class ThumpBot extends Enemy {
         UpdateSystem.eUpdate(this, {state: 'bomb'});
     }
 
+    onAggroLost(evt) {
+        if (!this.active) return;
+        UpdateSystem.eUpdate(this, {state: 'idle'});
+        this.actionStream = this.run();
+    }
+
     // METHODS -------------------------------------------------------------
     linkLevel(lvl) {
         this.elvl = lvl;
@@ -80,12 +81,8 @@ class ThumpBot extends Enemy {
             lvl: lvl,
             actor: this,
         }
-        //this.approach = new AiMoveTowardsTargetDirective(x_dir);
-        //this.stealth = new AiHideDirective(x_dir);
-        //this.retreat = new AiMoveToRangeDirective(x_dir);
         this.bomb = new AiBombTargetDirective(x_dir);
-        //this.energize = new AiEnergizeDirective(x_dir);
-        this.attack = new AiThumpTargetDirective(x_dir);
+        this.attack = new AiThumpTargetDirective(Object.assign({knockback: 3}, x_dir));
         this.actionStream = this.run();
         // activate
         this.active = true;
@@ -98,21 +95,6 @@ class ThumpBot extends Enemy {
             case 'idle':
                 yield null;
                 break;
-
-            /*
-            case 'energize':
-                // energize charge
-                yield *this.energize.run();
-                console.log(`-- energize done`);
-                if (this.enraged || this.energize.ok) {
-                    console.log(`-- bull energize enraged or ok`);
-                    UpdateSystem.eUpdate(this, {state: 'charge'});
-                } else {
-                    console.log(`-- bull energize failed`);
-                    UpdateSystem.eUpdate(this, {state: 'bomb'});
-                }
-                break;
-            */
 
             case 'bomb':
                 // attempt to move within range

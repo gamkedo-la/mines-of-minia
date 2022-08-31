@@ -23,6 +23,8 @@ class KnockbackAction extends GeneratorAction {
     *run() {
         // -- while pushback...
         while (this.steps > 0) {
+            this.steps--;
+            console.log(`this.steps: ${this.steps}`);
             // find next index based on actor position and direction
             let nidx = this.lvl.idxfromdir(this.actor.idx, this.dir);
             // something blocks path...
@@ -32,11 +34,9 @@ class KnockbackAction extends GeneratorAction {
             let y = this.lvl.yfromidx(nidx, true);
             let facing = (x > this.actor.xform.x) ? Direction.east : (x < this.actor.xform.x) ? Direction.west : 0;
             // peek at next next index to determine if it will block movement
-            let stop = this.lvl.anyidx(this.lvl.idxfromdir(nidx, this.chargeDir), (e) => this.actor.blockedBy & e.blocks && !e.constructor.mobile);
+            let stop = this.steps <= 0 || this.lvl.anyidx(this.lvl.idxfromdir(nidx, this.dir), (e) => this.actor.blockedBy & e.blocks && !e.constructor.mobile);
             //console.log(`move to ${x},${y}:${nidx} facing: ${facing} stop: ${stop}`)
-            yield new MoveAction({ speed: this.actor.maxSpeed*this.speedFactor, x:x, y:y, accel: .01, snap: stop, stopAtTarget: stop, facing: facing, update: { idx: nidx }, sfx: this.actor.moveSfx });
-            // account for knockback step
-            this.steps--;
+            yield new MoveAction({ speed: this.actor.maxSpeed*this.speedFactor, x:x, y:y, accel: .01, snap: stop, stopAtTarget: stop, update: { idx: nidx }, sfx: this.actor.moveSfx });
         }
 
         // otherwise... no longer moving... finish up

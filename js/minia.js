@@ -55,6 +55,7 @@ import { RagingBull } from "./entities/ragingBull.js";
 import { StealthBot } from "./entities/stealthBot.js";
 import { ThumpBot } from "./entities/thumpBot.js";
 import { Bomb } from "./entities/bomb.js";
+import { Reticle } from "./entities/reticle.js";
 
 class Minia extends Game {
     static states = {
@@ -126,6 +127,7 @@ class Minia extends Game {
             RagingBull,
             RangedWeapon,
             Reactor,
+            Reticle,
             Rous,
             Shielding,
             SpikeTrap,
