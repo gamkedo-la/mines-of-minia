@@ -19,6 +19,8 @@ class DoOpenAction extends Action {
         this.ttl = spec.ttl || this.constructor.dfltTTL;
         if (this.target.cls === 'Chest') {
             this.sfx = Assets.get('chest.open', true);
+        } else if (this.target.cls === 'Door') {
+            this.sfx = Assets.get('door.open', true);
         }
         this.failedSfx = spec.failedSfx || Assets.get('action.failed', true);
         this.unlocked = true;

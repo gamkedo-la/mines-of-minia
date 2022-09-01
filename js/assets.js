@@ -787,6 +787,7 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'cog.use', audio: new SfxRef({src: 'snd/cog_use.mp3'}), volume: .4, loop: false }),
     Sfx.xspec({ tag: 'currency.pickup', audio: new SfxRef({src: 'snd/currency-pickup2.mp3'}), volume: .4, loop: false }),
     Sfx.xspec({ tag: 'chest.open', audio: new SfxRef({src: 'snd/open-chest.mp3'}), volume: .4, loop: false }),
+    Sfx.xspec({ tag: 'door.open', audio: new SfxRef({src: 'snd/open_door_1.mp3'}), volume: .4, loop: false }),
 
     ...Template.walls('img/rock-walls.png', 'rock.wall'),
     ...Template.tiles('img/rock-floor.png', 'rock.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
