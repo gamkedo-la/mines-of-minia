@@ -1180,13 +1180,14 @@ class Spawn {
                 name: 'test.boss',
                 healthMax: 50,
             }),
+            */
 
             ThumpBot.xspec({
                 name: 'test.boss',
                 healthMax: 50,
             }),
-            */
 
+            /*
             Overbearer.xspec({
                 name: 'bob',
                 healthMax: 50,
@@ -1197,6 +1198,7 @@ class Spawn {
                 healthMax: 50,
                 active: false,
             }),
+            */
 
             /*
             Token.xspec({
