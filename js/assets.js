@@ -764,7 +764,8 @@ let miniaAssets = [
     Animator.xspec({
         tag: 'overbearer',
         x_sketches: {
-            'idle': Rect.xspec({width: 14, height: 14, color: 'green'}),
+            'idle': Rect.xspec({width: 7, height: 7, color: 'green'}),
+            'greet': Rect.xspec({width: 7, height: 7, color: 'yellow'}),
         },
         state: 'idle',
     }),

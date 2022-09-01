@@ -15,6 +15,7 @@ class AggroSystem extends System {
     cpost(spec) {
         super.cpost(spec);
         this.aggroTargets = {};
+        this.onAggroActorUpdate = this.onAggroActorUpdate.bind(this);
         this.onAggroTargetUpdate = this.onAggroTargetUpdate.bind(this);
     }
 
@@ -25,6 +26,7 @@ class AggroSystem extends System {
             // aggro range means entity should track aggro of targets
             if (actor.aggroRange) {
                 if (this.dbg) console.log(`${this} onEntityAdded: ${Fmt.ofmt(evt)} gid: ${actor.gid} -- aggro receiver for: ${actor.aggroTag}`);
+                actor.evt.listen(actor.constructor.evtUpdated, this.onAggroActorUpdate);
                 this.store.set(actor.gid, actor);
             }
             // aggro tag identifies entities that can draw aggro
@@ -42,10 +44,17 @@ class AggroSystem extends System {
         //if (this.dbg) console.log(`${this} onEntityRemoved: ${Fmt.ofmt(evt)}`);
         this.store.delete(actor.gid);
         actor.evt.ignore(actor.constructor.evtUpdated, this.onAggroTargetUpdate);
+        actor.evt.ignore(actor.constructor.evtUpdated, this.onAggroActorUpdate);
         if (actor.team) {
             let targets = this.aggroTargets[actor.team] || [];
             let idx = targets.indexOf(actor);
             if (-1 !== idx) targets.splice(idx, 1);
+        }
+    }
+
+    onAggroActorUpdate(evt) {
+        if (evt.update && evt.update.hasOwnProperty('idx') || evt.update.hasOwnProperty('active')) {
+            this.active = true;
         }
     }
 
@@ -61,6 +70,8 @@ class AggroSystem extends System {
     iterate(evt, e) {
         // skip iteration for player
         if (e.cls === 'Player') return;
+        // skip if entity is not active
+        if (!e.active) return;
         // is entity already tracking an aggro target?
         if (e.aggroTarget) {
             let d = Mathf.distance(e.xform.x, e.xform.y, e.aggroTarget.xform.x, e.aggroTarget.xform.y);

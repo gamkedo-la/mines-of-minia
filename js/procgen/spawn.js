@@ -1192,18 +1192,11 @@ class Spawn {
                 healthMax: 50,
             }),
 
-            /*
-            Bomb.xspec({
-                name: 'test.bomb',
-            }),
-            */
-
-            /*
             RagingBull.xspec({
-                name: 'test.boss',
+                tag: 'boss.bull',
                 healthMax: 50,
+                active: false,
             }),
-            */
 
             /*
             Token.xspec({

@@ -174,6 +174,34 @@ class Grid extends Array2D {
         }
     }
 
+    *find(filter=(v) => true) {
+        let found = new Set();
+        for (let i=0; i<this.nentries; i++) {
+            if (this.grid[i]) {
+                let entries = Array.from(this.grid[i]);
+                for (const gzo of entries) {
+                    if (found.has(gzo.gid)) continue;
+                    if (filter(gzo)) {
+                        found.add(gzo.gid);
+                        yield gzo;
+                    }
+                }
+            }
+        }
+    }
+
+    first(filter=(v) => true) {
+        for (let i=0; i<this.nentries; i++) {
+            if (this.grid[i]) {
+                let entries = Array.from(this.grid[i]);
+                for (const gzo of entries) {
+                    if (filter(gzo)) return gzo;
+                }
+            }
+        }
+        return null;
+    }
+
     *findgidx(gidx, filter=(v) => true) {
         if (!Util.iterable(gidx)) gidx = [gidx];
         let found = new Set();

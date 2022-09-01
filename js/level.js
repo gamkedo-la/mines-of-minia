@@ -148,6 +148,14 @@ class Level extends UxGrid {
         yield *this.grid.idxsBetween(idx1, idx2);
     }
 
+    *find(filter=(v)=>true) {
+        yield *this.grid.find(filter);
+    }
+
+    first(filter=(v)=>true) {
+        return this.grid.first(filter);
+    }
+
     *findidx(idx, filter=(v)=>true) {
         yield *this.grid.findgidx(idx, (v) => (idx === v.idx && filter(v)));
     }
