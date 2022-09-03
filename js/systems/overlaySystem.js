@@ -75,6 +75,16 @@ class OverlaySystem extends System {
                 this.overlay.adopt(popup);
                 break;
             }
+            case 'dialog': {
+                let popup = new TextVfx({
+                    actor: evt.actor,
+                    text: new Text({color: Resurrect64.colors[18], wrap: true, text: evt.msg, font: new Font({size: 10})}),
+                    xform: new XForm({width: 120, height: 60, stretch: false, offx: -60, offy: -35}),
+                    ttl: evt.ttl || 1000,
+                });
+                this.overlay.adopt(popup);
+                break;
+            }
 
             case 'info': {
                 let x = Math.round(this.hud.xform.centerx-this.hud.xform.minx);

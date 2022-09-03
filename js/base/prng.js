@@ -34,6 +34,9 @@ class Prng {
     static flip(pct=.5) {
         return this.main.flip(pct);
     }
+    static shuffle(iter) {
+        return this.main.shuffle(iter);
+    }
     static chooseWeightedOption(arr) {
         return this.main.chooseWeightedOption(arr);
     }
@@ -92,6 +95,17 @@ class Prng {
 
     flip(pct=.5) {
         return this.random() < pct;
+    }
+
+    shuffle(iter) {
+        let shuffled = [];
+        let choices = Array.from(iter);
+        while (choices.length) {
+            let i = this.rangeInt(0, choices.length-1);
+            shuffled.push(choices[i]);
+            choices.splice(i, 1);
+        }
+        return shuffled;
     }
 
     chooseWeightedOption(arr) {

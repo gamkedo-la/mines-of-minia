@@ -33,6 +33,17 @@ class Random {
         return (Math.random() < pct);
     }
 
+    static shuffle(iter) {
+        let shuffled = [];
+        let choices = Array.from(iter);
+        while (choices.length) {
+            let i = this.rangeInt(0, choices.length-1);
+            shuffled.push(choices[i]);
+            choices.splice(i, 1);
+        }
+        return shuffled;
+    }
+
     static chooseWeightedOption(arr) {
         // count weights
         if (!arr || !arr.length) return null;

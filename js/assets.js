@@ -765,7 +765,10 @@ let miniaAssets = [
         tag: 'overbearer',
         x_sketches: {
             'idle': Rect.xspec({width: 7, height: 7, color: 'green'}),
-            'greet': Rect.xspec({width: 7, height: 7, color: 'yellow'}),
+            'inactive': Rect.xspec({width: 7, height: 7, color: 'white'}),
+            'powerup.bull': Rect.xspec({width: 7, height: 7, color: 'yellow'}),
+            'powerup.stealth': Rect.xspec({width: 7, height: 7, color: 'orange'}),
+            'powerup.thump': Rect.xspec({width: 7, height: 7, color: 'red'}),
         },
         state: 'idle',
     }),

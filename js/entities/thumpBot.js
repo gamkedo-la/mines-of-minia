@@ -85,7 +85,7 @@ class ThumpBot extends Enemy {
         this.attack = new AiThumpTargetDirective(Object.assign({knockback: 3}, x_dir));
         this.actionStream = this.run();
         // activate
-        this.active = true;
+        //this.active = true;
     }
 
     // run state action generator

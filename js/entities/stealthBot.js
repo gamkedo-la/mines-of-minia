@@ -120,7 +120,7 @@ class StealthBot extends Enemy {
         this.attack = new AiMeleeTargetDirective(x_dir);
         this.actionStream = this.run();
         // activate
-        this.active = true;
+        //this.active = true;
     }
 
     // run state action generator

@@ -1175,19 +1175,6 @@ class Spawn {
                 x_sketch: Assets.get('fuelcell'),
             }),
 
-            /*
-            StealthBot.xspec({
-                name: 'test.boss',
-                healthMax: 50,
-            }),
-            */
-
-            ThumpBot.xspec({
-                name: 'test.boss',
-                healthMax: 50,
-            }),
-
-            /*
             Overbearer.xspec({
                 name: 'bob',
                 healthMax: 50,
@@ -1195,10 +1182,21 @@ class Spawn {
 
             RagingBull.xspec({
                 tag: 'boss.bull',
-                healthMax: 50,
+                healthMax: 1,
                 active: false,
             }),
-            */
+
+            StealthBot.xspec({
+                tag: 'boss.stealth',
+                healthMax: 1,
+                active: false,
+            }),
+
+            ThumpBot.xspec({
+                tag: 'boss.thump',
+                healthMax: 1,
+                active: false,
+            }),
 
             /*
             Token.xspec({
