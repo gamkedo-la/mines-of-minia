@@ -35,7 +35,7 @@ class Layout {
         let nrooms = Prng.rangeInt(minRooms, maxRooms);
         let rooms = [];
         // start with boss room in the middle
-        let r = (template.unitSize * 14);
+        let r = (template.unitSize * 10);
         let room = new ProcRoom({
             x: Math.round(origx), 
             y: Math.round(origy),

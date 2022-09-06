@@ -4,6 +4,7 @@ import { Array2D } from '../base/array2d.js';
 import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
+import { Random } from '../base/random.js';
 import { UxDbg } from '../base/uxDbg.js';
 import { ProcLevel, ProcLevelOutline } from './plevel.js';
 import { ProcRoom } from './proom.js';
@@ -137,6 +138,17 @@ class Translate {
         let bossRoom = prooms.find((v) => v.boss);
         if (bossRoom) {
             plvl.startIdx = bossRoom.cidx;
+            // pick hall connected to boss room
+            for (const phall of phalls) {
+                if (phall.connections.includes(bossRoom)) {
+                    for (const idx of Prng.shuffle(phall.idxs)) {
+                        if (plvl.entities.some((v) => v.idx === idx && v.kind !== 'floor')) continue;
+                        plvl.startIdx = idx;
+                        break;
+                    }
+                    if (plvl.startIdx !== bossRoom.cidx) break;
+                }
+            }
         }
 
         // FIXME: remove
@@ -148,12 +160,16 @@ class Translate {
     }
 
     static translateRoom(template, pstate, proom, transidxs) {
-        // FIXME: handle different type of hall translators here...
-        this.translateEmptyRoom(template, pstate, proom, transidxs);
+        // FIXME: handle different type of room translators here...
+        if (proom.boss && template.translate.area === 'rock') {
+            this.translateRockBossRoom(template, pstate, proom, transidxs);
+        } else {
+            this.translateEmptyRoom(template, pstate, proom, transidxs);
+        }
     }
 
     static translateHall(template, pstate, proom, transidxs) {
-        // FIXME: handle different type of room translators here...
+        // FIXME: handle different type of hall translators here...
         this.translateEmptyRoom(template, pstate, proom, transidxs);
     }
 
@@ -296,8 +312,10 @@ class Translate {
                 });
             }
         }
+    }
 
-
+    static translateRockBossRoom(template, pstate, proom, transidxs) {
+        this.translateEmptyRoom(template, pstate, proom, transidxs);
     }
 
 }
