@@ -128,6 +128,7 @@ class Translate {
         }
         // choose starting index
         plvl.startIdx = startRoom.cidx;
+        plvl.testIdx = plvl.startIdx;
         startRoom.pois.push(plvl.startIdx);
         // choose ending index
         plvl.exitIdx = endRoom.cidx;
@@ -137,6 +138,7 @@ class Translate {
         // FIXME: remove
         let bossRoom = prooms.find((v) => v.boss);
         if (bossRoom) {
+            plvl.testIdx = bossRoom.cidx;
             plvl.startIdx = bossRoom.cidx;
             // pick hall connected to boss room
             for (const phall of phalls) {

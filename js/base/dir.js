@@ -76,6 +76,14 @@ class Direction {
         }
     }
 
+    static westerly(dir) {
+        return dir & (Direction.northWest|Direction.west|Direction.southWest);
+    }
+
+    static easterly(dir) {
+        return dir & (Direction.northEast|Direction.east|Direction.southEast);
+    }
+
     static cardinalFromXY(x, y) {
         let heading = Math.atan2(y, x);
         return this.cardinalFromHeading(heading);

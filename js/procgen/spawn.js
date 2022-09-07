@@ -1158,14 +1158,16 @@ class Spawn {
     static spawnTest(template, pstate) {
         let plvl = pstate.plvl;
         let prooms = pstate.prooms || [];
+        let testIdx = (plvl.testIdx) ? plvl.testIdx : plvl.startIdx;
         // what is the starting room?
         let sroom;
         for (const proom of prooms) {
-            if (proom.cidx === plvl.startIdx) {
+            if (proom.cidx === testIdx) {
                 sroom = proom;
                 break;
             }
         }
+        console.log(`testIdx: ${testIdx} sroom: ${sroom}`);
         if (!sroom) return;
         // iterate items to spawn
         let x_spawns = [
@@ -1182,7 +1184,7 @@ class Spawn {
 
             RagingBull.xspec({
                 tag: 'boss.bull',
-                healthMax: 1,
+                healthMax: 10,
                 active: false,
             }),
 

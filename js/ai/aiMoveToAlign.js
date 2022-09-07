@@ -1,6 +1,7 @@
 export { AiMoveToAlign };
 
 import { Config } from '../base/config.js';
+import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
 import { Mathf } from '../base/math.js';
 import { AiDirective } from './aiDirective.js';
@@ -67,6 +68,11 @@ class AiMoveToAlign extends AiDirective {
 
             if (this.dbg) console.log(`move from: ${this.actor.idx} towards: ${bestIdx} path: ${Fmt.ofmt(path)}`);
             let action = path.actions[0];
+            // face target
+            let targetDir = this.getTargetDirection();
+            let facing = Direction.easterly(targetDir) ? Direction.east : (Direction.westerly(targetDir)) ? Direction.west : 0;
+            console.log(`dir: ${targetDir} facing: ${facing}`);
+            if (facing) action.facing = facing;
             yield action;
 
         }
