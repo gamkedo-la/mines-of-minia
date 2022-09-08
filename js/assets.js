@@ -1608,4 +1608,13 @@ let miniaAssets = [
         state: 'free',
     }),
 
+    Animation.xspec({tag: 'bomb', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*1})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*2})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*3})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*4})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*5})}), ttl: 100 }),
+    ]}),
+
 ];

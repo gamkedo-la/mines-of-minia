@@ -1,6 +1,7 @@
 export { Bomb };
 
-    import { Attack } from '../actions/attack.js';
+import { Attack } from '../actions/attack.js';
+import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Events } from '../base/event.js';
 import { Rect } from '../base/rect.js';
@@ -12,7 +13,8 @@ class Bomb extends Item {
     static dfltApTL = 4;
 
     static get dfltSketch() {
-        return new Rect({ width: 12, height: 12, color: 'rgba(200,0,0,.75)' });
+        return Assets.get('bomb', true);
+        //return new Rect({ width: 12, height: 12, color: 'rgba(200,0,0,.75)' });
     }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
