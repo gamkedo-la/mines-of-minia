@@ -14,7 +14,6 @@ class Bomb extends Item {
 
     static get dfltSketch() {
         return Assets.get('bomb', true);
-        //return new Rect({ width: 12, height: 12, color: 'rgba(200,0,0,.75)' });
     }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
@@ -27,6 +26,7 @@ class Bomb extends Item {
         this.attackKind = spec.attackKind || 'fire';
         this.elapsed = 0;
         this.elvl = spec.elvl;
+        this.explodeSfx = spec.explodeSfx || Assets.get('bomb.blast', true);
         // -- events
         this.onLevelLoaded = this.onLevelLoaded.bind(this);
         this.onTurnDone = this.onTurnDone.bind(this);
@@ -54,6 +54,8 @@ class Bomb extends Item {
     }
 
     boom() {
+        // explode
+        if (this.explodeSfx) this.explodeSfx.play();
         // find targets in range
         for (const idx of this.elvl.idxsInRange(this.idx, this.blastRange)) {
             // iterate through anything that has health
