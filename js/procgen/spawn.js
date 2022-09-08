@@ -1184,7 +1184,7 @@ class Spawn {
 
             RagingBull.xspec({
                 tag: 'boss.bull',
-                healthMax: 10,
+                healthMax: 1,
                 active: false,
             }),
 

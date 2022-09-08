@@ -238,6 +238,7 @@ class Character extends MiniaModel {
     }
 
     _render(ctx) {
+        if (this.hidden) return;
         // update sketch dimensions
         this._sketch.width = this.xform.width;
         this._sketch.height = this.xform.height;

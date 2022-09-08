@@ -833,17 +833,78 @@ let miniaAssets = [
         stateAccessor: (e) => e.animState,
     }),
 
+    Animation.xspec({tag: 'stealthbot.idler', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*0, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 200 }),
+    ]}),
+
+    Animation.xspec({tag: 'stealthbot.mover', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*8, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*9, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*10, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*11, y: 0})}), ttl: 50 }),
+    ]}),
+
+    Animation.xspec({tag: 'stealthbot.dyingr', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*12, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*13, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*14, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*15, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*16, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*17, y: 0})}), ttl: 100 }),
+    ]}),
+
+    Animation.xspec({tag: 'stealthbot.idlel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*18, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*19, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*20, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*21, y: 0})}), ttl: 200 }),
+    ]}),
+
+    Animation.xspec({tag: 'stealthbot.movel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*22, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*23, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*24, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*25, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*26, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*27, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*28, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*29, y: 0})}), ttl: 50 }),
+    ]}),
+
+    Animation.xspec({tag: 'stealthbot.dyingl', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*30, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*31, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*32, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*33, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*34, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*35, y: 0})}), ttl: 100 }),
+    ]}),
+
     Animator.xspec({
         tag: 'stealthBot',
         x_sketches: {
-            'idle': Rect.xspec({width: 14, height: 14, color: 'green'}),
-            'stealth': Rect.xspec({width: 14, height: 14, color: 'grey'}),
-            'approach': Rect.xspec({width: 14, height: 14, color: 'orange'}),
-            'retreat': Rect.xspec({width: 14, height: 14, color: 'yellow'}),
-            'melee': Rect.xspec({width: 14, height: 14, color: 'blue'}),
-            'dying': new AssetRef({tag: 'dying'}),
+            'idlel': new AssetRef({tag: 'stealthbot.idlel'}),
+            'idler': new AssetRef({tag: 'stealthbot.idler'}),
+            'movel': new AssetRef({tag: 'stealthbot.movel'}),
+            'mover': new AssetRef({tag: 'stealthbot.mover'}),
+            'dyingl': new AssetRef({tag: 'stealthbot.dyingl'}),
+            'dyingr': new AssetRef({tag: 'stealthbot.dyingr'}),
+            //'stealth': Rect.xspec({width: 14, height: 14, color: 'grey'}),
+            //'approach': Rect.xspec({width: 14, height: 14, color: 'orange'}),
+            //'retreat': Rect.xspec({width: 14, height: 14, color: 'yellow'}),
+            //'melee': Rect.xspec({width: 14, height: 14, color: 'blue'}),
+            //'dying': new AssetRef({tag: 'dying'}),
         },
         state: 'idle',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
     }),
 
     Animator.xspec({
