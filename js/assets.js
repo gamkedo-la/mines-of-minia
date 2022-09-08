@@ -620,8 +620,13 @@ let miniaAssets = [
         },
         state: 'close',
     }),
-    Rect.xspec({tag: 'door.ew.brown.close', width: 16, height: 16, color: 'brown'}),
-    Rect.xspec({tag: 'door.ew.brown.open', width: 16, height: 16, borderColor: 'brown', fill: false, border: 2}),
+    Sprite.xspec({tag: 'door.ew.brown.close', img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*4, y: 0})}), 
+    Animation.xspec({tag: 'door.ew.brown.open', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*4, y: 32*1})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*4, y: 32*2})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*4, y: 32*3})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*4, y: 32*4})}), ttl: 150 }),
+    ]}),
     Animator.xspec({
         tag: 'door.ew.brown',
         x_sketches: {
@@ -646,8 +651,13 @@ let miniaAssets = [
         },
         state: 'close',
     }),
-    Rect.xspec({tag: 'door.ew.blue.close', width: 16, height: 16, color: 'blue'}),
-    Rect.xspec({tag: 'door.ew.blue.open', width: 16, height: 16, borderColor: 'blue', fill: false, border: 2}),
+    Sprite.xspec({tag: 'door.ew.blue.close', img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*5, y: 0})}), 
+    Animation.xspec({tag: 'door.ew.blue.open', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*5, y: 32*1})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*5, y: 32*2})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*5, y: 32*3})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*5, y: 32*4})}), ttl: 150 }),
+    ]}),
     Animator.xspec({
         tag: 'door.ew.blue',
         x_sketches: {
@@ -672,8 +682,13 @@ let miniaAssets = [
         },
         state: 'close',
     }),
-    Rect.xspec({tag: 'door.ew.dark.close', width: 16, height: 16, color: 'gray'}),
-    Rect.xspec({tag: 'door.ew.dark.open', width: 16, height: 16, borderColor: 'gray', fill: false, border: 2}),
+    Sprite.xspec({tag: 'door.ew.dark.close', img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*7, y: 0})}), 
+    Animation.xspec({tag: 'door.ew.dark.open', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*7, y: 32*1})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*7, y: 32*2})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*7, y: 32*3})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*7, y: 32*4})}), ttl: 150 }),
+    ]}),
     Animator.xspec({
         tag: 'door.ew.dark',
         x_sketches: {
@@ -698,8 +713,13 @@ let miniaAssets = [
         },
         state: 'close',
     }),
-    Rect.xspec({tag: 'door.ew.green.close', width: 16, height: 16, color: 'green'}),
-    Rect.xspec({tag: 'door.ew.green.open', width: 16, height: 16, borderColor: 'green', fill: false, border: 2}),
+    Sprite.xspec({tag: 'door.ew.green.close', img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*6, y: 0})}), 
+    Animation.xspec({tag: 'door.ew.green.open', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*6, y: 32*1})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*6, y: 32*2})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*6, y: 32*3})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 16*6, y: 32*4})}), ttl: 150 }),
+    ]}),
     Animator.xspec({
         tag: 'door.ew.green',
         x_sketches: {
