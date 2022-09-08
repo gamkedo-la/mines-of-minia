@@ -7,8 +7,10 @@ import { AiMoveToAlign } from '../ai/aiMoveToAlign.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
+import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { Util } from '../base/util.js';
 import { DazedCharm } from '../charms/dazed.js';
 import { Enemy } from './enemy.js';
 
@@ -96,8 +98,10 @@ class RagingBull extends Enemy{
         let state = evt.update.state || this.state;
         let baseAnim;
         // dazed?
+        let update = {};
         if (DazedCharm.isDazed(this)) {
             baseAnim = 'stun';
+            if (this.state !== 'align') update.state = 'align';
         // moving?
         } else if (evt.update.speed || this.speed && !evt.update.hasOwnProperty('speed')) {
             if (state === 'charge') {
@@ -123,32 +127,12 @@ class RagingBull extends Enemy{
         let rl = (facing === Direction.east) ? 'r' : 'l';
         let wantAnim = `${baseAnim}${rl}`;
         if (wantAnim !== this.animState) {
-            evt.update.animState = wantAnim;
-        }
-        /*
-        // transition to idle state
-        let update = {};
-        if (evt.update && evt.update.hasOwnProperty('idx')) {
-            //console.log(`-- ${this} idx update idx: ${evt.update.idx} last: ${this.lastIdx}`);
-            if (this.lastIdx !== evt.update.idx) {
-                let wantAnimState = (this.facing === Direction.east) ? 'idler' : 'idlel';
-                if (wantAnimState !== this.animState) update.animState = wantAnimState;
-                this.lastIdx = this.idx;
-            }
-        // transition to idle state
-        } else if (evt.update && evt.update.hasOwnProperty('speed') && evt.update.speed === 0) {
-            let wantAnimState = (this.facing === Direction.east) ? 'idler' : 'idlel';
-            if (wantAnimState !== this.animState) update.animState = wantAnimState;
-        // transition to move state
-        } else if (evt.update && evt.update.xform && (evt.update.xform.hasOwnProperty('x') || evt.update.xform.hasOwnProperty('y'))) {
-            let wantAnimState = (this.facing === Direction.east) ? 'mover' : 'movel';
-            if (wantAnimState !== this.animState) update.animState = wantAnimState;
+            update.animState = wantAnim;
+            //console.log(`want anim: ${wantAnim} current: ${this.animState} trigger`);
         }
         if (!Util.empty(update)) {
-            //console.log(`-- ${this} trigger evt update: state: ${Fmt.ofmt(update)}`);
-            Object.assign(evt.update, update);
+            UpdateSystem.eUpdate(this, update);
         }
-        */
     }
 
     // METHODS -------------------------------------------------------------

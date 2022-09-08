@@ -71,7 +71,6 @@ class AiMoveToAlign extends AiDirective {
             // face target
             let targetDir = this.getTargetDirection();
             let facing = Direction.easterly(targetDir) ? Direction.east : (Direction.westerly(targetDir)) ? Direction.west : 0;
-            console.log(`dir: ${targetDir} facing: ${facing}`);
             if (facing) action.facing = facing;
             yield action;
 

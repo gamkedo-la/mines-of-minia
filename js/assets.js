@@ -753,10 +753,10 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*21, y: 0})}), ttl: 100 }),
     ]}),
     Animation.xspec({tag: 'bull.stunl', x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*22, y: 0})}), ttl: 100 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*23, y: 0})}), ttl: 100 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*24, y: 0})}), ttl: 100 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*25, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*22, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*23, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*24, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*25, y: 0})}), ttl: 200 }),
     ]}),
     Animation.xspec({tag: 'bull.dyingl', loop: false, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*26, y: 0})}), ttl: 100 }),
@@ -798,10 +798,10 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*53, y: 0})}), ttl: 100 }),
     ]}),
     Animation.xspec({tag: 'bull.stunr', x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*54, y: 0})}), ttl: 100 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*55, y: 0})}), ttl: 100 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*56, y: 0})}), ttl: 100 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*57, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*54, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*55, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*56, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*57, y: 0})}), ttl: 200 }),
     ]}),
     Animation.xspec({tag: 'bull.dyingr', loop: false, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bull.png', width: 39, height: 32, x: 39*58, y: 0})}), ttl: 100 }),

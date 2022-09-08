@@ -1,5 +1,7 @@
 export { AiEnergizeDirective };
 
+    import { Direction } from '../base/dir.js';
+    import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { AiDirective } from './aiDirective.js';
 
 class AiEnergizeDirective extends AiDirective {
@@ -31,6 +33,11 @@ class AiEnergizeDirective extends AiDirective {
                 this.ok = false;
                 this.done = true;
                 return null;
+            }
+            // update to face target
+            let facing = Direction.easterly(this.getTargetDirection()) ? Direction.east : (this.getTargetDirection) ? Direction.west : 0;
+            if (facing && this.facing !== this.actor.facing) {
+                UpdateSystem.eUpdate(this.actor, { facing: facing});
             }
             // check for end state
             this.elapsed++;
