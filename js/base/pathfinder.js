@@ -8,7 +8,7 @@ class PathGraph {
     }
     *getNeighbors(e, node) {
     }
-    getActions(e, target, baseCost, from, to) {
+    getActions(e, isFinal, baseCost, from, to) {
     }
 }
 
@@ -56,7 +56,7 @@ class Pathfinder {
             for (const neighbor of neighbors) {
                 let cf = cameFrom[neighbor];
                 // calculate cost to neighbor
-                let pnode = this.graph.getActions(e, to, cameFrom[current.value].cost, current.value, neighbor);
+                let pnode = this.graph.getActions(e, equalsFcn(neighbor, to), cameFrom[current.value].cost, current.value, neighbor);
                 if (this.dbg) console.log(`--> consider neighbor: ${neighbor} pnode: ${Fmt.ofmt(pnode)}`);
                 //let newCost = cameFrom[current.value].cost + Math.round(this.graph.getNeighborCost(current.value, neighbor));
                 if (pnode && (!cf || pnode.cost < cf.cost)) {

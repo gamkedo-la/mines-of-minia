@@ -4,6 +4,7 @@ import { GeneratorAction } from '../base/actions/generatorAction.js';
 import { MoveAction } from '../base/actions/move.js';
 import { WaitAction } from '../base/actions/wait.js';
 import { Assets } from '../base/assets.js';
+import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
@@ -20,6 +21,7 @@ class Overbearer extends Enemy{
             x_sketch: Assets.get('overbearer'),
             blocks: 0,
             blockedBy: 0,
+            maxSpeed: Config.tileSize/.4/1000,
         }, spec);
     }
 
@@ -121,21 +123,27 @@ class PowerupBullAction extends GeneratorAction {
         Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 2000, msg: 'i\'ll have to deal with you myself...'});
         yield new WaitAction({ttl: 2000});
         // -- lookup raging bull
-        let bull = this.lvl.first((v) => v.tag === 'boss.bull');
-        console.log(`bull: ${bull}`);
-        if (!bull) return;
-        // -- move to bull
-        let path = this.lvl.pathfinder.find(this.actor, this.actor.idx, bull.idx);
-        yield *path.actions;
+        let boss = this.lvl.first((v) => v.tag === 'boss.bull');
+        if (!boss) return;
+        // -- move to boss
+        let path = this.lvl.pathfinder.find(this.actor, this.actor.idx, boss.idx);
+        for (const action of path.actions) {
+            if (action.x !== boss.xform.x && action.y !== boss.xform.y) {
+                action.snap = false;
+                action.stopAtTarget = false;
+            }
+            yield action;
+        }
+        //yield *path.actions;
         Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 2000, msg: 'pardon me if i feel a little bullish'});
         yield new WaitAction({ttl: 2000});
         // -- deactivate overbearer
         this.actor.active = false;
         this.actor.visible = false;
-        // -- activate bull
-        bull.active = true;
-        // -- listen for bull death
-        bull.evt.listen(bull.constructor.evtDeath, this.actor.onBossDeath, Events.once);
+        // -- activate boss
+        boss.active = true;
+        // -- listen for boss death
+        boss.evt.listen(boss.constructor.evtDeath, this.actor.onBossDeath, Events.once);
 
     }
 }
@@ -180,21 +188,26 @@ class PowerupStealthAction extends GeneratorAction {
         Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 2000, msg: 'do you really think you can stop me?'});
         yield new WaitAction({ttl: 2000});
         // -- lookup stealth bot
-        let stealth = this.lvl.first((v) => v.tag === 'boss.stealth');
-        console.log(`stealth: ${stealth}`);
-        if (!stealth) return;
-        // -- move to stealth
-        let path = this.lvl.pathfinder.find(this.actor, this.actor.idx, stealth.idx);
-        yield *path.actions;
+        let boss = this.lvl.first((v) => v.tag === 'boss.stealth');
+        if (!boss) return;
+        // -- move to boss
+        let path = this.lvl.pathfinder.find(this.actor, this.actor.idx, boss.idx);
+        for (const action of path.actions) {
+            if (action.x !== boss.xform.x && action.y !== boss.xform.y) {
+                action.snap = false;
+                action.stopAtTarget = false;
+            }
+            yield action;
+        }
         Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 2000, msg: 'now you see me... now you don\'t'});
         yield new WaitAction({ttl: 2000});
         // -- deactivate overbearer
         this.actor.active = false;
         this.actor.visible = false;
         // -- activate boss
-        stealth.active = true;
+        boss.active = true;
         // -- listen for boss death
-        stealth.evt.listen(stealth.constructor.evtDeath, this.actor.onBossDeath, Events.once);
+        boss.evt.listen(boss.constructor.evtDeath, this.actor.onBossDeath, Events.once);
     }
 }
 
@@ -242,7 +255,13 @@ class PowerupThumpAction extends GeneratorAction {
         if (!boss) return;
         // -- move to boss
         let path = this.lvl.pathfinder.find(this.actor, this.actor.idx, boss.idx);
-        yield *path.actions;
+        for (const action of path.actions) {
+            if (action.x !== boss.xform.x && action.y !== boss.xform.y) {
+                action.snap = false;
+                action.stopAtTarget = false;
+            }
+            yield action;
+        }
         Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 2000, msg: 'can\'t listen to reason?'});
         yield new WaitAction({ttl: 2000});
         Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 2000, msg: 'maybe, you will listen to this...'});
