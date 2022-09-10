@@ -46,7 +46,7 @@ class LevelGraph {
         }
     }
 
-    getActions(e, target, baseCost, from, to) {
+    getActions(e, isFinal, baseCost, from, to) {
         let actions = [];
         let cost = baseCost;
         let fromv = this.lvl.vfromidx(from, true);

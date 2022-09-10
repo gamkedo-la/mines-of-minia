@@ -940,16 +940,54 @@ let miniaAssets = [
         state: 'idle',
     }),
 
+
+    Animation.xspec({tag: 'overbearer.idler', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*0, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 200 }),
+    ]}),
+
+    Animation.xspec({tag: 'overbearer.mover', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*8, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*9, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*10, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*11, y: 0})}), ttl: 75 }),
+    ]}),
+
+    Animation.xspec({tag: 'overbearer.idlel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*12, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*13, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*14, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*15, y: 0})}), ttl: 200 }),
+    ]}),
+
+    Animation.xspec({tag: 'overbearer.movel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*16, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*17, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*18, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*19, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*20, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*21, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*22, y: 0})}), ttl: 75 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/overbearer.png', width: 16, height: 32, x: 16*23, y: 0})}), ttl: 75 }),
+    ]}),
+
     Animator.xspec({
         tag: 'overbearer',
         x_sketches: {
-            'idle': Rect.xspec({width: 7, height: 7, color: 'green'}),
-            'inactive': Rect.xspec({width: 7, height: 7, color: 'white'}),
-            'powerup.bull': Rect.xspec({width: 7, height: 7, color: 'yellow'}),
-            'powerup.stealth': Rect.xspec({width: 7, height: 7, color: 'orange'}),
-            'powerup.thump': Rect.xspec({width: 7, height: 7, color: 'red'}),
+            'idlel': new AssetRef({tag: 'overbearer.idlel'}),
+            'idler': new AssetRef({tag: 'overbearer.idler'}),
+            'movel': new AssetRef({tag: 'overbearer.movel'}),
+            'mover': new AssetRef({tag: 'overbearer.mover'}),
         },
         state: 'idle',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
     }),
 
     Sfx.xspec({ tag: 'test.sound', audio: new SfxRef({src: 'snd/test.mp3'}) }),

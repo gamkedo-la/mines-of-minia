@@ -198,12 +198,13 @@ class Character extends MiniaModel {
         if (evt.update && evt.update.hasOwnProperty('idx')) {
             //console.log(`-- ${this} idx update idx: ${evt.update.idx} last: ${this.lastIdx}`);
             if (this.lastIdx !== evt.update.idx) {
-                let wantAnimState = (this.facing === Direction.east) ? 'idler' : 'idlel';
-                if (wantAnimState !== this.animState) update.animState = wantAnimState;
+                //let wantAnimState = (this.facing === Direction.east) ? 'idler' : 'idlel';
+                //if (wantAnimState !== this.animState) update.animState = wantAnimState;
                 this.lastIdx = this.idx;
             }
+        }
         // transition to idle state
-        } else if (evt.update && evt.update.hasOwnProperty('speed') && evt.update.speed === 0) {
+        if (evt.update && evt.update.hasOwnProperty('speed') && evt.update.speed === 0) {
             let wantAnimState = (this.facing === Direction.east) ? 'idler' : 'idlel';
             if (wantAnimState !== this.animState) update.animState = wantAnimState;
         // transition to move state
