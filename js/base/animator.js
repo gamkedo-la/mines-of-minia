@@ -71,24 +71,7 @@ class Animator extends Sketch {
     onStateChange(evt) {
         let wantState = this.evtAccessor(evt);
         if (!wantState) return;
-        let fromState = (this.pendingState) ? this.pendingState : this.state;
-        // check for no state change
-        if (fromState === wantState) return;
-        // check for state transition
-        let transState = `${fromState}:${wantState}`;
-        let sketch = this.sketches[transState];
-        if (sketch) {
-            sketch.evt.listen(sketch.constructor.evtDone, this.onTransitionDone, Events.once);
-            this.pendingState = wantState;
-            this.state = transState;
-            this.setSketch(sketch);
-        // no transition
-        } else {
-            let sketch = this.sketches[wantState] || Sketch.zero;
-            this.state = wantState;
-            this.setSketch(sketch);
-        }
-        this.evt.trigger(this.constructor.evtUpdated, {actor: this});
+        this.play(wantState);
     }
 
     onSketchUpdate(evt) {
@@ -127,6 +110,28 @@ class Animator extends Sketch {
     hide() {
         this.hidden = true;
         this.sketch.hide();
+    }
+
+    play(wantState) {
+        let fromState = (this.pendingState) ? this.pendingState : this.state;
+        // check for no state change
+        if (fromState === wantState) return;
+        // check for state transition
+        let transState = `${fromState}:${wantState}`;
+        let sketch = this.sketches[transState];
+        if (sketch) {
+            sketch.evt.listen(sketch.constructor.evtDone, this.onTransitionDone, Events.once);
+            this.pendingState = wantState;
+            this.state = transState;
+            this.setSketch(sketch);
+        // no transition
+        } else {
+            sketch = this.sketches[wantState] || Sketch.zero;
+            this.state = wantState;
+            this.setSketch(sketch);
+        }
+        this.evt.trigger(this.constructor.evtUpdated, {actor: this});
+        return sketch;
     }
 
     setSketch(sketch) {

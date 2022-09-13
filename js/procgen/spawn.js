@@ -1177,6 +1177,7 @@ class Spawn {
                 x_sketch: Assets.get('fuelcell'),
             }),
 
+            /*
             Overbearer.xspec({
                 name: 'bob',
                 healthMax: 50,
@@ -1193,11 +1194,12 @@ class Spawn {
                 healthMax: 1,
                 active: false,
             }),
+            */
 
             ThumpBot.xspec({
                 tag: 'boss.thump',
-                healthMax: 1,
-                active: false,
+                healthMax: 50,
+                active: true,
             }),
 
             /*

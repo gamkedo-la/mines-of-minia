@@ -20,7 +20,7 @@ class Bomb extends Item {
     cpost(spec) {
         super.cpost(spec);
         this.apTL = spec.apTL || this.constructor.dfltApTL;
-        this.blastRange = spec.blastRange || Config.tileSize * 2;
+        this.blastRange = spec.blastRange || Config.tileSize * 1.5;
         this.damageMin = spec.damageMin || 5;
         this.damageMax = spec.damageMax || 10;
         this.attackKind = spec.attackKind || 'fire';

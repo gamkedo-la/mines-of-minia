@@ -1,7 +1,10 @@
 export { AiBombTargetDirective };
 
 import { ThrowAction } from '../actions/throw.js';
+import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
+import { Direction } from '../base/dir.js';
+import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Bomb } from '../entities/bomb.js';
 import { LevelSystem } from '../systems/levelSystem.js';
 import { AiDirective } from './aiDirective.js';
@@ -34,6 +37,13 @@ class AiBombTargetDirective extends AiDirective {
                 return null;
             }
 
+            // aim
+            let targetDir = this.getTargetDirection();
+            let animState = `idle.${Direction.toString(Direction.opposite(targetDir))}`;
+            if (this.actor.animState !== animState) {
+                UpdateSystem.eUpdate(this.actor, { animState: animState });
+            }
+
             // check for delay
             if (this.elapsed < this.delay) {
                 console.log(`-- bombing delay`);
@@ -61,6 +71,8 @@ class AiBombTargetDirective extends AiDirective {
                 needsDrop: false,
                 item: bomb,
                 idx: targetIdx,
+                throwsfx: Assets.get('bomb.shoot', true),
+                hitsfx: Assets.get('bomb.lands', true),
                 x: this.lvl.xfromidx(targetIdx, true),
                 y: this.lvl.yfromidx(targetIdx, true),
             });

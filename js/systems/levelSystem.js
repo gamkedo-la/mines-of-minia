@@ -158,7 +158,7 @@ class LevelSystem extends System {
         // generate
         let e = Generator.generate(x_e);
         // center at x,y
-        if (e.cls !== 'Tile' && e.cls !== 'Facade') {
+        if (e.cls !== 'Tile' && e.cls !== 'Facade' && e.cls !== 'ThumpBot') {
             let h = e.xform.height;
             e.xform.offx = -e.xform.width*.5;
             if (h > Config.tileSize) {

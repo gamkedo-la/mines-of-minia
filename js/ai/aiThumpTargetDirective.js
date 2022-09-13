@@ -1,9 +1,12 @@
 export { AiThumpTargetDirective };
 
 import { MeleeAttackAction } from '../actions/attack.js';
+import { ParallelAction } from '../base/actions/parallelAction.js';
+import { PlayAnimatorStateAction } from '../base/actions/playAnimation.js';
 import { SerialAction } from '../base/actions/serialAction.js';
 import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
+import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Reticle } from '../entities/reticle.js';
 import { LevelSystem } from '../systems/levelSystem.js';
 import { AiDirective } from './aiDirective.js';
@@ -30,9 +33,12 @@ class AiThumpTargetDirective extends AiDirective {
 
             // aim
             let targetIdx;
+            let targetDir = this.getTargetDirection();
             if (misses < this.missesBeforeSpamAttack) {
-                targetIdx = this.lvl.idxfromdir(this.actor.idx, this.getTargetDirection());
+                targetIdx = this.lvl.idxfromdir(this.actor.idx, targetDir);
                 console.log(`-- aim: ${targetIdx}`);
+                let animState = `idle.${Direction.toString(Direction.opposite(targetDir))}`;
+                UpdateSystem.eUpdate(this.actor, { animState: animState });
                 // spawn target reticle
                 let x_reticle = Object.assign({}, Reticle.xspec(), {idx: targetIdx, z: Config.template.bgoZed});
                 let reticle = LevelSystem.addEntity(x_reticle);
@@ -44,6 +50,8 @@ class AiThumpTargetDirective extends AiDirective {
             // thump
             // -- normal attack
             if (misses < this.missesBeforeSpamAttack) {
+                let animState = `thump.${Direction.toString(Direction.opposite(targetDir))}`;
+                UpdateSystem.eUpdate(this.actor, { animState: animState });
                 // -- check for target
                 let target;
                 if (this.target.idx === targetIdx) {
@@ -57,6 +65,7 @@ class AiThumpTargetDirective extends AiDirective {
                 yield new MeleeAttackAction({
                     target: target,
                     knockback: (target === this.target) ? this.knockback : 0,
+                    nudge: 0,
                     lvl: this.lvl,
                 });
 
@@ -66,6 +75,7 @@ class AiThumpTargetDirective extends AiDirective {
                 let serialActions = [];
                 for (const dir of Direction.all) {
                     let targetIdx = this.lvl.idxfromdir(this.actor.idx, dir);
+                    let animState = `thump.${Direction.toString(Direction.opposite(dir))}`;
                     // -- check for target
                     let target;
                     if (this.target.idx === targetIdx) {
@@ -73,11 +83,18 @@ class AiThumpTargetDirective extends AiDirective {
                     } else {
                         target = this.lvl.firstidx(targetIdx);
                     }
-                    serialActions.push(new MeleeAttackAction({
-                        target: target,
-                        knockback: (target === this.target) ? this.knockback : 0,
-                        lvl: this.lvl,
-                    }));
+                    serialActions.push(new ParallelAction({ subs: [
+                        new PlayAnimatorStateAction({
+                            animator: this.actor.sketch,
+                            state: animState,
+                        }),
+                        new MeleeAttackAction({
+                            target: target,
+                            nudge: 0,
+                            knockback: (target === this.target) ? this.knockback : 0,
+                            lvl: this.lvl,
+                        }),
+                    ]}));
                 }
                 yield new SerialAction({subs: serialActions});
                 misses = 0;

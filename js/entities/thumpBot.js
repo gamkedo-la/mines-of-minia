@@ -16,6 +16,7 @@ import { Enemy } from './enemy.js';
  * -- once charged, thump attack triggers and if it hits player will thump player back a few tiles with significant damage
  */
 class ThumpBot extends Enemy {
+    static dfltAnimState = 'idle.west';
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
         // parse lvl
@@ -40,6 +41,8 @@ class ThumpBot extends Enemy {
     cpost(spec) {
         super.cpost(spec);
         this.bombRange = spec.bombRange || Config.tileSize*3;
+        this.xform.offx = -this.xform.width*.5;
+        this.xform.offy = -Config.tileSize*.5-this.xform.height*.5;
         // event handlers
         if (spec.elvl) this.linkLevel(spec.elvl);
     }
@@ -58,6 +61,8 @@ class ThumpBot extends Enemy {
     // EVENT HANDLERS ------------------------------------------------------
     onLevelLoaded(evt) {
         this.linkLevel(evt.lvl);
+        // activate
+        this.active = true;
     }
 
     onAggro(evt) {
@@ -71,6 +76,55 @@ class ThumpBot extends Enemy {
         if (!this.active) return;
         UpdateSystem.eUpdate(this, {state: 'idle'});
         this.actionStream = this.run();
+    }
+
+    onIntentForAnimState(evt) {
+        /*
+        if (!evt.update) return;
+        // keep track of last index
+        if (evt.update.hasOwnProperty('idx') && this.lastIdx !== evt.update.idx) {
+            this.lastIdx = this.idx;
+        }
+        // determine base animation state
+        let state = evt.update.state || this.state;
+        let baseAnim;
+        // dazed?
+        let update = {};
+        if (DazedCharm.isDazed(this)) {
+            baseAnim = 'stun';
+            if (this.state !== 'align') update.state = 'align';
+        // moving?
+        } else if (evt.update.speed || this.speed && !evt.update.hasOwnProperty('speed')) {
+            if (state === 'charge') {
+                baseAnim = 'charge';
+            } else {
+                baseAnim = 'move';
+            }
+        // change anim based on state
+        } else {
+            switch (state) {
+                case 'energize':
+                    baseAnim = 'energize';
+                    break;
+                case 'charge':
+                    baseAnim = 'charge';
+                    break;
+                default:
+                    baseAnim = 'idle';
+                    break;
+            }
+        }
+        let facing = evt.update.facing || this.facing;
+        let rl = (facing === Direction.east) ? 'r' : 'l';
+        let wantAnim = `${baseAnim}${rl}`;
+        if (wantAnim !== this.animState) {
+            update.animState = wantAnim;
+            //console.log(`want anim: ${wantAnim} current: ${this.animState} trigger`);
+        }
+        if (!Util.empty(update)) {
+            UpdateSystem.eUpdate(this, update);
+        }
+        */
     }
 
     // METHODS -------------------------------------------------------------

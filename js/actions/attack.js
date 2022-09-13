@@ -209,7 +209,7 @@ class MeleeAttackAction extends SerialAction {
     constructor(spec) {
         super(spec);
         this.target = spec.target;
-        this.nudge = spec.nudge || this.constructor.dfltNudge;
+        this.nudge = (spec.hasOwnProperty('nudge')) ? spec.nudge : this.constructor.dfltNudge;
         this.nudgeSpeed = spec.nudgeSpeed || this.constructor.dfltNudgeSpeed;
         this.nudgeAccel = spec.nudgeAccel || this.constructor.dfltNudgeAccel;
         this.ttl = spec.ttl || this.constructor.dfltTTL;

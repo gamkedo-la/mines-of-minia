@@ -32,6 +32,7 @@ class ParallelAction extends Action {
     }
 
     onSubDone(evt) {
+        console.log(`onSubDone: ${this.subs}`)
         if (this.subs.every((v) => v.done)) this.finish();
     }
 
