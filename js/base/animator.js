@@ -115,7 +115,7 @@ class Animator extends Sketch {
     play(wantState) {
         let fromState = (this.pendingState) ? this.pendingState : this.state;
         // check for no state change
-        if (fromState === wantState) return;
+        if (fromState === wantState) return this.sketch;
         // check for state transition
         let transState = `${fromState}:${wantState}`;
         let sketch = this.sketches[transState];

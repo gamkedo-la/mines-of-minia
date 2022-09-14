@@ -1,16 +1,20 @@
 export { Bomb };
 
 import { Attack } from '../actions/attack.js';
+import { PlayAnimatorStateAction } from '../base/actions/playAnimation.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Events } from '../base/event.js';
+import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
+import { ActionSystem } from '../base/systems/actionSystem.js';
 import { TurnSystem } from '../systems/turnSystem.js';
 import { Item } from './item.js';
 
 class Bomb extends Item {
     static lootable = false;
     static dfltApTL = 4;
+    static dfltState = 'idle';
 
     static get dfltSketch() {
         return Assets.get('bomb', true);
@@ -44,16 +48,26 @@ class Bomb extends Item {
     }
 
     onTurnDone(evt) {
+        if (this.state !== 'idle') return;
         let ap = evt.points || 0;
         this.elapsed += ap;
         if (this.elapsed >= this.apTL) {
-            console.log(`-- ${this} boom!`);
             this.boom();
-            this.destroy();
         }
     }
 
     boom() {
+        // animate
+        this.state = 'explode';
+        // hackety hack hack
+        this.xform.offx = -32;
+        this.xform.offy = -32;
+        let action = new PlayAnimatorStateAction({
+            animator: this.sketch,
+            state: 'explode',
+        });
+        action.evt.listen(action.constructor.evtDone, (evt) => this.destroy(), Events.once);
+        ActionSystem.assign(this, action);
         // explode
         if (this.explodeSfx) this.explodeSfx.play();
         // find targets in range

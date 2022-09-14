@@ -54,7 +54,7 @@ class AiBombTargetDirective extends AiDirective {
             
             // bomb
             // -- instantiate bomb
-            let x_bomb = Object.assign({}, this.bombSpec, {idx: this.actor.idx, z: Config.template.fgZed});
+            let x_bomb = Object.assign({}, this.bombSpec, {tag: 'bomb', idx: this.actor.idx, z: Config.template.fgZed});
             let bomb = LevelSystem.addEntity(x_bomb);
             // -- lookup path between actor and target
             let pathidxs = Array.from(this.lvl.idxsBetween(this.actor.idx, this.target.idx));

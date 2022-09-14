@@ -1765,7 +1765,7 @@ let miniaAssets = [
         state: 'free',
     }),
 
-    Animation.xspec({tag: 'bomb', x_cels: [
+    Animation.xspec({tag: 'bomb.idle', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*0})}), ttl: 75 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*1})}), ttl: 75 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*2})}), ttl: 75 }),
@@ -1773,5 +1773,24 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*4})}), ttl: 75 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*5})}), ttl: 75 }),
     ]}),
+
+    Animation.xspec({tag: 'bomb.explode', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb-explode.png', width: 64, height: 48, x: 64*0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb-explode.png', width: 64, height: 48, x: 64*1})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb-explode.png', width: 64, height: 48, x: 64*2})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb-explode.png', width: 64, height: 48, x: 64*3})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb-explode.png', width: 64, height: 48, x: 64*4})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb-explode.png', width: 64, height: 48, x: 64*5})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb-explode.png', width: 64, height: 48, x: 64*6})}), ttl: 50 }),
+    ]}),
+
+    Animator.xspec({
+        tag: 'bomb',
+        x_sketches: {
+            'idle': new AssetRef({tag: 'bomb.idle'}),
+            'explode': new AssetRef({tag: 'bomb.explode'}),
+        },
+        state: 'idle',
+    }),
 
 ];
