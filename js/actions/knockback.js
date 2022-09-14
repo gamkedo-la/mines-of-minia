@@ -24,7 +24,6 @@ class KnockbackAction extends GeneratorAction {
         // -- while pushback...
         while (this.steps > 0) {
             this.steps--;
-            console.log(`this.steps: ${this.steps}`);
             // find next index based on actor position and direction
             let nidx = this.lvl.idxfromdir(this.actor.idx, this.dir);
             // something blocks path...
