@@ -1,7 +1,9 @@
 export { Overbearer };
 
+    import { ApplyAction } from '../base/actions/apply.js';
 import { GeneratorAction } from '../base/actions/generatorAction.js';
 import { MoveAction } from '../base/actions/move.js';
+import { PanToActorAction } from '../base/actions/pan.js';
 import { WaitAction } from '../base/actions/wait.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
@@ -116,6 +118,11 @@ class PowerupBullAction extends GeneratorAction {
     }
     *run() {
         console.log(`running power up bull`);
+        let camera = this.lvl.camera;
+        let player = this.lvl.player;
+        // focus camera on overbearer
+        yield new PanToActorAction({camera: camera});
+        camera.trackTarget(this.actor);
         Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 2000, msg: 'you know... you\'re really messing things up'});
         yield new WaitAction({ttl: 2000});
         Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 2000, msg: 'you really leave me no choice'});
@@ -144,6 +151,12 @@ class PowerupBullAction extends GeneratorAction {
         boss.active = true;
         // -- listen for boss death
         boss.evt.listen(boss.constructor.evtDeath, this.actor.onBossDeath, Events.once);
+        yield new ApplyAction({
+            target: player,
+            action: new PanToActorAction({camera: camera}),
+        }) 
+        camera.trackTarget(player);
+
 
     }
 }
@@ -158,6 +171,10 @@ class PowerupStealthAction extends GeneratorAction {
     }
     *run() {
         console.log(`-- running power up stealth`);
+        let camera = this.lvl.camera;
+        let player = this.lvl.player;
+        yield new PanToActorAction({camera: camera});
+        camera.trackTarget(this.actor);
         // -- jump out of bull
         let choices = Random.shuffle(Direction.all);
         let jumpIdx;
@@ -208,6 +225,11 @@ class PowerupStealthAction extends GeneratorAction {
         boss.active = true;
         // -- listen for boss death
         boss.evt.listen(boss.constructor.evtDeath, this.actor.onBossDeath, Events.once);
+        yield new ApplyAction({
+            target: player,
+            action: new PanToActorAction({camera: camera}),
+        }) 
+        camera.trackTarget(player);
     }
 }
 
@@ -220,6 +242,10 @@ class PowerupThumpAction extends GeneratorAction {
     }
     *run() {
         console.log(`-- running power up thump`);
+        let camera = this.lvl.camera;
+        let player = this.lvl.player;
+        yield new PanToActorAction({camera: camera});
+        camera.trackTarget(this.actor);
         // -- jump out of last boss
         let choices = Random.shuffle(Direction.all);
         let jumpIdx;
@@ -273,6 +299,11 @@ class PowerupThumpAction extends GeneratorAction {
         boss.active = true;
         // -- listen for boss death
         boss.evt.listen(boss.constructor.evtDeath, this.actor.onBossDeath, Events.once);
+        yield new ApplyAction({
+            target: player,
+            action: new PanToActorAction({camera: camera}),
+        }) 
+        camera.trackTarget(player);
     }
 }
 

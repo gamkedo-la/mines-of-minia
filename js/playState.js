@@ -175,6 +175,9 @@ class PlayState extends GameState {
         this.camera = new Camera({view: this.slider, viewport: this.viewport, overflow: false, buffer: 0});
         this.camera.trackTarget(this.player);
         this.camera.evt.listen(this.camera.constructor.evtUpdated, (evt) => Events.trigger(RenderSystem.evtRenderNeeded));
+        // -- hackety hack hack
+        this.lvl.camera = this.camera;
+        this.lvl.player = this.player;
 
         // bind event handlers
         this.onLoSUpdate = this.onLoSUpdate.bind(this);

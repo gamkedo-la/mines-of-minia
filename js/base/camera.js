@@ -73,7 +73,7 @@ class Camera {
     // METHODS -------------------------------------------------------------
     trackTarget(target) {
         // if currently have a target...
-        if (this.target) this.target.evtUpdated.ignore(this.onTargetUpdate);
+        if (this.target) this.target.evt.ignore(target.constructor.evtUpdated, this.onTargetUpdate);
         this.target = target;
         this.target.evt.listen(target.constructor.evtUpdated, this.onTargetUpdate);
         this.updateTrack();
