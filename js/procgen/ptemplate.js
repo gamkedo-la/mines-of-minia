@@ -14,6 +14,7 @@ class ProcTemplate {
         this.doyield = (spec.hasOwnProperty('doyield')) ? spec.doyield : false;
         this.index = spec.index || 1;
         this.seed = spec.seed || 0;
+        this.boss = spec.boss || null;
         this.noiseXScale || .04;
         this.noiseYScale || .05;
         this.dodiscovery = spec.hasOwnProperty('dodiscovery') ? spec.dodiscovery : true;

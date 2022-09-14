@@ -17,6 +17,7 @@ import { Enemy } from './enemy.js';
  */
 class ThumpBot extends Enemy {
     static dfltAnimState = 'idle.west';
+    static mobile = false;
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
         // parse lvl
@@ -62,7 +63,7 @@ class ThumpBot extends Enemy {
     onLevelLoaded(evt) {
         this.linkLevel(evt.lvl);
         // activate
-        this.active = true;
+        if (this.activateOnLoad) this.active = true;
     }
 
     onAggro(evt) {

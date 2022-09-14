@@ -56,7 +56,7 @@ class Spawn {
         // -- lock and key
         this.spawnLockAndKeys(template, pstate);
         // -- enemies
-        //this.spawnEnemies(template, pstate);
+        this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
@@ -96,6 +96,17 @@ class Spawn {
                 });
                 plvl.entities.push(x_door);
             }
+        }
+        // final door
+        if (plvl.finalDoorIdx) {
+            let x_door = Door.xspec({
+                idx: plvl.finalDoorIdx,
+                facing: 'ns',
+                kind: 'blue',
+                z: template.fgZed,
+                //blocks: 0,
+            });
+            plvl.entities.push(x_door);
         }
     }
 
@@ -1135,6 +1146,61 @@ class Spawn {
         }
     }
 
+    static spawnEnemiesForRockBossRoom(template, pstate, proom, options) {
+        let plvl = pstate.plvl;
+        let plvlo = pstate.plvlo;
+        let ci = plvlo.data.ifromidx(proom.cidx);
+        let cj = plvlo.data.jfromidx(proom.cidx);
+        // overbearer gets spawned in the middle of the room
+        let x_enemy = Overbearer.xspec({
+            name: 'bob',
+            tag: 'boss.overbearer',
+            healthMax: 50,
+            activateOnLoad: true,
+            idx: proom.cidx,
+            z: template.fgZed,
+        });
+
+        plvl.entities.push( x_enemy );
+
+        // thumper gets spawned at bottom of the room
+        let thumpidx = plvlo.data.idxfromij(ci, cj+5);
+        x_enemy = ThumpBot.xspec({
+            name: 'thumper',
+            tag: 'boss.thump',
+            healthMax: 1,
+            activateOnLoad: false,
+            idx: thumpidx,
+            z: template.fgZed,
+        });
+        plvl.entities.push( x_enemy );
+
+        // stealth gets spawned in northwest
+        let stealthidx = plvlo.data.idxfromij(ci-5, cj-5);
+        x_enemy = StealthBot.xspec({
+            name: 'sneaky',
+            tag: 'boss.stealth',
+            healthMax: 1,
+            activateOnLoad: false,
+            idx: stealthidx,
+            z: template.fgZed,
+        });
+        plvl.entities.push( x_enemy );
+
+        // bull gets spawned in northwest
+        let bullidx = plvlo.data.idxfromij(ci+5, cj-5);
+        x_enemy = RagingBull.xspec({
+            name: 'rager',
+            tag: 'boss.bull',
+            healthMax: 1,
+            activateOnLoad: false,
+            idx: bullidx,
+            z: template.fgZed,
+        });
+        plvl.entities.push( x_enemy );
+
+    }
+
     static spawnEnemies(template, pstate) {
         // -- pull data
         let x_spawn = template.spawn || {};
@@ -1146,11 +1212,17 @@ class Spawn {
 
         // iterate through rooms
         for (const proom of prooms) {
-            this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
+            if (proom.boss) {
+                this.spawnEnemiesForRockBossRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
+            } else if (!template.boss) {
+                this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
+            }
         }
         // iterate through rooms
-        for (const proom of phalls) {
-            this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyHallOptions);
+        if (!template.boss) {
+            for (const proom of phalls) {
+                this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyHallOptions);
+            }
         }
 
     }
@@ -1194,13 +1266,13 @@ class Spawn {
                 healthMax: 1,
                 active: false,
             }),
-            */
 
             ThumpBot.xspec({
                 tag: 'boss.thump',
                 healthMax: 50,
                 active: true,
             }),
+            */
 
             /*
             Token.xspec({

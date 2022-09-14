@@ -52,6 +52,7 @@ class RagingBull extends Enemy{
     // EVENT HANDLERS ------------------------------------------------------
     onLevelLoaded(evt) {
         this.linkLevel(evt.lvl);
+        if (this.activateOnLoad) this.active = true;
     }
 
     onAggro(evt) {

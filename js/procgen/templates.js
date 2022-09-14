@@ -35,6 +35,7 @@ class MiniaTemplates {
 
     static rockBoss = new ProcTemplate({
         doyield: true,
+        boss: 'rock',
         //seed: 3,
         // FIXME: known bad seeds...
         seed: 62183,

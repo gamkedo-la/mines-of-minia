@@ -48,6 +48,7 @@ class Enemy extends Character {
         this.evt.listen(this.constructor.evtAggroGained, this.onAggro);
         this.evt.listen(this.constructor.evtAggroLost, this.onAggroLost);
         this.active = false;
+        this.activateOnLoad = (spec.hasOwnProperty('activateOnLoad')) ? spec.activateOnLoad : true;
         this.actions;
     }
 
@@ -83,7 +84,7 @@ class Enemy extends Character {
         this.attack = new AiMeleeTargetDirective(x_dir);
         this.actionStream = this.run();
         // activate
-        this.active = true;
+        if (this.activateOnLoad) this.active = true;
     }
 
     // METHODS -------------------------------------------------------------
