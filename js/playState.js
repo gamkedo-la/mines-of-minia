@@ -52,6 +52,7 @@ import { WaitAction } from './base/actions/wait.js';
 import { RagingBull } from './entities/ragingBull.js';
 import { Direction } from './base/dir.js';
 import { StealthBot } from './entities/stealthBot.js';
+import { TalentSystem } from './systems/talentSystem.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -70,6 +71,7 @@ class PlayState extends GameState {
         Systems.add('trigger', new TriggerSystem({ dbg: Util.getpath(Config, 'dbg.system.trigger')}));
         Systems.add('level', new LevelSystem({ dbg: Util.getpath(Config, 'dbg.system.level')}));
         Systems.add('detect', new DetectSystem({ dbg: Util.getpath(Config, 'dbg.system.detect')}));
+        Systems.add('talent', new TalentSystem({ dbg: Util.getpath(Config, 'dbg.system.talent')}));
     }
 
     async ready(data={}) {
