@@ -297,6 +297,7 @@ class Translate {
                 plvl.entities.push({
                     cls: 'Tile',
                     kind: fgKind,
+                    boss: proom.boss,
                     tileSize: template.tileSize,
                     baseAssetTag: fgTag,
                     idx: idx,
@@ -307,6 +308,7 @@ class Translate {
                 plvl.entities.push({
                     cls: 'Tile',
                     kind: bgKind,
+                    boss: proom.boss,
                     tileSize: template.tileSize,
                     baseAssetTag: bgTag,
                     idx: idx,

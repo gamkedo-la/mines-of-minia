@@ -23,6 +23,8 @@ class Tile extends MiniaModel {
         this.halfSize = this.tileSize/2;
         this.kind = spec.kind || this.constructor.dfltKind;
         this.baseAssetTag = spec.baseAssetTag || this.constructor.dfltKind;
+        // -- part of a boss room?
+        this.boss = spec.hasOwnProperty('boss') ? spec.boss : false;
         // -- level data accessors
         this.anyidx = spec.anyidx || ((v,f) => false);
         this.idxfromdir = spec.idxfromdir || ((idx, dir) => -1);

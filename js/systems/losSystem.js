@@ -123,9 +123,20 @@ class LoSSystem extends System {
     }
 
     setLoS(e) {
-        let inRange = Array.from(this.lvl.idxsInRange(e.idx, e.losRange));
         let visible = [];
         let blocked = [];
+
+        // special case... player is in boss room
+        if (e.cls === 'Player' && this.lvl.anyidx(e.idx, (v) => v.cls === 'Tile' && v.boss)) {
+            // find all tiles associated w/ boss room
+            for (const bossTile of this.lvl.find((v) => v.cls === 'Tile' && v.boss)) {
+                if (!visible.includes(bossTile.idx)) {
+                    visible.push(bossTile.idx);
+                }
+            }
+        }
+
+        let inRange = Array.from(this.lvl.idxsInRange(e.idx, e.losRange));
         // center of target (e)
         let cx = this.lvl.xfromidx(e.idx, true);
         let cy = this.lvl.yfromidx(e.idx, true);

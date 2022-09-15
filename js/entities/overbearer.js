@@ -1,5 +1,6 @@
 export { Overbearer };
 
+    import { ThrowAction } from '../actions/throw.js';
     import { ApplyAction } from '../base/actions/apply.js';
 import { GeneratorAction } from '../base/actions/generatorAction.js';
 import { MoveAction } from '../base/actions/move.js';
@@ -12,8 +13,10 @@ import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Random } from '../base/random.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { LevelSystem } from '../systems/levelSystem.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Enemy } from './enemy.js';
+import { Key } from './key.js';
 
 class Overbearer extends Enemy{
     // STATIC METHODS ------------------------------------------------------
@@ -31,6 +34,7 @@ class Overbearer extends Enemy{
     cpost(spec) {
         super.cpost(spec);
         if (spec.elvl) this.linkLevel(spec.elvl);
+        this.startIdx = this.idx;
         this.onBossDeath = this.onBossDeath.bind(this);
     }
 
@@ -57,7 +61,8 @@ class Overbearer extends Enemy{
         console.log(`${this} onBossDeath`);
         let x = evt.actor.xform.x;
         let y = evt.actor.xform.y;
-        let nextState = (evt.actor.tag === 'boss.bull') ? 'powerup.stealth' : (evt.actor.tag === 'boss.stealth') ? 'powerup.thump' : 'finale';
+        //jlet nextState = (evt.actor.tag === 'boss.bull') ? 'powerup.stealth' : (evt.actor.tag === 'boss.stealth') ? 'powerup.thump' : 'finale';
+        let nextState = (evt.actor.tag === 'boss.bull') ? 'finale' : (evt.actor.tag === 'boss.stealth') ? 'powerup.thump' : 'finale';
         console.log(`nextState: ${nextState}`);
         UpdateSystem.eUpdate(this, {active: true, visible: true, state: nextState, idx: evt.actor.idx, xform: { x:x, y:y}});
     }
@@ -316,6 +321,10 @@ class FinaleAction extends GeneratorAction {
     }
     *run() {
         console.log(`-- running finale`);
+        let camera = this.lvl.camera;
+        let player = this.lvl.player;
+        yield new PanToActorAction({camera: camera});
+        camera.trackTarget(this.actor);
         // -- jump out of last boss
         let choices = Random.shuffle(Direction.all);
         let jumpIdx;
@@ -341,7 +350,52 @@ class FinaleAction extends GeneratorAction {
                 update: { idx: jumpIdx }, sfx: this.actor.moveSfx 
             });
         }
-        Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 2000, msg: 'no fair!'});
+        Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 1200, msg: 'wait, please... mercy!'});
+        yield new WaitAction({ttl: 1500});
+
+        // -- move to startIdx
+        let path = this.lvl.pathfinder.find(this.actor, this.actor.idx, this.actor.startIdx);
+        let tx = this.lvl.xfromidx(this.actor.startIdx, true);
+        let ty = this.lvl.yfromidx(this.actor.startIdx, true);
+        for (const action of path.actions) {
+            console.log(`action: ${action} ${action.x},${action.y} target: ${tx},${ty}`);
+            if (action.x !== tx && action.y !== ty) {
+                action.snap = false;
+                action.stopAtTarget = false;
+            }
+            yield action;
+        }
+
+        Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 1200, msg: 'you don\'t understand!'});
+        yield new WaitAction({ttl: 1500});
+        Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 1000, msg: 'the machines...'});
+        yield new WaitAction({ttl: 1200});
+        Events.trigger(OverlaySystem.evtNotify, {which: 'dialog', actor: this.actor, ttl: 1000, msg: 'they need me...'});
+        yield new WaitAction({ttl: 1200});
+
+        
+        // key
+        // -- instantiate final key
+        let x_key = Key.xspec({
+            kind: 'blue',
+            idx: this.actor.idx,
+            z: Config.template.fgZed,
+        });
+        let key = LevelSystem.addEntity(x_key);
+        
+        let targetIdx = player.idx;
+        console.log(`-- throw ${key}`);
+        let action = new ThrowAction({
+            needsDrop: false,
+            item: key,
+            idx: targetIdx,
+            //throwsfx: Assets.get('throw.shoot', true),
+            //hitsfx: Assets.get('bomb.lands', true),
+            x: this.lvl.xfromidx(targetIdx, true),
+            y: this.lvl.yfromidx(targetIdx, true),
+        });
+        yield action;
+
         yield new WaitAction({ttl: 2000});
     }
 }
