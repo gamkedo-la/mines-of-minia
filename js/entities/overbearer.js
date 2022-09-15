@@ -61,8 +61,8 @@ class Overbearer extends Enemy{
         console.log(`${this} onBossDeath`);
         let x = evt.actor.xform.x;
         let y = evt.actor.xform.y;
-        //jlet nextState = (evt.actor.tag === 'boss.bull') ? 'powerup.stealth' : (evt.actor.tag === 'boss.stealth') ? 'powerup.thump' : 'finale';
-        let nextState = (evt.actor.tag === 'boss.bull') ? 'finale' : (evt.actor.tag === 'boss.stealth') ? 'powerup.thump' : 'finale';
+        let nextState = (evt.actor.tag === 'boss.bull') ? 'powerup.stealth' : (evt.actor.tag === 'boss.stealth') ? 'powerup.thump' : 'finale';
+        //let nextState = (evt.actor.tag === 'boss.bull') ? 'finale' : (evt.actor.tag === 'boss.stealth') ? 'powerup.thump' : 'finale';
         console.log(`nextState: ${nextState}`);
         UpdateSystem.eUpdate(this, {active: true, visible: true, state: nextState, idx: evt.actor.idx, xform: { x:x, y:y}});
     }
