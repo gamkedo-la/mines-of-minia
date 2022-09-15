@@ -123,6 +123,11 @@ class PowerupBullAction extends GeneratorAction {
     }
     *run() {
         console.log(`running power up bull`);
+        // lock the room
+        for (const door of this.lvl.find((v) => v.cls === 'Door' && v.boss)) {
+            console.log(`-- locking ${door}`);
+            door.locked = true;
+        }
         let camera = this.lvl.camera;
         let player = this.lvl.player;
         // focus camera on overbearer
@@ -383,6 +388,7 @@ class FinaleAction extends GeneratorAction {
         });
         let key = LevelSystem.addEntity(x_key);
         
+        // throw key at player
         let targetIdx = player.idx;
         console.log(`-- throw ${key}`);
         let action = new ThrowAction({
@@ -396,6 +402,17 @@ class FinaleAction extends GeneratorAction {
         });
         yield action;
 
-        yield new WaitAction({ttl: 2000});
+        // unlock the room
+        for (const door of this.lvl.find((v) => v.cls === 'Door' && v.boss)) {
+            console.log(`-- unlocking ${door}`);
+            door.locked = false;
+        }
+        
+        // pan back to player
+        yield new ApplyAction({
+            target: player,
+            action: new PanToActorAction({camera: camera}),
+        }) 
+        camera.trackTarget(player);
     }
 }

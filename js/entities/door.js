@@ -47,6 +47,8 @@ class Door extends MiniaModel {
         this.kind = spec.kind || this.constructor.dfltKind;
         // -- general properties
         this.state = spec.state || this.constructor.dfltState;
+        // -- is door linked to boss room
+        this.boss = spec.hasOwnProperty('boss') ? spec.boss : false;
         // -- is door locked?
         this.locked = spec.hasOwnProperty('locked') ? spec.locked : false;
         // -- hidden from player view?

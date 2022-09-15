@@ -37,12 +37,19 @@ class DoOpenAction extends Action {
         this.timer = new Timer({ttl: this.ttl, cb: this.onTimer});
         // check for locked state, and required keys...
         if (this.target.locked) {
-            // what key is required?
-            let kind = this.target.kind;
-            if (!this.actor.inventory || !this.actor.inventory.hasKey(kind)) {
+            // locked because of boss?
+            if (this.target.boss) {
                 this.unlocked = false;
-                Events.trigger(OverlaySystem.evtNotify, { actor: this.player, which: 'warn', msg: `need ${kind} key to unlock` });
+                Events.trigger(OverlaySystem.evtNotify, { actor: this.player, which: 'warn', msg: `you're locked in` });
                 if (this.failedSfx) this.failedSfx.play();
+            } else {
+                // what key is required?
+                let kind = this.target.kind;
+                if (!this.actor.inventory || !this.actor.inventory.hasKey(kind)) {
+                    this.unlocked = false;
+                    Events.trigger(OverlaySystem.evtNotify, { actor: this.player, which: 'warn', msg: `need ${kind} key to unlock` });
+                    if (this.failedSfx) this.failedSfx.play();
+                }
             }
         }
         // start open sound if unlocked

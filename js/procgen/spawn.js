@@ -88,8 +88,12 @@ class Spawn {
                 })) {
                     facing = 'ns';
                 }
+                // is this a boss door?
+                let otherRoom = phall.exitMap[idx];
+                let bossDoor = otherRoom && otherRoom.boss;
                 let x_door = Door.xspec({
                     idx: idx,
+                    boss: bossDoor,
                     facing: facing,
                     z: template.fgZed,
                     //blocks: 0,
@@ -104,7 +108,6 @@ class Spawn {
                 facing: 'ns',
                 kind: 'blue',
                 z: template.fgZed,
-                //blocks: 0,
             });
             plvl.entities.push(x_door);
         }
