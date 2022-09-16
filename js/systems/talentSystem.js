@@ -1,6 +1,8 @@
 export { TalentSystem };
 
 import { System } from '../base/system.js';
+import { Charm } from '../charms/charm.js';
+import { EfficiencyCharm } from '../charms/efficiency.js';
 
 class TalentSystem extends System {
     static talents = {
@@ -80,13 +82,17 @@ class TalentSystem extends System {
         this.player;
         this.current = {
             golddigger: 3,
+            efficiency: 2,
         }
+        this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
     }
 
     onEntityAdded(evt) {
         if (evt.actor && evt.actor.cls === 'Player') {
             this.player = evt.actor;
+            this.player.evt.listen(this.player.constructor.evtUpdated, this.onPlayerUpdate);
             console.log(`-- ${this} player emerged: ${this.player}`);
+            this.applyPlayerBuffs();
         }
         // -- GOLDDIGGER implementation
         if (evt.actor && evt.actor.cls === 'Token') {
@@ -96,6 +102,40 @@ class TalentSystem extends System {
                 let bonus = Math.round((loot.count * lvl)/10);
                 if (this.dbg) console.log(`-- ${this} golddigger bonus: ${bonus}`);
                 loot.count += bonus;
+            }
+        }
+    }
+
+    addEfficiencyCharm() {
+        let lvl = this.current.efficiency;
+        let oldCharm = Charm.find(this.player, 'EfficiencyCharm');
+        if (oldCharm) {
+            if (oldCharm.lvl !== lvl) {
+                oldCharm.unlink();
+            } else {
+                return;
+            }
+        }
+        let charm = new EfficiencyCharm({ lvl: lvl});
+        console.log(`linking charm: ${charm}`);
+        charm.link(this.player);
+    }
+
+    applyPlayerBuffs() {
+        // player at max health?
+        if (this.player.health === this.player.healthMax) {
+            // EFFICIENCY implementation
+            if (this.current.efficiency) {
+                this.addEfficiencyCharm();
+            }
+        }
+    }
+
+    onPlayerUpdate(evt) {
+        // check for player health updates
+        if (evt.update && evt.update.health) {
+            if (this.player.health === this.player.healthMax) {
+                this.addEfficiencyCharm();
             }
         }
     }

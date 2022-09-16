@@ -6,6 +6,17 @@ import { UpdateSystem } from '../base/systems/updateSystem.js';
 class Charm {
     // STATIC VARIABLES ----------------------------------------------------
 
+    // STATIC METHODS ------------------------------------------------------
+    static checkFor(e, cls) {
+        if (!e.charms) return false;
+        return e.charms.some((v) => v.cls === cls);
+    }
+
+    static find(e, cls) {
+        if (!e.charms) return false;
+        return e.charms.find((v) => v.cls === cls);
+    }
+
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     constructor(spec={}) {
         this.actor;

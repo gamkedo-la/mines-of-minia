@@ -32,8 +32,13 @@ class FuelSystem extends System {
     // METHODS -------------------------------------------------------------
 
     iterate(evt, e) {
-        // handle regeneration for entity
+        // handle fuel burn
         let amt = this.actionPoints * e.fuelPerAP;
+        if (e.fuelReduxPct) {
+            let redux = amt * e.fuelReduxPct;
+            if (this.dbg) console.log(`${this} fuel redux: ${redux}`);
+            amt -= redux;
+        }
         if (amt) {
             let total = (this.partials[e.gid] || 0) + amt;
             if (total >= 1) {
