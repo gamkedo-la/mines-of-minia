@@ -100,6 +100,11 @@ class Character extends MiniaModel {
         if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
         // -- loot
         this.loot = spec.loot || [];
+        // -- sfx
+        this.moveSfx = spec.moveSfx;
+        this.damagedSfx = spec.damagedSfx;
+        this.meleeHitSfx = spec.meleeHitSfx;
+        this.meleeMissSfx = spec.meleeMissSfx;
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
         // -- sync xform to match sketch dimensions

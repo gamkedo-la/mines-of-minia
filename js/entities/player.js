@@ -68,7 +68,7 @@ class Player extends Character {
         this.scanRange = spec.scanRange || this.constructor.dfltScanRange;
         // -- sfx
         this.moveSfx = spec.moveSfx || Assets.get('player.step', true);
-        this.damagedSfx = spec.moveSfx || Assets.get('player.damaged', true);
+        this.damagedSfx = spec.damagedSfx || Assets.get('player.damaged', true);
         // -- xform tweaks
         this.xform.offx = -this.xform.width*.5;
         this.xform.offy = Config.tileSize*.5 - this.xform.height;

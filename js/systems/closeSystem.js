@@ -63,7 +63,6 @@ class CloseSystem extends System {
         for (const idx of [door.idx, ...Direction.all.map((v) => this.lvl.idxfromdir(door.idx, v))]) {
             for (const e of this.lvl.findidx(idx, (v) => v instanceof Character)) {
                 // skip character if dying
-                console.log(`e.state: ${e} ${e.state}`)
                 if (e.state === 'dying') continue;
                 // listen for event updates on adjacent characters
                 e.evt.listen(e.constructor.evtUpdated, this.onCharUpdate);

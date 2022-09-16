@@ -183,19 +183,26 @@ class AttackRollAction extends Action {
         super(spec);
         this.target = spec.target;
         this.ttl = spec.ttl || this.constructor.dfltTTL;
+        this.hitsfx = spec.hitsfx;
+        this.misssfx = spec.misssfx;
     }
 
     setup() {
+        let hitsfx = this.hitsfx || this.actor.meleeHitSfx;
+        let misssfx = this.misssfx || this.actor.meleeMissSfx;
         this.timer = new Timer({ttl: this.ttl, cb: () => this.finish() });
         let weapon = (this.actor && this.actor.inventory) ? this.actor.inventory.weapon : null;
         // roll for hit
         let hit = Attack.hit(this.actor, this.target, weapon);
         if (hit) {
+            if (hitsfx) hitsfx.play();
             this.actor.evt.trigger(this.actor.constructor.evtAttacked, { actor: this.actor, target: this.target, weapon: weapon });
             let damage = Attack.damage(this.actor, this.target, weapon);
             if (damage) {
                 this.target.evt.trigger(this.target.constructor.evtDamaged, { actor: this.actor, target: this.target, damage: damage });
             }
+        } else {
+            if (misssfx) misssfx.play();
         }
     }
 }

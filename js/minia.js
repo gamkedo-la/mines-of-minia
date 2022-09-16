@@ -57,6 +57,7 @@ import { ThumpBot } from "./entities/thumpBot.js";
 import { Bomb } from "./entities/bomb.js";
 import { Reticle } from "./entities/reticle.js";
 import { Overbearer } from "./entities/overbearer.js";
+import { Scarab } from "./entities/scarab.js";
 
 class Minia extends Game {
     static states = {
@@ -132,6 +133,7 @@ class Minia extends Game {
             Reactor,
             Reticle,
             Rous,
+            Scarab,
             Shielding,
             SpikeTrap,
             Stairs,

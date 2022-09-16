@@ -1128,6 +1128,9 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'bomb.blast', audio: new SfxRef({src: 'snd/fire-ball.mp3'}), volume: .5, loop: false }),
     Sfx.xspec({ tag: 'bomb.shoot', audio: new SfxRef({src: 'snd/boom2.mp3'}), volume: .5, loop: false }),
     Sfx.xspec({ tag: 'bomb.lands', audio: new SfxRef({src: 'snd/push-block.mp3'}), volume: .5, loop: false }),
+    Sfx.xspec({ tag: 'scarab.attack', audio: new SfxRef({src: 'snd/scarab-beetle.mp3'}), volume: .1, loop: false }),
+    Sfx.xspec({ tag: 'attack.miss', audio: new SfxRef({src: 'snd/beep.mp3'}), volume: .5, loop: false }),
+    Sfx.xspec({ tag: 'attack.hit', audio: new SfxRef({src: 'snd/flip-switch.mp3'}), volume: .5, loop: false }),
 
     ...Template.walls('img/rock-walls.png', 'rock.wall'),
     ...Template.tiles('img/rock-floor.png', 'rock.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
@@ -1791,6 +1794,45 @@ let miniaAssets = [
             'explode': new AssetRef({tag: 'bomb.explode'}),
         },
         state: 'idle',
+    }),
+
+    Animation.xspec({tag: 'scarab.idler', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 0, y: 14*3})}), ttl: 100 }),
+    ]}),
+    Animation.xspec({tag: 'scarab.mover', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*0, y: 14*3})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*1, y: 14*3})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*2, y: 14*3})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*3, y: 14*3})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*4, y: 14*3})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 14*3})}), ttl: 30 }),
+    ]}),
+
+    Animation.xspec({tag: 'scarab.idlel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 0, y: 14*2})}), ttl: 100 }),
+    ]}),
+    Animation.xspec({tag: 'scarab.movel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*0, y: 14*2})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*1, y: 14*2})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*2, y: 14*2})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*3, y: 14*2})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*4, y: 14*2})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 14*2})}), ttl: 30 }),
+    ]}),
+
+    Animator.xspec({
+        tag: 'scarab',
+        x_sketches: {
+            'idler': new AssetRef({tag: 'scarab.idler'}),
+            'idlel': new AssetRef({tag: 'scarab.idlel'}),
+            'mover': new AssetRef({tag: 'scarab.mover'}),
+            'movel': new AssetRef({tag: 'scarab.movel'}),
+            //'dyingr': new AssetRef({tag: 'golem_dyingr'}),
+            //'dyingl': new AssetRef({tag: 'golem_dyingl'}),
+        },
+        state: 'idler',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
     }),
 
 ];

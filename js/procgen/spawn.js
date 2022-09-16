@@ -32,6 +32,7 @@ import { RagingBull } from '../entities/ragingBull.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
 import { Reactor } from '../entities/reactor.js';
 import { Rous } from '../entities/rous.js';
+import { Scarab } from '../entities/scarab.js';
 import { Shielding } from '../entities/shielding.js';
 import { Stairs } from '../entities/stairs.js';
 import { StealthBot } from '../entities/stealthBot.js';
@@ -56,7 +57,7 @@ class Spawn {
         // -- lock and key
         this.spawnLockAndKeys(template, pstate);
         // -- enemies
-        this.spawnEnemies(template, pstate);
+        //this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
@@ -1253,6 +1254,16 @@ class Spawn {
             }),
 
             Rous.xspec({
+                healthMax: 1,
+                xp: 1,
+                loot: [ Token.xspec({
+                    name: 'token',
+                    x_sketch: Assets.get('token'),
+                    count: 10,
+                })],
+            }),
+
+            Scarab.xspec({
                 healthMax: 1,
                 xp: 1,
                 loot: [ Token.xspec({
