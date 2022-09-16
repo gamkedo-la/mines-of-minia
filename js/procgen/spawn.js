@@ -1252,52 +1252,17 @@ class Spawn {
                 x_sketch: Assets.get('fuelcell'),
             }),
 
-            /*
-            Overbearer.xspec({
-                name: 'bob',
-                healthMax: 50,
-            }),
-
-            RagingBull.xspec({
-                tag: 'boss.bull',
-                healthMax: 1,
-                active: false,
-            }),
-
-            StealthBot.xspec({
-                tag: 'boss.stealth',
-                healthMax: 1,
-                active: false,
-            }),
-
-            ThumpBot.xspec({
-                tag: 'boss.thump',
-                healthMax: 50,
-                active: true,
-            }),
-            */
-
-            /*
-            Token.xspec({
-                name: 'token',
-                x_sketch: Assets.get('token'),
-                count: 8,
-            }),
-            */
-
-            /*
             Rous.xspec({
                 healthMax: 1,
-                xp: 10,
+                xp: 1,
+                loot: [ Token.xspec({
+                    name: 'token',
+                    x_sketch: Assets.get('token'),
+                    count: 10,
+                })],
             }),
-            */
 
             /*
-            this.genWeapon(template, pstate),
-            this.genReactor(template, pstate),
-            this.genShielding(template, pstate),
-            this.genGadget(template, pstate),
-
             RangedWeapon.xspec({
                 name: 'ice.gun.3',
                 x_sketch: Assets.get('ice.gun.3'),

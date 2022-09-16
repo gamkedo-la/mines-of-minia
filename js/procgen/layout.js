@@ -16,7 +16,11 @@ class Layout {
         // FIXME: layout generator can be specific to level...
         //yield *this.roomRingsGenerator(template, pstate);
         //yield *this.roomRandomGenerator(template, pstate);
-        yield *this.rockBossRoomGenerator(template, pstate);
+        if (template.boss === 'rock') {
+            yield *this.rockBossRoomGenerator(template, pstate);
+        } else {
+            yield *this.roomRingsGenerator(template, pstate);
+        }
     }
 
     static *rockBossRoomGenerator(template, pstate) {

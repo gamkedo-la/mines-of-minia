@@ -44,7 +44,7 @@ class TalentSystem extends System {
         },
         powerage: {
             tier: 2,
-            name: 'Max Powerage',
+            name: 'Maxx Powerage',
             description: 'when at max health, player power regenerates faster (10/20/30%)',
         },
 
@@ -72,16 +72,31 @@ class TalentSystem extends System {
 
     }
 
+    static current = {};
+
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
         this.player;
+        this.current = {
+            golddigger: 3,
+        }
     }
 
     onEntityAdded(evt) {
         if (evt.actor && evt.actor.cls === 'Player') {
             this.player = evt.actor;
             console.log(`-- ${this} player emerged: ${this.player}`);
+        }
+        // -- GOLDDIGGER implementation
+        if (evt.actor && evt.actor.cls === 'Token') {
+            let loot = evt.actor;
+            if (this.current.golddigger) {
+                let lvl = this.current.golddigger || 0;
+                let bonus = Math.round((loot.count * lvl)/10);
+                if (this.dbg) console.log(`-- ${this} golddigger bonus: ${bonus}`);
+                loot.count += bonus;
+            }
         }
     }
 

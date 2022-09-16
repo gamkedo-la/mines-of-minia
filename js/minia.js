@@ -94,7 +94,8 @@ class Minia extends Game {
         scale: 4,
         maxLvl: 21,
 
-        template: MiniaTemplates.rockBoss,
+        //template: MiniaTemplates.rockBoss,
+        template: MiniaTemplates.rockLvl,
     };
 
     static init() {

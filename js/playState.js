@@ -350,38 +350,6 @@ class PlayState extends GameState {
             }
 
             // FIXME: remove
-            case '7': {
-
-                if (!this.FIXME1) {
-                    this.FIXME1 = true;
-                    let idx = this.lvl.idxfromdir(this.lvl.idxfromdir(this.player.idx, Direction.north), Direction.north);
-                    let x_e = RagingBull.xspec({
-                        name: 'test.boss',
-                        idx: idx,
-                        healthMax: 5,
-                        z: Config.template.fgZed,
-                        elvl: this.lvl,
-                    });
-                    console.log(`-- spawning: ${Fmt.ofmt(x_e)}`);
-                    Systems.get('level').addEntity(x_e);
-
-                } else if (!this.FIXME2) {
-                    this.FIXME2 = true;
-                    let idx = this.lvl.idxfromdir(this.lvl.idxfromdir(this.player.idx, Direction.north), Direction.north);
-                    let x_e = StealthBot.xspec({
-                        name: 'test.boss',
-                        idx: idx,
-                        healthMax: 5,
-                        z: Config.template.fgZed,
-                        elvl: this.lvl,
-                    });
-                    console.log(`-- spawning: ${Fmt.ofmt(x_e)}`);
-                    Systems.get('level').addEntity(x_e);
-                }
-                break;
-            }
-
-            // FIXME: remove
             case '8': {
                 UpdateSystem.eUpdate(this.player, {
                     health: this.player.health - 10,
