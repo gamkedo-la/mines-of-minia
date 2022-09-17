@@ -10,6 +10,7 @@ import { Rect } from "../base/rect.js";
 import { ActionSystem } from "../base/systems/actionSystem.js";
 import { UpdateSystem } from "../base/systems/updateSystem.js";
 import { Util } from "../base/util.js";
+import { Charm } from "../charms/charm.js";
 import { OverlaySystem } from "../systems/overlaySystem.js";
 import { MiniaModel } from "./miniaModel.js";
 import { RangedWeapon } from "./rangedWeapon.js";
@@ -169,9 +170,16 @@ class Character extends MiniaModel {
     // EVENT HANDLERS ------------------------------------------------------
     onDamaged(evt) {
         if (this.damagedSfx) this.damagedSfx.play();
-        let health = this.health - evt.damage;
+        let damage = evt.damage;
+        // handle shield
+        let shield = Charm.find(this, 'ShieldCharm');
+        if (shield) {
+            damage = shield.applyDamage(damage);
+        }
+        if (damage <= 0) return;
+        let health = this.health - damage;
         //console.log(`${this} onDamaged: ${Fmt.ofmt(evt)} health: ${health}`);
-        Events.trigger(OverlaySystem.evtNotify, {which: 'popup', actor: this, msg: `-${evt.damage}`});
+        Events.trigger(OverlaySystem.evtNotify, {which: 'popup', actor: this, msg: `-${damage}`});
         if (health > 0) {
             UpdateSystem.eUpdate(this, { health: health });
         } else {
