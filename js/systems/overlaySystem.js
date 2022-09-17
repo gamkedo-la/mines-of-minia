@@ -3,6 +3,7 @@ export { OverlaySystem };
     import { AnimVfx } from '../base/animVfx.js';
 import { Assets } from '../base/assets.js';
 import { AttackVfx } from '../base/attackVfx.js';
+import { Config } from '../base/config.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Font } from '../base/font.js';
@@ -115,7 +116,7 @@ class OverlaySystem extends System {
                 break;
             }
             case 'vfx': {
-                this.startAnimation(evt.actor, evt.vfx);
+                this.startAnimation(evt.actor, evt.vfx, evt.destroyEvt);
                 break;
             }
             case 'scan': {
@@ -155,7 +156,8 @@ class OverlaySystem extends System {
         }
     }
 
-    startAnimation(actor, anim) {
+    startAnimation(actor, anim, destroyEvt) {
+        let offy = (anim.height > Config.tileSize) ? Config.tileSize*.5-anim.height : -anim.height*.5
         // create panel for vfx
         let panel = new UxPanel({
             tag: 'vfx',
@@ -168,7 +170,7 @@ class OverlaySystem extends System {
                 x: actor.xform.x,
                 y: actor.xform.y,
                 offx: -anim.width*.5,
-                offy: -anim.height*.5,
+                offy: offy,
             }),
         });
         this.overlay.adopt(panel);
@@ -180,18 +182,19 @@ class OverlaySystem extends System {
             }
         }
         let onActorDestroyed = (evt) => {
-            actor.evt.ignore(actor.constructor.evtUpdate, onActorUpdate);
+            actor.evt.ignore(actor.constructor.evtUpdated, onActorUpdate);
             actor.evt.ignore(actor.constructor.evtDestroyed, onActorDestroyed);
             anim.evt.ignore(anim.constructor.evtDone, onAnimDone);
             panel.destroy();
         }
-        actor.evt.listen(actor.constructor.evtUpdate, onActorUpdate);
-        actor.evt.listen(actor.constructor.evtDestroyed, onActorDestroyed);
+        destroyEvt = destroyEvt || actor.constructor.evtDestroyed;
+        actor.evt.listen(actor.constructor.evtUpdated, onActorUpdate);
+        actor.evt.listen(destroyEvt, onActorDestroyed);
 
         // track animation state
         let onAnimDone = (evt) => {
-            actor.evt.ignore(actor.constructor.evtUpdate, onActorUpdate);
-            actor.evt.ignore(actor.constructor.evtDestroyed, onActorDestroyed);
+            actor.evt.ignore(actor.constructor.evtUpdated, onActorUpdate);
+            actor.evt.ignore(destroyEvt, onActorDestroyed);
             anim.evt.ignore(anim.constructor.evtDone, onAnimDone);
             panel.destroy();
         };

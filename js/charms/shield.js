@@ -1,5 +1,8 @@
 export { ShieldCharm };
 
+    import { Assets } from '../base/assets.js';
+    import { Events } from '../base/event.js';
+import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Charm } from './charm.js';
 
 class ShieldCharm extends Charm {
@@ -10,6 +13,7 @@ class ShieldCharm extends Charm {
         this.description = 'shielding charm';
         // shield has tagged shielding amounts
         this.amounts = spec.amounts || {dflt: 1};
+        this.vfx = spec.vfx || Assets.get('vfx.shield', true);
     }
     destroy() {
         this.unlink();
@@ -22,6 +26,17 @@ class ShieldCharm extends Charm {
     }
 
     // METHODS -------------------------------------------------------------
+    link(actor) {
+        super.link(actor);
+        if (this.vfx) Events.trigger(OverlaySystem.evtNotify, { actor: actor, which: 'vfx', vfx: this.vfx, destroyEvt: 'shield.done'});
+    }
+
+    unlink() {
+        let actor = this.actor;
+        super.unlink();
+        if (actor) actor.evt.trigger('shield.done', {actor: actor});
+    }
+
     applyDamage(damage) {
         let keys = Object.keys(this.amounts);
         // iterate through shield amounts
