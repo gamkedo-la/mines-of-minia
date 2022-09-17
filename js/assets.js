@@ -1808,7 +1808,12 @@ let miniaAssets = [
     }),
 
     Animation.xspec({tag: 'scarab.idler', x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 0, y: 14*3})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 0, y: 14})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*1, y: 14})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*2, y: 14})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*3, y: 14})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*4, y: 14})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 14})}), ttl: 100 }),
     ]}),
     Animation.xspec({tag: 'scarab.mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*0, y: 14*3})}), ttl: 30 }),
@@ -1820,7 +1825,12 @@ let miniaAssets = [
     ]}),
 
     Animation.xspec({tag: 'scarab.idlel', x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 0, y: 14*2})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 0, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*1, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*2, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*3, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*4, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 0})}), ttl: 100 }),
     ]}),
     Animation.xspec({tag: 'scarab.movel', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*0, y: 14*2})}), ttl: 30 }),
@@ -1831,6 +1841,31 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 14*2})}), ttl: 30 }),
     ]}),
 
+    Animation.xspec({tag: 'scarab.dyingl', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 0, y: 14*4})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*1, y: 14*4})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*2, y: 14*4})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*3, y: 14*4})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*4, y: 14*4})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 14*4})}), ttl: 50 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 14*4})}), ttl: 50 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 14*4})}), ttl: 50 }),
+    ]}),
+    Animation.xspec({tag: 'scarab.dyingr', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 0, y: 14*5})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*1, y: 14*5})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*2, y: 14*5})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*3, y: 14*5})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*4, y: 14*5})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 14*5})}), ttl: 50 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 14*5})}), ttl: 50 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/scarab.png', width: 14, height: 14, x: 14*5, y: 14*5})}), ttl: 50 }),
+    ]}),
+
     Animator.xspec({
         tag: 'scarab',
         x_sketches: {
@@ -1838,8 +1873,8 @@ let miniaAssets = [
             'idlel': new AssetRef({tag: 'scarab.idlel'}),
             'mover': new AssetRef({tag: 'scarab.mover'}),
             'movel': new AssetRef({tag: 'scarab.movel'}),
-            //'dyingr': new AssetRef({tag: 'golem_dyingr'}),
-            //'dyingl': new AssetRef({tag: 'golem_dyingl'}),
+            'dyingr': new AssetRef({tag: 'scarab.dyingr'}),
+            'dyingl': new AssetRef({tag: 'scarab.dyingl'}),
         },
         state: 'idler',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,

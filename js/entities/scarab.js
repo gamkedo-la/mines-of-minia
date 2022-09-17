@@ -8,6 +8,7 @@ import { Enemy } from './enemy.js';
 class Scarab extends Enemy{
     static gHealth = new LvlVar({ baseMin: 1, baseMax: 5, perLvlMin: 1, perLvlMax: 2 } );
     static gXp = new LvlVar({ base: 2, perLvl: 1 } );
+    static dfltDeathTTL = 700;
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
         // final spec
