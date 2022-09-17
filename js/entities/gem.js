@@ -140,7 +140,7 @@ class Gem extends Item {
         if (!this.constructor.isDiscovered(this.kind)) this.constructor.discover(this.kind);
 
         // trigger used event
-        this.evt.trigger(this.constructor.evtUse, {actor: this})
+        this.evt.trigger(this.constructor.evtUse, {actor: this}, true);
 
     }
 

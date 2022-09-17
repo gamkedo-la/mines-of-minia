@@ -1273,6 +1273,10 @@ class Spawn {
                 })],
             }),
 
+            Gem.xspec({
+                kind: 'test',
+            }),
+
             /*
             RangedWeapon.xspec({
                 name: 'ice.gun.3',

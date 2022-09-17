@@ -1,8 +1,9 @@
 export { TalentSystem };
 
-    import { Events } from '../base/event.js';
+import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { System } from '../base/system.js';
+import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Charm } from '../charms/charm.js';
 import { EfficiencyCharm } from '../charms/efficiency.js';
 import { ShieldCharm } from '../charms/shield.js';
@@ -87,14 +88,19 @@ class TalentSystem extends System {
             golddigger: 3,
             efficiency: 2,
             shielding: 1,
+            gems: 2,
         }
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onCharacterDamaged = this.onCharacterDamaged.bind(this);
-        Events.listen('character.damaged', this.onCharacterDamaged)
+        this.onItemUsed = this.onItemUsed.bind(this);
+        Events.listen('character.damaged', this.onCharacterDamaged);
+        Events.listen('item.use', this.onItemUsed);
     }
     destroy() {
         super.destroy();
         if (this.player) this.player.evt.ignore(this.player.constructor.evtUpdated, this.onPlayerUpdate);
+        Events.ignore('character.damaged', this.onCharacterDamaged);
+        Events.ignore('item.use', this.onItemUsed);
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -134,6 +140,20 @@ class TalentSystem extends System {
         }
     }
 
+    onItemUsed(evt) {
+        // -- GEMS implementation
+        if (this.current.gems && evt.actor && evt.actor.cls === 'Gem') {
+            let actor = this.player;
+            let amt = this.current.gems * 5;
+            let health = Math.min(actor.healthMax, actor.health+amt);
+            if (health !== actor.health) {
+                console.log(`-- setting player health: ${health}`);
+                UpdateSystem.eUpdate(actor, {health: health });
+            }
+        }
+    }
+
+    // METHODS -------------------------------------------------------------
     addShieldCharm() {
         let lvl = this.current.shielding;
         let amt = 5*lvl;
