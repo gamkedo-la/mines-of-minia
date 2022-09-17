@@ -139,7 +139,7 @@ class Attack {
         return batk>bdef;
     }
 
-    static damage(actor, target, weapon) {
+    static damage(actor, target, weapon, critical=false) {
         // roll for base damage
         let min = (weapon) ? weapon.damageMin : actor.damageMin || 1;
         let max = (weapon) ? weapon.damageMax : actor.damageMax || 1;
@@ -147,6 +147,7 @@ class Attack {
         let damageReduction = target.damageReduction || 0;
         let kind = ((weapon) ? weapon.kind : actor.attackKind) || 'bonk';
         let resistance = (target.resistances) ? target.resistances[kind] || 0 : 0;
+        if (critical) baseDamage *= 2;
         // -- damage reduction is taken off the top
         let damage = baseDamage - damageReduction;
         // -- damage resistance is a percent reduction
@@ -155,7 +156,7 @@ class Attack {
             damage -= v;
         }
         if (damage < 0) damage = 0;
-        //console.log(`== damage: base: [${min}-${max}]:${baseDamage} final: ${damage}`);
+        //console.log(`== damage: base: [${min}-${max}]:${baseDamage} critical: ${critical} final: ${damage}`);
         return damage;
     }
     
@@ -195,11 +196,16 @@ class AttackRollAction extends Action {
         // roll for hit
         let hit = Attack.hit(this.actor, this.target, weapon);
         if (hit) {
+            // roll for critical
+            let critical = false;
+            let critPct = this.actor.critPct || 0;
+            if (critPct) critical = Random.flip(critPct);
+            //console.log(`critPct: ${critPct} critical: ${critical}`);
             if (hitsfx) hitsfx.play();
             this.actor.evt.trigger(this.actor.constructor.evtAttacked, { actor: this.actor, target: this.target, weapon: weapon });
-            let damage = Attack.damage(this.actor, this.target, weapon);
+            let damage = Attack.damage(this.actor, this.target, weapon, critical);
             if (damage) {
-                this.target.evt.trigger(this.target.constructor.evtDamaged, { actor: this.actor, target: this.target, damage: damage });
+                this.target.evt.trigger(this.target.constructor.evtDamaged, { actor: this.actor, target: this.target, critical: critical, damage: damage }, true);
             }
         } else {
             if (misssfx) misssfx.play();

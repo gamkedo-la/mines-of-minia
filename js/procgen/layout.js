@@ -181,7 +181,6 @@ class Layout {
         // -- compute origin to be middle of level
         let width = template.width || 400;
         let height = template.height || 400;
-        console.log(`rings dim: ${width},${height}`);
         x_pie.x = Math.floor(width/2);
         x_pie.y = Math.floor(height/2);
         // -- radius is computed from min dimension

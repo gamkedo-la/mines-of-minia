@@ -1,8 +1,11 @@
 export { TalentSystem };
 
+    import { Events } from '../base/event.js';
+import { Fmt } from '../base/fmt.js';
 import { System } from '../base/system.js';
 import { Charm } from '../charms/charm.js';
 import { EfficiencyCharm } from '../charms/efficiency.js';
+import { ShieldCharm } from '../charms/shield.js';
 
 class TalentSystem extends System {
     static talents = {
@@ -83,10 +86,18 @@ class TalentSystem extends System {
         this.current = {
             golddigger: 3,
             efficiency: 2,
+            shielding: 1,
         }
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
+        this.onCharacterDamaged = this.onCharacterDamaged.bind(this);
+        Events.listen('character.damaged', this.onCharacterDamaged)
+    }
+    destroy() {
+        super.destroy();
+        if (this.player) this.player.evt.ignore(this.player.constructor.evtUpdated, this.onPlayerUpdate);
     }
 
+    // EVENT HANDLERS ------------------------------------------------------
     onEntityAdded(evt) {
         if (evt.actor && evt.actor.cls === 'Player') {
             this.player = evt.actor;
@@ -103,6 +114,36 @@ class TalentSystem extends System {
                 if (this.dbg) console.log(`-- ${this} golddigger bonus: ${bonus}`);
                 loot.count += bonus;
             }
+        }
+    }
+
+    onCharacterDamaged(evt) {
+        console.log(`onCharacterDamaged: ${Fmt.ofmt(evt)}`);
+        if (evt.actor !== this.player) return;
+        if (evt.critical && this.current.shielding) {
+            this.addShieldCharm();
+        }
+    }
+
+    onPlayerUpdate(evt) {
+        // check for player health updates
+        if (evt.update && evt.update.health) {
+            if (this.player.health === this.player.healthMax) {
+                this.addEfficiencyCharm();
+            }
+        }
+    }
+
+    addShieldCharm() {
+        let lvl = this.current.shielding;
+        let amt = 5*lvl;
+        let oldCharm = Charm.find(this.player, 'ShieldCharm');
+        if (oldCharm) {
+            oldCharm.replenish('critical', amt);
+        } else {
+            let charm = new ShieldCharm({ tag: 'critical', amounts: {'critical': amt} });
+            console.log(`linking charm: ${charm}`);
+            charm.link(this.player);
         }
     }
 
@@ -126,15 +167,6 @@ class TalentSystem extends System {
         if (this.player.health === this.player.healthMax) {
             // EFFICIENCY implementation
             if (this.current.efficiency) {
-                this.addEfficiencyCharm();
-            }
-        }
-    }
-
-    onPlayerUpdate(evt) {
-        // check for player health updates
-        if (evt.update && evt.update.health) {
-            if (this.player.health === this.player.healthMax) {
                 this.addEfficiencyCharm();
             }
         }

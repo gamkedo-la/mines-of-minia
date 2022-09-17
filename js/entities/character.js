@@ -33,6 +33,7 @@ class Character extends MiniaModel {
     static dfltDamageReduction = 0;
     static dfltDeathTTL = 200;
     static dfltHealth = 1;
+    static dfltCritPct = .1;
     static mobile = true;
 
     static get dfltMaxSpeed() {
@@ -78,6 +79,7 @@ class Character extends MiniaModel {
         this.health = spec.health || this.healthMax;
         this.deathTTL = spec.deathTTL || this.constructor.dfltDeathTTL;
         // -- attack/defense
+        this.critPct = spec.critPct || this.constructor.dfltCritPct;
         this.attackRolls = spec.attackRolls || this.constructor.dfltAttackRolls;
         this.defenseRolls = spec.defenseRolls || this.constructor.dfltDefenseRolls;
         this._damageReduction = spec.damageReduction || this.constructor.dfltDamageReduction;
