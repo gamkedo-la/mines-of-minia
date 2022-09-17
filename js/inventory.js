@@ -189,7 +189,7 @@ class InventoryData {
         if (item.constructor.slot !== slot) return false;
         this.removeItem(item);
         this[slot] = item;
-        this.evt.trigger(this.constructor.evtEquipChanged, {actor: this.actor, slot: slot, target: item});
+        this.evt.trigger(this.constructor.evtEquipChanged, {actor: this.actor, slot: slot, target: item}, true);
         if (item && item.constructor.evtEquipped) item.evt.trigger(item.constructor.evtEquipped, {actor: this.actor, target: item});
         return true;
     }
@@ -199,7 +199,7 @@ class InventoryData {
         if (!item) return false;
         if (!this.add(item, invslot)) return false;
         this[slot] = null;
-        this.evt.trigger(this.constructor.evtEquipChanged, {actor: this.actor, slot: slot, target: null});
+        this.evt.trigger(this.constructor.evtEquipChanged, {actor: this.actor, slot: slot, target: null}, true);
         if (item && item.constructor.evtUnequipped) item.evt.trigger(item.constructor.evtUnequipped, {actor: this.actor, target: item});
         return true;
     }

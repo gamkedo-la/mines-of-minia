@@ -145,6 +145,11 @@ class Attack {
         let max = (weapon) ? weapon.damageMax : actor.damageMax || 1;
         let baseDamage = Random.rangeInt(min, max);
         let damageReduction = target.damageReduction || 0;
+        // bonus damage
+        if (actor.damageBonus) {
+            console.log(`adding bonus damage to attack: ${actor.damageBonus}`);
+            baseDamage += actor.damageBonus;
+        }
         let kind = ((weapon) ? weapon.kind : actor.attackKind) || 'bonk';
         let resistance = (target.resistances) ? target.resistances[kind] || 0 : 0;
         if (critical) baseDamage *= 2;

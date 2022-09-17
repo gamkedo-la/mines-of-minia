@@ -1277,6 +1277,15 @@ class Spawn {
                 kind: 'test',
             }),
 
+            Weapon.xspec({
+                kind: 'bonk',
+                lvl: 1,
+                tier: 1,
+                spry: 10,
+                baseDamageMin: 5,
+                baseDamageMax: 5,
+            }),
+                
             /*
             RangedWeapon.xspec({
                 name: 'ice.gun.3',

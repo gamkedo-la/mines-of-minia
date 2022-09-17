@@ -82,6 +82,7 @@ class Character extends MiniaModel {
         this.critPct = spec.critPct || this.constructor.dfltCritPct;
         this.attackRolls = spec.attackRolls || this.constructor.dfltAttackRolls;
         this.defenseRolls = spec.defenseRolls || this.constructor.dfltDefenseRolls;
+        this.damageBonus = spec.damageBonus || 0;
         this._damageReduction = spec.damageReduction || this.constructor.dfltDamageReduction;
         this.resistances = Object.assign(this.constructor.dfltResistances, spec.resistances);
         // -- line of sight
@@ -142,6 +143,7 @@ class Character extends MiniaModel {
             attackRolls: this.attackRolls,
             defenseRolls: this.defenseRolls,
             damageReduction: this._damageReduction,
+            damageBonus: this.damageBonus,
             resistances: this.resistances,
             losRange: this.losRange,
             aggroRange: this.aggroRange,

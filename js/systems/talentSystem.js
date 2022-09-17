@@ -4,6 +4,7 @@ import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { System } from '../base/system.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { BonkersCharm } from '../charms/bonkers.js';
 import { Charm } from '../charms/charm.js';
 import { EfficiencyCharm } from '../charms/efficiency.js';
 import { ShieldCharm } from '../charms/shield.js';
@@ -89,18 +90,22 @@ class TalentSystem extends System {
             efficiency: 2,
             shielding: 1,
             gems: 2,
+            bonkers: 3,
         }
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onCharacterDamaged = this.onCharacterDamaged.bind(this);
         this.onItemUsed = this.onItemUsed.bind(this);
+        this.onEquipChanged = this.onEquipChanged.bind(this);
         Events.listen('character.damaged', this.onCharacterDamaged);
         Events.listen('item.use', this.onItemUsed);
+        Events.listen('equip.changed', this.onEquipChanged);
     }
     destroy() {
         super.destroy();
         if (this.player) this.player.evt.ignore(this.player.constructor.evtUpdated, this.onPlayerUpdate);
         Events.ignore('character.damaged', this.onCharacterDamaged);
         Events.ignore('item.use', this.onItemUsed);
+        Events.ignore('equip.changed', this.onEquipChanged);
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -153,6 +158,16 @@ class TalentSystem extends System {
         }
     }
 
+    onEquipChanged(evt) {
+        console.log(`${this} onEquipChanged: ${Fmt.ofmt(evt)}`);
+        if (evt.actor !== this.player) return;
+        if (evt.slot !== 'weapon') return;
+        if (!evt.target) return;
+        if (evt.target.kind === 'bonk' && this.current.bonkers) {
+            this.addBonkersCharm();
+        }
+    }
+
     // METHODS -------------------------------------------------------------
     addShieldCharm() {
         let lvl = this.current.shielding;
@@ -182,12 +197,33 @@ class TalentSystem extends System {
         charm.link(this.player);
     }
 
+    addBonkersCharm() {
+        let lvl = this.current.bonkers;
+        let oldCharm = Charm.find(this.player, 'BonkersCharm');
+        if (oldCharm) {
+            if (oldCharm.lvl !== lvl) {
+                oldCharm.unlink();
+            } else {
+                return;
+            }
+        }
+        let charm = new BonkersCharm({ lvl: lvl });
+        console.log(`linking charm: ${charm}`);
+        charm.link(this.player);
+    }
+
     applyPlayerBuffs() {
         // player at max health?
         if (this.player.health === this.player.healthMax) {
             // EFFICIENCY implementation
             if (this.current.efficiency) {
                 this.addEfficiencyCharm();
+            }
+        }
+        if (this.player.inventory && this.player.inventory.weapon && this.player.inventory.weapon.kind === 'bonk') {
+            // BONKERS implementation
+            if (this.current.bonkers) {
+                this.addBonkersCharm();
             }
         }
     }
