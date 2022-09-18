@@ -11,6 +11,7 @@ import { Gem } from '../entities/gem.js';
 import { Item } from '../entities/item.js';
 import { Level } from '../level.js';
 import { ProcGen } from '../procgen/procgen.js';
+import { MiniaTemplates } from '../procgen/templates.js';
 import { Serialization } from '../serialization.js';
 
 class LevelSystem extends System {
@@ -85,6 +86,12 @@ class LevelSystem extends System {
                 if (e.cls === 'Player') continue;
                 e.destroy();
             }
+        }
+
+        // load boss template
+        // FIXME
+        if (index === 2) {
+            Config.template = MiniaTemplates.rockBoss;
         }
 
         // is level to load cached?

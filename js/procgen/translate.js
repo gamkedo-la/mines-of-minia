@@ -136,6 +136,7 @@ class Translate {
         //console.log(`critical path: ${best}`);
 
         // FIXME: remove
+        /*
         let bossRoom = prooms.find((v) => v.boss);
         if (bossRoom) {
             plvl.testIdx = bossRoom.cidx;
@@ -152,6 +153,7 @@ class Translate {
                 }
             }
         }
+        */
 
         // FIXME: remove
         /*
