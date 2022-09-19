@@ -75,6 +75,9 @@ class Attack {
             // attack rating is weight-based average
             atkr = Math.round(atkt/atkw);
         }
+        if (actor.attackRatingBonus) {
+            atkr += actor.attackRatingBonus;
+        }
         // apply attack bonuses/penalties
         let lvld = Mathf.clamp((actor.lvl || 10) - (target.lvl || 5), -5, 5);
         // -- level differential

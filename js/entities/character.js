@@ -85,6 +85,7 @@ class Character extends MiniaModel {
         this.damageBonus = spec.damageBonus || 0;
         this._damageReduction = spec.damageReduction || this.constructor.dfltDamageReduction;
         this.resistances = Object.assign(this.constructor.dfltResistances, spec.resistances);
+        this.attackRatingBonus = spec.attackRatingBonus || 0;
         // -- line of sight
         this.losRange = spec.losRange || this.constructor.dfltLosRange;
         this.losIdxs = [];

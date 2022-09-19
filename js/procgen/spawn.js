@@ -1287,7 +1287,16 @@ class Spawn {
                 baseDamageMin: 5,
                 baseDamageMax: 5,
             }),
-                
+
+            Weapon.xspec({
+                kind: 'hack',
+                lvl: 1,
+                tier: 1,
+                spry: 10,
+                baseDamageMin: 5,
+                baseDamageMax: 5,
+            }),
+
             /*
             RangedWeapon.xspec({
                 name: 'ice.gun.3',

@@ -7,6 +7,7 @@ import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { BonkersCharm } from '../charms/bonkers.js';
 import { Charm } from '../charms/charm.js';
 import { EfficiencyCharm } from '../charms/efficiency.js';
+import { HacketyCharm } from '../charms/hackety.js';
 import { PointyCharm } from '../charms/pointy.js';
 import { ShieldCharm } from '../charms/shield.js';
 
@@ -93,6 +94,7 @@ class TalentSystem extends System {
             gems: 2,
             bonkers: 3,
             pointy: 2,
+            hackety: 1,
         }
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onCharacterDamaged = this.onCharacterDamaged.bind(this);
@@ -171,6 +173,9 @@ class TalentSystem extends System {
         if (evt.target.kind === 'poke' && this.current.pointy) {
             this.addPointyCharm();
         }
+        if (evt.target.kind === 'hack' && this.current.hackety) {
+            this.addHacketyCharm();
+        }
     }
 
     // METHODS -------------------------------------------------------------
@@ -218,7 +223,7 @@ class TalentSystem extends System {
     }
 
     addPointyCharm() {
-        let lvl = this.current.bonkers;
+        let lvl = this.current.pointy;
         let oldCharm = Charm.find(this.player, 'PointyCharm');
         if (oldCharm) {
             if (oldCharm.lvl !== lvl) {
@@ -228,6 +233,21 @@ class TalentSystem extends System {
             }
         }
         let charm = new PointyCharm({ lvl: lvl });
+        console.log(`linking charm: ${charm}`);
+        charm.link(this.player);
+    }
+
+    addHacketyCharm() {
+        let lvl = this.current.hackety;
+        let oldCharm = Charm.find(this.player, 'HacketyCharm');
+        if (oldCharm) {
+            if (oldCharm.lvl !== lvl) {
+                oldCharm.unlink();
+            } else {
+                return;
+            }
+        }
+        let charm = new HacketyCharm({ lvl: lvl });
         console.log(`linking charm: ${charm}`);
         charm.link(this.player);
     }
@@ -250,6 +270,12 @@ class TalentSystem extends System {
             // BONKERS implementation
             if (this.current.pointy) {
                 this.addPointyCharm();
+            }
+        }
+        if (this.player.inventory && this.player.inventory.weapon && this.player.inventory.weapon.kind === 'hack') {
+            // BONKERS implementation
+            if (this.current.pointy) {
+                this.addHacketyCharm();
             }
         }
 
