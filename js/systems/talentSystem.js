@@ -6,11 +6,15 @@ import { System } from '../base/system.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { BonkersCharm } from '../charms/bonkers.js';
 import { Charm } from '../charms/charm.js';
+import { DarknessCharm } from '../charms/darkness.js';
 import { EfficiencyCharm } from '../charms/efficiency.js';
+import { FrostyCharm } from '../charms/frosty.js';
+import { FuegoCharm } from '../charms/fuego.js';
 import { HacketyCharm } from '../charms/hackety.js';
 import { PointyCharm } from '../charms/pointy.js';
 import { PowerageCharm } from '../charms/powerage.js';
 import { ShieldCharm } from '../charms/shield.js';
+import { ShockingCharm } from '../charms/shocking.js';
 
 class TalentSystem extends System {
     static talents = {
@@ -97,6 +101,10 @@ class TalentSystem extends System {
             pointy: 2,
             hackety: 1,
             powerage: 2,
+            frosty: 1,
+            fuego: 2,
+            shocking: 3,
+            darkness: 2,
         }
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onCharacterDamaged = this.onCharacterDamaged.bind(this);
@@ -272,6 +280,35 @@ class TalentSystem extends System {
         charm.link(this.player);
     }
 
+    addFrostyCharm() {
+        let lvl = this.current.frosty;
+        let oldCharm = Charm.find(this.player, 'FrostyCharm');
+        if (oldCharm) {
+            if (oldCharm.lvl !== lvl) {
+                oldCharm.unlink();
+            } else {
+                return;
+            }
+        }
+        let charm = new HacketyCharm({ lvl: lvl });
+        console.log(`linking charm: ${charm}`);
+        charm.link(this.player);
+    }
+
+    addCharm(lvl, cls) {
+        let oldCharm = Charm.find(this.player, cls.constructor.name);
+        if (oldCharm) {
+            if (oldCharm.lvl !== lvl) {
+                oldCharm.unlink();
+            } else {
+                return;
+            }
+        }
+        let charm = new cls({ lvl: lvl });
+        console.log(`linking charm: ${charm}`);
+        charm.link(this.player);
+    }
+
     applyPlayerBuffs() {
         // player at max health?
         if (this.player.health === this.player.healthMax) {
@@ -301,6 +338,23 @@ class TalentSystem extends System {
             if (this.current.pointy) {
                 this.addHacketyCharm();
             }
+        }
+
+        // FROSTY implementation
+        if (this.current.frosty) {
+            this.addCharm(this.current.frosty, FrostyCharm);
+        }
+        // FUEGO implementation
+        if (this.current.fuego) {
+            this.addCharm(this.current.fuego, FuegoCharm);
+        }
+        // SHOCKING implementation
+        if (this.current.shocking) {
+            this.addCharm(this.current.shocking, ShockingCharm);
+        }
+        // DARKNESS implementation
+        if (this.current.darkness) {
+            this.addCharm(this.current.darkness, DarknessCharm);
         }
 
     }
