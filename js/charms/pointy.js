@@ -1,16 +1,17 @@
-export { BonkersCharm };
+
+export { PointyCharm };
 
 import { Events } from '../base/event.js';
 import { Charm } from './charm.js';
 
-class BonkersCharm extends Charm {
+class PointyCharm extends Charm {
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     constructor(spec={}) {
         super(spec);
-        this.description = 'bonkers charm';
+        this.description = 'pointy charm';
         this.lvl = spec.lvl || 1;
-        this.damageBonus = this.lvl * 5;
+        this.critPct = this.lvl * .05;
         this.onEquipChanged = this.onEquipChanged.bind(this);
     }
     destroy() {
@@ -26,27 +27,29 @@ class BonkersCharm extends Charm {
     // METHODS -------------------------------------------------------------
     link(actor) {
         super.link(actor);
-        if (!this.actor.damageBonus) {
-            this.actor.damageBonus = this.damageBonus;
+        if (!this.actor.critPct) {
+            this.actor.critPct = this.critPct;
         } else {
-            this.actor.damageBonus += this.damageBonus;
+            this.actor.critPct += this.critPct;
         }
+        console.log(`updated actor ${actor} crit pct: ${actor.critPct}`);
         Events.listen('equip.changed', this.onEquipChanged);
     }
 
     unlink() {
         let actor = this.actor;
         super.unlink();
-        actor.damageBonus -= this.damageBonus;
+        actor.critPct -= this.critPct;
+        console.log(`updated actor ${actor} crit pct: ${actor.critPct}`);
         Events.ignore('equip.changed', this.onEquipChanged);
     }
 
     onEquipChanged(evt) {
         if (evt.actor !== this.actor) return;
         if (evt.slot !== 'weapon') return;
-        // auto remove charm if bonk weapon is swapped out
-        if (!evt.target || evt.target.kind !== 'bonk') {
-            console.log(`${this} bonk weapon swapped out`);
+        // auto remove charm if poke weapon is swapped out
+        if (!evt.target || evt.target.kind !== 'poke') {
+            console.log(`${this} poke weapon swapped out`);
             this.unlink();
         }
     }

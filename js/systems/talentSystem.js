@@ -7,6 +7,7 @@ import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { BonkersCharm } from '../charms/bonkers.js';
 import { Charm } from '../charms/charm.js';
 import { EfficiencyCharm } from '../charms/efficiency.js';
+import { PointyCharm } from '../charms/pointy.js';
 import { ShieldCharm } from '../charms/shield.js';
 
 class TalentSystem extends System {
@@ -91,6 +92,7 @@ class TalentSystem extends System {
             shielding: 1,
             gems: 2,
             bonkers: 3,
+            pointy: 2,
         }
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onCharacterDamaged = this.onCharacterDamaged.bind(this);
@@ -166,6 +168,9 @@ class TalentSystem extends System {
         if (evt.target.kind === 'bonk' && this.current.bonkers) {
             this.addBonkersCharm();
         }
+        if (evt.target.kind === 'poke' && this.current.pointy) {
+            this.addPointyCharm();
+        }
     }
 
     // METHODS -------------------------------------------------------------
@@ -212,6 +217,21 @@ class TalentSystem extends System {
         charm.link(this.player);
     }
 
+    addPointyCharm() {
+        let lvl = this.current.bonkers;
+        let oldCharm = Charm.find(this.player, 'PointyCharm');
+        if (oldCharm) {
+            if (oldCharm.lvl !== lvl) {
+                oldCharm.unlink();
+            } else {
+                return;
+            }
+        }
+        let charm = new PointyCharm({ lvl: lvl });
+        console.log(`linking charm: ${charm}`);
+        charm.link(this.player);
+    }
+
     applyPlayerBuffs() {
         // player at max health?
         if (this.player.health === this.player.healthMax) {
@@ -226,6 +246,13 @@ class TalentSystem extends System {
                 this.addBonkersCharm();
             }
         }
+        if (this.player.inventory && this.player.inventory.weapon && this.player.inventory.weapon.kind === 'poke') {
+            // BONKERS implementation
+            if (this.current.pointy) {
+                this.addPointyCharm();
+            }
+        }
+
     }
 
 }

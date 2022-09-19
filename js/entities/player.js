@@ -19,7 +19,7 @@ class Player extends Character {
     static dfltPowerMax = 20;
     static dfltScanRange = 48;
     // FIXME
-    static dfltCritPct = 1;
+    static dfltCritPct = .1;
     // FIXME
     static xpReqsByLvl = {
         1: 10,
