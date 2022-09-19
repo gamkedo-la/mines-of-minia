@@ -51,6 +51,7 @@ let miniaAssets = [
         color: 'white',
         borderColor: 'red',
     }),
+    /*
     Shape.xspec({
         tag: 'stairs_up',
         fill: true,
@@ -71,6 +72,10 @@ let miniaAssets = [
         color: 'gray',
         borderColor: 'red',
     }),
+    */
+
+    Sprite.xspec({tag: 'stairs_down', img: new SheetRef({src: 'img/stairs.png', width: 16, height: 16, x: 2, y: 12})}),
+    Sprite.xspec({tag: 'stairs_up', img: new SheetRef({src: 'img/stairs.png', width: 17, height: 19, x: 20, y: 8})}),
 
     /*
     Shape.xspec({

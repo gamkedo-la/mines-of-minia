@@ -1,5 +1,6 @@
 export { Stairs };
 
+    import { Config } from '../base/config.js';
 import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
 import { MiniaModel } from './miniaModel.js';
@@ -22,6 +23,8 @@ class Stairs extends MiniaModel {
         // -- sync xform to match sketch dimensions
         this.xform.width = this.sketch.width;
         this.xform.height = this.sketch.height;
+        this.xform.offx = -this.xform.width*.5;
+        this.xform.offy = Config.tileSize*.5 - this.xform.height;
     }
 
     destroy() {
