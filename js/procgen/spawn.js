@@ -1219,7 +1219,9 @@ class Spawn {
             if (proom.boss) {
                 this.spawnEnemiesForRockBossRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
             } else if (!template.boss) {
-                this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
+                if (proom.cidx !== plvl.startIdx) {
+                    this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
+                }
             }
         }
         // iterate through rooms
