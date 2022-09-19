@@ -15,6 +15,7 @@ class Scarab extends Enemy{
         return Object.assign( this.spec, {
             meleeHitSfx: Assets.get('scarab.attack', true),
             meleeMissSfx: Assets.get('scarab.attack', true),
+            moveSfx: Assets.get('scarab.move', true),
             x_sketch: Assets.get('scarab'),
         }, spec);
     }
