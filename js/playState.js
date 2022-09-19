@@ -53,6 +53,7 @@ import { RagingBull } from './entities/ragingBull.js';
 import { Direction } from './base/dir.js';
 import { StealthBot } from './entities/stealthBot.js';
 import { TalentSystem } from './systems/talentSystem.js';
+import { Talents } from './talents.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -391,6 +392,30 @@ class PlayState extends GameState {
                 this.lvl.active = !toggle;
                 break;
             }
+
+            case 't': {
+                let toggle;
+                if (this.talents) {
+                    toggle = false;
+                    this.talents.destroy();
+                    this.talents = null;
+                } else {
+                    toggle = true;
+                    this.talents = new Talents({
+                        tag: 'talents',
+                        xform: new XForm({border: .1}),
+                    });
+                    this.talents.evt.listen(this.talents.constructor.evtDestroyed, () => {
+                        this.talents = null;
+                        this.lvl.active = true;
+                    });
+                    this.hudroot.adopt(this.talents);
+                }
+                this.lvl.active = !toggle;
+                console.log(`this.lvl active: ${this.lvl.active}`);
+                break;
+            }
+
 
         }
     }
