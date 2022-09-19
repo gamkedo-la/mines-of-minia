@@ -1,15 +1,15 @@
-export { EfficiencyCharm };
+export { PowerageCharm };
 
 import { Charm } from './charm.js';
 
-class EfficiencyCharm extends Charm {
+class PowerageCharm extends Charm {
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     constructor(spec={}) {
         super(spec);
-        this.description = 'efficiency charm';
+        this.description = 'powerage charm';
         this.lvl = spec.lvl || 1;
-        this.fuelReduxPct = this.lvl/10;
+        this.powerBoostPct = this.lvl/10;
         this.onActorUpdate = this.onActorUpdate.bind(this);
     }
     destroy() {
@@ -25,18 +25,19 @@ class EfficiencyCharm extends Charm {
     // METHODS -------------------------------------------------------------
     link(actor) {
         super.link(actor);
-        if (!this.actor.fuelReduxPct) {
-            this.actor.fuelReduxPct = this.fuelReduxPct;
+        if (!this.actor.powerBoostPct) {
+            this.actor.powerBoostPct = this.powerBoostPct;
         } else {
-            this.actor.fuelReduxPct += this.fuelReduxPct;
+            this.actor.powerBoostPct += this.powerBoostPct;
         }
+        console.log(`${actor} powerBoostPct: ${this.actor.powerBoostPct}`);
         this.actor.evt.listen(this.actor.constructor.evtUpdated, this.onActorUpdate);
     }
 
     unlink() {
         let actor = this.actor;
         super.unlink();
-        actor.fuelReduxPct -= this.fuelReduxPct;
+        actor.powerBoostPct -= this.powerBoostPct;
         if (actor) actor.evt.ignore(actor.constructor.evtUpdated, this.onActorUpdate);
     }
 

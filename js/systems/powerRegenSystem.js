@@ -36,6 +36,10 @@ class PowerRegenSystem extends System {
         if (e.power >= e.powerMax) return;
         // handle regeneration for entity
         let amt = this.actionPoints * e.powerPerAP;
+        if (e.powerBoostPct) {
+            let boost = amt * e.powerBoostPct;
+            amt += boost;
+        }
         if (amt) {
             let total = (this.partials[e.gid] || 0) + amt;
             if (total >= 1) {

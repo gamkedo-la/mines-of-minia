@@ -9,6 +9,7 @@ import { Charm } from '../charms/charm.js';
 import { EfficiencyCharm } from '../charms/efficiency.js';
 import { HacketyCharm } from '../charms/hackety.js';
 import { PointyCharm } from '../charms/pointy.js';
+import { PowerageCharm } from '../charms/powerage.js';
 import { ShieldCharm } from '../charms/shield.js';
 
 class TalentSystem extends System {
@@ -95,6 +96,7 @@ class TalentSystem extends System {
             bonkers: 3,
             pointy: 2,
             hackety: 1,
+            powerage: 2,
         }
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onCharacterDamaged = this.onCharacterDamaged.bind(this);
@@ -143,8 +145,11 @@ class TalentSystem extends System {
     onPlayerUpdate(evt) {
         // check for player health updates
         if (evt.update && evt.update.health) {
-            if (this.player.health === this.player.healthMax) {
+            if (this.current.efficiency && this.player.health === this.player.healthMax) {
                 this.addEfficiencyCharm();
+            }
+            if (this.current.powerage && this.player.health === this.player.healthMax) {
+                this.addPowerageCharm();
             }
         }
     }
@@ -207,6 +212,21 @@ class TalentSystem extends System {
         charm.link(this.player);
     }
 
+    addPowerageCharm() {
+        let lvl = this.current.powerage;
+        let oldCharm = Charm.find(this.player, 'PowerageCharm');
+        if (oldCharm) {
+            if (oldCharm.lvl !== lvl) {
+                oldCharm.unlink();
+            } else {
+                return;
+            }
+        }
+        let charm = new PowerageCharm({ lvl: lvl });
+        console.log(`linking charm: ${charm}`);
+        charm.link(this.player);
+    }
+
     addBonkersCharm() {
         let lvl = this.current.bonkers;
         let oldCharm = Charm.find(this.player, 'BonkersCharm');
@@ -258,6 +278,10 @@ class TalentSystem extends System {
             // EFFICIENCY implementation
             if (this.current.efficiency) {
                 this.addEfficiencyCharm();
+            }
+            // POWERAGE implementation
+            if (this.current.powerage) {
+                this.addPowerageCharm();
             }
         }
         if (this.player.inventory && this.player.inventory.weapon && this.player.inventory.weapon.kind === 'bonk') {
