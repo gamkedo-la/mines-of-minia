@@ -1887,4 +1887,7 @@ let miniaAssets = [
         stateAccessor: (e) => e.animState,
     }),
 
+    Rect.xspec({tag: 'talent.active', width: 12, height: 12, color: 'red', borderColor: 'gold', border: 1}),
+    Rect.xspec({tag: 'talent.inactive', width: 12, height: 12, color: 'rgba(55,55,55,1)', borderColor: 'rgba(127,127,127,1)', border: 1}),
+
 ];

@@ -20,65 +20,77 @@ class TalentSystem extends System {
     static talents = {
         // -- TIER 1
         golddigger: {
+            tag: 'golddigger',
             tier: 1,
-            name: 'Gold Digger',
+            name: 'gold digger',
             description: 'when defeating enemies loot more gold (10/20/30%)',
         },
         efficiency: {
+            tag: 'efficiency',
             tier: 1,
-            name: 'Efficiency',
+            name: 'efficiency',
             description: 'when at max health, player is more efficient, burning less fuel (10/20/30%)',
         },
         shielding: {
+            tag: 'shielding',
             tier: 1,
-            name: 'Critical Shielding',
+            name: 'critical shielding',
             description: 'when landing a critical hit, add shielding that blocks all damage (5/10/15 damage)',
         },
         gems: {
+            tag: 'gems',
             tier: 1,
-            name: 'Good Gems',
+            name: 'good gems',
             description: 'whenever the player consumes a gem, player is healed (5/10/15 damage)',
         },
 
         // -- TIER 2
         bonkers: {
+            tag: 'bonkers',
             tier: 2,
-            name: 'Bonkers',
+            name: 'bonkers',
             description: 'adds bonus damage for any bonk weapons (5/10/15 damage)',
         },
         pointy: {
+            tag: 'pointy',
             tier: 2,
-            name: 'Straight to the Pointy',
+            name: 'straight to the pointy',
             description: 'adds bonus critical hit chance for any poke weapons (5/10/15%)',
         },
         hackety: {
+            tag: 'hackety',
             tier: 2,
-            name: 'Hackety Hack Hack',
+            name: 'hackety hack hack',
             description: 'adds bonus hit chance for any hack weapons (5/10/15%)',
         },
         powerage: {
+            tag: 'powerage',
             tier: 2,
-            name: 'Maxx Powerage',
+            name: 'maxx powerage',
             description: 'when at max health, player power regenerates faster (10/20/30%)',
         },
 
         // -- TIER 3
         frosty: {
+            tag: 'frosty',
             tier: 3,
-            name: 'Frosty',
+            name: 'frosty',
             description: 'player resistance to ice damage increases (10/20/30%)',
         },
         fuego: {
+            tag: 'fuego',
             tier: 3,
-            name: 'Fuego',
+            name: 'fuego',
             description: 'player resistance to fire damage increases (10/20/30%)',
         },
         shocking: {
+            tag: 'shocking',
             tier: 3,
-            name: 'Shocking',
+            name: 'shocking',
             description: 'player resistance to shock damage increases (10/20/30%)',
         },
         darkness: {
+            tag: 'darkness',
             tier: 3,
             name: 'Hello Darkness',
             description: 'player resistance to dark damage increases (10/20/30%)',
@@ -93,19 +105,21 @@ class TalentSystem extends System {
         super.cpost(spec);
         this.player;
         this.current = {
-            golddigger: 3,
+            golddigger: 1,
             efficiency: 2,
             shielding: 1,
             gems: 2,
-            bonkers: 3,
+            bonkers: 1,
             pointy: 2,
             hackety: 1,
             powerage: 2,
             frosty: 1,
             fuego: 2,
-            shocking: 3,
+            shocking: 1,
             darkness: 2,
         }
+        // FIXME
+        this.unspent = 2;
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onCharacterDamaged = this.onCharacterDamaged.bind(this);
         this.onItemUsed = this.onItemUsed.bind(this);
@@ -192,6 +206,26 @@ class TalentSystem extends System {
     }
 
     // METHODS -------------------------------------------------------------
+    levelUp(talent) {
+        let tag = talent.tag;
+        if (!this.unspent) {
+            console.error(`attempted to level up talent ${tag} without unspent points`);
+            return;
+        }
+        if (this.current[tag] >= 3) {
+            console.error(`attempted to level up talent ${tag} past max`);
+            return;
+        }
+        // update current level
+        console.log(`current level: ${this.current[tag]}`);
+        this.current[tag]++;
+        console.log(`new level: ${this.current[tag]}`);
+        // decrement unspent points
+        this.unspent--;
+        // reapply player buffs
+        this.applyPlayerBuffs();
+    }
+
     addShieldCharm() {
         let lvl = this.current.shielding;
         let amt = 5*lvl;

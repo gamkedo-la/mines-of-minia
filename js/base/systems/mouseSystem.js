@@ -1,5 +1,6 @@
 export { MouseSystem };
 
+    import { Hierarchy } from '../hierarchy.js';
 import { System } from '../system.js';
 import { UxCanvas } from '../uxCanvas.js';
 
@@ -100,6 +101,7 @@ class MouseSystem extends System {
     iterate(evt, e) {
         // skip inactive entities
         if (!e.active) return;
+        if (Hierarchy.findInParent(e, (v) => !v.active)) return;
         // determine if view bounds contains mouse point (bounds is in world coords)
         const contains = e.xform.wbounds.containsXY(this.x, this.y);
         if (e.mouseOver && !contains) {
