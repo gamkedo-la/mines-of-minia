@@ -98,28 +98,12 @@ class TalentSystem extends System {
 
     }
 
-    static current = {};
-
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
         super.cpost(spec);
         this.player;
-        this.current = {
-            golddigger: 1,
-            efficiency: 2,
-            shielding: 1,
-            gems: 2,
-            bonkers: 1,
-            pointy: 2,
-            hackety: 1,
-            powerage: 2,
-            frosty: 1,
-            fuego: 2,
-            shocking: 1,
-            darkness: 2,
-        }
-        // FIXME
-        this.unspent = 2;
+        this.current = {};
+        this.unspent = 0;
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onCharacterDamaged = this.onCharacterDamaged.bind(this);
         this.onItemUsed = this.onItemUsed.bind(this);
@@ -134,6 +118,20 @@ class TalentSystem extends System {
         Events.ignore('character.damaged', this.onCharacterDamaged);
         Events.ignore('item.use', this.onItemUsed);
         Events.ignore('equip.changed', this.onEquipChanged);
+    }
+
+    // SERIALIZATION -------------------------------------------------------
+    as_kv() {
+        // overrides instead of building onto super method as we really only care about system specific data here
+        return {
+            cls: this.cls,
+            current: this.current,
+            unspent: this.unspent,
+        }
+    }
+    load(spec) {
+        this.current = Object.assign({}, spec.current);
+        this.unspent = spec.unspent;
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -173,6 +171,10 @@ class TalentSystem extends System {
             if (this.current.powerage && this.player.health === this.player.healthMax) {
                 this.addPowerageCharm();
             }
+        }
+        if (evt.update && evt.update.lvl) {
+            this.unspent++;
+            this.evt.trigger('talents.updated', { update: { unspent: this.unspent }}, true);
         }
     }
 
@@ -218,10 +220,11 @@ class TalentSystem extends System {
         }
         // update current level
         console.log(`current level: ${this.current[tag]}`);
-        this.current[tag]++;
+        this.current[tag] = (this.current[tag] || 0) + 1;
         console.log(`new level: ${this.current[tag]}`);
         // decrement unspent points
         this.unspent--;
+        this.evt.trigger('talents.updated', { update: { unspent: this.unspent }}, true);
         // reapply player buffs
         this.applyPlayerBuffs();
     }

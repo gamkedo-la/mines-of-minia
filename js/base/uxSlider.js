@@ -37,7 +37,6 @@ class UxSlider extends UxView {
         // -- knob sketch
         let left = this._value - this._value * this.knobWidthPct;
         let right = 1-this._value - (1-this._value)*this.knobWidthPct;
-        console.log(`l: ${left} r: ${right}`);
         this.knobXform = spec.hasOwnProperty('knobXform') ? spec.knobXform : new XForm( { left: left, right: right });
         Hierarchy.adopt(this.xform, this.knobXform);
         // -- link sketches

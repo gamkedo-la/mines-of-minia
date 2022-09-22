@@ -4,6 +4,7 @@ import { Config } from './base/config.js';
 import { Fmt } from './base/fmt.js';
 import { Generator } from './base/generator.js';
 import { Storage } from './base/storage.js';
+import { Systems } from './base/system.js';
 import { Cog } from './entities/cog.js';
 import { Gem } from './entities/gem.js';
 
@@ -60,6 +61,18 @@ class Serialization {
         Storage.setItem(key, data);
     }
 
+    static saveSystemState() {
+        let key = 'systems';
+        let data = {}
+        // -- talent system
+        let talentSys = Systems.get('talent');
+        if (talentSys) {
+            data.talent = talentSys.as_kv();
+        }
+        console.log(`system data: ${Fmt.ofmt(data)}`);
+        Storage.setItem(key, data);
+    }
+
     static save(state) {
         // -- level
         this.saveLevel(state.lvl);
@@ -71,6 +84,8 @@ class Serialization {
         this.saveCogState();
         // -- game state
         this.saveGameState(state);
+        // -- system state
+        this.saveSystemState();
     }
 
     static loadPlayer() {
@@ -101,6 +116,10 @@ class Serialization {
         return Storage.getItem('cogs');
     }
 
+    static loadSystemState() {
+        return Storage.getItem('systems');
+    }
+
     static reset() {
         //console.log(`-- reset`);
         // level data
@@ -117,6 +136,8 @@ class Serialization {
         Storage.removeItem('gems');
         // game
         Storage.removeItem('game');
+        // systems
+        Storage.removeItem('systems');
 
     }
 

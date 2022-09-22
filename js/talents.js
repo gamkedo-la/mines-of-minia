@@ -384,6 +384,7 @@ class TalentPopup extends UxView {
                 // stars
                 new UxPanel({
                     xform: new XForm({top: .3, bottom: .6}),
+                    sketch: Sketch.zero,
                     children: [
                         new UxPanel({
                             sketch: (this.lvl >= 1) ? Assets.get('talent.active', true) : Assets.get('talent.inactive', true),

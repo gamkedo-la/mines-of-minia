@@ -212,6 +212,11 @@ class PlayState extends GameState {
             let gemState = Serialization.loadGemState();
             Gem.init(gemState);
             console.log(`-- level load`)
+            // system state
+            let systemState = Serialization.loadSystemState();
+            if (systemState.talent) {
+                Systems.get('talent').load(systemState.talent);
+            }
         } else {
             ProcGen.genDiscovery(Config.template);
             console.log(`-- level new`)
@@ -351,6 +356,13 @@ class PlayState extends GameState {
             }
 
             // FIXME: remove
+            case '7': {
+                UpdateSystem.eUpdate(this.player, {
+                    lvl: this.player.lvl+1,
+                });
+                console.log(`-- lvl up`);
+                break;
+            }
             case '8': {
                 UpdateSystem.eUpdate(this.player, {
                     health: this.player.health - 10,

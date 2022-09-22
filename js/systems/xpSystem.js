@@ -65,7 +65,7 @@ class XPSystem extends System {
                 if (attUpdates) {
                     for (const [k,v] of Object.entries(attUpdates)) {
                         // healthMax also updates current health
-                        if (k === 'healthMax') update.health = v;
+                        if (k === 'healthMax') update.health = this.player.health + v;
                         update[k] = this.player[k] + v;
                     }
                 }
