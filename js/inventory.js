@@ -467,10 +467,10 @@ class Inventory extends UxView {
     onKeyDown(evt) {
         if (!this.active) return;
         switch (evt.key) {
-            case 'Escape': {
+            case 'i':
+            case 'Escape':
                 this.destroy();
                 break;
-            }
         }
     }
 

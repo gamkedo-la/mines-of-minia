@@ -4,6 +4,7 @@ import { Assets } from './base/assets.js';
 import { Events } from './base/event.js';
 import { Fmt } from './base/fmt.js';
 import { Hierarchy } from './base/hierarchy.js';
+import { Keys } from './base/keys.js';
 import { Sketch } from './base/sketch.js';
 import { Systems } from './base/system.js';
 import { Text } from './base/text.js';
@@ -41,11 +42,13 @@ class Talents extends UxView {
     static dfltTextColor = 'yellow';
     static dfltHighlightTextColor = 'green';
 
+    // CONSTRUCTOR/DECONSTRUCTOR -------------------------------------------
     cpost(spec) {
         super.cpost(spec);
         this.tsys = spec.tsys || Systems.get('talent');
         this.onSlotClick = this.onSlotClick.bind(this);
         this.onPopupDestroy = this.onPopupDestroy.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
         this.bg = new UxPanel({
             sketch: Assets.get('oframe.red', true),
             xform: new XForm({offset: 10, right:.3}),
@@ -72,7 +75,6 @@ class Talents extends UxView {
                         new UxPanel({
                             sketch: Assets.get('oframe.red', true),
                             xform: new XForm({ oleft: 20, oright: 20, obottom: 20, top: 0, bottom: .66}),
-
                             children: [
                                 new UxPanel({
                                     sketch: Sketch.zero,
@@ -101,11 +103,9 @@ class Talents extends UxView {
                                 }),
                             ],
                         }),
-
                         new UxPanel({
                             sketch: Assets.get('oframe.red', true),
                             xform: new XForm({ oleft: 20, oright: 20, obottom: 20, top: .33, bottom: .33}),
-
                             children: [
                                 new UxPanel({
                                     sketch: Sketch.zero,
@@ -133,12 +133,10 @@ class Talents extends UxView {
                                     ],
                                 }),
                             ],
-
                         }),
                         new UxPanel({
                             sketch: Assets.get('oframe.red', true),
                             xform: new XForm({ oleft: 20, oright: 20, obottom: 20, top: .66, bottom: 0}),
-
                             children: [
                                 new UxPanel({
                                     sketch: Sketch.zero,
@@ -166,21 +164,61 @@ class Talents extends UxView {
                                     ],
                                 }),
                             ],
-
                         }),
                     ]
                 }),
             ],
         });
         this.adopt(this.bg);
-
         // update UI elements for current talent state
         for (const talent of Object.keys(TalentSystem.talents)) {
             this.updateTalent(talent);
         }
         this.updateCounts();
         this.updateUnspent();
+        Events.listen(Keys.evtDown, this.onKeyDown);
+    }
 
+    destroy() {
+        super.destroy();
+        Events.ignore(Keys.evtDown, this.onKeyDown);
+    }
+
+    onSlotClick(evt) {
+        if (this.popup) this.popup.destroy();
+        let talent = TalentSystem.talents[evt.actor.tag];
+        let lvl = this.tsys.current[evt.actor.tag];
+        let locked = false;
+        if (talent.tier > 1) {
+            let count = this.getTierCount(talent.tier-1);
+            locked = (count < 7);
+        }
+        this.popup = new TalentPopup({
+            unspent: this.tsys.unspent,
+            talent: talent,
+            lvl: lvl,
+            locked: locked,
+            tierCount: this.getTierCount(talent.tier),
+            xform: new XForm({ left: .7, top: .2, bottom: .2}),
+            handleLvlUp: this.handleLvlUp.bind(this),
+        });
+        this.popup.evt.listen(this.popup.constructor.evtDestroyed, this.onPopupDestroy);
+        this.adopt(this.popup);
+    }
+
+    onPopupDestroy(evt) {
+        this.popup = null;
+    }
+
+    onKeyDown(evt) {
+        console.log(`onKeyDown: ${Fmt.ofmt(evt)}`);
+        if (!this.active) return;
+        switch (evt.key) {
+        case 't':
+        case 'Escape':
+            this.destroy();
+            break;
+        }
     }
 
     updateUnspent(tag) {
@@ -220,37 +258,6 @@ class Talents extends UxView {
                 cntText.text = `${count}/7`;
             }
         }
-    }
-
-    onSlotClick(evt) {
-        console.log(`onSlotClick: ${Fmt.ofmt(evt)} selected: ${this.popup}`);
-        if (this.popup) this.popup.destroy();
-
-        let talent = TalentSystem.talents[evt.actor.tag];
-        let lvl = this.tsys.current[evt.actor.tag];
-        let locked = false;
-        if (talent.tier > 1) {
-            let count = this.getTierCount(talent.tier-1);
-            locked = (count < 7);
-        }
-
-        this.popup = new TalentPopup({
-            unspent: this.tsys.unspent,
-            talent: talent,
-            lvl: lvl,
-            locked: locked,
-            tierCount: this.getTierCount(talent.tier),
-            xform: new XForm({ left: .7, top: .2, bottom: .2}),
-            handleLvlUp: this.handleLvlUp.bind(this),
-        });
-        this.popup.evt.listen(this.popup.constructor.evtDestroyed, this.onPopupDestroy);
-        this.adopt(this.popup);
-        //this.markCompatibleSlots(item);
-        //this.select(evt.actor);
-    }
-
-    onPopupDestroy(evt) {
-        console.log(`onPopupDestroy: ${Fmt.ofmt(evt)} selected: ${this.popup}`);
     }
 
     handleLvlUp(talent) {

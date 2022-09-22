@@ -303,6 +303,8 @@ class PlayState extends GameState {
                     lvl: this.lvl,
                     player: this.player,
                     overlay: this.overlay,
+                    doInventory: this.doInventory.bind(this),
+                    doTalents: this.doTalents.bind(this),
                 });
             }
         }
@@ -377,58 +379,6 @@ class PlayState extends GameState {
                 break;
             }
 
-            case 'i': {
-                let toggle;
-
-                if (this.inventory) {
-                    toggle = false;
-                    //console.log(`-- destroy inventory: ${this.inventory}`);
-                    this.inventory.destroy();
-                    this.inventory = null;
-                } else {
-                    toggle = true;
-
-                    this.inventory = new Inventory({
-                        tag: 'inventory',
-                        xform: new XForm({border: .1}),
-                        data: this.player.inventory,
-                    });
-                    this.inventory.evt.listen(this.inventory.constructor.evtDestroyed, () => {
-                        this.inventory = null;
-                        this.lvl.active = true;
-                    });
-                    //console.log(`-- new inventory: ${this.inventory}`)
-                    this.hudroot.adopt(this.inventory);
-
-                }
-                this.lvl.active = !toggle;
-                break;
-            }
-
-            case 't': {
-                let toggle;
-                if (this.talents) {
-                    toggle = false;
-                    this.talents.destroy();
-                    this.talents = null;
-                } else {
-                    toggle = true;
-                    this.talents = new Talents({
-                        tag: 'talents',
-                        xform: new XForm({border: .1}),
-                    });
-                    this.talents.evt.listen(this.talents.constructor.evtDestroyed, () => {
-                        this.talents = null;
-                        this.lvl.active = true;
-                    });
-                    this.hudroot.adopt(this.talents);
-                }
-                this.lvl.active = !toggle;
-                console.log(`this.lvl active: ${this.lvl.active}`);
-                break;
-            }
-
-
         }
     }
 
@@ -450,6 +400,50 @@ class PlayState extends GameState {
         Events.ignore(LevelSystem.evtLoaded, this.onLevelLoaded);
         Events.ignore(TurnSystem.evtDone, this.onTurnDone)
         LevelSystem.currentLevelIndex = 0;
+    }
+
+    doInventory() {
+        // disable level/hud
+        this.lvl.active = false;
+        this.hudroot.active = false;
+        this.loadHandler('none');
+        // build out inventory
+        if (this.inventory) this.inventory.destroy();
+        this.inventory = new Inventory({
+            tag: 'inventory',
+            xform: new XForm({border: .1}),
+            data: this.player.inventory,
+        });
+        // handle inventory closing, re-enable
+        this.inventory.evt.listen(this.inventory.constructor.evtDestroyed, () => {
+            this.inventory = null;
+            this.lvl.active = true;
+            this.hudroot.active = true;
+            this.loadHandler('interact');
+        });
+        this.view.adopt(this.inventory);
+    }
+
+    doTalents() {
+        // disable level/hud
+        this.lvl.active = false;
+        this.hudroot.active = false;
+        this.loadHandler('none');
+        // build out talents menu
+        if (this.talents) this.talents.destroy();
+        this.talents = new Talents({
+            tag: 'talents',
+            xform: new XForm({border: .1}),
+        });
+        // handle closing, re-enable
+        this.talents.evt.listen(this.talents.constructor.evtDestroyed, () => {
+            this.talents = null;
+            this.lvl.active = true;
+            this.hudroot.active = true;
+            this.loadHandler('interact');
+        });
+        this.view.adopt(this.talents);
+
     }
 
     doSave() {

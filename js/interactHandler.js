@@ -34,22 +34,8 @@ class InteractHandler extends Entity {
         this.lvl = spec.lvl;
         this.player = spec.player;
         this.overlay = spec.overlay;
-        // create a reticle
-        /*
-        this.reticle = new UxPanel({
-            sketch: Assets.get('reticle.aim.ok', true),
-            xform: new XForm({stretch: false}),
-        });
-        this.reticle.xform.width = this.reticle.sketch.width;
-        this.reticle.xform.height = this.reticle.sketch.height;
-        this.reticle.xform.offx = -this.reticle.xform.width*.5;
-        this.reticle.xform.offy = -this.reticle.xform.height*.5;
-        this.aimok = true;
-        // -- starting position is player
-        this.reticle.xform.x = this.player.xform.x;
-        this.reticle.xform.y = this.player.xform.y;
-        this.overlay.adopt(this.reticle);
-        */
+        this.doInventory = spec.doInventory;
+        this.doTalents = spec.doTalents;
 
         // -- pathfinding
         this.lvlgraph = new LevelGraph({
@@ -127,6 +113,16 @@ class InteractHandler extends Entity {
             case 'c': {
                 let nidx = this.lvl.idxfromdir(this.player.idx, Direction.southEast);
                 this.interactIdx(nidx);
+                break;
+            }
+
+            case 'i': {
+                this.doInventory();
+                break;
+            }
+
+            case 't': {
+                this.doTalents();
                 break;
             }
 
