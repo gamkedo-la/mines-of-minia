@@ -92,7 +92,7 @@ class TalentSystem extends System {
         darkness: {
             tag: 'darkness',
             tier: 3,
-            name: 'Hello Darkness',
+            name: 'hello darkness',
             description: 'player resistance to dark damage increases (10/20/30%)',
         },
 
