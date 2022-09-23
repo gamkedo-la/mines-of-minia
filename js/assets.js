@@ -1887,7 +1887,22 @@ let miniaAssets = [
         stateAccessor: (e) => e.animState,
     }),
 
-    Rect.xspec({tag: 'talent.active', width: 12, height: 12, color: 'red', borderColor: 'gold', border: 1}),
-    Rect.xspec({tag: 'talent.inactive', width: 12, height: 12, color: 'rgba(55,55,55,1)', borderColor: 'rgba(127,127,127,1)', border: 1}),
+    //Rect.xspec({tag: 'talent.active', width: 12, height: 12, color: 'red', borderColor: 'gold', border: 1}),
+    //Rect.xspec({tag: 'talent.inactive', width: 12, height: 12, color: 'rgba(55,55,55,1)', borderColor: 'rgba(127,127,127,1)', border: 1}),
+
+    Sprite.xspec({tag: 'talent.golddigger', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*0, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.efficiency', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*1, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.shielding', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*2, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.gems', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*3, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.bonkers', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*0, y: 16*1})}),
+    Sprite.xspec({tag: 'talent.pointy', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*1, y: 16*1})}),
+    Sprite.xspec({tag: 'talent.hackety', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*2, y: 16*1})}),
+    Sprite.xspec({tag: 'talent.powerage', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*3, y: 16*1})}),
+    Sprite.xspec({tag: 'talent.frosty', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*0, y: 16*2})}),
+    Sprite.xspec({tag: 'talent.fuego', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*1, y: 16*2})}),
+    Sprite.xspec({tag: 'talent.shocking', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*2, y: 16*2})}),
+    Sprite.xspec({tag: 'talent.darkness', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*3, y: 16*2})}),
+    Sprite.xspec({tag: 'talent.active', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*4, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.inactive', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*4, y: 16*1})}),
 
 ];

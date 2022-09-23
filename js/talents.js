@@ -270,9 +270,10 @@ class Talents extends UxView {
         this.updateUnspent();
     }
 
-    slot(spec, slot=null, sketch=null) {
+    slot(spec, slot=null) {
         let slotTag = slot || 'slot';
-        if (!sketch) sketch = Sketch.zero;
+        let sketch = Assets.get(`talent.${slotTag}`, true);
+        console.log(`slot: ${slot}, sketch: ${sketch}`);
         // outer panel for positioning...
         let panel = new UxPanel( Object.assign( {
             sketch: Sketch.zero,
@@ -285,7 +286,7 @@ class Talents extends UxView {
                     children: [
                         new UxPanel({
                             tag: `${slotTag}.icon`,
-                            xform: new XForm({ border: .1 }),
+                            xform: new XForm({ offset: 3}),
                             sketch: sketch,
                         }),
                         this.button({ tag: slotTag }, this.onSlotClick),
@@ -368,8 +369,8 @@ class TalentPopup extends UxView {
                             children: [
                                 new UxPanel({
                                     tag: 'talent.picture',
-                                    xform: new XForm({border: .1}),
-                                    sketch: Sketch.zero,
+                                    xform: new XForm({offset: 3}),
+                                    sketch: Assets.get(`talent.${this.talent.tag}`, true),
                                 }),
                             ],
                         }),
