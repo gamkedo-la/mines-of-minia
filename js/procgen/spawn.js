@@ -1256,7 +1256,7 @@ class Spawn {
             }),
 
             Rous.xspec({
-                healthMax: 1,
+                healthMax: 5,
                 xp: 1,
                 loot: [ Token.xspec({
                     name: 'token',
@@ -1266,7 +1266,7 @@ class Spawn {
             }),
 
             Scarab.xspec({
-                healthMax: 1,
+                healthMax: 5,
                 xp: 1,
                 loot: [ Token.xspec({
                     name: 'token',
