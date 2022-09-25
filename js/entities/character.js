@@ -183,14 +183,15 @@ class Character extends MiniaModel {
         }
         if (damage <= 0) return;
         let health = this.health - damage;
-        //console.log(`${this} onDamaged: ${Fmt.ofmt(evt)} health: ${health}`);
-        Events.trigger(OverlaySystem.evtNotify, {which: 'popup', actor: this, msg: `-${damage}`});
         if (health > 0) {
             UpdateSystem.eUpdate(this, { health: health });
+            // create healthbar
+            // -- player does not get a healthbar
+            if (this.cls !== 'Player' && !this.healthVfx) Events.trigger(OverlaySystem.evtNotify, {which: 'healthbar', actor: this});
         } else {
             if (this.state !== 'dying') this.evt.trigger(this.constructor.evtDeath, { actor: this });
         }
-        //console.log(`player health after damage: ${this.health}`);
+        Events.trigger(OverlaySystem.evtNotify, {which: 'popup', actor: this, msg: `-${damage}`});
     }
 
     onDeath(evt) {

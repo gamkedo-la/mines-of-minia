@@ -12,6 +12,7 @@ import { Text } from '../base/text.js';
 import { TextVfx } from '../base/textVfx.js';
 import { UxPanel } from '../base/uxPanel.js';
 import { XForm } from '../base/xform.js';
+import { HealthVfx } from '../healthVfx.js';
 import { Resurrect64 } from '../resurrect64.js';
 import { ScanVfx } from '../scanVfx.js';
 
@@ -125,6 +126,17 @@ class OverlaySystem extends System {
                     xform: new XForm({stretch: false}),
                 });
                 this.overlay.adopt(vfx);
+                break;
+            }
+            case 'healthbar': {
+                if (!evt.actor.healthVfx) {
+                    let vfx = new HealthVfx({
+                        actor: evt.actor,
+                        xform: new XForm({stretch: false}),
+                    });
+                    this.overlay.adopt(vfx);
+                    evt.actor.healthVfx = vfx;
+                }
                 break;
             }
             case 'alert': {

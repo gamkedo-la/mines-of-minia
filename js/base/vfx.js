@@ -1,6 +1,7 @@
 export { Vfx };
 
 import { Hierarchy } from './hierarchy.js';
+import { UpdateSystem } from './systems/updateSystem.js';
 import { UxView } from './uxView.js';
 
 class Vfx extends UxView {
@@ -31,8 +32,9 @@ class Vfx extends UxView {
     // EVENT HANDLERS ------------------------------------------------------
     onActorUpdate(evt) {
         if (evt.update && evt.update.xform && (evt.update.xform.hasOwnProperty('x') || evt.update.xform.hasOwnProperty('y'))) {
-            this.xform.x = evt.update.xform.x;
-            this.xform.y = evt.update.xform.y;
+            if (this.xform.x !== evt.update.xform.x || this.xform.y !== evt.update.xform.y) {
+                UpdateSystem.eUpdate(this, { xform: { x: evt.update.xform.x, y: evt.update.xform.y }});
+            }
         }
     }
 
@@ -41,7 +43,6 @@ class Vfx extends UxView {
             this.actor.evt.ignore(this.actor.constructor.evtUpdated, this.onActorUpdate);
             this.actor.evt.ignore(this.actor.constructor.evtDestroyed, this.onActorDestroyed);
         }
-        //anim.evt.ignore(anim.constructor.evtDone, onAnimDone);
         this.destroy();
     }
 
