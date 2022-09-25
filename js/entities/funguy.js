@@ -23,7 +23,7 @@ class Funguy extends Enemy{
         // final spec
         return Object.assign( {}, this.spec, {
             x_sketch: Assets.get('funguy'),
-            deathTTL: 200,
+            deathTTL: 700,
             attackKind: 'dark',
         }, spec);
     }
