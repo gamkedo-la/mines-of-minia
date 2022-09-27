@@ -12,7 +12,8 @@ class MiniaTemplates {
         doyield: true,
         //seed: 3,
         // FIXME: known bad seeds...
-        seed: 62183,
+        //seed: 62183,
+        seed: 37241,
         translate: {
             floor: 'rock.floor',
             wall: 'rock.wall',

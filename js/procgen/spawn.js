@@ -42,6 +42,7 @@ import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
 import { ProcTemplate } from './ptemplate.js';
 
+
 class Spawn {
 
     static *generator(template={}, pstate={}) {
@@ -244,7 +245,7 @@ class Spawn {
         for (const idx of room.idxs) {
             // -- test index to make sure nothing is there..
             // -- clutter can spawn under other items (except growth)
-            if (!this.checkSpawnIdx(plvl, idx, (v) => (v.idx === idx && v.cls === 'Growth'))) continue;
+            if (!this.checkSpawnIdx(plvl, idx, (v) => (v.idx === idx && (v.cls in ['Growth', 'SpikeTrap'])))) continue;
             // -- count adjacent walls
             let walls = Direction.cardinals.reduce((pv, cv) => {
                 let aidx = plvlo.data.idxfromdir(idx, cv);
@@ -1275,7 +1276,7 @@ class Spawn {
                     count: 10,
                 })],
             }),
-*/
+            */
 
             Gem.xspec({
                 kind: 'test',
