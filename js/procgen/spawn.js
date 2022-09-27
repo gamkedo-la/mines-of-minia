@@ -802,9 +802,9 @@ class Spawn {
                 ],
             },
             fuelPerTier: {
-                1: { min: .09, max: .15, scale: 0.9 },
-                2: { min: .08, max: .12, scale: 0.8 },
-                3: { min: .07, max: .11, scale: 0.7 },
+                1: { min: .02, max: .3, scale: 0.9 },
+                2: { min: .012, max: .019, scale: 0.8 },
+                3: { min: .004, max: .011, scale: 0.7 },
             },
             powerPerTier: {
                 1: { min: .07, max: .11, scale: 1.1 },

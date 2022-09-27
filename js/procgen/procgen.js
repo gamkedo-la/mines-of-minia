@@ -43,7 +43,7 @@ class ProcGen {
         let reactor = new Reactor({
             identified: true,
             healthRegenPerAP: .2,
-            fuelPerAP: .5,
+            fuelPerAP: .025,
             sketch: Assets.get('reactor.1', true),
         });
         let weapon = new Weapon({
