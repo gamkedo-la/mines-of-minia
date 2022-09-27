@@ -1255,6 +1255,7 @@ class Spawn {
                 x_sketch: Assets.get('fuelcell'),
             }),
 
+            /*
             Rous.xspec({
                 healthMax: 5,
                 xp: 1,
@@ -1274,6 +1275,7 @@ class Spawn {
                     count: 10,
                 })],
             }),
+*/
 
             Gem.xspec({
                 kind: 'test',

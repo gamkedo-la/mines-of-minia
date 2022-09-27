@@ -32,6 +32,8 @@ class ScanAction extends Action {
         let revealed = false;
         for (const idx of this.lvl.idxsInRange(this.actor.idx, scanRange)) {
             for (const hidden of this.lvl.findidx(idx, (v) => v.hidden)) {
+                // don't reveal objects not in LoS
+                if (!this.actor.losIdxs.includes(hidden.idx)) continue;
                 // setup reveal action on hidden object
                 let action = new RevealAction({
                     lvl: this.lvl,
