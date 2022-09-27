@@ -68,6 +68,7 @@ class AiBombTargetDirective extends AiDirective {
 
             console.log(`-- throw ${bomb}`);
             let action = new ThrowAction({
+                points: this.actor.pointsPerTurn,
                 needsDrop: false,
                 item: bomb,
                 idx: targetIdx,

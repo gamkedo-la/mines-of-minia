@@ -65,7 +65,7 @@ class AiMoveToRangeDirective extends AiDirective {
                     let y = this.lvl.yfromidx(idx, true);
                     let facing = (x > this.actor.xform.x) ? Direction.east : (x < this.actor.xform.x) ? Direction.west : 0;
                     let action = new MoveAction({ 
-                        points: 1, 
+                        points: this.actor.pointsPerTurn, 
                         x:x, 
                         y:y, 
                         accel: .001, 

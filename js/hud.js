@@ -149,6 +149,7 @@ class Hud extends UxView {
                 Events.trigger('handler.wanted', {which: 'aim', shooter: item});
             } else {
                 let action = new UseAction({
+                    points: this.player.pointsPerTurn,
                     item: item,
                 });
                 TurnSystem.postLeaderAction(action);
@@ -182,7 +183,7 @@ class Hud extends UxView {
     }
     onWaitClicked(evt) {
         if (this.getCurrentHandler() !== 'interact') return;
-        TurnSystem.postLeaderAction(new WaitAction());
+        TurnSystem.postLeaderAction(new WaitAction({points: this.player.pointsPerTurn}));
     }
     onScanClicked(evt) {
         //console.log(`${this} onScanClicked: ${Fmt.ofmt(evt)}}`)

@@ -57,7 +57,7 @@ class System extends Gizmo {
         }
     }
     onEntityRemoved(evt) {
-        if (this.dbg) console.log(`${this} onEntityRemoved: ${Fmt.ofmt(evt)}`);
+        if (this.dbg && this.matchPredicate(evt.actor)) console.log(`${this} onEntityRemoved: ${Fmt.ofmt(evt)}`);
         this.store.delete(evt.actor.gid);
     }
 

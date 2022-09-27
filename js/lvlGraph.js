@@ -57,11 +57,12 @@ class LevelGraph {
         // check for a door...
         let door = this.lvl.firstidx(to, (v) => v instanceof Door);
         if (door && door.state === 'close') {
-            actions.push( new OpenAction({ target: door }));
+            actions.push( new OpenAction({ points: e.pointsPerTurn, target: door }));
         }
 
         // push move action
         let action = new MoveAction({ 
+            points: e.pointsPerTurn,
             x: tov.x, 
             y: tov.y, 
             snap: true, 

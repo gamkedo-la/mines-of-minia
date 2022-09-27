@@ -63,6 +63,7 @@ class AiThumpTargetDirective extends AiDirective {
                     console.log(`-- thump missed target: ${this.target} misses: ${misses}`);
                 }
                 yield new MeleeAttackAction({
+                    points: this.actor.pointsPerTurn,
                     target: target,
                     knockback: (target === this.target) ? this.knockback : 0,
                     nudge: 0,
@@ -96,7 +97,7 @@ class AiThumpTargetDirective extends AiDirective {
                         }),
                     ]}));
                 }
-                yield new SerialAction({subs: serialActions});
+                yield new SerialAction({points: this.actor.pointsPerTurn, subs: serialActions});
                 misses = 0;
             }
 

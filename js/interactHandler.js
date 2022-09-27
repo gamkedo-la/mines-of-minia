@@ -198,45 +198,39 @@ class InteractHandler extends Entity {
         let facing = (x > this.player.xform.x) ? Direction.east : (x < this.player.xform.x) ? Direction.west : 0;
         // what's at index?
         let others = Array.from(this.lvl.findidx(idx, (v) => v.idx === idx));
-        //console.log(`others: ${others}`);
         let tookAction = true;
         if (others.some((v) => v.active && v instanceof Enemy)) {
             let target = others.find((v) => v instanceof Enemy);
-            //console.log(`other is an enemy, try to attack...`);
             TurnSystem.postLeaderAction( new MeleeAttackAction({
                 target: target,
+                points: this.player.pointsPerTurn,
             }));
         } else if (others.some((v) => v instanceof Stairs)) {
             let target = others.find((v) => v instanceof Stairs);
-            //console.log(`stairs ${target} is hit`);
-            TurnSystem.postLeaderAction( new MoveAction({ points: 1, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
-            //TurnSystem.postLeaderAction( new MoveAction({ points: 2, x:x, y:y, accel: .001, snap: true, update: { idx: idx }}));
-            TurnSystem.postLeaderAction( new TakeStairsAction({ stairs: target }));
-        //} else if (others.some((v) => v instanceof Door)) {
+            TurnSystem.postLeaderAction( new MoveAction({ points: this.player.pointsPerTurn, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
+            TurnSystem.postLeaderAction( new TakeStairsAction({ points: this.player.pointsPerTurn, stairs: target }));
         } else if (others.some((v) => v.constructor.openable)) {
             let target = others.find((v) => v.constructor.openable);
             if (target.state === 'close') {
-                TurnSystem.postLeaderAction( new OpenAction({ target: target }));
+                TurnSystem.postLeaderAction( new OpenAction({ points: this.player.pointsPerTurn, target: target }));
             } else {
-                TurnSystem.postLeaderAction( new MoveAction({ points: 1, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
+                TurnSystem.postLeaderAction( new MoveAction({ points: this.player.pointsPerTurn, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
             }
         } else if (others.some((v) => v.constructor.lootable)) {
             let target = others.find((v) => v.constructor.lootable);
-            TurnSystem.postLeaderAction( new PickupAction({ target: target, sfx: Assets.get('player.pickup', true)}));
+            TurnSystem.postLeaderAction( new PickupAction({ points: this.player.pointsPerTurn, target: target, sfx: Assets.get('player.pickup', true)}));
         } else if (others.some((v) => this.player.blockedBy & v.blocks)) {
-            //console.log(`blocked from idx: ${this.player.idx} ${this.player.xform.x},${this.player.xform.y}, to: ${idx} ${x},${y} hit ${others}`);
             tookAction = false;
         } else {
-            TurnSystem.postLeaderAction( new MoveAction({ points: 1, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
+            TurnSystem.postLeaderAction( new MoveAction({ points: this.player.pointsPerTurn, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
         }
 
         if (tookAction) this.destroy();
     }
 
     wait() {
-        TurnSystem.postLeaderAction(new WaitAction());
+        TurnSystem.postLeaderAction(new WaitAction({ points: this.player.pointsPerTurn }));
         this.destroy();
-        //ActionSystem.assign(this.player, new EndTurnAction());
     }
 
     

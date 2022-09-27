@@ -43,7 +43,7 @@ class AiChargeDirective extends AiDirective {
             
             // charge
             console.log(`-- charge`);
-            yield new ChargeAction({lvl: this.lvl, chargeDir: this.chargeDir });
+            yield new ChargeAction({points: this.actor.pointsPerTurn, lvl: this.lvl, chargeDir: this.chargeDir });
 
             // all done
             console.log(`-- charge is done`);

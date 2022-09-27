@@ -32,25 +32,9 @@ class AiMoveToIdxDirective extends AiDirective {
                 //console.log(`move to idx no path to ${this.targetIdx}`);
                 return null;
             }
-            // iterate through pathfinder actions
-            let points = 0;
             if (this.dbg) console.log(`move from: ${this.actor.idx} towards: ${this.targetIdx} path: ${Fmt.ofmt(path)}`);
-            for (const action of path.actions) {
-                // no points spent yet...
-                if (!points) {
-                    points += action.points;
-                    yield action;
-                // points spent taking action
-                } else {
-                    // free action?
-                    if (action.points === 0) {
-                        yield action;
-                    } else {
-                        // once points have been spent, and we've hit a non-free action, break
-                        break;
-                    }
-                }
-            }
+            let action = path.actions[0];
+            yield action;
         }
     }
 

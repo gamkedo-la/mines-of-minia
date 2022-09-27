@@ -139,7 +139,6 @@ class TalentSystem extends System {
         if (evt.actor && evt.actor.cls === 'Player') {
             this.player = evt.actor;
             this.player.evt.listen(this.player.constructor.evtUpdated, this.onPlayerUpdate);
-            console.log(`-- ${this} player emerged: ${this.player}`);
             this.applyPlayerBuffs();
         }
         // -- GOLDDIGGER implementation
@@ -155,7 +154,6 @@ class TalentSystem extends System {
     }
 
     onCharacterDamaged(evt) {
-        console.log(`onCharacterDamaged: ${Fmt.ofmt(evt)}`);
         if (evt.actor !== this.player) return;
         if (evt.critical && this.current.shielding) {
             this.addShieldCharm();
@@ -185,14 +183,12 @@ class TalentSystem extends System {
             let amt = this.current.gems * 5;
             let health = Math.min(actor.healthMax, actor.health+amt);
             if (health !== actor.health) {
-                console.log(`-- setting player health: ${health}`);
                 UpdateSystem.eUpdate(actor, {health: health });
             }
         }
     }
 
     onEquipChanged(evt) {
-        console.log(`${this} onEquipChanged: ${Fmt.ofmt(evt)}`);
         if (evt.actor !== this.player) return;
         if (evt.slot !== 'weapon') return;
         if (!evt.target) return;
@@ -219,9 +215,7 @@ class TalentSystem extends System {
             return;
         }
         // update current level
-        console.log(`current level: ${this.current[tag]}`);
         this.current[tag] = (this.current[tag] || 0) + 1;
-        console.log(`new level: ${this.current[tag]}`);
         // decrement unspent points
         this.unspent--;
         this.evt.trigger('talents.updated', { update: { unspent: this.unspent }}, true);
@@ -237,7 +231,6 @@ class TalentSystem extends System {
             oldCharm.replenish('critical', amt);
         } else {
             let charm = new ShieldCharm({ tag: 'critical', amounts: {'critical': amt} });
-            console.log(`linking charm: ${charm}`);
             charm.link(this.player);
         }
     }
@@ -253,7 +246,6 @@ class TalentSystem extends System {
             }
         }
         let charm = new EfficiencyCharm({ lvl: lvl});
-        console.log(`linking charm: ${charm}`);
         charm.link(this.player);
     }
 
@@ -268,7 +260,6 @@ class TalentSystem extends System {
             }
         }
         let charm = new PowerageCharm({ lvl: lvl });
-        console.log(`linking charm: ${charm}`);
         charm.link(this.player);
     }
 
@@ -283,7 +274,6 @@ class TalentSystem extends System {
             }
         }
         let charm = new BonkersCharm({ lvl: lvl });
-        console.log(`linking charm: ${charm}`);
         charm.link(this.player);
     }
 
@@ -298,7 +288,6 @@ class TalentSystem extends System {
             }
         }
         let charm = new PointyCharm({ lvl: lvl });
-        console.log(`linking charm: ${charm}`);
         charm.link(this.player);
     }
 
@@ -313,7 +302,6 @@ class TalentSystem extends System {
             }
         }
         let charm = new HacketyCharm({ lvl: lvl });
-        console.log(`linking charm: ${charm}`);
         charm.link(this.player);
     }
 
@@ -328,7 +316,6 @@ class TalentSystem extends System {
             }
         }
         let charm = new HacketyCharm({ lvl: lvl });
-        console.log(`linking charm: ${charm}`);
         charm.link(this.player);
     }
 
@@ -342,7 +329,6 @@ class TalentSystem extends System {
             }
         }
         let charm = new cls({ lvl: lvl });
-        console.log(`linking charm: ${charm}`);
         charm.link(this.player);
     }
 

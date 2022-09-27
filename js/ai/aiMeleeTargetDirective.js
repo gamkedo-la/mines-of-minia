@@ -14,7 +14,6 @@ class AiMeleeTargetDirective extends AiDirective {
         let iterations = 50;
         while (!this.done) {
             let range = this.getTargetRange();
-            //console.log(`range: ${range} this.range: ${this.range}`)
             if (iterations-- <= 0) break;
             // check for target in range
             if (range > this.range) {
@@ -22,8 +21,8 @@ class AiMeleeTargetDirective extends AiDirective {
                 this.done = true;
                 return null;
             }
-            //console.log(`before melee attack yield`);
             yield new MeleeAttackAction({
+                points: this.actor.pointsPerTurn,
                 target: this.target,
             });
         }

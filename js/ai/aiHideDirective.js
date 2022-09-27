@@ -35,7 +35,7 @@ class AiHideDirective extends AiDirective {
             this.elapsed++;
             if (this.elapsed > this.delay) {
                 console.log(`-- slipping into stealth`);
-                let action = new HideAction();
+                let action = new HideAction({points: this.actor.pointsPerturn});
                 yield action;
                 // all done...
                 console.log(`-- hiding done`);

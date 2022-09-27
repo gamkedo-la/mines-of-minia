@@ -543,6 +543,7 @@ class Inventory extends UxView {
                     xform: new XForm({ left: .7, top: .2, bottom: .2}),
                     item: item,
                     handleUse: this.handleUse.bind(this),
+                    handleDrop: this.handleDrop.bind(this),
                 });
                 this.itemPopup.evt.listen(this.itemPopup.constructor.evtDestroyed, this.onPopupDestroy);
                 this.adopt(this.itemPopup);
@@ -900,6 +901,7 @@ class Inventory extends UxView {
             this.destroy();
         } else {
             let action = new UseAction({
+                points: this.data.actor.pointsPerTurn,
                 item: item,
             });
             TurnSystem.postLeaderAction(action);
@@ -911,11 +913,20 @@ class Inventory extends UxView {
         console.log(`handleUseTarget: ${item} target: ${target}`);
         this.wantUseTarget = false;
         let action = new UseAction({
+            points: this.data.actor.pointsPerTurn,
             item: item,
             target: target,
         });
         TurnSystem.postLeaderAction(action);
         this.destroy();
+    }
+
+    handleDrop(item) {
+        let action = new DropAction({
+            points: this.data.actor.pointsPerTurn,
+            item: item,
+        });
+        TurnSystem.postLeaderAction(action);
     }
 
 }
@@ -925,6 +936,7 @@ class ItemPopup extends UxView {
     cpost(spec) {
         super.cpost(spec);
         this.handleUse = spec.handleUse;
+        this.handleDrop = spec.handleDrop;
         let title = spec.title || 'info';
         this.wantTarget = spec.wantTarget;
         this.item;
@@ -1091,11 +1103,8 @@ class ItemPopup extends UxView {
     }
 
     onDropClicked(evt) {
-        let action = new DropAction({
-            item: this.item,
-        });
-        TurnSystem.postLeaderAction(action);
         this.destroy();
+        this.handleDrop(this.item);
     }
 
     onThrowClicked(evt) {

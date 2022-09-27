@@ -31,6 +31,7 @@ class AiRangeTargetDirective extends AiDirective {
             }
             //console.log(`before melee attack yield`);
             yield new RangeAttackAction({
+                points: this.actor.pointsPerTurn,
                 target: this.target,
                 weapon: this.weapon,
             });

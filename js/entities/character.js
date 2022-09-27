@@ -36,6 +36,8 @@ class Character extends MiniaModel {
     static dfltCritPct = .1;
     static mobile = true;
 
+    static dfltPointsPerTurn = 10;
+
     static get dfltMaxSpeed() {
         // distance over time
         // -- how long to traverse configured tile size
@@ -97,6 +99,7 @@ class Character extends MiniaModel {
         this.lvl = spec.lvl || this.constructor.dfltLvl;
         // -- action stream
         this.actionStream = this.dfltActionGenerator();
+        this.pointsPerTurn = spec.pointsPerTurn || this.constructor.dfltPointsPerTurn;
         // -- state management
         this.state = spec.state || this.constructor.dfltState;
         this.animState = spec.animState || this.constructor.dfltAnimState;
@@ -151,6 +154,7 @@ class Character extends MiniaModel {
             aggroTag: this.aggroTag,
             team: this.team,
             lvl: this.lvl,
+            pointsPerTurn: this.pointsPerTurn,
             state: this.state,
             animState: this.animState,
             x_charms: this.charms.map((v) => v.as_kv()),

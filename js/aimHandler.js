@@ -97,6 +97,7 @@ class AimHandler extends Entity {
                 return;
             }
             action = new ShootAction({
+                points: this.player.pointsPerTurn,
                 weapon: this.shooter,
                 lvl: this.lvl,
                 idx: targetIdx,
@@ -106,11 +107,13 @@ class AimHandler extends Entity {
         } else {
             if (this.player.idx === targetIdx) {
                 action = new DropAction({
+                    points: this.player.pointsPerTurn,
                     item: this.shooter,
                 });
             // otherwise throw to index
             } else {
                 action = new ThrowAction({
+                    points: this.player.pointsPerTurn,
                     item: this.shooter,
                     idx: targetIdx,
                     x: this.lvl.xfromidx(targetIdx, true),

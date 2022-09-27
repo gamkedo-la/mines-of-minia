@@ -272,7 +272,7 @@ class PlayState extends GameState {
         if (evt.which !== 'follower') return;
         // handle dazed
         if (DazedCharm.isDazed(this.player)) {
-            TurnSystem.postLeaderAction(new WaitAction());
+            TurnSystem.postLeaderAction(new WaitAction({points: this.player.pointsPerTurn}));
             return;
         }
         // re-enable interact handler
@@ -454,6 +454,7 @@ class PlayState extends GameState {
     doScan() {
         if (!this.currentHandler === 'interact') return;
         let action = new ScanAction({
+            points: this.player.pointsPerTurn,
             lvl: this.lvl,
         });
         TurnSystem.postLeaderAction(action);
