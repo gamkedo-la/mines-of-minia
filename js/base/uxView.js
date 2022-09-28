@@ -237,6 +237,8 @@ class UxView extends Entity {
     }
 
     render(ctx) {
+        // for root views
+        if (!this.parent) ctx.save();
         // don't render if not visible
         if (!this.visible) return;
         if (this.dbg && this.dbg.xform) this.xform.render(ctx);
@@ -251,6 +253,7 @@ class UxView extends Entity {
         // post render, specific to subclass
         this._postrender(ctx);
         this.xform.revert(ctx, false);
+        if (!this.parent) ctx.restore();
     }
 
     resize(width, height) {
