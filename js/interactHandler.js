@@ -4,6 +4,7 @@ import { MeleeAttackAction } from './actions/attack.js';
 import { OpenAction } from './actions/open.js';
 import { PickupAction } from './actions/pickup.js';
 import { TakeStairsAction } from './actions/takeStairs.js';
+import { AiMoveToIdxDirective } from './ai/aiMoveToIdxDirective.js';
 import { MoveAction } from './base/actions/move.js';
 import { WaitAction } from './base/actions/wait.js';
 import { Assets } from './base/assets.js';
@@ -14,12 +15,7 @@ import { Fmt } from './base/fmt.js';
 import { Keys } from './base/keys.js';
 import { Pathfinder } from './base/pathfinder.js';
 import { MouseSystem } from './base/systems/mouseSystem.js';
-import { UpdateSystem } from './base/systems/updateSystem.js';
-import { UxDbg } from './base/uxDbg.js';
-import { UxPanel } from './base/uxPanel.js';
 import { Vect } from './base/vect.js';
-import { XForm } from './base/xform.js';
-import { Door } from './entities/door.js';
 import { Enemy } from './entities/enemy.js';
 import { Stairs } from './entities/stairs.js';
 import { LevelGraph } from './lvlGraph.js';
@@ -142,21 +138,15 @@ class InteractHandler extends Entity {
         let idx = this.lvl.idxfromxy(lmouse.x, lmouse.y);
         console.log(`-- local: ${lmouse} idx: ${idx}`);
         this.dbg = true;
-        let path = this.pathfinder.find(this.player, this.player.idx, idx);
-        if (path) {
-            UxDbg.clear();
-            let lx = this.player.xform.x;
-            let ly = this.player.xform.y;
-            let first = true;
-            for (const action of path.actions) {
-                if (this.dbg && action.constructor.name === 'MoveAction') {
-                    UxDbg.drawLine(lx, ly, action.x, action.y);
-                    lx = action.x;
-                    ly = action.y;
-                }
-                TurnSystem.postLeaderAction(action);
-            }
-        }
+
+        let directive = new AiMoveToIdxDirective({
+            lvl: this.lvl,
+            actor: this.player,
+            targetIdx: idx,
+        });
+
+        Events.trigger('handler.wanted', {which: 'directive', directive: directive});
+        this.destroy();
     }
 
     onMouseMoved(evt) {

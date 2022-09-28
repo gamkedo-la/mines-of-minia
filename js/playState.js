@@ -54,6 +54,7 @@ import { Direction } from './base/dir.js';
 import { StealthBot } from './entities/stealthBot.js';
 import { TalentSystem } from './systems/talentSystem.js';
 import { Talents } from './talents.js';
+import { DirectiveHandler } from './directiveHandler.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -120,6 +121,7 @@ class PlayState extends GameState {
                             tag: 'hud',
                             doSave: this.doSave.bind(this),
                             doScan: this.doScan.bind(this),
+                            doCancel: this.doCancel.bind(this),
                             getCurrentHandler: () => this.currentHandler,
                         }),
                     ],
@@ -268,7 +270,6 @@ class PlayState extends GameState {
     }
 
     onTurnDone(evt) {
-        //console.log(`-- ${this} onTurnDone: ${Fmt.ofmt(evt)}`);
         if (evt.which !== 'follower') return;
         // handle dazed
         if (DazedCharm.isDazed(this.player)) {
@@ -285,7 +286,6 @@ class PlayState extends GameState {
         this.currentHandler = which;
         if (this.handler) {
             this.handler.destroy();
-            //console.log(`-- clearing handler: ${this.handler}`);
             this.handler = null;
         }
         switch(which) {
@@ -296,8 +296,8 @@ class PlayState extends GameState {
                     overlay: this.overlay,
                     shooter: evt.shooter,
                 });
-                break;
             }
+            break;
             case 'interact': {
                 this.handler = new InteractHandler({
                     lvl: this.lvl,
@@ -307,11 +307,19 @@ class PlayState extends GameState {
                     doTalents: this.doTalents.bind(this),
                 });
             }
+            break;
+            case 'directive': {
+                this.handler = new DirectiveHandler({
+                    directive: evt.directive,
+                });
+            }
+            break;
         }
         if (this.handler) {
-            this.handler.evt.listen(this.handler.constructor.evtDestroyed, ()=>{
-                //console.log(`-- removing destroyed handler: ${this.handler}`);
-                this.handler = null;
+            this.handler.evt.listen(this.handler.constructor.evtDestroyed, (evt)=>{
+                if (evt.actor === this.handler) {
+                    this.handler = null;
+                }
             });
         }
     }
@@ -458,6 +466,12 @@ class PlayState extends GameState {
             lvl: this.lvl,
         });
         TurnSystem.postLeaderAction(action);
+    }
+
+    doCancel() {
+        console.log(`do cancel current handler: ${this.currentHandler}`);
+        if (this.currentHandler !== 'directive') return;
+        this.loadHandler('interact');
     }
 
 }

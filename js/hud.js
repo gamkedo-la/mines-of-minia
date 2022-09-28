@@ -26,6 +26,7 @@ class Hud extends UxView {
         this.player;
         this.doSave = spec.doSave;
         this.doScan = spec.doScan;
+        this.doCancel = spec.doCancel;
         // build out hud
         this.adopt( new UxPanel({
             sketch: Assets.get('hud.border', true),
@@ -191,6 +192,7 @@ class Hud extends UxView {
     }
     onCancelClicked(evt) {
         console.log(`${this} onCancelClicked: ${Fmt.ofmt(evt)}}`)
+        if (this.doCancel) this.doCancel();
     }
 
     // METHODS -------------------------------------------------------------

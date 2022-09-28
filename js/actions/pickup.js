@@ -31,7 +31,7 @@ class DoPickupAction extends Action {
             this.target.active = false;
             // -- update item state
             UpdateSystem.eUpdate(this.target, { animState: 'carry'})
-            console.log(`target: ${this.target} animState: ${this.target.animState}`);
+            //console.log(`target: ${this.target} animState: ${this.target.animState}`);
             // -- remove item from level
             this.target.orphan();
             if (this.sfx) this.sfx.play();

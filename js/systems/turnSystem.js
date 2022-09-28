@@ -169,7 +169,7 @@ class TurnSystem extends System {
             this.leaderTurn = true;
             this.startLeaderAction();
             if (this.dbg) console.log(`-- ${this} triggering ${this.constructor.evtDone} for follower`);
-            Events.trigger(this.constructor.evtDone, {which: 'follower', points: this.turnPoints});
+            Events.trigger(this.constructor.evtDone, {which: 'follower', points: this.turnPoints}, true);
         }
     }
 

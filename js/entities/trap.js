@@ -70,7 +70,7 @@ class Trap extends MiniaModel {
 
     // METHODS -------------------------------------------------------------
     trigger(actor) {
-        console.log(`${this} triggered by ${actor}`);
+        //console.log(`${this} triggered by ${actor}`);
         // trigger trap event
         this.evt.trigger(this.constructor.evtTriggered, { actor: actor, trigger: this });
         // update trap state
