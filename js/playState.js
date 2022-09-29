@@ -49,12 +49,10 @@ import { DetectSystem } from './systems/detectSystem.js';
 import { ScanAction } from './actions/scan.js';
 import { DazedCharm } from './charms/dazed.js';
 import { WaitAction } from './base/actions/wait.js';
-import { RagingBull } from './entities/ragingBull.js';
-import { Direction } from './base/dir.js';
-import { StealthBot } from './entities/stealthBot.js';
 import { TalentSystem } from './systems/talentSystem.js';
 import { Talents } from './talents.js';
 import { DirectiveHandler } from './directiveHandler.js';
+import { PlayOptions } from './playOptions.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -119,9 +117,10 @@ class PlayState extends GameState {
                     x_children: [
                         Hud.xspec({
                             tag: 'hud',
-                            doSave: this.doSave.bind(this),
                             doScan: this.doScan.bind(this),
                             doCancel: this.doCancel.bind(this),
+                            doInventory: this.doInventory.bind(this),
+                            doOptions: this.doOptions.bind(this),
                             getCurrentHandler: () => this.currentHandler,
                         }),
                     ],
@@ -452,6 +451,25 @@ class PlayState extends GameState {
         });
         this.view.adopt(this.talents);
 
+    }
+
+    doOptions() {
+        // disable level/hud
+        this.lvl.active = false;
+        this.hudroot.active = false;
+        this.loadHandler('none');
+
+        // build out options menu
+        let options = new PlayOptions({
+            doSave: this.doSave,
+            xform: new XForm({border: .2}),
+        });
+        options.evt.listen(options.constructor.evtDestroyed, () => {
+            this.lvl.active = true;
+            this.hudroot.active = true;
+            this.loadHandler('interact');
+        });
+        this.view.adopt(options);
     }
 
     doSave() {

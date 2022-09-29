@@ -14,7 +14,6 @@ import { UxButton } from './base/uxButton.js';
 import { UxPanel } from './base/uxPanel.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
-import { PlayOptions } from './playOptions.js';
 import { TurnSystem } from './systems/turnSystem.js';
 
 
@@ -24,9 +23,10 @@ class Hud extends UxView {
         super.cpost(spec);
         this.getCurrentHandler = spec.getCurrentHandler || (() => 'interact');
         this.player;
-        this.doSave = spec.doSave;
         this.doScan = spec.doScan;
         this.doCancel = spec.doCancel;
+        this.doInventory = spec.doInventory;
+        this.doOptions = spec.doOptions;
         // build out hud
         this.adopt( new UxPanel({
             sketch: Assets.get('hud.border', true),
@@ -214,19 +214,12 @@ class Hud extends UxView {
     }
 
     onOptionsClicked(evt) {
-        console.log(`${this} onOptionsClicked: ${Fmt.ofmt(evt)}}`)
-        Events.trigger('handler.wanted', {which: 'none'});
-        let options = new PlayOptions({
-            doSave: this.doSave,
-            xform: new XForm({border: .2}),
-        });
-        this.adopt(options);
-        options.evt.listen(options.constructor.evtDestroyed, () => {
-            Events.trigger('handler.wanted', {which: 'interact'});
-        });
+        if (this.doInventory) this.doOptions();
     }
+
     onEquipClicked(evt) {
         console.log(`${this} onEquipClicked: ${Fmt.ofmt(evt)}}`)
+        if (this.doInventory) this.doInventory();
     }
     onCharClicked(evt) {
         console.log(`${this} onCharClicked: ${Fmt.ofmt(evt)}}`)
