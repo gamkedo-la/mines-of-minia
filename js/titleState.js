@@ -14,7 +14,7 @@ import { XForm } from './base/xform.js';
 
 class TitleState extends GameState {
     onAdvance(evt) {
-        Events.trigger(Game.evtStateChanged, {state: 'play'});
+        Events.trigger(Game.evtStateChanged, {state: 'menu'});
     }
 
     async ready() {

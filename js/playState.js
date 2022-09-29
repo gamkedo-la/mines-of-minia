@@ -461,7 +461,7 @@ class PlayState extends GameState {
 
         // build out options menu
         let options = new PlayOptions({
-            doSave: this.doSave,
+            doSave: this.doSave.bind(this),
             xform: new XForm({border: .2}),
         });
         options.evt.listen(options.constructor.evtDestroyed, () => {
