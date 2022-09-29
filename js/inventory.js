@@ -11,6 +11,7 @@ import { Rect } from './base/rect.js';
 import { Sketch } from './base/sketch.js';
 import { Text } from './base/text.js';
 import { UxButton } from './base/uxButton.js';
+import { UxInput } from './base/uxInput.js';
 import { UxPanel } from './base/uxPanel.js';
 import { UxText } from './base/uxText.js';
 import { UxView } from './base/uxView.js';
@@ -325,6 +326,7 @@ class Inventory extends UxView {
         this.onOtherChanged = this.onOtherChanged.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onPopupDestroy = this.onPopupDestroy.bind(this);
+        this.onStatsClick = this.onStatsClick.bind(this);
 
         this.bg = new UxPanel({
             sketch: Assets.get('oframe.red', true),
@@ -349,6 +351,14 @@ class Inventory extends UxView {
                         this.slot({ tag: 'weapon', xform: new XForm({left: .1, right: .65, top: .4, bottom: .4}), }),
                         this.slot({ tag: 'reactor', xform: new XForm({left: .375, right: .375, top: .4, bottom: .4}), }),
                         this.slot({ tag: 'shielding', xform: new XForm({left: .65, right: .1, top: .4, bottom: .4}), }),
+
+                        new UxButton({
+                            sketch: Assets.get('frame.yellow', true),
+                            tag: 'player.stats',
+                            xform: new XForm({top: .6, bottom: .2, left: .67, right: .1, lockRatio: true, width: 10, height: 10}),
+                            text: new Text({text: ' stats '}),
+                            mouseClickedSound: Assets.get('menu.click', true),
+                        }),
 
                         this.counter({ tag: 'tokens', xform: new XForm({offset: 10, left: 0, right: .75, top: .8, bottom: .05}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
                         this.counter({ tag: 'key.blue', xform: new XForm({offset: 10, left: .25, right: .5, top: .8, bottom: .05}), sketch: Assets.get('key.blue', true, {lockRatio: true})}),
@@ -444,6 +454,11 @@ class Inventory extends UxView {
         // disable backpack slots
         for (let i=24; i+1>this.data.numSlots; i--) {
             this.toggleSlot(`inv${i}`, false);
+        }
+
+        let button = Hierarchy.find(this, (v) => v.tag === `player.stats`);
+        if (button) {
+            button.evt.listen(button.constructor.evtMouseClicked, this.onStatsClick);
         }
 
         Events.listen(Keys.evtDown, this.onKeyDown);
@@ -549,8 +564,25 @@ class Inventory extends UxView {
                 this.adopt(this.itemPopup);
                 this.markCompatibleSlots(item);
                 this.select(evt.actor);
+            } else {
+                if (this.itemPopup) this.itemPopup.destroy();
             }
         }
+    }
+
+    onStatsClick(evt) {
+        console.log(`${this} onStatsClick`);
+        if (this.wantUseTarget) return;
+        if (this.itemPopup) {
+            this.itemPopup.destroy();
+            this.itemPopup = null;
+        }
+        this.itemPopup = new StatsPopup({
+            player: this.data.actor,
+            xform: new XForm({ left: .7, top: .2, bottom: .2}),
+        });
+        this.itemPopup.evt.listen(this.itemPopup.constructor.evtDestroyed, this.onPopupDestroy);
+        this.adopt(this.itemPopup);
     }
 
     onPopupDestroy(evt) {
@@ -1159,6 +1191,87 @@ class ItemPopup extends UxView {
         this.kind.text = `-- ${item.constructor.slot} --`;
         this.description.text = item.description;
         this.target = item;
+    }
+
+}
+
+class StatsPopup extends UxView {
+
+    cpost(spec) {
+        super.cpost(spec);
+        this.player = spec.player;
+        this.panel = new UxPanel({
+            sketch: Assets.get('oframe.red', true),
+            children: [
+                // title
+                new UxText({
+                    tag: 'title',
+                    xform: new XForm({offset: 5, bottom: .9}),
+                    text: new Text({ text: 'stats', color: invTextColor}),
+                }),
+
+                new UxPanel({
+                    tag: 'rows.panel',
+                    sketch: Sketch.zero,
+                    xform: new XForm({top: .15, bottom: .15}),
+                }),
+            ],
+        });
+        this.adopt(this.panel);
+
+        let rowsPanel = Hierarchy.find(this.panel, (v) => v.tag === 'rows.panel');
+        let rows = [
+            [ 'lvl', () => this.player.lvl ],
+            [ 'brawn', () => this.player.brawn ],
+            [ 'spry', () => this.player.spry ],
+            [ 'savvy', () => this.player.savvy ],
+            [ 'health', () => `${this.player.health}/${this.player.healthMax}` ],
+            [ 'power', () => `${this.player.power}/${this.player.powerMax}` ],
+            [ 'fuel', () => `${this.player.fuel}/${this.player.fuelMax}` ],
+        ];
+        let size = 1/rows.length;
+
+        for (let i=0; i<rows.length; i++) {
+            let [key, valuefcn] = rows[i];
+            let value = valuefcn().toString();
+            console.log(`key: ${key} value: ${value}`);
+            let panel = new UxPanel({
+                sketch: Sketch.zero,
+                xform: new XForm({top: size*i, bottom: 1-(i+1)*size}),
+                children: [
+                    new UxText({
+                        xform: new XForm({offset: 5, left: .1, right: .5}),
+                        text: new Text({ align: 'left', text: key, color: invTextColor}),
+                    }),
+                    new UxInput({
+                        tag: 'stats.lvl',
+                        xform: new XForm({offset: 5, left: .6, right: .1}),
+                        text: new Text({ text: value, color: invTextColor}),
+                        active: false,
+                    }),
+                ],
+            });
+            rowsPanel.adopt(panel);
+        }
+
+        this.onKeyDown = this.onKeyDown.bind(this);
+        Events.listen(Keys.evtDown, this.onKeyDown);
+    }
+
+    destroy() {
+        super.destroy();
+        Events.ignore(Keys.evtDown, this.onKeyDown);
+    }
+
+    onKeyDown(evt) {
+        if (!this.active) return;
+        console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
+        switch (evt.key) {
+            case 'Escape': {
+                this.destroy();
+                break;
+            }
+        }
     }
 
 }

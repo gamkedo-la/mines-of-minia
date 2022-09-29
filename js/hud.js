@@ -107,7 +107,7 @@ class Hud extends UxView {
 
                         new UxPanel({
                             sketch: Sketch.zero,
-                            xform: new XForm({left: .7, bottom: .3}),
+                            xform: new XForm({top: .1, left: .7, bottom: .35}),
                             children: [
                                 new UxButton({
                                     tag: 'hud.options',
@@ -115,7 +115,7 @@ class Hud extends UxView {
                                     pressed: Assets.get('hud.button.pressed', true),
                                     unpressed: Assets.get('hud.button.unpressed', true),
                                     highlight: Assets.get('hud.button.highlight', true),
-                                    xform: new XForm({left: .5, bottom: .67, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
+                                    xform: new XForm({offset: 1, left: .5, bottom: .5, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
                                     mouseBlock: true,
                                     mousePriority: 1,
                                 }),
@@ -125,17 +125,7 @@ class Hud extends UxView {
                                     pressed: Assets.get('hud.button.pressed', true),
                                     unpressed: Assets.get('hud.button.unpressed', true),
                                     highlight: Assets.get('hud.button.highlight', true),
-                                    xform: new XForm({left: .5, top: .33, bottom: .33, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
-                                    mouseBlock: true,
-                                    mousePriority: 1,
-                                }),
-                                new UxButton({
-                                    tag: 'hud.char',
-                                    text: new Text({text: '    char    '}),
-                                    pressed: Assets.get('hud.button.pressed', true),
-                                    unpressed: Assets.get('hud.button.unpressed', true),
-                                    highlight: Assets.get('hud.button.highlight', true),
-                                    xform: new XForm({left: .5, top: .67, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
+                                    xform: new XForm({offset: 1, left: .5, top: .5, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
                                     mouseBlock: true,
                                     mousePriority: 1,
                                 }),
@@ -151,7 +141,6 @@ class Hud extends UxView {
         // ui elements
         this.optionsButton = Hierarchy.find(this, (v) => v.tag === 'hud.options');
         this.equipButton = Hierarchy.find(this, (v) => v.tag === 'hud.equip');
-        this.charButton = Hierarchy.find(this, (v) => v.tag === 'hud.char');
         this.waitButton = Hierarchy.find(this, (v) => v.tag === 'hud.wait');
         this.scanButton = Hierarchy.find(this, (v) => v.tag === 'hud.scan');
         this.cancelButton = Hierarchy.find(this, (v) => v.tag === 'hud.cancel');
@@ -162,14 +151,12 @@ class Hud extends UxView {
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onOptionsClicked = this.onOptionsClicked.bind(this);
         this.onEquipClicked = this.onEquipClicked.bind(this);
-        this.onCharClicked = this.onCharClicked.bind(this);
         this.onWaitClicked = this.onWaitClicked.bind(this);
         this.onScanClicked = this.onScanClicked.bind(this);
         this.onCancelClicked = this.onCancelClicked.bind(this);
 
         this.optionsButton.evt.listen(this.optionsButton.constructor.evtMouseClicked, this.onOptionsClicked);
         this.equipButton.evt.listen(this.equipButton.constructor.evtMouseClicked, this.onEquipClicked);
-        this.charButton.evt.listen(this.charButton.constructor.evtMouseClicked, this.onCharClicked);
         this.waitButton.evt.listen(this.waitButton.constructor.evtMouseClicked, this.onWaitClicked);
         this.scanButton.evt.listen(this.scanButton.constructor.evtMouseClicked, this.onScanClicked);
         this.cancelButton.evt.listen(this.cancelButton.constructor.evtMouseClicked, this.onCancelClicked);
@@ -220,9 +207,6 @@ class Hud extends UxView {
     onEquipClicked(evt) {
         console.log(`${this} onEquipClicked: ${Fmt.ofmt(evt)}}`)
         if (this.doInventory) this.doInventory();
-    }
-    onCharClicked(evt) {
-        console.log(`${this} onCharClicked: ${Fmt.ofmt(evt)}}`)
     }
     onWaitClicked(evt) {
         if (this.getCurrentHandler() !== 'interact') return;
