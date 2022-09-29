@@ -67,6 +67,8 @@ class Spawn {
         this.spawnMachinery(template, pstate);
         // -- clutter
         this.spawnClutter(template, pstate);
+        // -- fuel
+        this.spawnFuel(template, pstate);
         // -- test objects
         this.spawnTest(template, pstate);
         yield;
@@ -278,6 +280,33 @@ class Spawn {
         for (const phall of phalls) {
             this.spawnClutterForRoom(template, pstate, phall);
         }
+    }
+
+    static spawnFuel(template, pstate) {
+        let prooms = pstate.prooms || [];
+        let x_spawn = template.spawn || {};
+        let plvl = pstate.plvl;
+        let quota = Prng.rangeInt(x_spawn.fuelMin, x_spawn.fuelMax);
+        console.log(`-- fuel quota: ${quota}`);
+
+        let iterations = 100;
+        let choices = Array.from(prooms);
+        while (iterations-- > 0 && quota > 0) {
+            // pick candidate room
+            let proom = Prng.choose(choices);
+            let idx = this.chooseSpawnIdx(plvl, proom.idxs);
+            if (idx !== -1) {
+                let x_spawn = Fuelcell.xspec({
+                    name: 'fuelcell',
+                    idx: idx,
+                    z: template.fgZed,
+                    x_sketch: Assets.get('fuelcell'),
+                });
+                plvl.entities.push(x_spawn);
+                quota--;
+            }
+        }
+
     }
 
     static spawnMachinery(template, pstate) {
@@ -1246,17 +1275,16 @@ class Spawn {
                 break;
             }
         }
-        console.log(`testIdx: ${testIdx} sroom: ${sroom}`);
         if (!sroom) return;
         // iterate items to spawn
         let x_spawns = [
 
+            /*
             Fuelcell.xspec({
                 name: 'fuelcell',
                 x_sketch: Assets.get('fuelcell'),
             }),
 
-            /*
             Rous.xspec({
                 healthMax: 5,
                 xp: 1,

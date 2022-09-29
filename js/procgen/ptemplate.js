@@ -103,9 +103,13 @@ class ProcTemplate {
             { weight: .1, kind: 'gadget'},
         ]);
 
+        // -- fuel
+        this.spawn.fuelMin = Util.getpath(spec, 'spawn.fuelMin', 2);
+        this.spawn.fuelMax = Util.getpath(spec, 'spawn.fuelMax', 5);
+
         // -- chests
         this.spawn.chestMin = Util.getpath(spec, 'spawn.chestMin', 1);
-        this.spawn.chestMax = Util.getpath(spec, 'spawn.chestMin', 4);
+        this.spawn.chestMax = Util.getpath(spec, 'spawn.chestMax', 4);
         this.spawn.chestTermRoomPct = Util.getpath(spec, 'spawn.chestTermRoomPct', .5);
         this.spawn.chestRoomPct = Util.getpath(spec, 'spawn.chestRoomPct', .1);
         this.spawn.chestLootOptions = Util.getpath(spec, 'spawn.chestLootOptions', [
