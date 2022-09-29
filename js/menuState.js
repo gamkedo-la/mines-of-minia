@@ -58,6 +58,7 @@ class MenuState extends GameState {
 
     onOptionsClicked(evt) {
         console.log(`${this} onOptionsClicked: ${Fmt.ofmt(evt)}`);
+        /*
         // disable
         this.view.active = false;
         let options = new Options({
@@ -67,6 +68,7 @@ class MenuState extends GameState {
         options.evt.listen(options.constructor.evtDestroyed, () => {
             this.view.active = true;
         });
+        */
     }
 
     onHelpClicked(evt) {
