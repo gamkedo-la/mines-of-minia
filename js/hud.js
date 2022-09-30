@@ -107,7 +107,7 @@ class Hud extends UxView {
 
                         new UxPanel({
                             sketch: Sketch.zero,
-                            xform: new XForm({top: .1, left: .7, bottom: .35}),
+                            xform: new XForm({top: 0, left: .7, bottom: .3}),
                             children: [
                                 new UxButton({
                                     tag: 'hud.options',
@@ -115,20 +115,33 @@ class Hud extends UxView {
                                     pressed: Assets.get('hud.button.pressed', true),
                                     unpressed: Assets.get('hud.button.unpressed', true),
                                     highlight: Assets.get('hud.button.highlight', true),
-                                    xform: new XForm({offset: 1, left: .5, bottom: .5, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
+                                    xform: new XForm({offset: 1, left: .5, bottom: .67, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
                                     mouseBlock: true,
                                     mousePriority: 1,
                                 }),
+
                                 new UxButton({
                                     tag: 'hud.equip',
                                     text: new Text({text: '    equip    '}),
                                     pressed: Assets.get('hud.button.pressed', true),
                                     unpressed: Assets.get('hud.button.unpressed', true),
                                     highlight: Assets.get('hud.button.highlight', true),
-                                    xform: new XForm({offset: 1, left: .5, top: .5, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
+                                    xform: new XForm({offset: 1, left: .5, top: .33, bottom: .33, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
                                     mouseBlock: true,
                                     mousePriority: 1,
                                 }),
+
+                                new UxButton({
+                                    tag: 'hud.talents',
+                                    text: new Text({text: '  talents  '}),
+                                    pressed: Assets.get('hud.button.pressed', true),
+                                    unpressed: Assets.get('hud.button.unpressed', true),
+                                    highlight: Assets.get('hud.button.highlight', true),
+                                    xform: new XForm({offset: 1, left: .5, top: .67, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
+                                    mouseBlock: true,
+                                    mousePriority: 1,
+                                }),
+
                             ],
                         }),
 
