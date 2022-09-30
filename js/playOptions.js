@@ -38,7 +38,6 @@ class PlayOptions extends UxView {
 
     cpost(spec) {
         super.cpost(spec);
-        console.log(`starting volumes: music: ${AudioSystem.getVolume('music')} sfx: ${AudioSystem.getVolume('sfx')}`);
         this.doSave = spec.doSave;
         this.adopt(new UxPanel({
             sketch: Assets.get('options.bg', true),

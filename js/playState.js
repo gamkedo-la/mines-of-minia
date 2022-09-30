@@ -54,6 +54,7 @@ import { Talents } from './talents.js';
 import { DirectiveHandler } from './directiveHandler.js';
 import { PlayOptions } from './playOptions.js';
 import { Spawn } from './procgen/spawn.js';
+import { GameOver } from './gameOver.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -193,6 +194,7 @@ class PlayState extends GameState {
         this.onLevelLoaded = this.onLevelLoaded.bind(this);
         this.onHandlerWanted = this.onHandlerWanted.bind(this);
         this.onTurnDone = this.onTurnDone.bind(this);
+        this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onLoSUpdate({actor: this.player});
         Systems.get('los').evt.listen(Systems.get('los').constructor.evtUpdated, this.onLoSUpdate);
         Events.listen(Keys.evtDown, this.onKeyDown);
@@ -201,6 +203,7 @@ class PlayState extends GameState {
         Events.listen(LevelSystem.evtWanted, this.onLevelWanted);
         Events.listen(LevelSystem.evtLoaded, this.onLevelLoaded);
         Events.listen(TurnSystem.evtDone, this.onTurnDone)
+        this.player.evt.listen(this.player.constructor.evtUpdated, this.onPlayerUpdate);
 
         // -- load level
         // what level?
@@ -280,6 +283,16 @@ class PlayState extends GameState {
         // re-enable interact handler
         if (!this.handler) {
             this.loadHandler('interact');
+        }
+    }
+
+    onPlayerUpdate(evt) {
+        // watch for player death
+        if (evt.update && evt.update.hasOwnProperty('health')) {
+            if (evt.update.health <= 0) {
+                console.log(`-- player died --`)
+                this.doGameOver();
+            }
         }
     }
 
@@ -489,9 +502,22 @@ class PlayState extends GameState {
     }
 
     doCancel() {
-        console.log(`do cancel current handler: ${this.currentHandler}`);
         if (this.currentHandler !== 'directive') return;
         this.loadHandler('interact');
+    }
+
+    doGameOver() {
+        // disable level/hud
+        this.lvl.active = false;
+        this.hudroot.active = false;
+        this.loadHandler('none');
+        let popup = new GameOver({
+            xform: new XForm({border: .3}),
+        });
+        popup.evt.listen(popup.constructor.evtDestroyed, () => {
+            Events.trigger(Game.evtStateChanged, {state: 'menu'});
+        });
+        this.view.adopt(popup);
     }
 
 }
