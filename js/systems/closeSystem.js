@@ -16,6 +16,7 @@ class CloseSystem extends System {
         // -- event handlers
         this.onDoorUpdate = this.onDoorUpdate.bind(this);
         this.onCharUpdate = this.onCharUpdate.bind(this);
+        this.onLootDestroyed = this.onLootDestroyed.bind(this);
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -56,8 +57,24 @@ class CloseSystem extends System {
         }
     }
 
+    onLootDestroyed(evt) {
+        let e = evt.actor;
+        if (this.dbg) console.log(`-- ${this} onCharUpdate ${Fmt.ofmt(evt)} door map from ${e.idx}: ${this.doorMap[e.gid]}`);
+        for (const door of Array.from(this.doorMap[e.gid] || [])) {
+            this.handleOpenDoor(door);
+        };
+        delete this.doorMap[e.gid];
+    }
+
     // METHODS -------------------------------------------------------------
     handleOpenDoor(door) {
+        // see if any loot has spawned in open door...
+        let lootBlocking = false;
+        for (const e of this.lvl.findidx(door.idx, (v) => v.constructor.lootable)) {
+            lootBlocking = true;
+            e.evt.listen(e.constructor.evtDestroyed, this.onLootDestroyed);
+            Util.getOrAssign(this.doorMap, e.gid).push(door);
+        }
         // see what characters are adjacent
         let adjacent = false;
         for (const idx of [door.idx, ...Direction.all.map((v) => this.lvl.idxfromdir(door.idx, v))]) {
@@ -71,7 +88,7 @@ class CloseSystem extends System {
                 //console.log(`${e} is adjacent to door: ${door} map: ${Fmt.ofmt(this.doorMap)}`);
             }
         }
-        if (!adjacent) {
+        if (!adjacent && !lootBlocking) {
             this.closeDoor(door);
         }
     }

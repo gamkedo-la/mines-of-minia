@@ -195,6 +195,9 @@ class InteractHandler extends Entity {
                 target: target,
                 points: this.player.pointsPerTurn,
             }));
+        } else if (others.some((v) => v.constructor.lootable)) {
+            let target = others.find((v) => v.constructor.lootable);
+            TurnSystem.postLeaderAction( new PickupAction({ points: this.player.pointsPerTurn, target: target, sfx: Assets.get('player.pickup', true)}));
         } else if (others.some((v) => v instanceof Stairs)) {
             let target = others.find((v) => v instanceof Stairs);
             TurnSystem.postLeaderAction( new MoveAction({ points: this.player.pointsPerTurn, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
@@ -206,9 +209,6 @@ class InteractHandler extends Entity {
             } else {
                 TurnSystem.postLeaderAction( new MoveAction({ points: this.player.pointsPerTurn, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));
             }
-        } else if (others.some((v) => v.constructor.lootable)) {
-            let target = others.find((v) => v.constructor.lootable);
-            TurnSystem.postLeaderAction( new PickupAction({ points: this.player.pointsPerTurn, target: target, sfx: Assets.get('player.pickup', true)}));
         } else if (others.some((v) => this.player.blockedBy & v.blocks)) {
             tookAction = false;
         } else {
