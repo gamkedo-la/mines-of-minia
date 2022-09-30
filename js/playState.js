@@ -134,14 +134,16 @@ class PlayState extends GameState {
                     sketch: Sketch.zero,
                     x_xform: XForm.xspec({ left: .75, right: .05, top: .1, bottom: .5}),
                     x_children: [
-                        UxText.xspec({ text: new Text({text: '0 - show/hide debug', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 0/8, bottom: 1-1/8})}),
-                        UxText.xspec({ text: new Text({text: '1 - show/hide los/fow', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 1/8, bottom: 1-2/8})}),
-                        UxText.xspec({ text: new Text({text: '9 - show/hide stats in console', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 2/8, bottom: 1-3/8})}),
-                        UxText.xspec({ text: new Text({text: '+ - zoom in', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 3/8, bottom: 1-4/8})}),
-                        UxText.xspec({ text: new Text({text: '- - zoom out', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 4/8, bottom: 1-5/8})}),
-                        UxText.xspec({ text: new Text({text: '<space> - end player turn', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 5/8, bottom: 1-6/8})}),
-                        UxText.xspec({ text: new Text({text: 'qweadzxc - move player', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 6/8, bottom: 1-7/8})}),
-                        UxText.xspec({ text: new Text({text: 'i - show/hide inventory', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 7/8, bottom: 1-8/8})}),
+                        UxText.xspec({ tag: 'game.dbg', text: new Text({text: `game state - seed ${Config.template.seed} lvl: ${Config.template.index}`, color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 0/10, bottom: 1-1/10})}),
+                        UxText.xspec({ text: new Text({text: '0 - show/hide debug', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 1/10, bottom: 1-2/10})}),
+                        UxText.xspec({ text: new Text({text: '1 - show/hide los/fow', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 2/10, bottom: 1-3/10})}),
+                        UxText.xspec({ text: new Text({text: '9 - show/hide stats in console', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 3/10, bottom: 1-4/10})}),
+                        UxText.xspec({ text: new Text({text: '+ - zoom in', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 4/10, bottom: 1-5/10})}),
+                        UxText.xspec({ text: new Text({text: '- - zoom out', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 5/10, bottom: 1-6/10})}),
+                        UxText.xspec({ text: new Text({text: '<space> - end player turn', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 6/10, bottom: 1-7/10})}),
+                        UxText.xspec({ text: new Text({text: 'qweadzxc - move player', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 7/10, bottom: 1-8/10})}),
+                        UxText.xspec({ text: new Text({text: 'i - show/hide inventory', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 8/10, bottom: 1-9/10})}),
+                        UxText.xspec({ text: new Text({text: 't - show/hide talents', color: 'red', align: 'right'}), x_xform: XForm.xspec({top: 9/10, bottom: 1-10/10})}),
                     ],
                 }),
             ],
@@ -156,6 +158,7 @@ class PlayState extends GameState {
         this.hudroot = Hierarchy.find(this.view, (v) => v.tag === 'hudroot');
         this.dbgroot = Hierarchy.find(this.view, (v) => v.tag === 'dbgroot');
         this.hud = Hierarchy.find(this.view, (v) => v.tag === 'hud');
+        this.gamedbg = Hierarchy.find(this.view, (v) => v.tag === 'game.dbg');
 
         // -- link UI elements to systems
         Systems.get('level').lvl = this.lvl;
@@ -241,6 +244,11 @@ class PlayState extends GameState {
     }
         
     onLevelLoaded(evt) {
+        // update game debug
+        console.log(`lvl: ${this.lvl.index} seed: ${Config.template.seed} gamedbg: ${this.gamedbg}`);
+        if (this.gamedbg) {
+            this.gamedbg.text = `game state - seed ${Config.template.seed} lvl: ${Config.template.index}`;
+        }
         //console.log(`${this} onLevelLoaded`);
         if (this.lvl.index > this.maxIndex) {
             this.maxIndex = this.lvl.index;

@@ -21,6 +21,7 @@ class LevelSystem extends System {
     static evtLoaded = 'lvl.loaded';
 
     static currentLevelIndex = 0;
+    static maxLevelIndex = 0;
     static dfltIterateTTL = 0;
 
     // linked to the last instantiated system
@@ -91,17 +92,17 @@ class LevelSystem extends System {
         // load boss template
         // FIXME
         if (index === 7) {
-            Config.template = MiniaTemplates.rockBoss;
+            let old = Config.template;
+            Config.template = MiniaTemplates.rockBoss.copy();
+            Config.template.seed = old.seed;
         }
 
         // is level to load cached?
-        let template = Object.assign( {}, Config.template, {
-            index: index,
-            dospawn: !this.loadLevel,
-        });
+        Config.template.index = index;
+        Config.template.dospawn = !this.loadLevel;
 
         // generate level
-        let plvl = ProcGen.genLvl(template);
+        let plvl = ProcGen.genLvl(Config.template);
         // update level info w/ saved level data
         let cachedLvl;
         if (this.loadLevel) {
@@ -120,6 +121,9 @@ class LevelSystem extends System {
         let goingUp = (plvl.index > this.constructor.currentLevelIndex);
         this.constructor.currentLevelIndex = plvl.index;
         this.lvl.index = plvl.index;
+        if (plvl.index > this.constructor.maxLevelIndex) {
+            this.constructor.maxLevelIndex = plvl.index;
+        }
 
         // update fow
         this.lvl.fowIdxs = (cachedLvl) ? cachedLvl.fowIdxs : [];

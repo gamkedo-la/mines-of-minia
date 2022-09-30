@@ -20,9 +20,10 @@ class TakeStairsAction extends Action {
         this.done = true;
         // determine which level
         let whichLevel = this.currentLevel + ((this.stairs.up) ? 1 : -1);
+        let load = (whichLevel > LevelSystem.maxLevelIndex) ? false : true;
         console.log(`current: ${this.currentLevel} up: ${this.stairs.up} which: ${whichLevel}`)
         // trigger want level event
-        Events.trigger(this.evtLevelWanted, { level: whichLevel });
+        Events.trigger(this.evtLevelWanted, { level: whichLevel, load: load });
     }
 
 }

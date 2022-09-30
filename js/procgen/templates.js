@@ -1,6 +1,6 @@
 export { MiniaTemplates };
 
-    import { Energy } from '../entities/energy.js';
+import { Energy } from '../entities/energy.js';
 import { Funguy } from '../entities/funguy.js';
 import { Magma } from '../entities/magma.js';
 import { Rous } from '../entities/rous.js';
@@ -11,6 +11,7 @@ import { ProcTemplate } from './ptemplate.js';
 class MiniaTemplates {
 
     static rockLvl = new ProcTemplate({
+        //seed: 74830 -- no stairs?
         doyield: true,
         translate: {
             floor: 'rock.floor',
@@ -41,9 +42,6 @@ class MiniaTemplates {
     static rockBoss = new ProcTemplate({
         doyield: true,
         boss: 'rock',
-        //seed: 3,
-        // FIXME: known bad seeds...
-        //seed: 62183,
         translate: {
             floor: 'rock.floor',
             wall: 'rock.wall',

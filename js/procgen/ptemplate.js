@@ -180,4 +180,8 @@ class ProcTemplate {
         this.spawn.machineRoomPct = Util.getpath(spec, 'spawn.machineRoomPct', .3);
 
     }
+
+    copy() {
+        return Util.update({}, this);
+    }
 }
