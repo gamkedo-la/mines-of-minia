@@ -146,7 +146,7 @@ class ProcTemplate {
         this.spawn.enemyRoomOptions = Util.getpath(spec, 'spawn.enemyRoomOptions', [
             { weight: .2, chance: 0 },
             { weight: .6, chance: 1, min: 1, max: 3 },
-            { weight: .2, chance: 1, min: 3, max: 7 },
+            { weight: .2, chance: 1, min: 2, max: 4 },
         ]);
         this.spawn.enemyHallOptions = Util.getpath(spec, 'spawn.enemyHallOptions', [
             { weight: .5, chance: 0 },
