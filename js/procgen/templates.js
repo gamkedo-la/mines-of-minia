@@ -13,7 +13,7 @@ class MiniaTemplates {
         //seed: 3,
         // FIXME: known bad seeds...
         //seed: 62183,
-        seed: 37241,
+        //seed: 37241,
         translate: {
             floor: 'rock.floor',
             wall: 'rock.wall',
@@ -39,7 +39,7 @@ class MiniaTemplates {
         boss: 'rock',
         //seed: 3,
         // FIXME: known bad seeds...
-        seed: 62183,
+        //seed: 62183,
         translate: {
             floor: 'rock.floor',
             wall: 'rock.wall',
