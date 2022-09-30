@@ -7,3 +7,5 @@ slnx.sqlite
 .vscode/launch.json
 *.db
 .vscode/settings.json
+*.swp
+*.swo
