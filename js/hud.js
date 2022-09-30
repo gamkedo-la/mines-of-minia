@@ -26,6 +26,7 @@ class Hud extends UxView {
         this.doScan = spec.doScan;
         this.doCancel = spec.doCancel;
         this.doInventory = spec.doInventory;
+        this.doTalents = spec.doTalents;
         this.doOptions = spec.doOptions;
         // build out hud
         this.adopt( new UxPanel({
@@ -154,6 +155,7 @@ class Hud extends UxView {
         // ui elements
         this.optionsButton = Hierarchy.find(this, (v) => v.tag === 'hud.options');
         this.equipButton = Hierarchy.find(this, (v) => v.tag === 'hud.equip');
+        this.talentsButton = Hierarchy.find(this, (v) => v.tag === 'hud.talents');
         this.waitButton = Hierarchy.find(this, (v) => v.tag === 'hud.wait');
         this.scanButton = Hierarchy.find(this, (v) => v.tag === 'hud.scan');
         this.cancelButton = Hierarchy.find(this, (v) => v.tag === 'hud.cancel');
@@ -164,12 +166,14 @@ class Hud extends UxView {
         this.onPlayerUpdate = this.onPlayerUpdate.bind(this);
         this.onOptionsClicked = this.onOptionsClicked.bind(this);
         this.onEquipClicked = this.onEquipClicked.bind(this);
+        this.onTalentsClicked = this.onTalentsClicked.bind(this);
         this.onWaitClicked = this.onWaitClicked.bind(this);
         this.onScanClicked = this.onScanClicked.bind(this);
         this.onCancelClicked = this.onCancelClicked.bind(this);
 
         this.optionsButton.evt.listen(this.optionsButton.constructor.evtMouseClicked, this.onOptionsClicked);
         this.equipButton.evt.listen(this.equipButton.constructor.evtMouseClicked, this.onEquipClicked);
+        this.talentsButton.evt.listen(this.talentsButton.constructor.evtMouseClicked, this.onTalentsClicked);
         this.waitButton.evt.listen(this.waitButton.constructor.evtMouseClicked, this.onWaitClicked);
         this.scanButton.evt.listen(this.scanButton.constructor.evtMouseClicked, this.onScanClicked);
         this.cancelButton.evt.listen(this.cancelButton.constructor.evtMouseClicked, this.onCancelClicked);
@@ -218,8 +222,10 @@ class Hud extends UxView {
     }
 
     onEquipClicked(evt) {
-        console.log(`${this} onEquipClicked: ${Fmt.ofmt(evt)}}`)
         if (this.doInventory) this.doInventory();
+    }
+    onTalentsClicked(evt) {
+        if (this.doTalents) this.doTalents();
     }
     onWaitClicked(evt) {
         if (this.getCurrentHandler() !== 'interact') return;

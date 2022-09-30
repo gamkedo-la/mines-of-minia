@@ -121,6 +121,7 @@ class PlayState extends GameState {
                             doCancel: this.doCancel.bind(this),
                             doInventory: this.doInventory.bind(this),
                             doOptions: this.doOptions.bind(this),
+                            doTalents: this.doTalents.bind(this),
                             getCurrentHandler: () => this.currentHandler,
                         }),
                     ],
