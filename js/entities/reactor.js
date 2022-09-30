@@ -18,20 +18,20 @@ class Reactor extends Item {
 
     // STATIC METHODS ------------------------------------------------------
     static getFuelRating(perap) {
-        if (perap <= .05) return 'low';
-        if (perap <= .1) return 'medium';
+        if (perap <= .01) return 'low';
+        if (perap <= .02) return 'medium';
         return 'high';
     }
 
     static getHealthRating(perap) {
-        if (perap <= .05) return 'low';
-        if (perap <= .1) return 'medium';
+        if (perap <= .005) return 'low';
+        if (perap <= .01) return 'medium';
         return 'high';
     }
 
     static getPowerRating(perap) {
-        if (perap <= .05) return 'low';
-        if (perap <= .1) return 'medium';
+        if (perap <= .005) return 'low';
+        if (perap <= .01) return 'medium';
         return 'high';
     }
 
@@ -99,7 +99,7 @@ class Reactor extends Item {
             d += `it may or may not have a *charm* applied. `
             d += `...identify to determine exact stats...`
         } else {
-            d += `this reactor has a *${Math.round(this.healthPerAP*100)}* health regen rating and a *${Math.round(this.powerPerAP*100)}* power regen rating `
+            d += `this reactor has a *${Math.round(this.healthPerAP*1000)}* health regen rating and a *${Math.round(this.powerPerAP*1000)}* power regen rating `
             d += `and consumes fuel at a rating of *${Math.round(1/this.fuelPerAP)}*. `
             d += `it is a level *${this.lvl}* reactor. `
             if (this.charms) d += `\n -- charms --\n`;
