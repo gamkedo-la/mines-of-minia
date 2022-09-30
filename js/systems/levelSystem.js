@@ -90,7 +90,7 @@ class LevelSystem extends System {
 
         // load boss template
         // FIXME
-        if (index === 2) {
+        if (index === 7) {
             Config.template = MiniaTemplates.rockBoss;
         }
 
