@@ -21,42 +21,6 @@ import { Translate } from './translate.js';
 
 class ProcGen {
 
-    static genPlayer(template) {
-        let player = new Player({
-            tag: 'pc',
-            idx: 0,
-            xform: new XForm({ stretch: false }),
-            sketch: Assets.get('player', true),
-            maxSpeed: Config.tileSize/.3/1000,
-            z: template.fgZed,
-            healthMax: 100,
-            losRange: Config.tileSize*5,
-            team: 'player',
-            inventory: new InventoryData({
-                numSlots: 15,
-                beltSlots: 3,
-                gadgetSlots: 1,
-            }),
-        });
-
-        // assign initial inventory
-        let reactor = new Reactor({
-            identified: true,
-            healthRegenPerAP: .2,
-            fuelPerAP: .025,
-            sketch: Assets.get('reactor.1', true),
-        });
-        let weapon = new Weapon({
-            kind: 'poke',
-            sketch: Assets.get('poke.1', true),
-        });
-
-        player.inventory.equip('reactor', reactor);
-        player.inventory.equip('weapon', weapon);
-
-        return player;
-    }
-
     static *initGenerator(template, pstate) {
         if (!template.seed) template.seed = Random.rangeInt(1,100000);
         let seed = template.seed + template.index;

@@ -4,9 +4,11 @@ import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
 import { Fmt } from '../base/fmt.js';
+import { Generator } from '../base/generator.js';
 import { Mathf } from '../base/math.js';
 import { Prng } from '../base/prng.js';
 import { Util } from '../base/util.js';
+import { XForm } from '../base/xform.js';
 import { BooCharm } from '../charms/boo.js';
 import { Charm } from '../charms/charm.js';
 import { FieryCharm } from '../charms/fiery.js';
@@ -27,6 +29,7 @@ import { Key } from '../entities/key.js';
 import { Machinery } from '../entities/machinery.js';
 import { Magma } from '../entities/magma.js';
 import { Overbearer } from '../entities/overbearer.js';
+import { Player } from '../entities/player.js';
 import { Projectile } from '../entities/projectile.js';
 import { RagingBull } from '../entities/ragingBull.js';
 import { RangedWeapon } from '../entities/rangedWeapon.js';
@@ -40,8 +43,8 @@ import { ThumpBot } from '../entities/thumpBot.js';
 import { Tile } from '../entities/tile.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
+import { InventoryData } from '../inventory.js';
 import { ProcTemplate } from './ptemplate.js';
-
 
 class Spawn {
 
@@ -700,9 +703,9 @@ class Spawn {
 
     }
 
-    static genWeapon(template, pstate) {
+    static genWeapon(template, overrides={}) {
         // weapon template
-        let tmpl = {
+        let tmpl = Object.assign({
             kinds: Weapon.kinds,
             lvlOptions: [
                 { weight: .1, delta: -1 },
@@ -750,7 +753,7 @@ class Spawn {
                 2: .5,
                 3: .75,
             },
-        };
+        }, overrides);
         let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
         // -- kind
         let kind = Prng.choose(tmpl.kinds);
@@ -771,12 +774,12 @@ class Spawn {
             // pick charm
             let cls = Prng.choose(tmpl.charms);
             charms.push( new cls() );
-            // -- roll for curse
-            if (Prng.flip(tmpl.cursePct)) {
-                let cls = Prng.choose(tmpl.curses);
-                // pick curse
-                charms.push( new cls() );
-            }
+        }
+        // -- roll for curse
+        if (Prng.flip(tmpl.cursePct)) {
+            let cls = Prng.choose(tmpl.curses);
+            // pick curse
+            charms.push( new cls() );
         }
         // -- identifiable
         let identifiablePct = tmpl.identifiableByTier[tier];
@@ -802,9 +805,9 @@ class Spawn {
         return x_wpn;
     }
 
-    static genReactor(template, pstate) {
+    static genReactor(template, overrides={}) {
         // reactor template
-        let tmpl = {
+        let tmpl = Object.assign({
             lvlOptions: [
                 { weight: .1, delta: -1 },
                 { weight: .3, delta: 0 },
@@ -832,7 +835,7 @@ class Spawn {
                 ],
             },
             fuelPerTier: {
-                1: { min: .02, max: .3, scale: 0.9 },
+                1: { min: .02, max: .03, scale: 0.9 },
                 2: { min: .012, max: .019, scale: 0.8 },
                 3: { min: .004, max: .011, scale: 0.7 },
             },
@@ -855,7 +858,7 @@ class Spawn {
                 2: .5,
                 3: .75,
             },
-        };
+        }, overrides);
         let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
         // -- lvl
         let lvl = Math.max(1, lvlTier + Prng.chooseWeightedOption(tmpl.lvlOptions).delta);
@@ -876,12 +879,12 @@ class Spawn {
             // pick charm
             let cls = Prng.choose(tmpl.charms);
             charms.push( new cls() );
-            // -- roll for curse
-            if (Prng.flip(tmpl.cursePct)) {
-                let cls = Prng.choose(tmpl.curses);
-                // pick curse
-                charms.push( new cls() );
-            }
+        }
+        // -- roll for curse
+        if (Prng.flip(tmpl.cursePct)) {
+            let cls = Prng.choose(tmpl.curses);
+            // pick curse
+            charms.push( new cls() );
         }
         // -- identifiable
         let identifiablePct = tmpl.identifiableByTier[tier];
@@ -1098,11 +1101,11 @@ class Spawn {
                 break;
             }
             case 'weapon': {
-                loot.push(this.genWeapon(template, pstate));
+                loot.push(this.genWeapon(template));
                 break;
             }
             case 'reactor': {
-                loot.push(this.genReactor(template, pstate));
+                loot.push(this.genReactor(template));
                 break;
             }
             case 'shielding': {
@@ -1363,4 +1366,70 @@ class Spawn {
 
     }
 
+    static genPlayer(template) {
+        let player = new Player({
+            tag: 'pc',
+            idx: 0,
+            xform: new XForm({ stretch: false }),
+            sketch: Assets.get('player', true),
+            maxSpeed: Config.tileSize/.3/1000,
+            z: template.fgZed,
+            healthMax: 100,
+            losRange: Config.tileSize*5,
+            team: 'player',
+            inventory: new InventoryData({
+                numSlots: 15,
+                beltSlots: 3,
+                gadgetSlots: 1,
+            }),
+        });
+
+
+        // assign initial inventory
+        /*
+        let reactor = new Reactor({
+            identified: true,
+            healthRegenPerAP: .2,
+            fuelPerAP: .025,
+            sketch: Assets.get('reactor.1', true),
+        });
+        */
+
+        let x_weapon = this.genWeapon(template, {
+            charmPct: 0, 
+            cursePct: 0, 
+            tierByLTier: { 
+                1: [{ weight: 1, tier: 1 }],
+                2: [{ weight: 1, tier: 1 }],
+                2: [{ weight: 1, tier: 1 }],
+            },
+            spryPerTier: {
+                1: { min: 10, max: 10},
+            },
+            identifiableByTier: {
+                1: 0,
+            },
+        });
+        let weapon = Generator.generate(x_weapon);
+
+        let x_reactor = this.genReactor(template, {
+            charmPct: 0, 
+            cursePct: 0, 
+            tierByLTier: { 
+                1: [{ weight: 1, tier: 1 }],
+                2: [{ weight: 1, tier: 1 }],
+                2: [{ weight: 1, tier: 1 }],
+            },
+            identifiableByTier: {
+                1: 0,
+            },
+        });
+        let reactor = Generator.generate(x_reactor);
+
+        player.inventory.equip('reactor', reactor);
+        player.inventory.equip('weapon', weapon);
+
+        return player;
+    }
+    
 }

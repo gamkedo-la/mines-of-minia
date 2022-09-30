@@ -9,7 +9,7 @@ import { OverlaySystem } from '../systems/overlaySystem.js';
 class Fuelcell extends Item {
     static slot = 'item';
     static stackable = true;
-    static dfltFuel = 10;
+    static dfltFuel = 25;
     static usable = true;
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
@@ -21,6 +21,7 @@ class Fuelcell extends Item {
     // SERIALIZATION -------------------------------------------------------
     as_kv() {
         return Object.assign({}, super.as_kv(), {
+            description: `a portable fuel source, restores *25* fuel when used`,
             fuel: this.fuel,
         });
     }

@@ -53,6 +53,7 @@ import { TalentSystem } from './systems/talentSystem.js';
 import { Talents } from './talents.js';
 import { DirectiveHandler } from './directiveHandler.js';
 import { PlayOptions } from './playOptions.js';
+import { Spawn } from './procgen/spawn.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -169,7 +170,7 @@ class PlayState extends GameState {
             this.player = Serialization.loadPlayer();
             this.setPlayerIdx = false;
         } else {
-            this.player = ProcGen.genPlayer(Config.template);
+            this.player = Spawn.genPlayer(Config.template);
             this.setPlayerIdx = true;
         }
         this.lvl.adopt(this.player);
