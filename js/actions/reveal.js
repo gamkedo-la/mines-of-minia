@@ -43,9 +43,9 @@ class RevealAction extends Action {
         }
         if (deleted) {
             for (const nidx of Direction.all.map((v) => this.lvl.idxfromdir(this.actor.idx, v))) {
-                console.log(`find tiles at ${nidx} from ${this.actor.idx}`);
+                //console.log(`find tiles at ${nidx} from ${this.actor.idx}`);
                 for (const tile of this.lvl.findidx(nidx, (v) => v.cls === 'Tile' || v.cls === 'Facade')) {
-                    console.log(`recompute sketches for ${tile}`);
+                    //console.log(`recompute sketches for ${tile}`);
                     tile.computeSketches();
                 }
             }

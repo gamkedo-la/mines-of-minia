@@ -1133,12 +1133,9 @@ class Spawn {
         // pick enemy class
         let enemyOption = Prng.chooseWeightedOption(x_spawn.enemyList, true);
         let enemyClass = enemyOption.cls;
-        console.log(`cls: ${enemyClass.name}`);
-        //let enemyClass = Prng.choose(x_spawn.enemyList);
         // -- level
         let lvl = template.index;
         let option = Prng.chooseWeightedOption(x_spawn.enemyLvlOptions);
-        //console.log(`option: ${Fmt.ofmt(option)}`);
         lvl += option.delta;
         lvl = Mathf.clampInt(lvl, 1, Config.maxLvl);
         let x_enemy = enemyClass.xspec({
