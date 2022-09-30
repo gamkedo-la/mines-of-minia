@@ -1131,7 +1131,10 @@ class Spawn {
     static genEnemy(template, pstate) {
         let x_spawn = template.spawn || {};
         // pick enemy class
-        let enemyClass = Prng.choose(x_spawn.enemyList);
+        let enemyOption = Prng.chooseWeightedOption(x_spawn.enemyList, true);
+        let enemyClass = enemyOption.cls;
+        console.log(`cls: ${enemyClass.name}`);
+        //let enemyClass = Prng.choose(x_spawn.enemyList);
         // -- level
         let lvl = template.index;
         let option = Prng.chooseWeightedOption(x_spawn.enemyLvlOptions);

@@ -1,8 +1,10 @@
 export { MiniaTemplates };
 
+    import { Energy } from '../entities/energy.js';
 import { Funguy } from '../entities/funguy.js';
 import { Magma } from '../entities/magma.js';
 import { Rous } from '../entities/rous.js';
+import { Scarab } from '../entities/scarab.js';
 import { SpikeTrap } from '../entities/spikeTrap.js';
 import { ProcTemplate } from './ptemplate.js';
 
@@ -10,10 +12,6 @@ class MiniaTemplates {
 
     static rockLvl = new ProcTemplate({
         doyield: true,
-        //seed: 3,
-        // FIXME: known bad seeds...
-        //seed: 62183,
-        //seed: 37241,
         translate: {
             floor: 'rock.floor',
             wall: 'rock.wall',
@@ -24,7 +22,13 @@ class MiniaTemplates {
             doNoise: true,
         },
         spawn: {
-            enemyList: [ Rous, Funguy, Magma ],
+            enemyList: [ 
+                { weight: 1, cls: Rous },
+                { weight: 1, cls: Scarab },
+                { weight: .5, cls: Funguy },
+                { weight: .25, cls: Magma },
+                { weight: .25, cls: Energy },
+            ],
             trapList: [ SpikeTrap ],
             growth: 'rock.growth',
             growthFreePct: .1,
@@ -58,7 +62,11 @@ class MiniaTemplates {
             secretCacheMax: 0,
             lockRoomMin: 0,
             lockRoomMax: 0,
-            enemyList: [ Rous, Funguy, Magma ],
+            enemyList: [ 
+                { weight: 1, cls: Rous },
+                { weight: .5, cls: Funguy },
+                { weight: .5, cls: Magma },
+            ],
             trapList: [ SpikeTrap ],
             growth: 'rock.growth',
             growthFreePct: .1,

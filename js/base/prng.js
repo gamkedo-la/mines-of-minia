@@ -112,7 +112,7 @@ class Prng {
         // count weights
         if (!arr || !arr.length) return null;
         if (arr.length === 1) return arr[0];
-        let weights = arr.reduce((pv, cv) => (pv.weight||1)+(cv.weight||1), 0);
+        let weights = arr.reduce((pv, cv) => pv+(cv.weight||1), 0);
         let choice = this.random() * weights;
         for (let i=0, t=0; i<arr.length; i++) {
             let w = arr[i].weight || 1;
