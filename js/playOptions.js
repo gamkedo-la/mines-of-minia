@@ -46,38 +46,46 @@ class PlayOptions extends UxView {
                     text: new Text({text: 'options', color: titleColor}),
                     xform: new XForm({ top: .05, bottom: .85}),
                 }),
-                button('   save   ', { tag: 'options.save', xform: new XForm({top: .2, bottom: .6}) }),
-                button('   quit   ', { tag: 'options.quit', xform: new XForm({top: .4, bottom: .4}) }),
-
                 new UxPanel({
-                    sketch: Sketch.zero, 
-                    xform: new XForm({ top: .6, bottom: .2}),
+                    sketch: Sketch.zero,
+                    xform: new XForm({ top: .2 }),
                     children: [
-                        new UxText({
-                            text: new Text({text: 'music volume', color: textColor}),
-                            xform: new XForm({ top: .1, bottom: .1, left: .1, right: .6}),
-                        }),
-                        new UxSlider({
-                            tag: 'music.slider',
-                            value: AudioSystem.getVolume('music'),
-                            xform: new XForm({ top: .2, bottom: .2, left: .45, right: .1}),
-                        }),
-                    ],
-                }),
+                        button('   save   ', { tag: 'options.save', xform: new XForm({top: .0, bottom: .8}) }),
+                        button('   quit   ', { tag: 'options.quit', xform: new XForm({top: .2, bottom: .6}) }),
 
-                new UxPanel({
-                    sketch: Sketch.zero, 
-                    xform: new XForm({ top: .8, bottom: 0}),
-                    children: [
-                        new UxText({
-                            text: new Text({text: '  sfx volume', color: textColor}),
-                            xform: new XForm({ top: .1, bottom: .1, left: .1, right: .6}),
+                        new UxPanel({
+                            sketch: Sketch.zero, 
+                            xform: new XForm({ top: .4, bottom: .4}),
+                            children: [
+                                new UxText({
+                                    text: new Text({text: 'music volume', color: textColor}),
+                                    xform: new XForm({ top: .1, bottom: .1, left: .1, right: .6}),
+                                }),
+                                new UxSlider({
+                                    tag: 'music.slider',
+                                    value: AudioSystem.getVolume('music'),
+                                    xform: new XForm({ top: .2, bottom: .2, left: .45, right: .1}),
+                                }),
+                            ],
                         }),
-                        new UxSlider({
-                            tag: 'sfx.slider',
-                            value: AudioSystem.getVolume('sfx'),
-                            xform: new XForm({ top: .2, bottom: .2, left: .45, right: .1}),
+
+                        new UxPanel({
+                            sketch: Sketch.zero, 
+                            xform: new XForm({ top: .6, bottom: .2}),
+                            children: [
+                                new UxText({
+                                    text: new Text({text: '  sfx volume', color: textColor}),
+                                    xform: new XForm({ top: .1, bottom: .1, left: .1, right: .6}),
+                                }),
+                                new UxSlider({
+                                    tag: 'sfx.slider',
+                                    value: AudioSystem.getVolume('sfx'),
+                                    xform: new XForm({ top: .2, bottom: .2, left: .45, right: .1}),
+                                }),
+                            ],
                         }),
+
+                        button('   back   ', { tag: 'options.back', xform: new XForm({top: .8, bottom: 0}) }),
                     ],
                 }),
 
@@ -99,6 +107,8 @@ class PlayOptions extends UxView {
         this.quitButton.evt.listen(this.quitButton.constructor.evtMouseClicked, this.onQuitClicked);
         this.musicSlider.evt.listen(this.musicSlider.constructor.evtUpdated, this.onMusicVolumeUpdated);
         this.sfxSlider.evt.listen(this.sfxSlider.constructor.evtUpdated, this.onSfxVolumeUpdated);
+        let optionsButton = Hierarchy.find(this, (v) => v.tag === 'options.back');
+        if (optionsButton) optionsButton.evt.listen( optionsButton.constructor.evtMouseClicked, (evt) => this.destroy());
     }
 
     destroy() {

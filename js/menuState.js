@@ -58,17 +58,15 @@ class MenuState extends GameState {
 
     onOptionsClicked(evt) {
         console.log(`${this} onOptionsClicked: ${Fmt.ofmt(evt)}`);
-        /*
         // disable
-        this.view.active = false;
+        this.panel.active = false;
         let options = new Options({
             xform: new XForm({border: .2}),
         });
         this.view.adopt(options);
         options.evt.listen(options.constructor.evtDestroyed, () => {
-            this.view.active = true;
+            this.panel.active = true;
         });
-        */
     }
 
     onHelpClicked(evt) {
