@@ -44,14 +44,17 @@ class UxSlider extends UxView {
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
+        this.onRooted = this.onRooted.bind(this);
         this.evt.listen(this.constructor.evtMouseDown, this.onMouseDown);
         this.evt.listen(this.constructor.evtMouseUp, this.onMouseUp);
+        this.evt.listen(this.constructor.evtRooted, this.onRooted);
     }
 
     destroy() {
         Events.ignore(MouseSystem.evtMoved, this.onMouseMove);
         this.evt.ignore(this.constructor.evtMouseDown, this.onMouseDown);
         this.evt.ignore(this.constructor.evtMouseUp, this.onMouseUp);
+        this.evt.ignore(this.constructor.evtRooted, this.onRooted);
         this._unlinkSketch('_bar');
         this._unlinkSketch('_knob');
         super.destroy();
@@ -105,6 +108,11 @@ class UxSlider extends UxView {
         let v = Mathf.clamp(this.translateMouse(lmouse.x), 0, 1);
         this.value = v;
     }
+    onRooted(evt) {
+        if (evt.actor !== this) return;
+        //dec.evt.trigger(dec.constructor.evtRooted, {actor: dec, root: this.root(parent)});
+        this.evt.trigger(this.constructor.evtUpdated);
+    }
 
     // METHODS -------------------------------------------------------------
     show() {
@@ -131,14 +139,14 @@ class UxSlider extends UxView {
     _render(ctx) {
         // render
         this.barXform.apply(ctx, false);
-        this._bar.render(ctx, this.barXform.minx, this.barXform.miny);
         this._bar.width = this.barXform.width;
         this._bar.height = this.barXform.height;
+        this._bar.render(ctx, this.barXform.minx, this.barXform.miny);
         this.barXform.revert(ctx, false);
         this.knobXform.apply(ctx, false);
-        this._knob.render(ctx, this.knobXform.minx, this.knobXform.miny);
         this._knob.width = this.knobXform.width;
         this._knob.height = this.knobXform.height;
+        this._knob.render(ctx, this.knobXform.minx, this.knobXform.miny);
         this.knobXform.revert(ctx, false);
     }
 
