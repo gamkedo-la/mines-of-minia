@@ -25,6 +25,7 @@ class Funguy extends Enemy{
             x_sketch: Assets.get('funguy'),
             deathTTL: 700,
             attackKind: 'dark',
+            pointsPerTurn: 13,
         }, spec);
     }
 

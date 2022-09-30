@@ -32,6 +32,7 @@ class Energy extends Enemy{
             deathTTL: 600,
             attackKind: 'shock',
             animState: 'idle',
+            pointsPerTurn: 8,
         }, spec);
     }
 
