@@ -1,5 +1,6 @@
 export { Inventory, InventoryData };
 
+    import { Attack } from './actions/attack.js';
 import { DropAction } from './actions/drop.js';
 import { UseAction } from './actions/use.js';
 import { Assets } from './base/assets.js';
@@ -1211,16 +1212,23 @@ class StatsPopup extends UxView {
                 }),
 
                 new UxPanel({
-                    tag: 'rows.panel',
+                    tag: 'left.panel',
                     sketch: Sketch.zero,
-                    xform: new XForm({top: .15, bottom: .15}),
+                    xform: new XForm({top: .15, bottom: .15, right: .5}),
                 }),
+
+                new UxPanel({
+                    tag: 'right.panel',
+                    sketch: Sketch.zero,
+                    xform: new XForm({top: .15, bottom: .15, left: .5}),
+                }),
+
             ],
         });
         this.adopt(this.panel);
 
-        let rowsPanel = Hierarchy.find(this.panel, (v) => v.tag === 'rows.panel');
-        let rows = [
+        let leftPanel = Hierarchy.find(this.panel, (v) => v.tag === 'left.panel');
+        let leftRows = [
             [ 'lvl', () => this.player.lvl ],
             [ 'brawn', () => this.player.brawn ],
             [ 'spry', () => this.player.spry ],
@@ -1229,10 +1237,21 @@ class StatsPopup extends UxView {
             [ 'power', () => `${this.player.power}/${this.player.powerMax}` ],
             [ 'fuel', () => `${this.player.fuel}/${this.player.fuelMax}` ],
         ];
-        let size = 1/rows.length;
+        let rightRows = [
+            [ 'crit', () => this.player.critPct ],
+            [ 'bonk pro', () => Attack.getWeaponProficiency(this.player, { kind: 'bonk'}) ],
+            [ 'poke pro', () => Attack.getWeaponProficiency(this.player, { kind: 'poke'}) ],
+            [ 'hack pro', () => Attack.getWeaponProficiency(this.player, { kind: 'hack'}) ],
+            [ 'dmg red', () => this.player.damageReduction ],
+            [ 'fire res', () => (this.player.resistances.fire || 0) ],
+            [ 'ice res', () => (this.player.resistances.ice || 0) ],
+            [ 'shock res', () => (this.player.resistances.shock || 0) ],
+            [ 'dark res', () => (this.player.resistances.dark || 0) ],
+        ];
+        let size = 1/Math.max(leftRows.length, rightRows.length);
 
-        for (let i=0; i<rows.length; i++) {
-            let [key, valuefcn] = rows[i];
+        for (let i=0; i<leftRows.length; i++) {
+            let [key, valuefcn] = leftRows[i];
             let value = valuefcn().toString();
             console.log(`key: ${key} value: ${value}`);
             let panel = new UxPanel({
@@ -1244,14 +1263,36 @@ class StatsPopup extends UxView {
                         text: new Text({ align: 'left', text: key, color: invTextColor}),
                     }),
                     new UxInput({
-                        tag: 'stats.lvl',
                         xform: new XForm({offset: 5, left: .6, right: .1}),
                         text: new Text({ text: value, color: invTextColor}),
                         active: false,
                     }),
                 ],
             });
-            rowsPanel.adopt(panel);
+            leftPanel.adopt(panel);
+        }
+
+        let rightPanel = Hierarchy.find(this.panel, (v) => v.tag === 'right.panel');
+        for (let i=0; i<rightRows.length; i++) {
+            let [key, valuefcn] = rightRows[i];
+            let value = valuefcn().toString();
+            console.log(`key: ${key} value: ${value}`);
+            let panel = new UxPanel({
+                sketch: Sketch.zero,
+                xform: new XForm({top: size*i, bottom: 1-(i+1)*size}),
+                children: [
+                    new UxText({
+                        xform: new XForm({offset: 5, left: .1, right: .5}),
+                        text: new Text({ align: 'left', text: key, color: invTextColor}),
+                    }),
+                    new UxInput({
+                        xform: new XForm({offset: 5, left: .6, right: .1}),
+                        text: new Text({ text: value, color: invTextColor}),
+                        active: false,
+                    }),
+                ],
+            });
+            rightPanel.adopt(panel);
         }
 
         this.onKeyDown = this.onKeyDown.bind(this);

@@ -1,6 +1,7 @@
 export { Shielding };
 
 import { Assets } from '../base/assets.js';
+import { Fmt } from '../base/fmt.js';
 import { Random } from '../base/random.js';
 import { Item } from './item.js';
 
