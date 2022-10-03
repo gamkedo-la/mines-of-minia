@@ -216,7 +216,7 @@ class Spawn {
             if (spawn) {
                 // roll for loot
                 let loot = [];
-                if (Prng.flip(template.growthLootPct)) {
+                if (Prng.flip(x_spawn.growthLootPct)) {
                     loot = this.genLoot(template, pstate, x_spawn.growthLootOptions);
                 }
                 let x_growth = Growth.xspec({
