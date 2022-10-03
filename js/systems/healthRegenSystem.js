@@ -1,8 +1,10 @@
 export { HealthRegenSystem };
 
+    import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { System } from '../base/system.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { OverlaySystem } from './overlaySystem.js';
 import { TurnSystem } from './turnSystem.js';
 
 class HealthRegenSystem extends System {
@@ -42,6 +44,7 @@ class HealthRegenSystem extends System {
                 // update entity health
                 let regen = Math.floor(total);
                 let update = Math.min(e.health + regen, e.healthMax);
+                Events.trigger(OverlaySystem.evtNotify, {which: 'popup', actor: this, msg: `+${regen}`});
                 UpdateSystem.eUpdate(e, {health: update});
                 // calculate remainder
                 total -= regen;

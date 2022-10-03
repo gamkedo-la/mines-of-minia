@@ -1,8 +1,10 @@
 export { PowerRegenSystem };
 
+    import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { System } from '../base/system.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { OverlaySystem } from './overlaySystem.js';
 import { TurnSystem } from './turnSystem.js';
 
 class PowerRegenSystem extends System {
@@ -47,6 +49,7 @@ class PowerRegenSystem extends System {
                 let regen = Math.floor(total);
                 let update = Math.min(e.power + regen, e.powerMax);
                 UpdateSystem.eUpdate(e, {power: update});
+                Events.trigger(OverlaySystem.evtNotify, {which: 'popup', actor: this, msg: `+${regen} pow`});
                 // calculate remainder
                 total -= regen;
             }
