@@ -18,8 +18,8 @@ class Reactor extends Item {
 
     // STATIC METHODS ------------------------------------------------------
     static getFuelRating(perap) {
-        if (perap <= .01) return 'low';
-        if (perap <= .02) return 'medium';
+        if (perap <= .05) return 'low';
+        if (perap <= .01) return 'medium';
         return 'high';
     }
 

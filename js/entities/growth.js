@@ -1,8 +1,10 @@
 export { Growth };
 
+    import { DropLootAction } from '../actions/loot.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Fmt } from '../base/fmt.js';
+import { ActionSystem } from '../base/systems/actionSystem.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Trap } from './trap.js';
 
@@ -20,20 +22,29 @@ class Growth extends Trap {
     }
     cpost(spec) {
         super.cpost(spec);
-        this.bgoZed = spec.bgoZed || 2;
+        this.bgoZed = spec.bgoZed || Config.bgoZed;
         // -- los state
         this.blocksLoS = (this.state === 'armed');
+        // -- loot
+        this.loot = spec.loot || [];
     }
  
     // SERIALIZATION -------------------------------------------------------
     as_kv() {
         return Object.assign({}, super.as_kv(), {
             bgoZed: this.bgoZed,
+            loot: this.loot,
         });
     }
 
     trigger(actor) {
         super.trigger(actor);
+        // spawn any loot
+        for (let loot of (this.loot || [])) {
+            ActionSystem.assign(this, new DropLootAction({
+                lootSpec: loot,
+            }));
+        }
         // once triggered, growth no longer blocks LoS
         UpdateSystem.eUpdate(this, { blocksLoS: false, z: this.bgoZed });
     }

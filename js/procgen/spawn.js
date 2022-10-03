@@ -214,8 +214,14 @@ class Spawn {
                 if (sample < (growthNoisePct*2)-1) spawn = true;
             }
             if (spawn) {
+                // roll for loot
+                let loot = [];
+                if (Prng.flip(template.growthLootPct)) {
+                    loot = this.genLoot(template, pstate, x_spawn.growthLootOptions);
+                }
                 let x_growth = Growth.xspec({
                     idx: idx,
+                    loot: loot,
                     z: template.fgZed,
                     x_sketch: Assets.get(growth),
                 });
@@ -835,9 +841,9 @@ class Spawn {
                 ],
             },
             fuelPerTier: {
-                1: { min: .02, max: .03, scale: 0.9 },
-                2: { min: .012, max: .019, scale: 0.8 },
-                3: { min: .004, max: .011, scale: 0.7 },
+                1: { min: .01, max: .015, scale: 0.9 },
+                2: { min: .006, max: .0095, scale: 0.8 },
+                3: { min: .002, max: .0055, scale: 0.7 },
             },
             powerPerTier: {
                 1: { min: .007, max: .011, scale: 1.1 },
