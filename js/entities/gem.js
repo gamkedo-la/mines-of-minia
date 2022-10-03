@@ -22,7 +22,7 @@ class Gem extends Item {
     static dfltSecret = 'blue';
     static secretKinds = [
         'blue',
-        'gold',
+        'red',
     ];
     static dfltDescription = 'a shiny gem';
     static descriptionMap = {
