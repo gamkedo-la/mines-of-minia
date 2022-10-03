@@ -1,9 +1,12 @@
 export { Gem };
 
 import { Assets } from '../base/assets.js';
+import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { DazedCharm } from '../charms/dazed.js';
+import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Item } from './item.js';
 
 class Gem extends Item {
@@ -12,21 +15,26 @@ class Gem extends Item {
     static stackable = true;
     static discoverable = true;
     static usable = true;
+    static breakable = true;
 
     static dfltKind = 'health';
     // -- note: kinds, kindTags, secretNames need to be kept in sync (same length)
     static kinds = [
         'test',
         'health',
+        'daze',
     ];
     static dfltSecret = 'blue';
     static secretKinds = [
         'blue',
         'red',
+        'purple',
     ];
     static dfltDescription = 'a shiny gem';
     static descriptionMap = {
+        'test': 'a test gem',
         'health': 'a gem that restores a small amount of the player\'s health',
+        'daze': 'a gem that causes target to be dazed for a short time',
     }
 
     // -- maps kind->secretKind
@@ -94,6 +102,7 @@ class Gem extends Item {
 
     static discover(kind) {
         this.discoveredKinds.add(kind);
+        Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `discovered ${kind} gem`});
     }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
@@ -124,7 +133,7 @@ class Gem extends Item {
         });
     }
 
-    // EVENT HANDLERS ------------------------------------------------------
+    // METHODS -------------------------------------------------------------
     use(actor) {
         switch (this.kind) {
             case 'health': {
@@ -132,6 +141,12 @@ class Gem extends Item {
                 if (health !== actor.health) {
                     UpdateSystem.eUpdate(actor, {health: health });
                 }
+                break;
+            }
+            case 'daze': {
+                let dazed = new DazedCharm();
+                console.log(`applied ${dazed} to ${actor}`);
+                actor.addCharm(dazed);
                 break;
             }
         }
@@ -142,6 +157,11 @@ class Gem extends Item {
         // trigger used event
         this.evt.trigger(this.constructor.evtUse, {actor: this}, true);
 
+    }
+
+    break(target, idx) {
+        console.log(`break item: ${this} target: ${target} idx: ${idx}`);
+        this.destroy();
     }
 
 }

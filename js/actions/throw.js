@@ -6,6 +6,7 @@ import { PlaySfxAction } from '../base/actions/playSfx.js';
 import { SerialAction } from '../base/actions/serialAction.js';
 import { Assets } from '../base/assets.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
+import { BreakAction } from './break.js';
 import { DropAction } from './drop.js';
 
 class ThrowToAction extends Action {
@@ -77,6 +78,7 @@ class ThrowAction extends SerialAction {
         this.idx = spec.idx;
         this.x = spec.x;
         this.y = spec.y;
+        this.lvl = spec.lvl;
         this.needsDrop = spec.hasOwnProperty('needsDrop') ? spec.needsDrop : true;
         this.throwsfx = spec.throwsfx || this.constructor.dfltThrowSfx;
         this.hitsfx = spec.hitsfx || this.constructor.dfltHitSfx;
@@ -110,6 +112,16 @@ class ThrowAction extends SerialAction {
         if (this.hitsfx) {
             this.subs.push( new PlaySfxAction({
                 sfx: this.hitsfx,
+            }));
+        }
+
+        // if item is breakable... break upon impact
+        if (this.item.constructor.breakable) {
+            let target = this.lvl.firstidx(this.idx, (v) => v.health);
+            this.subs.push( new BreakAction({
+                item: this.item,
+                target: target,
+                idx: this.idx,
             }));
         }
 

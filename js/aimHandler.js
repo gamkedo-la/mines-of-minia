@@ -79,7 +79,7 @@ class AimHandler extends Entity {
         let targetIdx = idx;
         for (let i=1; i<pathidxs.length; i++) {
             if (this.lvl.anyidx(pathidxs[i], (v) => (v.idx === pathidxs[i]) && (this.shooter.blockedBy & v.blocks))) {
-                if (this.shooter.constructor.shootable) {
+                if (this.shooter.constructor.shootable || this.shooter.constructor.breakable) {
                     targetIdx = pathidxs[i];
                 } else {
                     targetIdx = pathidxs[i-1];
@@ -113,6 +113,7 @@ class AimHandler extends Entity {
             // otherwise throw to index
             } else {
                 action = new ThrowAction({
+                    lvl: this.lvl,
                     points: this.player.pointsPerTurn,
                     item: this.shooter,
                     idx: targetIdx,

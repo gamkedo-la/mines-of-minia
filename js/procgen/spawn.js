@@ -73,7 +73,7 @@ class Spawn {
         // -- fuel
         this.spawnFuel(template, pstate);
         // -- test objects
-        //this.spawnTest(template, pstate);
+        this.spawnTest(template, pstate);
         yield;
     }
 
@@ -1303,38 +1303,19 @@ class Spawn {
                     count: 10,
                 })],
             }),
+            */
 
-            Scarab.xspec({
+            Magma.xspec({
                 healthMax: 5,
                 xp: 1,
-                loot: [ Token.xspec({
-                    name: 'token',
-                    x_sketch: Assets.get('token'),
-                    count: 10,
-                })],
             }),
-            */
 
             Gem.xspec({
                 kind: 'test',
             }),
 
-            Weapon.xspec({
-                kind: 'bonk',
-                lvl: 1,
-                tier: 1,
-                spry: 10,
-                baseDamageMin: 5,
-                baseDamageMax: 5,
-            }),
-
-            Weapon.xspec({
-                kind: 'hack',
-                lvl: 1,
-                tier: 1,
-                spry: 10,
-                baseDamageMin: 5,
-                baseDamageMax: 5,
+            Gem.xspec({
+                kind: 'daze',
             }),
 
             /*
