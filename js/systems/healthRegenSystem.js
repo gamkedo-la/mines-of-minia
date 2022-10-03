@@ -44,7 +44,7 @@ class HealthRegenSystem extends System {
                 // update entity health
                 let regen = Math.floor(total);
                 let update = Math.min(e.health + regen, e.healthMax);
-                Events.trigger(OverlaySystem.evtNotify, {which: 'popup', actor: this, msg: `+${regen}`});
+                Events.trigger(OverlaySystem.evtNotify, {which: 'popup.green', actor: e, msg: `+${regen}`});
                 UpdateSystem.eUpdate(e, {health: update});
                 // calculate remainder
                 total -= regen;
