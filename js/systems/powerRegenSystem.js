@@ -49,7 +49,7 @@ class PowerRegenSystem extends System {
                 let regen = Math.floor(total);
                 let update = Math.min(e.power + regen, e.powerMax);
                 UpdateSystem.eUpdate(e, {power: update});
-                Events.trigger(OverlaySystem.evtNotify, {which: 'popup', actor: e, msg: `+${regen} pow`});
+                Events.trigger(OverlaySystem.evtNotify, {which: 'popup.white', actor: e, msg: `+${regen} pow`});
                 // calculate remainder
                 total -= regen;
             }
