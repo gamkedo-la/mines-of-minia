@@ -5,7 +5,7 @@ import { Charm } from './charm.js';
 
 class DazedCharm extends Charm {
     // STATIC VARIABLES ----------------------------------------------------
-    static dfltApTL = 5;
+    static dfltApTL = 50;
 
     static isDazed(e) {
         return e.charms && e.charms.some((v) => v.constructor.name === 'DazedCharm');
