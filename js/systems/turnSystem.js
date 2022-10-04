@@ -108,53 +108,51 @@ class TurnSystem extends System {
     iterate(evt, e) {
         // -- skip leader
         if (this.leader && this.leader === e) return;
+        // -- on turn start... points are allocated to each follower...
+        if (this.followerTurnStarting) {
+            let overflow = this.followerOverflow[e.gid] || 0;
+            delete this.followerOverflow[e.gid];
+            this.followerPoints[e.gid] = this.turnPoints + overflow;
+        }
         // -- check if action points are available...
-        let spentPoints = this.followerPoints[e.gid] || 0;
+        let allocatedPoints = this.followerPoints[e.gid] || 0;
         // -- skip non-active entities (if turn is not starting)
         if (!this.followerTurnStarting && !this.followerActive.has(e.gid)) {
-            this.followersDone &= (spentPoints === this.turnPoints);
-            //console.log(`iterate ${e} inactive w/ ${this.followersDone}`);
+            this.followersDone &= (allocatedPoints <= 0);
+            //console.log(`=== skipping non active: ${e} done: ${allocatedPoints <= 0}`);
             return;
         }
-        if (spentPoints >= this.turnPoints) return;
+        if (allocatedPoints <= 0) return;
         // -- determine next action
         let action;
         if (DazedCharm.isDazed(e)) {
-            action = new WaitAction({points: e.turnPoints});
+            action = new WaitAction({points: allocatedPoints});
         } else {
             // -- pull from stream
             action = e.actionStream.next().value;
         }
         // -- if no next action (nothing to do)... so return
         if (!action) {
-            // null action results in entity being done with turn
-            this.followerPoints[e.gid] = this.turnPoints;
+            // null action results in entity being done with turn and forfeit of any points
+            this.followerPoints[e.gid] = 0;
+            //console.log(`=== null turn: ${e}`);
             return;
-        }
-        // adjust action points based on overflow
-        let overflow = this.followerOverflow[e.gid] || 0;
-        if (action.points > overflow) {
-            action.points -= overflow;
-            delete this.followerOverflow[e.gid];
-        } else {
-            this.followerOverflow[e.gid] = overflow - action.points;
-            action.points = 0;
         }
         // -- mark action as turn delimiter
         action.isTurn = true;
         // check if action can be started
-        if (spentPoints + action.points <= this.turnPoints) {
+        if (action.points <= allocatedPoints) {
             ActionSystem.assign(e, action);
-            this.followerPoints[e.gid] = spentPoints + action.points;
-        // otherwise, action gets discarded, point overflow is saved for follower
+            this.followerPoints[e.gid] = allocatedPoints - action.points;
+            //console.log(`=== post follower action: ${action} points: ${this.followerPoints[e.gid]} overflow: ${this.followerOverflow[e.gid]} allocated: ${allocatedPoints}`);
+            // actor is not done
+            this.followersDone = false;
+        // otherwise, action gets discarded, point overflow is saved for follower, follower is done
         } else {
-            this.followerOverflow[e.gid] = (this.turnPoints-spentPoints);
-            this.followerPoints[e.gid] = this.turnPoints;
+            this.followerOverflow[e.gid] = allocatedPoints;
+            this.followerPoints[e.gid] = 0;
+            //console.log(`=== discard follower action: ${action} points: ${this.followerPoints[e.gid]} overflow: ${this.followerOverflow[e.gid]} allocated: ${allocatedPoints}`);
         }
-        // follower is done if they have spent all their points
-        this.followersDone &= (this.followerPoints[e.gid] === this.turnPoints);
-
-        //console.log(`iterate ${e} end exit w/ ${this.followersDone} spent: ${spentPoints} turn: ${this.turnPoints}`);
 
     }
 
