@@ -161,6 +161,19 @@ class Gem extends Item {
 
     break(target, idx) {
         console.log(`break item: ${this} target: ${target} idx: ${idx}`);
+        switch (this.kind) {
+            case 'daze': {
+                if (target) {
+                    let dazed = new DazedCharm();
+                    console.log(`applied ${dazed} to ${target}`);
+                    target.addCharm(dazed);
+                    if (!this.constructor.isDiscovered(this.kind)) this.constructor.discover(this.kind);
+                }
+                break;
+            }
+        }
+
+        // broken gem gets destroyed
         this.destroy();
     }
 

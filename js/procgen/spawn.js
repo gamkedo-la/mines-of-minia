@@ -61,7 +61,7 @@ class Spawn {
         // -- lock and key
         this.spawnLockAndKeys(template, pstate);
         // -- enemies
-        this.spawnEnemies(template, pstate);
+        //this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
@@ -1310,9 +1310,16 @@ class Spawn {
                 xp: 1,
             }),
 
+            Scarab.xspec({
+                healthMax: 5,
+                xp: 1,
+            }),
+
+            /*
             Gem.xspec({
                 kind: 'test',
             }),
+            */
 
             Gem.xspec({
                 kind: 'daze',
