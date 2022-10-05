@@ -12,6 +12,11 @@ class Charm {
         return e.charms.some((v) => v.cls === cls);
     }
 
+    static cursed(e) {
+        if (!e.charms) return false;
+        return e.charms.some((v) => v.curse);
+    }
+
     static find(e, cls) {
         if (!e.charms) return false;
         return e.charms.find((v) => v.cls === cls);

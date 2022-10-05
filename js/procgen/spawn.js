@@ -1305,6 +1305,7 @@ class Spawn {
             }),
             */
 
+            /*
             Magma.xspec({
                 healthMax: 5,
                 xp: 1,
@@ -1314,10 +1315,24 @@ class Spawn {
                 healthMax: 5,
                 xp: 1,
             }),
+            */
 
-            Gem.xspec({
-                kind: 'stealth',
+            Cog.xspec({
+                kind: 'purge',
             }),
+            Cog.xspec({
+                kind: 'purge',
+            }),
+            Cog.xspec({
+                kind: 'identify',
+            }),
+
+            Weapon.xspec({
+                kind: 'bonk',
+                identifiable: true,
+                charms: [ new BooCharm() ],
+            }),
+
 
             /*
             Cog.xspec({

@@ -1,6 +1,7 @@
 export { Gadget };
 
 import { Assets } from '../base/assets.js';
+import { Charm } from '../charms/charm.js';
 import { Item } from './item.js';
 
 class Gadget extends Item {
@@ -35,8 +36,15 @@ class Gadget extends Item {
     // PROPERTIES ----------------------------------------------------------
     get description() {
         let d = `a *tier ${this.tier}* gadget providing charms to your bot. `
-        if (this.identifiable) {
+        if (this.purgeable) {
+            d += `the provided *charms* or *curses* are unknown. `
+        } else if (this.identifiable) {
             d += `the provided *charms* are unknown. `
+            if (Charm.cursed) {
+                d += `this item is *cursed* with an unknown affliction.  `
+            } else {
+                d += `this item is free from any *curses*. `
+            }
             d += `...identify to determine exact stats...`
         } else {
             if (this.charms) d += `\n -- charms --\n`;

@@ -21,8 +21,8 @@ class BooCharm extends Charm {
     }
 
     unlink() {
-        super.unlink();
         if (this.actor) this.actor.evt.ignore(this.actor.constructor.evtAttacked, this.onAttacked);
+        super.unlink();
     }
 
     onAttacked(evt) {

@@ -46,8 +46,9 @@ class Item extends MiniaModel {
         // -- loot
         this.loot = spec.loot || [];
         this.state = spec.state || this.constructor.dfltState;
-        // -- identifiable
+        // -- identifiable/purgeable
         this.identifiable = spec.hasOwnProperty('identifiable') ? spec.identifiable : false;
+        this.purgeable = this.identifiable;
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
         //this._sketch.link(this);
@@ -71,6 +72,7 @@ class Item extends MiniaModel {
             loot: this.loot,
             state: this.state,
             identifiable: this.identifiable,
+            purgeable: this.purgeable,
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
         });
     }
@@ -102,12 +104,9 @@ class Item extends MiniaModel {
     // METHODS -------------------------------------------------------------
 
     addCharm(charm) {
-        this.charms.push(charm);
         charm.link(this);
     }
     removeCharm(charm) {
-        let idx = this.charms.indexOf(charm);
-        if (idx !== -1) this.charms.splice(idx, 1);
         charm.unlink();
     }
 

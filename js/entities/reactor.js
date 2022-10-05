@@ -3,6 +3,7 @@ export { Reactor };
 import { Assets } from '../base/assets.js';
 import { Fmt } from '../base/fmt.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { Charm } from '../charms/charm.js';
 import { Item } from './item.js';
 
 // =========================================================================
@@ -92,11 +93,22 @@ class Reactor extends Item {
 
     get description() {
         let d = `a *tier ${this.tier}* reactor core providing power to your bot. `
-        if (this.identifiable) {
+        if (this.purgeable) {
+            d += `this reactor provides a *${this.constructor.getHealthRating(this.healthPerAP)}* health regen rating and a *${this.constructor.getPowerRating(this.powerPerAP)}* power regen rate `
+            d += `and consumes fuel at a *${this.constructor.getFuelRating(this.fuelPerAP)}* rate. `
+            d += `it has a *level* but you're not sure what it is. `
+            d += `it may or may not have a *charm* or *curse* applied. `
+            d += `...identify to determine exact stats...`
+        } else if (this.identifiable) {
             d += `this reactor provides a *${this.constructor.getHealthRating(this.healthPerAP)}* health regen rating and a *${this.constructor.getPowerRating(this.powerPerAP)}* power regen rate `
             d += `and consumes fuel at a *${this.constructor.getFuelRating(this.fuelPerAP)}* rate. `
             d += `it has a *level* but you're not sure what it is. `
             d += `it may or may not have a *charm* applied. `
+            if (Charm.cursed) {
+                d += `this item is *cursed* with an unknown affliction.  `
+            } else {
+                d += `this item is free from any *curses*. `
+            }
             d += `...identify to determine exact stats...`
         } else {
             d += `this reactor has a *${Math.round(this.healthPerAP*1000)}* health regen rating and a *${Math.round(this.powerPerAP*1000)}* power regen rating `

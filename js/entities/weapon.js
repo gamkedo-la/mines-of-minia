@@ -3,6 +3,7 @@ export { Weapon };
 import { Assets } from '../base/assets.js';
 import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
+import { Charm } from '../charms/charm.js';
 import { Item } from './item.js';
 
 class Weapon extends Item {
@@ -93,10 +94,20 @@ class Weapon extends Item {
 
     get description() {
         let d = `a *tier ${this.tier}* weapon that does *${this.kind}* damage. `
-        if (this.identifiable) {
+        if (this.purgeable) {
+            d += `requires a *${this.constructor.getSkillLevel(this.spry)}* level of spry to wield effectively and does a *${this.constructor.getDamageLevel(this.damageMin)}* amount of damage. `;
+            d += `it has a *level* but you're not sure what it is. `
+            d += `it may or may not have a *charm* or *curse* applied. `
+            d += `...identify to determine exact stats...`
+        } else if (this.identifiable) {
             d += `requires a *${this.constructor.getSkillLevel(this.spry)}* level of spry to wield effectively and does a *${this.constructor.getDamageLevel(this.damageMin)}* amount of damage. `;
             d += `it has a *level* but you're not sure what it is. `
             d += `it may or may not have a *charm* applied. `
+            if (Charm.cursed(this)) {
+                d += `this item is *cursed* with an unknown affliction.  `
+            } else {
+                d += `this item is free from any *curses*. `
+            }
             d += `...identify to determine exact stats...`
         } else {
             d += `requires *${this.spry}* spry to wield effectively and does *${this.damageMin}-${this.damageMax}* damage. `;

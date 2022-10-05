@@ -3,6 +3,7 @@ export { Shielding };
 import { Assets } from '../base/assets.js';
 import { Fmt } from '../base/fmt.js';
 import { Random } from '../base/random.js';
+import { Charm } from '../charms/charm.js';
 import { Item } from './item.js';
 
 // =========================================================================
@@ -112,11 +113,22 @@ class Shielding extends Item {
 
     get description() {
         let d = `a *tier ${this.tier}* shielding unit providing damage reduction to your bot. `
-        if (this.identifiable) {
+        if (this.purgeable) {
+            d += `provides a *${this.constructor.getReductionLevel(this.damageReduction)}* amount of general damage reduction. `;
+            d += `requires a *${this.constructor.getSkillLevel(this.brawn)}* level of brawn to use effectively. `;
+            d += `it has a *level* but you're not sure what it is. `
+            d += `it may or may not have a *charm* or *curse* applied. `
+            d += `...identify to determine exact stats...`
+        } else if (this.identifiable) {
             d += `provides a *${this.constructor.getReductionLevel(this.damageReduction)}* amount of general damage reduction. `;
             d += `requires a *${this.constructor.getSkillLevel(this.brawn)}* level of brawn to use effectively. `;
             d += `it has a *level* but you're not sure what it is. `
             d += `it may or may not have a *charm* applied. `
+            if (Charm.cursed) {
+                d += `this item is *cursed* with an unknown affliction.  `
+            } else {
+                d += `this item is free from any *curses*. `
+            }
             d += `...identify to determine exact stats...`
         } else {
             d += `provides *${this.damageReductionMin}-${this.damageReductionMax}* of general damage reduction. `;

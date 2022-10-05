@@ -5,6 +5,7 @@ import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { Charm } from '../charms/charm.js';
 import { InvulnerabilityCharm } from '../charms/invulnerability.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Item } from './item.js';
@@ -22,7 +23,8 @@ class Cog extends Item {
         'spry',
         'savvy',
         'brawn',
-        'invulnerability'
+        'invulnerability',
+        'purge',
     ];
     static dfltSecret = 'four';
     static secretKinds = [
@@ -30,7 +32,8 @@ class Cog extends Item {
         'six',
         'cam',
         'three',
-        'five'
+        'five',
+        'fours',
     ];
     static dfltDescription = 'a strangely encoded cog';
     static descriptionMap = {
@@ -39,6 +42,7 @@ class Cog extends Item {
         'savvy': 'a cog that permanently increases player *savvy* stat',
         'brawn': 'a cog that permanently increases player *brawn* stat',
         'invulnerability': 'a cog temporarily blocks all damage to player',
+        'purge': 'a cog that allows the purges all curses from a piece of equipment',
     };
 
     // -- maps kind->secretKind
@@ -141,14 +145,18 @@ class Cog extends Item {
 
     // PROPERTIES ----------------------------------------------------------
     get requiresTarget() {
-        return (this.kind === 'identify');
+        return (this.kind === 'identify' || this.kind === 'purge');
     }
 
     // METHODS -------------------------------------------------------------
     useFilter(item) {
+        if (!item) return false;
         switch (this.kind) {
             case 'identify': {
-                return item && item.identifiable;
+                return item.identifiable;
+            }
+            case 'purge': {
+                return item.purgeable || Charm.cursed(item);
             }
         }
         return false;
@@ -159,7 +167,18 @@ class Cog extends Item {
             case 'identify': {
                 if (target) {
                     console.log(`identifying: ${target}`);
-                    UpdateSystem.eUpdate(target, { identifiable: false});
+                    UpdateSystem.eUpdate(target, { identifiable: false, purgeable: false });
+                }
+                break;
+            }
+            case 'purge': {
+                if (target && target.charms) {
+                    for (let i=target.charms.length-1; i>=0; i--) {
+                        let charm = target.charms[i];
+                        console.log(`purging: ${charm} from ${target}`);
+                        if (charm.curse) charm.unlink();
+                    }
+                    UpdateSystem.eUpdate(target, { purgeable: false });
                 }
                 break;
             }

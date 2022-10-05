@@ -1906,6 +1906,86 @@ let miniaAssets = [
         state: 'free',
     }),
 
+    Sprite.xspec({tag: 'cog.fours.carry', img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 16, x: 0, y: 0})}),
+    Animation.xspec({tag: 'cog.fours.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 16*5*1, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 16*5*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 16*5*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'cog.fours',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'cog.fours.carry'}),
+            'free': new AssetRef({tag: 'cog.fours.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'cog.threes.carry', img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 16, x: 16, y: 0})}),
+    Animation.xspec({tag: 'cog.threes.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 16, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 16+16*5*1, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 16+16*5*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 16+16*5*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'cog.threes',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'cog.threes.carry'}),
+            'free': new AssetRef({tag: 'cog.threes.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'cog.sixs.carry', img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 16, x: 32, y: 0})}),
+    Animation.xspec({tag: 'cog.sixs.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 32, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 32+16*5*1, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 32+16*5*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 32+16*5*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'cog.sixs',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'cog.sixs.carry'}),
+            'free': new AssetRef({tag: 'cog.sixs.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'cog.cams.carry', img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 16, x: 48, y: 0})}),
+    Animation.xspec({tag: 'cog.cams.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 48, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 48+16*5*1, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 48+16*5*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 48+16*5*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'cog.cams',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'cog.cams.carry'}),
+            'free': new AssetRef({tag: 'cog.cams.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'cog.fives.carry', img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 16, x: 64, y: 0})}),
+    Animation.xspec({tag: 'cog.fives.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 64, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 64+16*5*1, y: 16})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 64+16*5*2, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/cogs-steel.png', width: 16, height: 32, x: 64+16*5*3, y: 16})}), ttl: 200 }),
+    ]}),
+    Animator.xspec({
+        tag: 'cog.fives',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'cog.fives.carry'}),
+            'free': new AssetRef({tag: 'cog.fives.free'}),
+        },
+        state: 'free',
+    }),
+    
     Animation.xspec({tag: 'bomb.idle', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*0})}), ttl: 75 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bomb.png', width: 16, height: 32, x: 16*1})}), ttl: 75 }),
