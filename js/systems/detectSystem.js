@@ -55,6 +55,8 @@ class DetectSystem extends System {
     }
 
     onHiddenUpdate(evt) {
+        // ignore player
+        if (evt.actor && evt.actor == this.player) return;
         // actor is tracked (hidden)
         if (this.store.has(evt.actor.gid)) {
             // -- if no longer hidden, remove entity from tracked secret list

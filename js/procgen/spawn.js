@@ -1315,15 +1315,15 @@ class Spawn {
                 xp: 1,
             }),
 
-            /*
             Gem.xspec({
-                kind: 'test',
+                kind: 'stealth',
             }),
-            */
 
+            /*
             Cog.xspec({
                 kind: 'invulnerability',
             }),
+            */
 
             /*
             RangedWeapon.xspec({

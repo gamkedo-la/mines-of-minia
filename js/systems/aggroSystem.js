@@ -10,6 +10,7 @@ import { OverlaySystem } from './overlaySystem.js';
 
 class AggroSystem extends System {
     static dfltAggroTag = 'player';
+    static dfltIterateTTL = 0;
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
@@ -60,7 +61,7 @@ class AggroSystem extends System {
 
     onAggroTargetUpdate(evt) {
         // check if actor index has changed
-        if (evt.update && evt.update.hasOwnProperty('idx')) {
+        if (evt.update && evt.update.hasOwnProperty('idx') || evt.update.hasOwnProperty('hidden')) {
             //console.log(`onAggroTargetUpdate: ${Fmt.ofmt(evt)}`);
             // aggro actor has changed index, iterate
             this.active = true;
@@ -75,8 +76,14 @@ class AggroSystem extends System {
         // is entity already tracking an aggro target?
         if (e.aggroTarget) {
             let d = Mathf.distance(e.xform.x, e.xform.y, e.aggroTarget.xform.x, e.aggroTarget.xform.y);
+            // check hidden
+            if (e.aggroTarget.hidden) {
+                if (this.dbg) console.log(`${this} ${e} lost aggro for ${e.aggroTarget} - lost los`);
+                e.evt.trigger(e.constructor.evtAggroLost, {actor: e, target: e.aggroTarget, lastIdx: e.aggroIdx});
+                UpdateSystem.eUpdate(e, {aggroTarget: null, aggroIdx: -1});
+                Events.trigger(OverlaySystem.evtNotify, { actor: e, which: 'aggroLoss' });
             // check los
-            if (e.losIdxs && !e.losIdxs.includes(e.aggroTarget.idx)) {
+            } else if (e.losIdxs && !e.losIdxs.includes(e.aggroTarget.idx)) {
                 if (this.dbg) console.log(`${this} ${e} lost aggro for ${e.aggroTarget} - lost los`);
                 e.evt.trigger(e.constructor.evtAggroLost, {actor: e, target: e.aggroTarget, lastIdx: e.aggroIdx});
                 UpdateSystem.eUpdate(e, {aggroTarget: null, aggroIdx: -1});
@@ -99,6 +106,7 @@ class AggroSystem extends System {
             let tag = e.aggroTag || this.constructor.dfltAggroTag;
             let targets = this.aggroTargets[tag] || [];
             if (e.losIdxs) targets = targets.filter((v) => e.losIdxs.includes(v.idx));
+            targets = targets.filter((v) => !v.hidden);
 
             let target = Util.findBest(
                 targets,

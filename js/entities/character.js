@@ -265,12 +265,15 @@ class Character extends MiniaModel {
     }
 
     _render(ctx) {
-        if (this.hidden) return;
+        if (this.hidden && this.cls !== 'Player') return;
         // update sketch dimensions
         this._sketch.width = this.xform.width;
         this._sketch.height = this.xform.height;
+        let oldAlpha = ctx.globalAlpha;
+        if (this.hidden && this.cls === 'Player') ctx.globalAlpha = .5;
         // render
         if (this._sketch && this._sketch.render) this._sketch.render(ctx, this.xform.minx, this.xform.miny);
+        if (this.hidden && this.cls === 'Player') ctx.globalAlpha = oldAlpha;
     }
 
 }

@@ -6,6 +6,7 @@ import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { DazedCharm } from '../charms/dazed.js';
+import { StealthCharm } from '../charms/stealth.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Item } from './item.js';
 
@@ -24,6 +25,7 @@ class Gem extends Item {
         'health',
         'daze',
         'power',
+        'stealth',
     ];
     static dfltSecret = 'blue';
     static secretKinds = [
@@ -31,6 +33,7 @@ class Gem extends Item {
         'red',
         'purple',
         'green',
+        'aqua',
     ];
     static dfltDescription = 'a shiny gem';
     static descriptionMap = {
@@ -38,6 +41,7 @@ class Gem extends Item {
         'health': 'a gem that restores a small amount of the player\'s health',
         'daze': 'a gem that causes target to be dazed for a short time',
         'power': 'a gem that restores a small amount of the player\'s power',
+        'stealth': 'a gem that grants target stealth until next attack',
     }
 
     // -- maps kind->secretKind
@@ -160,6 +164,11 @@ class Gem extends Item {
                 actor.addCharm(dazed);
                 break;
             }
+            case 'stealth': {
+                let dazed = new StealthCharm();
+                actor.addCharm(dazed);
+                break;
+            }
         }
 
         // update discovery
@@ -174,12 +183,21 @@ class Gem extends Item {
         switch (this.kind) {
             case 'daze': {
                 if (target) {
-                    let dazed = new DazedCharm();
-                    target.addCharm(dazed);
+                    let charm = new DazedCharm();
+                    target.addCharm(charm);
                     if (!this.constructor.isDiscovered(this.kind)) this.constructor.discover(this.kind);
                 }
                 break;
             }
+            case 'stealth': {
+                if (target) {
+                    let charm = new StealthCharm();
+                    target.addCharm(charm);
+                    if (!this.constructor.isDiscovered(this.kind)) this.constructor.discover(this.kind);
+                }
+                break;
+            }
+
         }
 
         // broken gem gets destroyed
