@@ -1322,7 +1322,7 @@ class Spawn {
             */
 
             Gem.xspec({
-                kind: 'daze',
+                kind: 'power',
             }),
 
             /*

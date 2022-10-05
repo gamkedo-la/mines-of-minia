@@ -23,18 +23,21 @@ class Gem extends Item {
         'test',
         'health',
         'daze',
+        'power',
     ];
     static dfltSecret = 'blue';
     static secretKinds = [
         'blue',
         'red',
         'purple',
+        'green',
     ];
     static dfltDescription = 'a shiny gem';
     static descriptionMap = {
         'test': 'a test gem',
         'health': 'a gem that restores a small amount of the player\'s health',
         'daze': 'a gem that causes target to be dazed for a short time',
+        'power': 'a gem that restores a small amount of the player\'s power',
     }
 
     // -- maps kind->secretKind
@@ -141,11 +144,19 @@ class Gem extends Item {
                 if (health !== actor.health) {
                     UpdateSystem.eUpdate(actor, {health: health });
                 }
+                Events.trigger(OverlaySystem.evtNotify, {which: 'popup.green', actor: actor, msg: `+10`});
+                break;
+            }
+            case 'power': {
+                let power = Math.min(actor.powerMax, actor.power+10);
+                if (power !== actor.power) {
+                    UpdateSystem.eUpdate(actor, {power: power});
+                }
+                Events.trigger(OverlaySystem.evtNotify, {which: 'popup.white', actor: actor, msg: `+10 pow`});
                 break;
             }
             case 'daze': {
                 let dazed = new DazedCharm();
-                console.log(`applied ${dazed} to ${actor}`);
                 actor.addCharm(dazed);
                 break;
             }
@@ -160,12 +171,10 @@ class Gem extends Item {
     }
 
     break(target, idx) {
-        console.log(`break item: ${this} target: ${target} idx: ${idx}`);
         switch (this.kind) {
             case 'daze': {
                 if (target) {
                     let dazed = new DazedCharm();
-                    console.log(`applied ${dazed} to ${target}`);
                     target.addCharm(dazed);
                     if (!this.constructor.isDiscovered(this.kind)) this.constructor.discover(this.kind);
                 }
