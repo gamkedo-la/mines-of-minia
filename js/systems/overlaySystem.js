@@ -169,7 +169,14 @@ class OverlaySystem extends System {
     }
 
     startAnimation(actor, anim, destroyEvt) {
-        let offy = (anim.height > Config.tileSize) ? Config.tileSize*.5-anim.height : -anim.height*.5
+        let offy = 0;
+        if (anim.tag === 'vfx.dazed') {
+            offy = (actor.xform.height>Config.tileSize) ? Config.tileSize*.5-actor.xform.height : -Config.tileSize*.5;
+            if (actor.cls === 'Magma') offy += 8;
+            if (actor.cls === 'Player') offy += 4;
+        } else {
+            offy = (anim.height > Config.tileSize) ? Config.tileSize*.5-anim.height : -anim.height*.5
+        }
         // create panel for vfx
         let panel = new UxPanel({
             tag: 'vfx',
@@ -185,9 +192,6 @@ class OverlaySystem extends System {
                 offy: offy,
             }),
         });
-        if (actor.cls === 'Magma') {
-            panel.xform.offy -= 4;
-        }
         this.overlay.adopt(panel);
         // track actor state
         let onActorUpdate = (evt) => {
