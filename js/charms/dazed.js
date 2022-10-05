@@ -1,5 +1,7 @@
 export { DazedCharm }
+import { Assets } from '../base/assets.js';
 import { Events } from '../base/event.js';
+import { OverlaySystem } from '../systems/overlaySystem.js';
 import { TurnSystem } from '../systems/turnSystem.js';
 import { Charm } from './charm.js';
 
@@ -20,6 +22,7 @@ class DazedCharm extends Charm {
         this.elapsed = 0;
         // -- events
         this.onTurnDone = this.onTurnDone.bind(this);
+        this.vfx = spec.vfx || Assets.get('vfx.dazed', true);
     }
 
     as_kv() {
@@ -44,9 +47,11 @@ class DazedCharm extends Charm {
     link(actor) {
         super.link(actor);
         Events.listen(TurnSystem.evtDone, this.onTurnDone);
+        if (this.vfx) Events.trigger(OverlaySystem.evtNotify, { actor: actor, which: 'vfx', vfx: this.vfx, destroyEvt: 'dazed.done'});
     }
 
     unlink() {
+        if (this.actor) this.actor.evt.trigger('dazed.done', {actor: this.actor});
         super.unlink();
         Events.ignore(TurnSystem.evtDone, this.onTurnDone);
     }

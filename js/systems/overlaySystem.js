@@ -185,6 +185,9 @@ class OverlaySystem extends System {
                 offy: offy,
             }),
         });
+        if (actor.cls === 'Magma') {
+            panel.xform.offy -= 4;
+        }
         this.overlay.adopt(panel);
         // track actor state
         let onActorUpdate = (evt) => {

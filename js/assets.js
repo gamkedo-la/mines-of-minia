@@ -1731,6 +1731,15 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 64*7, y: 16})}), ttl: 100 }),
     ]}),
 
+    Animation.xspec({tag: 'vfx.dazed', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 16, y: 32})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 16+64*1, y: 32})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 16+64*2, y: 32})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 16+64*3, y: 32})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 16+64*4, y: 32})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 16+64*5, y: 32})}), ttl: 100 }),
+    ]}),
+
     Animation.xspec({tag: 'fuelcell.free', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fuel-cell.png', width: 16, height: 16, x: 64*0, y: 0})}), ttl: 100 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fuel-cell.png', width: 16, height: 16, x: 64*1, y: 0})}), ttl: 100 }),
