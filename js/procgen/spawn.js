@@ -1321,8 +1321,8 @@ class Spawn {
             }),
             */
 
-            Gem.xspec({
-                kind: 'power',
+            Cog.xspec({
+                kind: 'invulnerability',
             }),
 
             /*

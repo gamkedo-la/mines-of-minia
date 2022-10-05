@@ -11,6 +11,7 @@ import { ActionSystem } from "../base/systems/actionSystem.js";
 import { UpdateSystem } from "../base/systems/updateSystem.js";
 import { Util } from "../base/util.js";
 import { Charm } from "../charms/charm.js";
+import { InvulnerabilityCharm } from "../charms/invulnerability.js";
 import { OverlaySystem } from "../systems/overlaySystem.js";
 import { MiniaModel } from "./miniaModel.js";
 import { RangedWeapon } from "./rangedWeapon.js";
@@ -180,6 +181,8 @@ class Character extends MiniaModel {
     onDamaged(evt) {
         if (this.damagedSfx) this.damagedSfx.play();
         let damage = evt.damage;
+        // handle invulnerability
+        if (InvulnerabilityCharm.applied(this)) return;
         // handle shield
         let shield = Charm.find(this, 'ShieldCharm');
         if (shield) {

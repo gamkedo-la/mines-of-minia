@@ -5,6 +5,7 @@ import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { InvulnerabilityCharm } from '../charms/invulnerability.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Item } from './item.js';
 
@@ -17,11 +18,11 @@ class Cog extends Item {
 
     static dfltKind = 'health';
     static kinds = [
-        'test',
         'identify',
         'spry',
         'savvy',
         'brawn',
+        'invulnerability'
     ];
     static dfltSecret = 'four';
     static secretKinds = [
@@ -33,8 +34,11 @@ class Cog extends Item {
     ];
     static dfltDescription = 'a strangely encoded cog';
     static descriptionMap = {
-        'test': 'a test cog',
         'identify': 'a cog that allows identification of equipment, other cogs, and gems',
+        'spry': 'a cog that permanently increases player *spry* stat',
+        'savvy': 'a cog that permanently increases player *savvy* stat',
+        'brawn': 'a cog that permanently increases player *brawn* stat',
+        'invulnerability': 'a cog temporarily blocks all damage to player',
     };
 
     // -- maps kind->secretKind
@@ -172,6 +176,11 @@ class Cog extends Item {
             case 'savvy': {
                 UpdateSystem.eUpdate(actor, { savvy: actor.savvy+1});
                 Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `savvy +1`});
+                break;
+            }
+            case 'invulnerability': {
+                let charm = new InvulnerabilityCharm();
+                actor.addCharm(charm);
                 break;
             }
         }
