@@ -6,6 +6,7 @@ import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { DazedCharm } from '../charms/dazed.js';
+import { EnflamedCharm } from '../charms/enflamed.js';
 import { StealthCharm } from '../charms/stealth.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Item } from './item.js';
@@ -21,7 +22,7 @@ class Gem extends Item {
     static dfltKind = 'health';
     // -- note: kinds, kindTags, secretNames need to be kept in sync (same length)
     static kinds = [
-        'test',
+        'fire',
         'health',
         'daze',
         'power',
@@ -37,7 +38,7 @@ class Gem extends Item {
     ];
     static dfltDescription = 'a shiny gem';
     static descriptionMap = {
-        'test': 'a test gem',
+        'fire': 'a gem that ignites the target',
         'health': 'a gem that restores a small amount of the player\'s health',
         'daze': 'a gem that causes target to be dazed for a short time',
         'power': 'a gem that restores a small amount of the player\'s power',
@@ -169,6 +170,11 @@ class Gem extends Item {
                 actor.addCharm(dazed);
                 break;
             }
+            case 'fire': {
+                let charm = new EnflamedCharm();
+                actor.addCharm(charm);
+                break;
+            }
         }
 
         // update discovery
@@ -192,6 +198,14 @@ class Gem extends Item {
             case 'stealth': {
                 if (target) {
                     let charm = new StealthCharm();
+                    target.addCharm(charm);
+                    if (!this.constructor.isDiscovered(this.kind)) this.constructor.discover(this.kind);
+                }
+                break;
+            }
+            case 'fire': {
+                if (target) {
+                    let charm = new EnflamedCharm();
                     target.addCharm(charm);
                     if (!this.constructor.isDiscovered(this.kind)) this.constructor.discover(this.kind);
                 }

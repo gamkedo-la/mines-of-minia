@@ -1323,19 +1323,15 @@ class Spawn {
                 healthMax: 5,
                 xp: 1,
             }),
+            */
 
             Scarab.xspec({
                 healthMax: 5,
                 xp: 1,
             }),
-            */
 
-            Node.xspec({
-                kind: 'health',
-            }),
-
-            Node.xspec({
-                kind: 'power',
+            Gem.xspec({
+                kind: 'fire',
             }),
 
             Weapon.xspec({
