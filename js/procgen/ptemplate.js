@@ -170,6 +170,7 @@ class ProcTemplate {
         this.spawn.growthLootPct = Util.getpath(spec, 'spawn.growthLootPct', .1);
         this.spawn.growthLootOptions = Util.getpath(spec, 'spawn.growthLootOptions', [
             { weight: .5, kind: 'tokens'},
+            { weight: .5, kind: 'node'},
         ]);
         // -- sample period for noise function
         this.spawn.growthNoisePeriod = Util.getpath(spec, 'spawn.growthNoisePeriod', 2);

@@ -20,8 +20,13 @@ class DoPickupAction extends Action {
     setup() {
         // this is an instant action
         this.done = true;
+        // use on pickup?
+        if (this.target.constructor.useOnPickup) {
+            this.target.use(this.actor);
+            this.target.destroy();
+            if (this.sfx) this.sfx.play();
         // try to add to actor inventory
-        if (!this.actor.inventory.add(this.target)) {
+        } else if (!this.actor.inventory.add(this.target)) {
             this.ok = false;
             console.log(`-- ${this} actor ${this.actor} cannot pickup ${this.target}`);
         // successfully added to inventory

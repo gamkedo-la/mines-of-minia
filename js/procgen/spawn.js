@@ -28,6 +28,7 @@ import { Growth } from '../entities/growth.js';
 import { Key } from '../entities/key.js';
 import { Machinery } from '../entities/machinery.js';
 import { Magma } from '../entities/magma.js';
+import { Node } from '../entities/node.js';
 import { Overbearer } from '../entities/overbearer.js';
 import { Player } from '../entities/player.js';
 import { Projectile } from '../entities/projectile.js';
@@ -1096,12 +1097,24 @@ class Spawn {
         });
     }
 
+    static genNode(template, pstate) {
+        // pick kind
+        let kind = Prng.choose(Node.kinds);
+        return Node.xspec({
+            kind: kind,
+        });
+    }
+
     static genLoot(template, pstate, options) {
         // -- pick loot option
         let option = Prng.chooseWeightedOption(options);
         let loot = [];
         // pick item class
         switch (option.kind) {
+            case 'node': {
+                loot.push(this.genNode(template, pstate));
+                break;
+            }
             case 'tokens': {
                 loot.push(this.genTokens(template, pstate));
                 break;
@@ -1317,20 +1330,12 @@ class Spawn {
             }),
             */
 
-            Cog.xspec({
-                kind: 'purge',
+            Node.xspec({
+                kind: 'health',
             }),
-            Cog.xspec({
-                kind: 'purge',
-            }),
-            Cog.xspec({
-                kind: 'identify',
-            }),
-            Cog.xspec({
-                kind: 'lvlup',
-            }),
-            Cog.xspec({
-                kind: 'lvlup',
+
+            Node.xspec({
+                kind: 'power',
             }),
 
             Weapon.xspec({

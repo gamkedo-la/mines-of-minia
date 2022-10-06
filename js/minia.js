@@ -19,12 +19,12 @@ import { Character } from "./entities/character.js";
 import { Weapon } from "./entities/weapon.js";
 import { miniaAssets } from "./assets.js";
 import { Player } from "./entities/player.js";
-import { ProcTemplate } from "./procgen/ptemplate.js";
 import { Stairs } from "./entities/stairs.js";
 import { Rous } from "./entities/rous.js";
 import { Door } from "./entities/door.js";
 import { Inventory, InventoryData } from "./inventory.js";
 import { Gem } from "./entities/gem.js";
+import { Node } from "./entities/node.js";
 import { Shielding } from "./entities/shielding.js";
 import { Cog } from "./entities/cog.js";
 import { Key } from "./entities/key.js";
@@ -59,6 +59,7 @@ import { Reticle } from "./entities/reticle.js";
 import { Overbearer } from "./entities/overbearer.js";
 import { Scarab } from "./entities/scarab.js";
 import { Talents } from "./talents.js";
+
 
 class Minia extends Game {
     static states = {
@@ -125,6 +126,7 @@ class Minia extends Game {
             Level,
             Machinery,
             Magma,
+            Node,
             Overbearer,
             Player,
             Projectile,
