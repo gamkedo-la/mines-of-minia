@@ -1326,6 +1326,12 @@ class Spawn {
             Cog.xspec({
                 kind: 'identify',
             }),
+            Cog.xspec({
+                kind: 'lvlup',
+            }),
+            Cog.xspec({
+                kind: 'lvlup',
+            }),
 
             Weapon.xspec({
                 kind: 'bonk',
