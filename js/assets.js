@@ -1548,10 +1548,15 @@ let miniaAssets = [
         color: 'gold',
         borderColor: 'red',
     }),
-    Animation.xspec({tag: 'gem.blue', jitter: true, x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
+    Animation.xspec({tag: 'node.power', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'node.health', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 150 }),
     ]}),
 
     Animation.xspec({tag: 'gem.red', jitter: true, x_cels: [
@@ -1577,6 +1582,12 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*1, y: 48})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*2, y: 48})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*3, y: 48})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'gem.blue', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 0, y: 64})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*1, y: 64})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*2, y: 64})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*3, y: 64})}), ttl: 150 }),
     ]}),
 
 
@@ -1749,6 +1760,17 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 32+64*5, y: 32})}), ttl: 100 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 32+64*6, y: 32})}), ttl: 100 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 32+64*7, y: 32})}), ttl: 100 }),
+    ]}),
+
+    Animation.xspec({tag: 'vfx.enflamed', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 50 }),
     ]}),
 
     Animation.xspec({tag: 'fuelcell.free', x_cels: [

@@ -1,6 +1,7 @@
 export { Cog };
 
 import { Assets } from '../base/assets.js';
+import { Config } from '../base/config.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
@@ -25,6 +26,7 @@ class Cog extends Item {
         'brawn',
         'invulnerability',
         'purge',
+        'lvlup',
     ];
     static dfltSecret = 'four';
     static secretKinds = [
@@ -43,6 +45,7 @@ class Cog extends Item {
         'brawn': 'a cog that permanently increases player *brawn* stat',
         'invulnerability': 'a cog temporarily blocks all damage to player',
         'purge': 'a cog that allows the purges all curses from a piece of equipment',
+        'lvlup': 'a cog that raises the level of an equipment item',
     };
 
     // -- maps kind->secretKind
@@ -145,7 +148,7 @@ class Cog extends Item {
 
     // PROPERTIES ----------------------------------------------------------
     get requiresTarget() {
-        return (this.kind === 'identify' || this.kind === 'purge');
+        return (this.kind === 'identify' || this.kind === 'purge' || this.kind === 'lvlup');
     }
 
     // METHODS -------------------------------------------------------------
@@ -157,6 +160,9 @@ class Cog extends Item {
             }
             case 'purge': {
                 return item.purgeable || Charm.cursed(item);
+            }
+            case 'lvlup': {
+                return item.hasOwnProperty('lvl') && item.lvl < Config.maxLvl;
             }
         }
         return false;
@@ -200,6 +206,11 @@ class Cog extends Item {
             case 'invulnerability': {
                 let charm = new InvulnerabilityCharm();
                 actor.addCharm(charm);
+                break;
+            }
+            case 'lvlup': {
+                let lvl = target.lvl + 1;
+                UpdateSystem.eUpdate(target, { lvl: lvl});
                 break;
             }
         }
