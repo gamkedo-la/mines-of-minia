@@ -15,6 +15,7 @@ import { Trap } from './trap.js';
 class Growth extends Trap {
     // -- object has dynamic LoS block (can change during game state)
     static dynamicLoS = true;
+    static isFlammable = true;
 
     static get dfltTriggerSfx() {
         if (!this._dfltTriggerSfx) this._dfltTriggerSfx = Assets.get('growth.trigger', true);

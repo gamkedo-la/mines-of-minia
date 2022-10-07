@@ -36,6 +36,7 @@ class Character extends MiniaModel {
     static dfltHealth = 1;
     static dfltCritPct = .1;
     static mobile = true;
+    static isFlammable = true;
 
     static dfltPointsPerTurn = 10;
 
