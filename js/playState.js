@@ -388,6 +388,13 @@ class PlayState extends GameState {
             }
 
             // FIXME: remove
+            case '6': {
+                console.log(`-- next lvl`);
+                let whichLevel = LevelSystem.currentLevelIndex + 1;
+                let load = (whichLevel > LevelSystem.maxLevelIndex) ? false : true;
+                Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
+                break;
+            }
             case '7': {
                 UpdateSystem.eUpdate(this.player, {
                     lvl: this.player.lvl+1,

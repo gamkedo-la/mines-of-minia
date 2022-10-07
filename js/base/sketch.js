@@ -126,7 +126,7 @@ class Sketch extends Gizmo {
      * convert to string
      */
     toString() {
-        return Fmt.toString(this.constructor.name, this.tag);
+        return Fmt.toString(this.constructor.name, this.tag, this.gid);
     }
 
 }

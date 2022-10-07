@@ -31,6 +31,7 @@ class Generator {
 
     // METHODS -------------------------------------------------------------
     resolve(spec) {
+        let nspec = {};
         for (const [k,v] of Object.entries(spec)) {
             if (k.startsWith('x_')) {
                 let nv = undefined;
@@ -54,18 +55,21 @@ class Generator {
                     }
                 }
                 let nk = k.slice(2);
-                spec[nk] = nv;
+                nspec[nk] = nv;
                 if (this.dbg) console.log(`generator: resolve ${k}->${Fmt.ofmt(v)} to ${nk}->${nv}`);
-                delete spec[k];
+                //delete spec[k];
+            } else {
+                nspec[k] = v;
             }
         }
+        return nspec;
     }
 
     generate(spec) {
         if (!spec) return undefined;
         // resolve sub references within spec...
         // -- sub references all start with 'x_' and are replaced with the generated object under a new key where the 'x_' has been stripped
-        this.resolve(spec);
+        spec = this.resolve(spec);
         // look up class definition
         let cls = this.registry.get(spec.cls);
         if (!cls) return undefined;

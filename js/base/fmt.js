@@ -29,6 +29,8 @@ class Fmt {
         if (obj instanceof Map) {
             for (const [key, value] of obj) {
                 let rule = fmtRules[key];
+                if (!rule && value && value.constructor.name === "Object") rule = Fmt.ofmt;
+                if (!rule && value instanceof Map) rule = Fmt.ofmt;
                 kvs.push(key + Fmt.nameDelim + ((rule) ? rule(value) : value));
             }
         } else {
@@ -36,6 +38,8 @@ class Fmt {
             for (const key of keys) {
                 let rule = fmtRules[key];
                 if (!rule && obj[key] && obj[key].constructor.name === "Object") rule = Fmt.ofmt;
+                if (!rule && obj[key] instanceof Map) rule = Fmt.ofmt;
+                if (!rule && obj[key] instanceof Array) rule = Fmt.ofmt;
                 kvs.push(key + Fmt.nameDelim + ((rule) ? rule(obj[key]) : obj[key]));
             }
         }
