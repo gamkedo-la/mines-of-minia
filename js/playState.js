@@ -55,6 +55,7 @@ import { DirectiveHandler } from './directiveHandler.js';
 import { PlayOptions } from './playOptions.js';
 import { Spawn } from './procgen/spawn.js';
 import { GameOver } from './gameOver.js';
+import { BurningSystem } from './systems/burningSystem.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -74,6 +75,7 @@ class PlayState extends GameState {
         Systems.add('level', new LevelSystem({ dbg: Util.getpath(Config, 'dbg.system.level')}));
         Systems.add('detect', new DetectSystem({ dbg: Util.getpath(Config, 'dbg.system.detect')}));
         Systems.add('talent', new TalentSystem({ dbg: Util.getpath(Config, 'dbg.system.talent')}));
+        Systems.add('burning', new BurningSystem({ dbg: Util.getpath(Config, 'dbg.system.burning')}));
     }
 
     async ready(data={}) {
@@ -168,6 +170,7 @@ class PlayState extends GameState {
         Systems.get('overlay').overlay = this.overlay;
         Systems.get('overlay').hud = this.hudroot;
         Systems.get('detect').lvl = this.lvl;
+        Systems.get('burning').lvl = this.lvl;
 
         // load player
         if (data && data.load) {

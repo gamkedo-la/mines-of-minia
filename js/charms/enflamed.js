@@ -41,9 +41,13 @@ class EnflamedCharm extends Charm {
         let ap = evt.points || 0;
         this.elapsed += ap;
         if (this.elapsed >= this.apTL) {
+            if (!this.actor.health) {
+                if (!this.actor.charred && this.actor.burn) (this.actor.burn(this))
+                this.actor.charred = true;
+            }
             console.log(`-- enflamed expired from ${this.actor}`);
             this.unlink();
-        } else {
+        } else if (this.actor.health) {
             let total = Math.round(this.damage*ap);
             this.damageMin = total;
             this.damageMax = total;
@@ -51,8 +55,6 @@ class EnflamedCharm extends Charm {
             if (damage) {
                 this.actor.evt.trigger(this.actor.constructor.evtDamaged, { actor: this, target: this.actor, critical: false, damage: damage }, true);
             }
-            // look for nearby flammables
-            // FIXME
         }
     }
 
