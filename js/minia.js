@@ -59,6 +59,7 @@ import { Reticle } from "./entities/reticle.js";
 import { Overbearer } from "./entities/overbearer.js";
 import { Scarab } from "./entities/scarab.js";
 import { Talents } from "./talents.js";
+import { Dummy } from "./entities/dummy.js";
 
 
 class Minia extends Game {
@@ -110,6 +111,7 @@ class Minia extends Game {
             Clutter,
             Cog,
             Door,
+            Dummy,
             Enemy,
             Energy,
             Facade,

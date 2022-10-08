@@ -29,7 +29,6 @@ class BurningSystem extends System {
 
     // EVENT HANDLERS ------------------------------------------------------
     onTurnDone(evt) {
-        console.log(`${this} on turn done`);
         //if (evt.which !== 'leader') return;
         this.active = true;
         this.actionPoints = evt.points;
@@ -37,6 +36,7 @@ class BurningSystem extends System {
 
     onEntityAdded(evt) {
         if (this.matchPredicate(evt.actor)) {
+            //console.log(`enflamed entity added: ${evt.actor}`)
             // already enflamed?
             if (Charm.checkFor(evt.actor, 'EnflamedCharm')) {
                 this.store.set(evt.actor.gid, evt.actor);
@@ -48,6 +48,7 @@ class BurningSystem extends System {
 
     onEntityRemoved(evt) {
         if (this.matchPredicate(evt.actor)) {
+            //console.log(`enflamed entity removed: ${evt.actor}`)
             this.store.delete(evt.actor.gid);
             evt.actor.evt.ignore(evt.actor.constructor.evtUpdated, this.onEntityUpdated);
         }
@@ -55,9 +56,9 @@ class BurningSystem extends System {
 
     onEntityUpdated(evt) {
         if (evt.update && evt.update.charmed) {
-            console.log(`-- onEntityUpdated: ${Fmt.ofmt(evt)}`);
+            //console.log(`-- onEntityUpdated: ${Fmt.ofmt(evt)}`);
             if (Charm.checkFor(evt.actor, 'EnflamedCharm')) {
-                console.log(`watching burning: ${evt.actor}`);
+                //console.log(`watching burning: ${evt.actor}`);
                 this.store.set(evt.actor.gid, evt.actor);
             }
         }
@@ -69,11 +70,13 @@ class BurningSystem extends System {
     }
 
     iterate(evt, e) {
-        console.log(`${this} iterating on ${e}`);
+        //console.log(`${this} iterating on ${e}`);
         // check for flammable objects nearby
         for (const dir of Direction.all) {
             let idx = this.lvl.idxfromdir(e.idx, dir);
             for (const target of this.lvl.findidx(idx, (v) => v.constructor.flammable)) {
+                // skip if already charred
+                if (target.charred) continue;
                 // skip if already burning?
                 if (Charm.checkFor(target, 'EnflamedCharm')) continue;
                 // if smoldering... apply enflamed
@@ -83,7 +86,7 @@ class BurningSystem extends System {
                 // apply smoldering
                 } else {
                     this.nowSmoldering.add(target.gid);
-                    console.log(`setting to smoldering: ${target}`);
+                    //console.log(`setting to smoldering: ${target}`);
                 }
             }
         }
@@ -96,7 +99,7 @@ class BurningSystem extends System {
     }
 
     matchPredicate(e) {
-        return (e.constructor.flammable && !e.charred);
+        return (e.constructor.flammable);
     }
 
 }
