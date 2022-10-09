@@ -45,6 +45,7 @@ import { Tile } from '../entities/tile.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
 import { InventoryData } from '../inventory.js';
+import { Names } from './names.js';
 import { ProcTemplate } from './ptemplate.js';
 
 class Spawn {
@@ -62,7 +63,7 @@ class Spawn {
         // -- lock and key
         this.spawnLockAndKeys(template, pstate);
         // -- enemies
-        //this.spawnEnemies(template, pstate);
+        this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
@@ -794,9 +795,12 @@ class Spawn {
             identifiablePct += .2;
         }
         let identifiable = Prng.flip(identifiablePct);
+        // -- name
+        let name = Prng.choose(Names[kind]);
 
         // build spec
         let x_wpn = Weapon.xspec({
+            name: name,
             kind: kind,
             lvl: lvl,
             tier: tier,
@@ -1334,6 +1338,18 @@ class Spawn {
                 kind: 'fire',
             }),
 
+            Gem.xspec({
+                kind: 'daze',
+            }),
+
+            Gem.xspec({
+                kind: 'power',
+            }),
+
+            Gem.xspec({
+                kind: 'stealth',
+            }),
+
             Weapon.xspec({
                 kind: 'bonk',
                 identifiable: true,
@@ -1341,11 +1357,23 @@ class Spawn {
             }),
 
 
-            /*
+            Cog.xspec({
+                kind: 'identify',
+            }),
+
+            Cog.xspec({
+                kind: 'lvlup',
+            }),
+
             Cog.xspec({
                 kind: 'invulnerability',
             }),
-            */
+
+            Cog.xspec({
+                kind: 'purge',
+            }),
+
+            this.genWeapon(template),
 
             /*
             RangedWeapon.xspec({

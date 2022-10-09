@@ -67,7 +67,7 @@ class Gem extends Item {
             let pick = Prng.rangeInt(0, tags.length-1);
             let tag = tags[pick];
             tags.splice(pick, 1);
-            //console.log(`-- discovery: gem ${this.kinds[i]} gets tag: ${tag}}`);
+            console.log(`-- discovery: gem ${this.kinds[i]} gets tag: ${tag}}`);
             this.kindSecretMap[this.kinds[i]] = tag;
         }
     }
