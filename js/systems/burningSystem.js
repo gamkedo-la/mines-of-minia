@@ -40,27 +40,33 @@ class BurningSystem extends System {
             // already enflamed?
             if (Charm.checkFor(evt.actor, 'EnflamedCharm')) {
                 this.store.set(evt.actor.gid, evt.actor);
-            } else {
-                evt.actor.evt.listen(evt.actor.constructor.evtUpdated, this.onEntityUpdated);
             }
+            evt.actor.evt.listen(evt.actor.constructor.evtUpdated, this.onEntityUpdated);
         }
     }
 
     onEntityRemoved(evt) {
         if (this.matchPredicate(evt.actor)) {
-            //console.log(`enflamed entity removed: ${evt.actor}`)
+            //console.log(`== enflamed entity removed: ${evt.actor}`)
             this.store.delete(evt.actor.gid);
             evt.actor.evt.ignore(evt.actor.constructor.evtUpdated, this.onEntityUpdated);
         }
     }
 
     onEntityUpdated(evt) {
-        if (evt.update && evt.update.charmed) {
+        if (evt.update && evt.update.hasOwnProperty('charmed')) {
             //console.log(`-- onEntityUpdated: ${Fmt.ofmt(evt)}`);
             if (Charm.checkFor(evt.actor, 'EnflamedCharm')) {
                 //console.log(`watching burning: ${evt.actor}`);
                 this.store.set(evt.actor.gid, evt.actor);
+            // not burning
+            } else {
+                if (this.store.has(evt.actor.gid)) {
+                    //console.log(`no longer burning: ${evt.actor}`);
+                    this.store.delete(evt.actor.gid);
+                }
             }
+
         }
     }
 
