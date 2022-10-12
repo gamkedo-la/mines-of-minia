@@ -75,4 +75,39 @@ class MiniaTemplates {
         }
     });
 
+    static bioBoss = new ProcTemplate({
+        doyield: true,
+        boss: 'bio',
+        translate: {
+            floor: 'rock.floor',
+            wall: 'rock.wall',
+            pit: 'rock.pit',
+            pitb: 'rock.pit.border',
+            obs: 'rock.outcrop',
+            obsb: 'rock.outcrop.border',
+            doNoise: true,
+        },
+        spawn: {
+            chestMin: 0,
+            chestMax: 0,
+            secretRoomMin: 1,
+            secretRoomMax: 2,
+            secretCacheMin: 0,
+            secretCacheMax: 0,
+            lockRoomMin: 0,
+            lockRoomMax: 0,
+            enemyList: [ 
+                { weight: 1, cls: Rous },
+                { weight: .5, cls: Funguy },
+                { weight: .5, cls: Magma },
+            ],
+            trapList: [ SpikeTrap ],
+            growth: 'rock.growth',
+            growthFreePct: .1,
+            growthNoisePct: .25,
+            clutter: 'rock.clutter',
+            machineTags: ['machine.gear'],
+        }
+    });
+
 }
