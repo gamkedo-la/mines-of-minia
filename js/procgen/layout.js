@@ -18,6 +18,8 @@ class Layout {
         //yield *this.roomRandomGenerator(template, pstate);
         if (template.boss === 'rock') {
             yield *this.rockBossRoomGenerator(template, pstate);
+        } else if (template.boss === 'bio') {
+            yield *this.bioBossRoomGenerator(template, pstate);
         } else {
             yield *this.roomRingsGenerator(template, pstate);
         }
@@ -47,7 +49,87 @@ class Layout {
             // ensures a square room
             outlineSchemes: [ {weight: 1, minWidthPct: Math.SQRT2/2, minHeightPct: Math.SQRT2/2}, ],
             critical: true,
-            boss: true
+            boss: 'rock',
+        });
+        rooms.push(room);
+        // create other random rooms around boss room
+        for (let i=0; i<nrooms; i++) {
+            let rorigx, rorigy, roomRadius;
+            let ok = false;
+            for (let iters=0; iters<100; iters++) {
+                let angle = Prng.range(0,Math.PI*2);
+                let range = Prng.range(0,radius);
+                rorigx = origx+Math.cos(angle)*range; 
+                rorigy = origy+Math.sin(angle)*range;
+                roomRadius = Prng.range(minRoomRadius,maxRoomRadius);
+                // check for overlap
+                if (rooms.some((v) => Mathf.distance(v.x, v.y, rorigx, rorigy) < v.radius+roomRadius)) continue;
+                ok = true;
+                break;
+            }
+            if (ok) {
+                let room = new ProcRoom({
+                    x: Math.round(rorigx), 
+                    y: Math.round(rorigy),
+                    radius: Math.round(roomRadius),
+                });
+                rooms.push(room);
+            }
+        }
+        // ## save state
+        pstate.prooms = rooms;
+        if (template.doyield) yield;
+        // ## merge rooms
+        let mrooms = this.mergeRooms(template, pstate.prooms);
+        pstate.prooms = mrooms;
+        if (template.doyield) yield;
+        // ## connect rooms
+        let crooms = this.connectRooms(template, pstate.prooms);
+        pstate.prooms = crooms;
+        if (template.doyield) yield;
+        // ## choose primary/secondary rooms
+        // -- top third of rooms farthest away are primary
+        // -- center rooms are secondary
+        let sorted = Array.from(pstate.prooms);
+        let top = Math.max(1, Math.floor(pstate.prooms.length/3));
+        sorted.sort((a,b) => {
+            let ad = Mathf.distance(a.x, a.y, origx, origy);
+            let bd = Mathf.distance(b.x, b.y, origx, origy);
+            return bd-ad;
+        });
+        for (let i=0; i<top; i++) {
+            let proom = sorted[i];
+            let d = Mathf.distance(proom.x, proom.y, origx, origy);
+            console.log(`${proom} d: ${d}`);
+            proom.primary = true;
+        }
+    }
+
+    static *bioBossRoomGenerator(template, pstate) {
+        // pull rrooms config from template
+        let rrooms = template.rrooms || {};
+        let width = template.width || 400;
+        let height = template.height || 400;
+        let origx = Math.floor(width/2);
+        let origy = Math.floor(height/2);
+        let radius = Math.min(origx, origy);
+        let minUnits = template.roomMinUnits || 5;
+        let minRoomRadius = template.unitSize * minUnits;
+        let maxRoomRadius = rrooms.maxRoomRadius || minRoomRadius*1.5;
+        let minRooms = rrooms.minRooms || 8;
+        let maxRooms = rrooms.maxRooms || 12;
+        let nrooms = Prng.rangeInt(minRooms, maxRooms);
+        let rooms = [];
+        // start with boss room in the middle
+        let r = (template.unitSize * 6.5);
+        let room = new ProcRoom({
+            x: Math.round(origx), 
+            y: Math.round(origy),
+            radius: Math.round(r),
+            // ensures a square room
+            outlineSchemes: [ {weight: 1, minWidthPct: Math.SQRT2/2, minHeightPct: Math.SQRT2/2}, ],
+            critical: true,
+            boss: 'bio',
         });
         rooms.push(room);
         // create other random rooms around boss room

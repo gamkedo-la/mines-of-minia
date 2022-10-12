@@ -90,8 +90,11 @@ class LevelSystem extends System {
         }
 
         // load boss template
-        // FIXME
         if (index === 7) {
+            let old = Config.template;
+            Config.template = MiniaTemplates.bioBoss.copy();
+            Config.template.seed = old.seed;
+        } else if (index === 14) {
             let old = Config.template;
             Config.template = MiniaTemplates.rockBoss.copy();
             Config.template.seed = old.seed;

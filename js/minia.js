@@ -60,6 +60,7 @@ import { Overbearer } from "./entities/overbearer.js";
 import { Scarab } from "./entities/scarab.js";
 import { Talents } from "./talents.js";
 import { Dummy } from "./entities/dummy.js";
+import { Pillar } from "./entities/pillar.js";
 
 
 class Minia extends Game {
@@ -130,6 +131,7 @@ class Minia extends Game {
             Magma,
             Node,
             Overbearer,
+            Pillar,
             Player,
             Projectile,
             Prompt,

@@ -136,7 +136,6 @@ class Translate {
         //console.log(`critical path: ${best}`);
 
         // FIXME: remove
-        /*
         let bossRoom = prooms.find((v) => v.boss);
         if (bossRoom) {
             plvl.testIdx = bossRoom.cidx;
@@ -153,7 +152,6 @@ class Translate {
                 }
             }
         }
-        */
 
         // FIXME: remove
         /*
@@ -165,8 +163,10 @@ class Translate {
 
     static translateRoom(template, pstate, proom, transidxs) {
         // FIXME: handle different type of room translators here...
-        if (proom.boss && template.translate.area === 'rock') {
+        if (proom.boss === 'rock') {
             this.translateRockBossRoom(template, pstate, proom, transidxs);
+        } else if (proom.boss === 'bio') {
+            this.translateBioBossRoom(template, pstate, proom, transidxs);
         } else {
             this.translateEmptyRoom(template, pstate, proom, transidxs);
         }
@@ -336,6 +336,34 @@ class Translate {
             if (dir !== Direction.south) {
                 plvlo.data.setidx(widx, 'wall');
             } else {
+                plvl.finalDoorIdx = widx;
+            }
+        }
+        // run final translation
+        this.translateEmptyRoom(template, pstate, proom, transidxs);
+    }
+
+    static translateBioBossRoom(template, pstate, proom, transidxs) {
+        console.log(`-- translate bio boss room`);
+        let plvl = pstate.plvl || [];
+        let plvlo = pstate.plvlo || [];
+        // update data for boss room
+        // -- find center index
+        let ci = plvlo.data.ifromidx(proom.cidx);
+        let cj = plvlo.data.jfromidx(proom.cidx);
+        // -- update exit
+        plvl.exitIdx = plvlo.data.idxfromij(ci, cj-6);
+        if (!proom.idxs.includes(plvl.exitIdx)) proom.idxs.push(plvl.exitIdx);
+        plvlo.data.setidx(plvl.exitIdx, 'floor');
+        // -- position walls around exit
+        for (const dir of Direction.all) {
+            let widx = plvlo.data.idxfromdir(plvl.exitIdx, dir);
+            console.log(`cidx: ${plvl.exitIdx} widx: ${widx}`);
+            if (dir !== Direction.south) {
+                if (!proom.idxs.includes(widx)) proom.idxs.push(widx);
+                plvlo.data.setidx(widx, 'wall');
+            } else {
+                plvlo.data.setidx(widx, 'floor');
                 plvl.finalDoorIdx = widx;
             }
         }

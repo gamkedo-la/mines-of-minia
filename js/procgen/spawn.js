@@ -30,6 +30,7 @@ import { Machinery } from '../entities/machinery.js';
 import { Magma } from '../entities/magma.js';
 import { Node } from '../entities/node.js';
 import { Overbearer } from '../entities/overbearer.js';
+import { Pillar } from '../entities/pillar.js';
 import { Player } from '../entities/player.js';
 import { Projectile } from '../entities/projectile.js';
 import { RagingBull } from '../entities/ragingBull.js';
@@ -75,7 +76,7 @@ class Spawn {
         // -- fuel
         this.spawnFuel(template, pstate);
         // -- test objects
-        this.spawnTest(template, pstate);
+        //this.spawnTest(template, pstate);
         yield;
     }
 
@@ -1261,6 +1262,46 @@ class Spawn {
 
     }
 
+    static spawnEnemiesForBioBossRoom(template, pstate, proom, options) {
+        let plvl = pstate.plvl;
+        let plvlo = pstate.plvlo;
+        let ci = plvlo.data.ifromidx(proom.cidx);
+        let cj = plvlo.data.jfromidx(proom.cidx);
+
+        // pillar 1
+        plvl.entities.push( Pillar.xspec({
+            tag: 'pillar.1',
+            x_sketch: Assets.get('pillar.fire'),
+            idx: plvlo.data.idxfromij(ci-3, cj-3),
+            z: template.fgZed,
+        }));
+
+        // pillar 2
+        plvl.entities.push( Pillar.xspec({
+            tag: 'pillar.2',
+            x_sketch: Assets.get('pillar.ice'),
+            idx: plvlo.data.idxfromij(ci+3, cj-3),
+            z: template.fgZed,
+        }));
+
+        // pillar 3
+        plvl.entities.push( Pillar.xspec({
+            tag: 'pillar.3',
+            x_sketch: Assets.get('pillar.poison'),
+            idx: plvlo.data.idxfromij(ci-3, cj+3),
+            z: template.fgZed,
+        }));
+
+        // pillar 4
+        plvl.entities.push( Pillar.xspec({
+            tag: 'pillar.4',
+            x_sketch: Assets.get('pillar.dark'),
+            idx: plvlo.data.idxfromij(ci+3, cj+3),
+            z: template.fgZed,
+        }));
+
+    }
+
     static spawnEnemies(template, pstate) {
         // -- pull data
         let x_spawn = template.spawn || {};
@@ -1272,8 +1313,10 @@ class Spawn {
 
         // iterate through rooms
         for (const proom of prooms) {
-            if (proom.boss) {
+            if (proom.boss === 'rock') {
                 this.spawnEnemiesForRockBossRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
+            } else if (proom.boss === 'bio') {
+                this.spawnEnemiesForBioBossRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
             } else if (!template.boss) {
                 if (proom.cidx !== plvl.startIdx) {
                     this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyRoomOptions);

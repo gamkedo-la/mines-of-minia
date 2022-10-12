@@ -391,6 +391,15 @@ class PlayState extends GameState {
             }
 
             // FIXME: remove
+
+            case '5': {
+                console.log(`-- bio boss lvl`);
+                let whichLevel = 7;
+                let load = (whichLevel > LevelSystem.maxLevelIndex) ? false : true;
+                Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
+                break;
+            }
+
             case '6': {
                 console.log(`-- next lvl`);
                 let whichLevel = LevelSystem.currentLevelIndex + 1;
@@ -398,6 +407,7 @@ class PlayState extends GameState {
                 Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
                 break;
             }
+
             case '7': {
                 UpdateSystem.eUpdate(this.player, {
                     lvl: this.player.lvl+1,

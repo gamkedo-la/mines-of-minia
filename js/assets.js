@@ -1138,6 +1138,7 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'attack.hit', audio: new SfxRef({src: 'snd/flip-switch.mp3'}), volume: .5, loop: false }),
     Sfx.xspec({ tag: 'scarab.move', audio: new SfxRef({src: 'snd/scarab-scritter-move.mp3'}), volume: .3}),
 
+    // -- rock area
     ...Template.walls('img/rock-walls.png', 'rock.wall'),
     ...Template.tiles('img/rock-floor.png', 'rock.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
     ...Template.tiles('img/rock-pit.png', 'rock.pit'),
@@ -1145,9 +1146,13 @@ let miniaAssets = [
     ...Template.walls('img/rock-outcrop.png', 'rock.outcrop', { vars: { z: [[3,1],[3,2],[3,3],[3,4]]}}),
     ...Template.tiles('img/rock-outcrop-border.png', 'rock.outcrop.border', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
 
+    // -- punk area
     ...Template.walls('img/punk-walls.png', 'punk.wall'),
     ...Template.tiles('img/punk-floor.png', 'punk.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
     ...Template.tiles('img/punk-pit-border.png', 'punk.pit.border', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
+
+    // -- bio area
+    ...Template.tiles('img/bio-pit.png', 'bio.pit', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[1,3],[2,3],[4,3],[5,3]]}}),
 
     StretchSprite.xspec({tag: 'hud.border', border: 27, img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 0, y: 16*4, scalex: 3, scaley: 3})}),
     Sprite.xspec({tag: 'hud.portrait', img: new SheetRef({src: 'img/hud.png', width: 48, height: 48, x: 0, y: 0})}),
@@ -2127,5 +2132,10 @@ let miniaAssets = [
     Sprite.xspec({tag: 'talent.darkness', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*3, y: 16*2})}),
     Sprite.xspec({tag: 'talent.active', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*4, y: 16*0})}),
     Sprite.xspec({tag: 'talent.inactive', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*4, y: 16*1})}),
+
+    Sprite.xspec({tag: 'pillar.poison', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*0, y: 16*0})}),
+    Sprite.xspec({tag: 'pillar.fire', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*1, y: 16*0})}),
+    Sprite.xspec({tag: 'pillar.ice', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*2, y: 16*0})}),
+    Sprite.xspec({tag: 'pillar.dark', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*3, y: 16*0})}),
 
 ];

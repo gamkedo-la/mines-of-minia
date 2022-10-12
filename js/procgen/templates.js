@@ -81,7 +81,7 @@ class MiniaTemplates {
         translate: {
             floor: 'rock.floor',
             wall: 'rock.wall',
-            pit: 'rock.pit',
+            pit: 'bio.pit',
             pitb: 'rock.pit.border',
             obs: 'rock.outcrop',
             obsb: 'rock.outcrop.border',
