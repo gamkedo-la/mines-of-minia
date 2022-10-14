@@ -22,6 +22,7 @@ class Outline {
 
     static validate(template, pstate) {
         let plvlo = pstate.plvlo;
+        let rooms = pstate.prooms;
         let valid = true;
         // validate that each floor tile is not adjacent to fill
         for (const [idx,kind] of plvlo.data.find((v) => v === 'floor')) {
@@ -35,6 +36,24 @@ class Outline {
                         break;
                     }
                 }
+            }
+        }
+        // for bio boss level, validate that a cardinal direction is available for exit
+        if (template.boss === 'bio') {
+            // find boss room
+            let room = rooms.find((v) => v.boss);
+            if (room) {
+                let dirMask = Direction.north|Direction.west|Direction.south|Direction.east;
+                let bi = plvlo.data.ifromidx(room.cidx);
+                let bj = plvlo.data.jfromidx(room.cidx);
+                for (const other of room.connections) {
+                    // find cardinal direction of other
+                    let oi = plvlo.data.ifromidx(other.cidx);
+                    let oj = plvlo.data.jfromidx(other.cidx);
+                    let dir = Direction.cardinalFromXY(oi-bi, oj-bj);
+                    dirMask &= ~dir;
+                }
+                if (!dirMask) return false;
             }
         }
         return valid;

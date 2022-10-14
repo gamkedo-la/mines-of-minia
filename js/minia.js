@@ -61,6 +61,7 @@ import { Scarab } from "./entities/scarab.js";
 import { Talents } from "./talents.js";
 import { Dummy } from "./entities/dummy.js";
 import { Pillar } from "./entities/pillar.js";
+import { Slimer } from "./entities/slimer.js";
 
 
 class Minia extends Game {
@@ -142,6 +143,7 @@ class Minia extends Game {
             Rous,
             Scarab,
             Shielding,
+            Slimer,
             SpikeTrap,
             Stairs,
             StealthBot,

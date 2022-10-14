@@ -39,6 +39,7 @@ import { Reactor } from '../entities/reactor.js';
 import { Rous } from '../entities/rous.js';
 import { Scarab } from '../entities/scarab.js';
 import { Shielding } from '../entities/shielding.js';
+import { Slimer } from '../entities/slimer.js';
 import { Stairs } from '../entities/stairs.js';
 import { StealthBot } from '../entities/stealthBot.js';
 import { ThumpBot } from '../entities/thumpBot.js';
@@ -115,7 +116,7 @@ class Spawn {
         if (plvl.finalDoorIdx) {
             let x_door = Door.xspec({
                 idx: plvl.finalDoorIdx,
-                facing: 'ns',
+                facing: plvl.finalDoorFacing,
                 kind: 'blue',
                 z: template.fgZed,
             });
@@ -1297,6 +1298,12 @@ class Spawn {
             tag: 'pillar.4',
             x_sketch: Assets.get('pillar.dark'),
             idx: plvlo.data.idxfromij(ci+3, cj+3),
+            z: template.fgZed,
+        }));
+
+        plvl.entities.push( Slimer.xspec({
+            tag: 'slimer.boss',
+            idx: proom.cidx,
             z: template.fgZed,
         }));
 

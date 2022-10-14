@@ -27,7 +27,7 @@ class Translate {
         // -- choose critical level path (spawn point, exit point, rooms in between)
         this.chooseCriticalPath(template, pstate);
         // -- noisify level
-        this.noisifyFloor(template, pstate);
+        //this.noisifyFloor(template, pstate);
         if (template.doyield) yield;
         // -- keep track of translated idxs
         let transidxs = [];
@@ -68,6 +68,7 @@ class Translate {
         let prooms = pstate.prooms || [];
         // is there a boss room
         let bossRoom = prooms.find((v) => v.boss);
+        console.log(`bossRoom: ${bossRoom}`);
         // iterate through all floor tiles
         for (let i=0; i<plvlo.data.nentries; i++) {
             // skip noise for boss room
@@ -332,11 +333,11 @@ class Translate {
         // -- position walls around exit
         for (const dir of Direction.all) {
             let widx = plvlo.data.idxfromdir(plvl.exitIdx, dir);
-            console.log(`cidx: ${plvl.exitIdx} widx: ${widx}`);
             if (dir !== Direction.south) {
                 plvlo.data.setidx(widx, 'wall');
             } else {
                 plvl.finalDoorIdx = widx;
+                plvl.finalDoorFacing = 'ns';
             }
         }
         // run final translation
@@ -351,22 +352,55 @@ class Translate {
         // -- find center index
         let ci = plvlo.data.ifromidx(proom.cidx);
         let cj = plvlo.data.jfromidx(proom.cidx);
+
         // -- update exit
-        plvl.exitIdx = plvlo.data.idxfromij(ci, cj-6);
+        // -- determine which directions are blocked by entrance to boss room
+        let dirMask = Direction.north|Direction.west|Direction.south|Direction.east;
+        let bi = plvlo.data.ifromidx(proom.cidx);
+        let bj = plvlo.data.jfromidx(proom.cidx);
+        for (const other of proom.connections) {
+            // find cardinal direction of other
+            let oi = plvlo.data.ifromidx(other.cidx);
+            let oj = plvlo.data.jfromidx(other.cidx);
+            let dir = Direction.cardinalFromXY(oi-bi, oj-bj);
+            dirMask &= ~dir;
+        }
+        // -- pick viable exit
+        let exitDir;
+        for (const dir of Direction.cardinals) {
+            if (dirMask&dir) {
+                exitDir = dir;
+                break;
+            }
+        }
+        let oi = Direction.asX(exitDir)*6;
+        let oj = Direction.asY(exitDir)*6;
+        plvl.exitIdx = plvlo.data.idxfromij(ci+oi, cj+oj);
         if (!proom.idxs.includes(plvl.exitIdx)) proom.idxs.push(plvl.exitIdx);
         plvlo.data.setidx(plvl.exitIdx, 'floor');
+
         // -- position walls around exit
         for (const dir of Direction.all) {
             let widx = plvlo.data.idxfromdir(plvl.exitIdx, dir);
-            console.log(`cidx: ${plvl.exitIdx} widx: ${widx}`);
-            if (dir !== Direction.south) {
+            if (dir !== Direction.opposite(exitDir)) {
                 if (!proom.idxs.includes(widx)) proom.idxs.push(widx);
                 plvlo.data.setidx(widx, 'wall');
             } else {
                 plvlo.data.setidx(widx, 'floor');
                 plvl.finalDoorIdx = widx;
+                plvl.finalDoorFacing = (exitDir&(Direction.north|Direction.south)) ? 'ns' : 'ew';
             }
         }
+
+        // position pits
+        for (const [oi,oj] of [[-3,-3], [-3,3], [3,-3], [3,3]]) {
+            let idx = plvlo.data.idxfromij(ci+oi, cj+oj);
+            for (const dir of Direction.all) {
+                let nidx = plvlo.data.idxfromdir(idx, dir);
+                plvlo.data.setidx(nidx, 'pit');
+            }
+        }
+
         // run final translation
         this.translateEmptyRoom(template, pstate, proom, transidxs);
     }
