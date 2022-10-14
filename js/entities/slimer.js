@@ -2,6 +2,7 @@ export { Slimer };
 
 import { Assets } from '../base/assets.js';
 import { Fmt } from '../base/fmt.js';
+import { PoisonCharm } from '../charms/poison.js';
 import { LvlVar } from '../lvlVar.js';
 import { Enemy } from './enemy.js';
 
@@ -25,6 +26,9 @@ class Slimer extends Enemy{
     cpost(spec) {
         super.cpost(spec);
         //console.log(`Rous spec: ${Fmt.ofmt(spec)}`);
+        // slimer attacks are poison
+        let charm = new PoisonCharm();
+        this.addCharm(charm);
     }
 
 }

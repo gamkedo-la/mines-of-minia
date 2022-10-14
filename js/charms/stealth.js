@@ -7,10 +7,6 @@ class StealthCharm extends Charm {
     // STATIC VARIABLES ----------------------------------------------------
     static dfltApTL = 100;
 
-    static applied(e) {
-        return e.charms && e.charms.some((v) => v.constructor.name === this.name);
-    }
-
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     constructor(spec={}) {
         super(spec);

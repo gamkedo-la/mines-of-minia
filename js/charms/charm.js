@@ -7,6 +7,10 @@ class Charm {
     // STATIC VARIABLES ----------------------------------------------------
 
     // STATIC METHODS ------------------------------------------------------
+    static applied(e) {
+        return e.charms && e.charms.some((v) => v.constructor.name === this.name);
+    }
+
     static checkFor(e, cls) {
         if (!e.charms) return false;
         return e.charms.some((v) => v.cls === cls);
