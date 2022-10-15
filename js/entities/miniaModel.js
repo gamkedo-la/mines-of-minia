@@ -6,7 +6,11 @@ import { Model } from '../base/model.js';
 
 class MiniaModel extends Model {
     // STATIC VARIABLES ----------------------------------------------------
-    static block = new Bits({something: 1});
+    static block = new Bits({
+        something: 1,
+        wall: 2,
+        pit: 4,
+    });
     static dfltZ = 0;
 
     cpost(spec={}) {
