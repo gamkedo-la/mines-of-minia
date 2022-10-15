@@ -1,6 +1,7 @@
 export { UseAction };
 
 import { Action } from '../base/actions/action.js';
+import { Assets } from '../base/assets.js';
 import { Timer } from '../base/timer.js';
 
 class UseAction extends Action {
@@ -14,6 +15,11 @@ class UseAction extends Action {
         this.item = spec.item;
         this.target = spec.target;
         this.sfx = spec.sfx;
+        if (!this.sfx) {
+            if (this.item.cls === 'Cog') {
+                this.sfx = Assets.get('cog.use', true);
+            }
+        }
         this.onTimer = this.onTimer.bind(this);
     }
     destroy() {
