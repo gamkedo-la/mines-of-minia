@@ -15,6 +15,7 @@ import { XForm } from '../base/xform.js';
 import { HealthVfx } from '../healthVfx.js';
 import { Resurrect64 } from '../resurrect64.js';
 import { ScanVfx } from '../scanVfx.js';
+import { SparkleVfx } from '../sparkleVfx.js';
 
 class OverlaySystem extends System {
     static evtNotify = 'overlay.notify';
@@ -137,6 +138,30 @@ class OverlaySystem extends System {
                     this.overlay.adopt(vfx);
                     evt.actor.healthVfx = vfx;
                 }
+                break;
+            }
+            case 'sparkle': {
+                let color = Resurrect64.colors[48];
+                if (evt.actor.kind === 'fire') {
+                    color = Resurrect64.colors[18];
+                } else if (evt.actor.kind === 'dark') {
+                    color = Resurrect64.colors[53];
+                } else if (evt.actor.kind === 'ice') {
+                    color = Resurrect64.colors[48];
+                } else if (evt.actor.kind === 'poison') {
+                    color = Resurrect64.colors[32];
+                }
+                let vfx = new SparkleVfx({
+                    actor: evt.actor,
+                    sparkColor: color,
+                    xform: new XForm({stretch: false}),
+                    points: [
+                        [-5.5,-9.5], [-5.5,-6.5], [-5.5,-3.5], [-4.5,-2.5], [-1.5,-2.5], [1.5,-2.5], [4.5,-2.5], [5.5,-3.5], [5.5,-6.5], [5.5,-9.5],
+                        [-4.5,-21.5], [-4.5,-18.5], [-4.5,-15.5], [-3.5,-14.5], [-1.5,-13.5], [1.5,-13.5], [3.5,-14.5], [4.5,-15.5], [4.5,-18.5], [4.5,-21.5],
+                        [1.5,-23.5], [-1.5,-23.5], [-.5,-19.5], 
+                    ],
+                });
+                this.overlay.adopt(vfx);
                 break;
             }
             case 'alert': {

@@ -393,12 +393,14 @@ class Translate {
         }
 
         // position pits
-        for (const [oi,oj] of [[-3,-3], [-3,3], [3,-3], [3,3]]) {
+        for (const [oi,oj] of [
+            [-3,-2], [-2,-3], [-2,-2],
+            [-3,2], [-2,3], [-2,2],
+            [3,-2], [2,-3], [2,-2],
+            [3,2], [2,3], [2,2],
+        ]) {
             let idx = plvlo.data.idxfromij(ci+oi, cj+oj);
-            for (const dir of Direction.all) {
-                let nidx = plvlo.data.idxfromdir(idx, dir);
-                plvlo.data.setidx(nidx, 'pit');
-            }
+            plvlo.data.setidx(idx, 'pit');
         }
 
         // run final translation

@@ -77,7 +77,7 @@ class Spawn {
         // -- fuel
         this.spawnFuel(template, pstate);
         // -- test objects
-        this.spawnTest(template, pstate);
+        //this.spawnTest(template, pstate);
         yield;
     }
 
@@ -1272,6 +1272,7 @@ class Spawn {
         // pillar 1
         plvl.entities.push( Pillar.xspec({
             tag: 'pillar.1',
+            kind: 'fire',
             x_sketch: Assets.get('pillar.fire'),
             idx: plvlo.data.idxfromij(ci-3, cj-3),
             z: template.fgZed,
@@ -1280,6 +1281,7 @@ class Spawn {
         // pillar 2
         plvl.entities.push( Pillar.xspec({
             tag: 'pillar.2',
+            kind: 'ice',
             x_sketch: Assets.get('pillar.ice'),
             idx: plvlo.data.idxfromij(ci+3, cj-3),
             z: template.fgZed,
@@ -1288,6 +1290,7 @@ class Spawn {
         // pillar 3
         plvl.entities.push( Pillar.xspec({
             tag: 'pillar.3',
+            kind: 'poison',
             x_sketch: Assets.get('pillar.poison'),
             idx: plvlo.data.idxfromij(ci-3, cj+3),
             z: template.fgZed,
@@ -1296,6 +1299,7 @@ class Spawn {
         // pillar 4
         plvl.entities.push( Pillar.xspec({
             tag: 'pillar.4',
+            kind: 'dark',
             x_sketch: Assets.get('pillar.dark'),
             idx: plvlo.data.idxfromij(ci+3, cj+3),
             z: template.fgZed,

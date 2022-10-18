@@ -1,4 +1,6 @@
 export { Pillar };
+    import { Events } from '../base/event.js';
+import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Item } from './item.js';
 import { MiniaModel } from './miniaModel.js';
 
@@ -9,6 +11,7 @@ class Pillar extends Item {
     // STATIC VARIABLES ----------------------------------------------------
     static mobile = false;
     static lootable = false;
+    static dfltKind = 'fire';
 
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
@@ -17,4 +20,14 @@ class Pillar extends Item {
             blocks: MiniaModel.block.all,
         }, spec);
     }
+
+    cpost(spec) {
+        super.cpost(spec);
+        this.kind = spec.kind || this.constructor.dfltKind;
+    }
+
+    show() {
+        Events.trigger(OverlaySystem.evtNotify, {which: 'sparkle', actor: this});
+    }
+
 }
