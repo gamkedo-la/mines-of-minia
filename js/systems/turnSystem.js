@@ -94,6 +94,16 @@ class TurnSystem extends System {
         }
     }
 
+    onEntityRemoved(evt) {
+        if (this.dbg && this.matchPredicate(evt.actor)) console.log(`${this} onEntityRemoved: ${Fmt.ofmt(evt)}`);
+        this.store.delete(evt.actor.gid);
+        if (this.iterating) {
+            this.iterateAgain = true
+        } else {
+            this.active = true
+        }
+    }
+
     // METHODS -------------------------------------------------------------
     matchPredicate(e) {
         return e.actionStream;
