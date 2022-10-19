@@ -190,7 +190,7 @@ class InteractHandler extends Entity {
         // what's at index?
         let others = Array.from(this.lvl.findidx(idx, (v) => v.idx === idx));
         let tookAction = true;
-        if (others.some((v) => v.active && v instanceof Enemy)) {
+        if (others.some((v) => v.active && v instanceof Enemy && v.state !== 'dying')) {
             let target = others.find((v) => v instanceof Enemy);
             TurnSystem.postLeaderAction( new MeleeAttackAction({
                 target: target,

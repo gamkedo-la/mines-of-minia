@@ -43,7 +43,7 @@ class XPSystem extends System {
                 }
             }
             UpdateSystem.eUpdate(this.player, update);
-            console.log(`player weaponxp: ${Fmt.ofmt(this.player.weaponxps)}`);
+            if (this.dbg) console.log(`player weaponxp: ${Fmt.ofmt(this.player.weaponxps)}`);
         }
     }
 

@@ -48,7 +48,7 @@ class ActionSystem extends System {
             // listen for finished action
             action.evt.listen(action.constructor.evtDone, ActionSystem.onActionDone, Events.once);
             // start the action
-            //console.log(`starting action: ${action}`);
+            //console.log(`starting queued action: ${action}`);
             action.actor = actor;
             Events.trigger(action.constructor.evtStarted, { actor: actor, action: action });
             action.start(actor);

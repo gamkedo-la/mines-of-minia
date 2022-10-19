@@ -1384,51 +1384,22 @@ class Spawn {
             }),
             */
 
-            Scarab.xspec({
-                healthMax: 5,
-                xp: 1,
-            }),
+            Rous.xspec({ healthMax: 500, xp: 1, }),
 
-            Gem.xspec({
-                kind: 'fire',
-            }),
+            /*
+            Scarab.xspec({ healthMax: 5, xp: 1, }),
+            Gem.xspec({ kind: 'fire', }),
+            Gem.xspec({ kind: 'daze', }),
+            Gem.xspec({ kind: 'power', }),
+            Gem.xspec({ kind: 'stealth', }),
+            Weapon.xspec({ kind: 'bonk', identifiable: true, charms: [ new BooCharm() ], }),
+            Cog.xspec({ kind: 'identify', }),
+            Cog.xspec({ kind: 'lvlup', }),
+            Cog.xspec({ kind: 'invulnerability', }),
+            Cog.xspec({ kind: 'purge', }),
+            */
 
-            Gem.xspec({
-                kind: 'daze',
-            }),
-
-            Gem.xspec({
-                kind: 'power',
-            }),
-
-            Gem.xspec({
-                kind: 'stealth',
-            }),
-
-            Weapon.xspec({
-                kind: 'bonk',
-                identifiable: true,
-                charms: [ new BooCharm() ],
-            }),
-
-
-            Cog.xspec({
-                kind: 'identify',
-            }),
-
-            Cog.xspec({
-                kind: 'lvlup',
-            }),
-
-            Cog.xspec({
-                kind: 'invulnerability',
-            }),
-
-            Cog.xspec({
-                kind: 'purge',
-            }),
-
-            this.genWeapon(template),
+            //this.genWeapon(template),
 
             /*
             RangedWeapon.xspec({
