@@ -1,6 +1,7 @@
 export { InteractHandler };
 
 import { MeleeAttackAction } from './actions/attack.js';
+import { InteractAction } from './actions/interact.js';
 import { OpenAction } from './actions/open.js';
 import { PickupAction } from './actions/pickup.js';
 import { TakeStairsAction } from './actions/takeStairs.js';
@@ -198,6 +199,9 @@ class InteractHandler extends Entity {
         } else if (others.some((v) => v.constructor.lootable)) {
             let target = others.find((v) => v.constructor.lootable);
             TurnSystem.postLeaderAction( new PickupAction({ points: this.player.pointsPerTurn, target: target, sfx: Assets.get('player.pickup', true)}));
+        } else if (others.some((v) => v.constructor.interactable)) {
+            let target = others.find((v) => v.constructor.interactable);
+            TurnSystem.postLeaderAction( new InteractAction({ points: this.player.pointsPerTurn, target: target }));
         } else if (others.some((v) => v instanceof Stairs)) {
             let target = others.find((v) => v instanceof Stairs);
             TurnSystem.postLeaderAction( new MoveAction({ points: this.player.pointsPerTurn, x:x, y:y, accel: .001, snap: true, facing: facing, update: { idx: idx }, sfx: this.player.moveSfx }));

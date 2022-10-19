@@ -11,6 +11,7 @@ class Pillar extends Item {
     // STATIC VARIABLES ----------------------------------------------------
     static mobile = false;
     static lootable = false;
+    static interactable = true;
     static dfltKind = 'fire';
 
     // STATIC METHODS ------------------------------------------------------
@@ -28,6 +29,10 @@ class Pillar extends Item {
 
     show() {
         Events.trigger(OverlaySystem.evtNotify, {which: 'sparkle', actor: this});
+    }
+
+    interact(actor) {
+        console.log(`${actor} interacts with ${this}`);
     }
 
 }
