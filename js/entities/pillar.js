@@ -1,8 +1,14 @@
 export { Pillar };
-    import { Events } from '../base/event.js';
+
+import { Direction } from '../base/dir.js';
+import { Events } from '../base/event.js';
+import { XForm } from '../base/xform.js';
+import { FrozenCharm } from '../charms/frozen.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
+import { Dummy } from './dummy.js';
 import { Item } from './item.js';
 import { MiniaModel } from './miniaModel.js';
+
 
 /**
  * pillar for bio boss interaction
@@ -25,6 +31,13 @@ class Pillar extends Item {
     cpost(spec) {
         super.cpost(spec);
         this.kind = spec.kind || this.constructor.dfltKind;
+        this.elvl;
+        this.onLevelLoaded = this.onLevelLoaded.bind(this);
+        Events.listen('lvl.loaded', this.onLevelLoaded, Events.once);
+    }
+
+    onLevelLoaded(evt) {
+        this.elvl = evt.lvl;
     }
 
     show() {
@@ -32,7 +45,31 @@ class Pillar extends Item {
     }
 
     interact(actor) {
-        console.log(`${actor} interacts with ${this}`);
+        console.log(`${actor} interacts with ${this} kind: ${this.kind}`);
+        switch (this.kind) {
+            case 'ice':
+                // apply frozen to all entities around pillar
+                for (const idx of Direction.all.map((v) => this.elvl.idxfromdir(this.idx, v))) {
+                    for (const e of this.elvl.findidx(idx)) {
+                        let charm = new FrozenCharm({});
+                        if ('charms' in e) {
+                            console.log(`applying: ${charm} to ${e}`);
+                            e.addCharm(charm);
+                        } else {
+                            let dummy = new Dummy({
+                                idx: idx, 
+                                z: this.z,
+                                xform: new XForm({stretch: false, x: this.elvl.xfromidx(idx, true), y: this.elvl.yfromidx(idx, true)}),
+                            });
+                            dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
+                            console.log(`applying: ${charm} to ${dummy}`);
+                            dummy.addCharm(charm);
+                            dummy.evt.listen('enflamed.done', (evt) => dummy.destroy() );
+                        }
+                    }
+                }
+                break;
+        }
     }
 
 }
