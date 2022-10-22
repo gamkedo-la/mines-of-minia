@@ -2,6 +2,8 @@ export { FrozenCharm };
 
 import { Assets } from '../base/assets.js';
 import { Events } from '../base/event.js';
+import { Hierarchy } from '../base/hierarchy.js';
+import { Character } from '../entities/character.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
 import { TurnSystem } from '../systems/turnSystem.js';
 import { Charm } from './charm.js';
@@ -50,7 +52,10 @@ class FrozenCharm extends Charm {
         if (this.apDelta && 'pointsPerTurn' in actor) {
             this.actor.pointsPerTurn += this.apDelta;
         }
-        if (this.vfx) Events.trigger(OverlaySystem.evtNotify, { actor: actor, which: 'vfx', vfx: this.vfx, destroyEvt: 'frozen.done'});
+        if (this.vfx) {
+            let which = (actor instanceof Character) ? 'vfx' : 'overlay';
+            Events.trigger(OverlaySystem.evtNotify, { actor: actor, which: which, vfx: this.vfx, destroyEvt: 'frozen.done'});
+        }
     }
 
     unlink() {

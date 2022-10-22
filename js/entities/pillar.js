@@ -1,5 +1,6 @@
 export { Pillar };
 
+    import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
 import { Events } from '../base/event.js';
 import { XForm } from '../base/xform.js';
@@ -58,7 +59,7 @@ class Pillar extends Item {
                         } else {
                             let dummy = new Dummy({
                                 idx: idx, 
-                                z: this.z,
+                                z: Config.template.bgoZed,
                                 xform: new XForm({stretch: false, x: this.elvl.xfromidx(idx, true), y: this.elvl.yfromidx(idx, true)}),
                             });
                             dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);

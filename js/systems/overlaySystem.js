@@ -12,6 +12,8 @@ import { Text } from '../base/text.js';
 import { TextVfx } from '../base/textVfx.js';
 import { UxPanel } from '../base/uxPanel.js';
 import { XForm } from '../base/xform.js';
+import { MiniaModel } from '../entities/miniaModel.js';
+import { Tile } from '../entities/tile.js';
 import { HealthVfx } from '../healthVfx.js';
 import { Resurrect64 } from '../resurrect64.js';
 import { ScanVfx } from '../scanVfx.js';
@@ -24,6 +26,7 @@ class OverlaySystem extends System {
         super.cpost(spec);
         this.overlay = spec.overlay || new UxPanel();
         this.hud = spec.hud || new UxPanel();
+        this.lvl = spec.lvl;
         this.onNotify = this.onNotify.bind(this);
         this.evt.listen(this.constructor.evtNotify, this.onNotify)
     }
@@ -121,6 +124,10 @@ class OverlaySystem extends System {
                 this.startAnimation(evt.actor, evt.vfx, evt.destroyEvt);
                 break;
             }
+            case 'overlay': {
+                this.startAnimation(evt.actor, evt.vfx, evt.destroyEvt, this.lvl);
+                break;
+            }
             case 'scan': {
                 let vfx = new ScanVfx({
                     actor: evt.actor,
@@ -193,7 +200,9 @@ class OverlaySystem extends System {
         }
     }
 
-    startAnimation(actor, anim, destroyEvt) {
+    startAnimation(actor, anim, destroyEvt, overlay, zed) {
+        if (!overlay) overlay = this.overlay;
+        if (!zed) zed = actor.z;
         let offy = 0;
         if (anim.tag === 'vfx.dazed') {
             offy = (actor.xform.height>Config.tileSize) ? Config.tileSize*.5-actor.xform.height : -Config.tileSize*.5;
@@ -217,7 +226,9 @@ class OverlaySystem extends System {
                 offy: offy,
             }),
         });
-        this.overlay.adopt(panel);
+        panel.idx = actor.idx;
+        panel.z = zed;
+        overlay.adopt(panel);
         // track actor state
         let onActorUpdate = (evt) => {
             if (evt.update && evt.update.xform && (evt.update.xform.hasOwnProperty('x') || evt.update.xform.hasOwnProperty('y'))) {

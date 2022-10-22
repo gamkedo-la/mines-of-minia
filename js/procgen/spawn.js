@@ -1305,12 +1305,14 @@ class Spawn {
             z: template.fgZed,
         }));
 
+        /*
         plvl.entities.push( Slimer.xspec({
             healthMax: 20,
             tag: 'slimer.boss',
             idx: proom.cidx,
             z: template.fgZed,
         }));
+        */
 
     }
 

@@ -169,6 +169,7 @@ class PlayState extends GameState {
         Systems.get('close').lvl = this.lvl;
         Systems.get('overlay').overlay = this.overlay;
         Systems.get('overlay').hud = this.hudroot;
+        Systems.get('overlay').lvl = this.lvl;
         Systems.get('detect').lvl = this.lvl;
         Systems.get('burning').lvl = this.lvl;
 
