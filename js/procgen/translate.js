@@ -27,7 +27,7 @@ class Translate {
         // -- choose critical level path (spawn point, exit point, rooms in between)
         this.chooseCriticalPath(template, pstate);
         // -- noisify level
-        //this.noisifyFloor(template, pstate);
+        this.noisifyFloor(template, pstate);
         if (template.doyield) yield;
         // -- keep track of translated idxs
         let transidxs = [];
@@ -68,7 +68,7 @@ class Translate {
         let prooms = pstate.prooms || [];
         // is there a boss room
         let bossRoom = prooms.find((v) => v.boss);
-        console.log(`bossRoom: ${bossRoom}`);
+        //console.log(`-- bossRoom: ${bossRoom}`);
         // iterate through all floor tiles
         for (let i=0; i<plvlo.data.nentries; i++) {
             // skip noise for boss room
@@ -209,14 +209,20 @@ class Translate {
                 for (let j=i+1; j<poiIdxs.length; j++) {
                     let idx1 = poiIdxs[i];
                     let idx2 = poiIdxs[j];
+                    // first try solution avoiding pits/obstacles
+                    plvlo.pathfilter = (v) => proom.idxs.includes(v) && plvlo.data.getidx(v) !== 'pit' && plvlo.data.getidx(v) !== 'obs';
                     let solution = plvlo.pathfinder.find({}, idx1, idx2);
-                    if (solution) {
-                        for (const pidx of solution.path) {
-                            if (!proom.viablePath.includes(pidx)) proom.viablePath.push(pidx);
-                            let kind = plvlo.data.getidx(pidx);
-                            if (kind in swap) {
-                                let skind = swap[kind];
-                                plvlo.data.setidx(pidx, skind);
+                    plvlo.pathfilter = (v) => proom.idxs.includes(v);
+                    if (!solution) {
+                        solution = plvlo.pathfinder.find({}, idx1, idx2);
+                        if (solution) {
+                            for (const pidx of solution.path) {
+                                if (!proom.viablePath.includes(pidx)) proom.viablePath.push(pidx);
+                                let kind = plvlo.data.getidx(pidx);
+                                if (kind in swap) {
+                                    let skind = swap[kind];
+                                    plvlo.data.setidx(pidx, skind);
+                                }
                             }
                         }
                     }
@@ -345,7 +351,7 @@ class Translate {
     }
 
     static translateBioBossRoom(template, pstate, proom, transidxs) {
-        console.log(`-- translate bio boss room`);
+        //console.log(`-- translate bio boss room`);
         let plvl = pstate.plvl || [];
         let plvlo = pstate.plvlo || [];
         // update data for boss room

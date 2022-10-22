@@ -94,7 +94,6 @@ class Slimer extends Enemy{
     linkLevel(lvl) {
         if (!lvl) return;
         this.elvl = lvl;
-        console.log(`setting elvl: ${this} elvl: ${this.elvl}`);
         // setup directives
         let x_dir = {
             lvl: lvl,
