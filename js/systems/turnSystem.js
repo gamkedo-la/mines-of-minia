@@ -40,7 +40,6 @@ class TurnSystem extends System {
         this.leaderQ = [];
         // -- turn management
         this.leaderTurn = true;
-        //this.turnActive = false;
         this.followerTurnStarting = false;
         this.turnPoints = 0;
         // -- follower mgmt

@@ -90,7 +90,7 @@ class Minia extends Game {
                 render: false,
                 move: false,
                 aggro: false,
-                turn: false,
+                turn: true,
                 close: false,
             },
             keys: false,
