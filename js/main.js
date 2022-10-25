@@ -10,7 +10,8 @@ window.onload = async function() {
     let frame = 0;
     let started = false;
     let deltaTime = 0;
-    let fps = 60;
+    let fps = 115;
+    let overflow = 0;
     let fpsInterval = (fps) ? 1000/fps : 0;
     const maxDeltaTime = 1000/20;
     const evt = Events.main;
@@ -31,7 +32,8 @@ window.onload = async function() {
         if (frame > Number.MAX_SAFE_INTEGER) frame = 0;
         // compute delta time
         deltaTime = hts - lastUpdate
-        if (!fpsInterval || deltaTime>=fpsInterval) {
+        if (!fpsInterval || deltaTime>=fpsInterval-overflow) {
+            if (fpsInterval) overflow = Math.max(0, deltaTime - fpsInterval);
             deltaTime = Math.min(maxDeltaTime, deltaTime);
             lastUpdate = hts;
             evt.trigger(Game.evtTock, { deltaTime: parseInt(deltaTime), frame: frame });

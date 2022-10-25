@@ -220,11 +220,10 @@ class PlayState extends GameState {
             lvl = gameState.index;
             this.maxIndex = gameState.maxIndex;
             let cogState = Serialization.loadCogState();
-            console.log(`cogState: ${Fmt.ofmt(cogState)}`);
             Cog.init(cogState);
             let gemState = Serialization.loadGemState();
             Gem.init(gemState);
-            console.log(`-- level load`)
+            //console.log(`-- level load`)
             // system state
             let systemState = Serialization.loadSystemState();
             if (systemState.talent) {
@@ -232,7 +231,7 @@ class PlayState extends GameState {
             }
         } else {
             ProcGen.genDiscovery(Config.template);
-            console.log(`-- level new`)
+            //console.log(`-- level new`)
         }
         Events.trigger(LevelSystem.evtWanted, { level: lvl, load: data && data.load });
 
@@ -281,11 +280,12 @@ class PlayState extends GameState {
     }
 
     onHandlerWanted(evt) {
-        //console.log(`-- ${this} onHandlerWanted: ${Fmt.ofmt(evt)}`);
+        //console.error(`== ${this} onHandlerWanted: ${Fmt.ofmt(evt)} loadHandler`);
         this.loadHandler(evt.which, evt);
     }
 
     onTurnDone(evt) {
+        //console.log(`onTurnDone: ${Fmt.ofmt(evt)} handler: ${this.handler}`);
         if (evt.which !== 'follower') return;
         // handle dazed
         if (DazedCharm.isDazed(this.player)) {
@@ -294,6 +294,7 @@ class PlayState extends GameState {
         }
         // re-enable interact handler
         if (!this.handler) {
+            //console.log(`== onTurnDown loadHandler`);
             this.loadHandler('interact');
         }
     }
@@ -310,8 +311,10 @@ class PlayState extends GameState {
 
     loadHandler(which, evt={}) {
         this.currentHandler = which;
+        //console.log(`== start loadHandler ${which} ${this.handler}`);
         if (this.handler) {
             this.handler.destroy();
+            //console.log(`== setting handler to null`);
             this.handler = null;
         }
         switch(which) {
@@ -322,6 +325,7 @@ class PlayState extends GameState {
                     overlay: this.overlay,
                     shooter: evt.shooter,
                 });
+                //console.log(`== setting handler to ${this.handler}`);
             }
             break;
             case 'interact': {
@@ -332,12 +336,14 @@ class PlayState extends GameState {
                     doInventory: this.doInventory.bind(this),
                     doTalents: this.doTalents.bind(this),
                 });
+                //console.log(`== setting handler to ${this.handler}`);
             }
             break;
             case 'directive': {
                 this.handler = new DirectiveHandler({
                     directive: evt.directive,
                 });
+                //console.log(`== setting handler to ${this.handler}`);
             }
             break;
         }
@@ -345,9 +351,11 @@ class PlayState extends GameState {
             this.handler.evt.listen(this.handler.constructor.evtDestroyed, (evt)=>{
                 if (evt.actor === this.handler) {
                     this.handler = null;
+                    //console.log(`== setting handler to null (handler destroyed)`);
                 }
             });
         }
+        //console.log(`== finish loadHandler ${which} handler: ${this.handler}`);
     }
 
     onKeyDown(evt) {
@@ -457,6 +465,7 @@ class PlayState extends GameState {
         // disable level/hud
         this.lvl.active = false;
         this.hudroot.active = false;
+        //console.log(`== doInventory`);
         this.loadHandler('none');
         // build out inventory
         if (this.inventory) this.inventory.destroy();
@@ -470,6 +479,7 @@ class PlayState extends GameState {
             this.inventory = null;
             this.lvl.active = true;
             this.hudroot.active = true;
+            //console.log(`== doInventory restore`);
             this.loadHandler('interact');
         });
         this.view.adopt(this.inventory);
@@ -479,6 +489,7 @@ class PlayState extends GameState {
         // disable level/hud
         this.lvl.active = false;
         this.hudroot.active = false;
+        //console.log(`== doTalents `);
         this.loadHandler('none');
         // build out talents menu
         if (this.talents) this.talents.destroy();
@@ -491,6 +502,7 @@ class PlayState extends GameState {
             this.talents = null;
             this.lvl.active = true;
             this.hudroot.active = true;
+            //console.log(`== doTalents restore`);
             this.loadHandler('interact');
         });
         this.view.adopt(this.talents);
@@ -501,6 +513,7 @@ class PlayState extends GameState {
         // disable level/hud
         this.lvl.active = false;
         this.hudroot.active = false;
+        //console.log(`== doOptions`);
         this.loadHandler('none');
 
         // build out options menu
@@ -511,6 +524,7 @@ class PlayState extends GameState {
         options.evt.listen(options.constructor.evtDestroyed, () => {
             this.lvl.active = true;
             this.hudroot.active = true;
+            //console.log(`== doOptions restore`);
             this.loadHandler('interact');
         });
         this.view.adopt(options);
@@ -532,6 +546,7 @@ class PlayState extends GameState {
 
     doCancel() {
         if (this.currentHandler !== 'directive') return;
+        //console.log(`== doCancel`);
         this.loadHandler('interact');
     }
 
@@ -539,6 +554,7 @@ class PlayState extends GameState {
         // disable level/hud
         this.lvl.active = false;
         this.hudroot.active = false;
+        //console.log(`== doGameOver`);
         this.loadHandler('none');
         let popup = new GameOver({
             xform: new XForm({border: .3}),
