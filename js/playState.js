@@ -219,6 +219,7 @@ class PlayState extends GameState {
         if (data && data.load) {
             let gameState = Serialization.loadGameState();
             lvl = gameState.index;
+            Config.template.seed = gameState.seed;
             this.maxIndex = gameState.maxIndex;
             let cogState = Serialization.loadCogState();
             Cog.init(cogState);
