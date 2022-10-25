@@ -1450,22 +1450,11 @@ class Spawn {
             losRange: Config.tileSize*5,
             team: 'player',
             inventory: new InventoryData({
-                numSlots: 15,
+                numSlots: 25,
                 beltSlots: 3,
-                gadgetSlots: 1,
+                gadgetSlots: 3,
             }),
         });
-
-
-        // assign initial inventory
-        /*
-        let reactor = new Reactor({
-            identified: true,
-            healthRegenPerAP: .2,
-            fuelPerAP: .025,
-            sketch: Assets.get('reactor.1', true),
-        });
-        */
 
         let x_weapon = this.genWeapon(template, {
             charmPct: 0, 

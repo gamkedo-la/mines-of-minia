@@ -44,7 +44,7 @@ class InventoryData {
         this.gadgetSlots = spec.gadgetSlots || 3;
         // -- bakcback
         this.slots = Array.from(spec.slots || []);
-        this.numSlots = spec.numSlots || 15;
+        this.numSlots = spec.numSlots || 25;
         // -- belt
         this.belt = spec.belt || [];
         this.beltSlots = spec.beltSlots || 5;
