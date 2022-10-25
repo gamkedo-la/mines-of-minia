@@ -63,6 +63,26 @@ import { Talents } from "./talents.js";
 import { Dummy } from "./entities/dummy.js";
 import { Pillar } from "./entities/pillar.js";
 import { Slimer } from "./entities/slimer.js";
+import { BonkersCharm } from "./charms/bonkers.js";
+import { BooCharm } from "./charms/boo.js";
+import { Charm } from "./charms/charm.js";
+import { DarknessCharm } from "./charms/darkness.js";
+import { DazedCharm } from "./charms/dazed.js";
+import { EfficiencyCharm } from "./charms/efficiency.js";
+import { EnflamedCharm } from "./charms/enflamed.js";
+import { FieryCharm } from "./charms/fiery.js";
+import { FrostyCharm } from "./charms/frosty.js";
+import { FrozenCharm } from "./charms/frozen.js";
+import { FuegoCharm } from "./charms/fuego.js";
+import { HacketyCharm } from "./charms/hackety.js";
+import { InvulnerabilityCharm } from "./charms/invulnerability.js";
+import { PointyCharm } from "./charms/pointy.js";
+import { PoisonCharm } from "./charms/poison.js";
+import { PoisonedCharm } from "./charms/poisoned.js";
+import { PowerageCharm } from "./charms/powerage.js";
+import { ShieldCharm } from "./charms/shield.js";
+import { ShockingCharm } from "./charms/shocking.js";
+import { StealthCharm } from "./charms/stealth.js";
 
 
 class Minia extends Game {
@@ -109,25 +129,38 @@ class Minia extends Game {
         console.log(`${this.name}.init`);
         Registry.extend([
             Bomb,
+            BonkersCharm,
+            BooCharm,
             Character,
+            Charm,
             Chest,
             Clutter,
             Cog,
+            DarknessCharm,
+            DazedCharm,
             Door,
             Dummy,
+            EfficiencyCharm,
             Enemy,
+            EnflamedCharm,
             Energy,
             Facade,
+            FieryCharm,
+            FrostyCharm,
+            FrozenCharm,
+            FuegoCharm,
             Fuelcell,
             Funguy,
             Gadget,
             Gem,
             Golem,
             Growth,
+            HacketyCharm,
             Hud,
             Key,
             Inventory,
             InventoryData,
+            InvulnerabilityCharm,
             Level,
             Machinery,
             Magma,
@@ -135,6 +168,10 @@ class Minia extends Game {
             Overbearer,
             Pillar,
             Player,
+            PointyCharm,
+            PoisonCharm,
+            PoisonedCharm,
+            PowerageCharm,
             Projectile,
             Prompt,
             RagingBull,
@@ -143,11 +180,14 @@ class Minia extends Game {
             Reticle,
             Rous,
             Scarab,
+            ShieldCharm,
             Shielding,
+            ShockingCharm,
             Slimer,
             SpikeTrap,
             Stairs,
             StealthBot,
+            StealthCharm,
             Talents,
             Tile,
             ThumpBot,
