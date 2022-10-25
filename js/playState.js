@@ -56,6 +56,7 @@ import { PlayOptions } from './playOptions.js';
 import { Spawn } from './procgen/spawn.js';
 import { GameOver } from './gameOver.js';
 import { BurningSystem } from './systems/burningSystem.js';
+import { Timer } from './base/timer.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -281,7 +282,8 @@ class PlayState extends GameState {
 
     onHandlerWanted(evt) {
         //console.error(`== ${this} onHandlerWanted: ${Fmt.ofmt(evt)} loadHandler`);
-        this.loadHandler(evt.which, evt);
+        let timer = new Timer({ttl: 0, cb: () => this.loadHandler(evt.which, evt)});
+        //this.loadHandler(evt.which, evt);
     }
 
     onTurnDone(evt) {
@@ -295,7 +297,8 @@ class PlayState extends GameState {
         // re-enable interact handler
         if (!this.handler) {
             //console.log(`== onTurnDown loadHandler`);
-            this.loadHandler('interact');
+            //this.loadHandler('interact');
+            let timer = new Timer({ttl: 0, cb: () => this.loadHandler('interact')});
         }
     }
 
