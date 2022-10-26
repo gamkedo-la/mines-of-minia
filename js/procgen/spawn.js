@@ -818,6 +818,109 @@ class Spawn {
         return x_wpn;
     }
 
+    static genRanged(template, overrides={}) {
+        // weapon template
+        let tmpl = Object.assign({
+            kinds: RangedWeapon.kinds,
+            lvlOptions: [
+                { weight: .1, delta: -1 },
+                { weight: .3, delta: 0 },
+                { weight: .2, delta: 1 },
+                { weight: .2, delta: 2 },
+                { weight: .1, delta: 3 },
+                { weight: .1, delta: 4 },
+                { weight: .1, delta: 5 },
+            ],
+            tierByLTier: {
+                1: [
+                    { weight: .7, tier: 1 },
+                    { weight: .25, tier: 2 },
+                    { weight: .05, tier: 3 },
+                ],
+                2: [
+                    { weight: .1, tier: 1 },
+                    { weight: .7, tier: 2 },
+                    { weight: .2, tier: 3 },
+                ],
+                3: [
+                    { weight: .1, tier: 1 },
+                    { weight: .2, tier: 2 },
+                    { weight: .7, tier: 3 },
+                ],
+            },
+            savvyPerTier: {
+                1: { min: 8, max: 12},
+                2: { min: 10, max: 14},
+                3: { min: 13, max: 16},
+            },
+            damagePerTier: {
+                1: { minRange: { min: 1, max: 3}, maxRange: {min: 4, max: 6}, scale: 1.5 },
+                2: { minRange: { min: 2, max: 5}, maxRange: {min: 6, max: 12}, scale: 2 },
+                3: { minRange: { min: 3, max: 7}, maxRange: {min: 8, max: 18}, scale: 2.5 },
+            },
+            savvyReductionPerLvl: .25,
+            charmPct: .5,
+            cursePct: .25,
+            charms: [ FieryCharm ],
+            curses: [ BooCharm ],
+            identifiableByTier: {
+                1: .25,
+                2: .5,
+                3: .75,
+            },
+        }, overrides);
+        let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
+        // -- kind
+        let kind = Prng.choose(tmpl.kinds);
+        // -- lvl
+        let lvl = Math.max(1, lvlTier + Prng.chooseWeightedOption(tmpl.lvlOptions).delta);
+        // -- tier
+        let tier = Prng.chooseWeightedOption(tmpl.tierByLTier[lvlTier]).tier;
+        // -- savvy
+        let savvy = Prng.rangeInt(tmpl.savvyPerTier[tier].min, tmpl.savvyPerTier[tier].max);
+        let savvyReductionPerLvl = tmpl.savvyReductionPerLvl;
+        // -- damage
+        let baseDamageMin = Prng.rangeInt(tmpl.damagePerTier[tier].minRange.min, tmpl.damagePerTier[tier].minRange.max);
+        let baseDamageMax = Prng.rangeInt(tmpl.damagePerTier[tier].maxRange.min, tmpl.damagePerTier[tier].maxRange.max);
+        let damageScale = tmpl.damagePerTier[tier].scale;
+        // -- charms
+        let charms = [];
+        if (Prng.flip(tmpl.charmPct)) {
+            // pick charm
+            let cls = Prng.choose(tmpl.charms);
+            charms.push( new cls() );
+        }
+        // -- roll for curse
+        if (Prng.flip(tmpl.cursePct)) {
+            let cls = Prng.choose(tmpl.curses);
+            // pick curse
+            charms.push( new cls() );
+        }
+        // -- identifiable
+        let identifiablePct = tmpl.identifiableByTier[tier];
+        if (charms.length) {
+            identifiablePct += .2;
+        }
+        let identifiable = Prng.flip(identifiablePct);
+        // -- name
+        let name = Prng.choose(Names[kind]);
+        // build spec
+        let x_wpn = RangedWeapon.xspec({
+            name: name,
+            kind: kind,
+            lvl: lvl,
+            tier: tier,
+            savvy: savvy,
+            savvyReductionPerLvl: savvyReductionPerLvl,
+            baseDamageMin: baseDamageMin,
+            baseDamageMax: baseDamageMax,
+            damageScale: damageScale,
+            charms: charms,
+            identifiable: identifiable,
+        });
+        return x_wpn;
+    }
+
     static genReactor(template, overrides={}) {
         // reactor template
         let tmpl = Object.assign({
@@ -1138,6 +1241,10 @@ class Spawn {
                 loot.push(this.genWeapon(template));
                 break;
             }
+            case 'ranged': {
+                loot.push(this.genRanged(template));
+                break;
+            }
             case 'reactor': {
                 loot.push(this.genReactor(template));
                 break;
@@ -1414,7 +1521,7 @@ class Spawn {
             Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
             Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
 
-            //this.genWeapon(template),
+            this.genRanged(template),
 
             /*
             RangedWeapon.xspec({

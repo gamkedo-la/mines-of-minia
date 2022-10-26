@@ -313,7 +313,7 @@ class RangeAttackRollAction extends Action {
     setup() {
         // this is an instant action
         this.done = true;
-        this.actor.evt.trigger(this.actor.constructor.evtAttacked, { actor: this.actor, target: this.target });
+        this.actor.evt.trigger(this.actor.constructor.evtAttacked, { actor: this.actor, target: this.target, weapon: this.weapon });
         // -- roll for damage
         let damage = Attack.damage(this.actor, this.target, this.weapon);
         //console.log(`${this} damage ${damage}`);

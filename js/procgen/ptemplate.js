@@ -117,6 +117,7 @@ class ProcTemplate {
             { weight: .3, kind: 'cog'},
             { weight: .3, kind: 'gem'},
             { weight: .1, kind: 'weapon'},
+            { weight: .08, kind: 'ranged'},
             { weight: .1, kind: 'reactor'},
             { weight: .1, kind: 'shielding'},
             { weight: .1, kind: 'gadget'},

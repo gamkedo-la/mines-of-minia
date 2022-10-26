@@ -1,5 +1,6 @@
 export { RangedWeapon };
 
+import { Assets } from '../base/assets.js';
 import { Item } from './item.js';
 
 class RangedWeapon extends Item {
@@ -23,6 +24,16 @@ class RangedWeapon extends Item {
         2: 2,
         3: 2.5,
     };
+
+    static xspec(spec={}) {
+        let kind = spec.kind || this.dfltKind;
+        let tier = spec.tier || this.dfltTier;
+        // final spec
+        console.log(`${kind}.gun.${tier}`);
+        return Object.assign( {}, this.spec, {
+            x_sketch: Assets.get(`${kind}.gun.${tier}`),
+        }, spec);
+    }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
