@@ -55,6 +55,8 @@ import { DirectiveHandler } from './directiveHandler.js';
 import { PlayOptions } from './playOptions.js';
 import { Spawn } from './procgen/spawn.js';
 import { GameOver } from './gameOver.js';
+import { BurningSystem } from './systems/burningSystem.js';
+import { Timer } from './base/timer.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -74,6 +76,7 @@ class PlayState extends GameState {
         Systems.add('level', new LevelSystem({ dbg: Util.getpath(Config, 'dbg.system.level')}));
         Systems.add('detect', new DetectSystem({ dbg: Util.getpath(Config, 'dbg.system.detect')}));
         Systems.add('talent', new TalentSystem({ dbg: Util.getpath(Config, 'dbg.system.talent')}));
+        Systems.add('burning', new BurningSystem({ dbg: Util.getpath(Config, 'dbg.system.burning')}));
     }
 
     async ready(data={}) {
@@ -167,7 +170,9 @@ class PlayState extends GameState {
         Systems.get('close').lvl = this.lvl;
         Systems.get('overlay').overlay = this.overlay;
         Systems.get('overlay').hud = this.hudroot;
+        Systems.get('overlay').lvl = this.lvl;
         Systems.get('detect').lvl = this.lvl;
+        Systems.get('burning').lvl = this.lvl;
 
         // load player
         if (data && data.load) {
@@ -214,13 +219,13 @@ class PlayState extends GameState {
         if (data && data.load) {
             let gameState = Serialization.loadGameState();
             lvl = gameState.index;
+            Config.template.seed = gameState.seed;
             this.maxIndex = gameState.maxIndex;
             let cogState = Serialization.loadCogState();
-            console.log(`cogState: ${Fmt.ofmt(cogState)}`);
             Cog.init(cogState);
             let gemState = Serialization.loadGemState();
             Gem.init(gemState);
-            console.log(`-- level load`)
+            //console.log(`-- level load`)
             // system state
             let systemState = Serialization.loadSystemState();
             if (systemState.talent) {
@@ -228,7 +233,7 @@ class PlayState extends GameState {
             }
         } else {
             ProcGen.genDiscovery(Config.template);
-            console.log(`-- level new`)
+            //console.log(`-- level new`)
         }
         Events.trigger(LevelSystem.evtWanted, { level: lvl, load: data && data.load });
 
@@ -277,11 +282,13 @@ class PlayState extends GameState {
     }
 
     onHandlerWanted(evt) {
-        //console.log(`-- ${this} onHandlerWanted: ${Fmt.ofmt(evt)}`);
-        this.loadHandler(evt.which, evt);
+        //console.error(`== ${this} onHandlerWanted: ${Fmt.ofmt(evt)} loadHandler`);
+        let timer = new Timer({ttl: 0, cb: () => this.loadHandler(evt.which, evt)});
+        //this.loadHandler(evt.which, evt);
     }
 
     onTurnDone(evt) {
+        //console.log(`onTurnDone: ${Fmt.ofmt(evt)} handler: ${this.handler}`);
         if (evt.which !== 'follower') return;
         // handle dazed
         if (DazedCharm.isDazed(this.player)) {
@@ -290,7 +297,9 @@ class PlayState extends GameState {
         }
         // re-enable interact handler
         if (!this.handler) {
-            this.loadHandler('interact');
+            //console.log(`== onTurnDown loadHandler`);
+            //this.loadHandler('interact');
+            let timer = new Timer({ttl: 0, cb: () => this.loadHandler('interact')});
         }
     }
 
@@ -306,8 +315,10 @@ class PlayState extends GameState {
 
     loadHandler(which, evt={}) {
         this.currentHandler = which;
+        //console.log(`== start loadHandler ${which} ${this.handler}`);
         if (this.handler) {
             this.handler.destroy();
+            //console.log(`== setting handler to null`);
             this.handler = null;
         }
         switch(which) {
@@ -318,6 +329,7 @@ class PlayState extends GameState {
                     overlay: this.overlay,
                     shooter: evt.shooter,
                 });
+                //console.log(`== setting handler to ${this.handler}`);
             }
             break;
             case 'interact': {
@@ -328,12 +340,14 @@ class PlayState extends GameState {
                     doInventory: this.doInventory.bind(this),
                     doTalents: this.doTalents.bind(this),
                 });
+                //console.log(`== setting handler to ${this.handler}`);
             }
             break;
             case 'directive': {
                 this.handler = new DirectiveHandler({
                     directive: evt.directive,
                 });
+                //console.log(`== setting handler to ${this.handler}`);
             }
             break;
         }
@@ -341,9 +355,11 @@ class PlayState extends GameState {
             this.handler.evt.listen(this.handler.constructor.evtDestroyed, (evt)=>{
                 if (evt.actor === this.handler) {
                     this.handler = null;
+                    //console.log(`== setting handler to null (handler destroyed)`);
                 }
             });
         }
+        //console.log(`== finish loadHandler ${which} handler: ${this.handler}`);
     }
 
     onKeyDown(evt) {
@@ -388,6 +404,23 @@ class PlayState extends GameState {
             }
 
             // FIXME: remove
+
+            case '5': {
+                console.log(`-- bio boss lvl`);
+                let whichLevel = 7;
+                let load = (whichLevel > LevelSystem.maxLevelIndex) ? false : true;
+                Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
+                break;
+            }
+
+            case '6': {
+                console.log(`-- next lvl`);
+                let whichLevel = LevelSystem.currentLevelIndex + 1;
+                let load = (whichLevel > LevelSystem.maxLevelIndex) ? false : true;
+                Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
+                break;
+            }
+
             case '7': {
                 UpdateSystem.eUpdate(this.player, {
                     lvl: this.player.lvl+1,
@@ -436,6 +469,7 @@ class PlayState extends GameState {
         // disable level/hud
         this.lvl.active = false;
         this.hudroot.active = false;
+        //console.log(`== doInventory`);
         this.loadHandler('none');
         // build out inventory
         if (this.inventory) this.inventory.destroy();
@@ -449,6 +483,7 @@ class PlayState extends GameState {
             this.inventory = null;
             this.lvl.active = true;
             this.hudroot.active = true;
+            //console.log(`== doInventory restore`);
             this.loadHandler('interact');
         });
         this.view.adopt(this.inventory);
@@ -458,6 +493,7 @@ class PlayState extends GameState {
         // disable level/hud
         this.lvl.active = false;
         this.hudroot.active = false;
+        //console.log(`== doTalents `);
         this.loadHandler('none');
         // build out talents menu
         if (this.talents) this.talents.destroy();
@@ -470,6 +506,7 @@ class PlayState extends GameState {
             this.talents = null;
             this.lvl.active = true;
             this.hudroot.active = true;
+            //console.log(`== doTalents restore`);
             this.loadHandler('interact');
         });
         this.view.adopt(this.talents);
@@ -480,6 +517,7 @@ class PlayState extends GameState {
         // disable level/hud
         this.lvl.active = false;
         this.hudroot.active = false;
+        //console.log(`== doOptions`);
         this.loadHandler('none');
 
         // build out options menu
@@ -490,6 +528,7 @@ class PlayState extends GameState {
         options.evt.listen(options.constructor.evtDestroyed, () => {
             this.lvl.active = true;
             this.hudroot.active = true;
+            //console.log(`== doOptions restore`);
             this.loadHandler('interact');
         });
         this.view.adopt(options);
@@ -511,6 +550,7 @@ class PlayState extends GameState {
 
     doCancel() {
         if (this.currentHandler !== 'directive') return;
+        //console.log(`== doCancel`);
         this.loadHandler('interact');
     }
 
@@ -518,6 +558,7 @@ class PlayState extends GameState {
         // disable level/hud
         this.lvl.active = false;
         this.hudroot.active = false;
+        //console.log(`== doGameOver`);
         this.loadHandler('none');
         let popup = new GameOver({
             xform: new XForm({border: .3}),

@@ -37,6 +37,9 @@ class Trap extends MiniaModel {
         this.hidden = spec.hasOwnProperty('hidden') ? spec.hidden : false;
         // -- sketch
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
+        // -- charms (buffs/debuffs)
+        this.charms = [];
+        if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
         // -- sfx
         this.triggerSfx = (spec.hasOwnProperty('triggerSfx')) ? spec.triggerSfx : this.constructor.dfltTriggerSfx;
         // -- sync xform to match sketch dimensions
@@ -54,6 +57,7 @@ class Trap extends MiniaModel {
             state: this.state,
             hidden: this.hidden,
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
+            x_charms: this.charms.map((v) => v.as_kv()),
         });
     }
 
@@ -85,6 +89,13 @@ class Trap extends MiniaModel {
 
     hide() {
         this._sketch.hide();
+    }
+
+    addCharm(charm) {
+        charm.link(this);
+    }
+    removeCharm(charm) {
+        charm.unlink();
     }
 
     _render(ctx) {

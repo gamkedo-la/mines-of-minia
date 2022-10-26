@@ -127,6 +127,7 @@ class Animator extends Sketch {
         // no transition
         } else {
             sketch = this.sketches[wantState] || Sketch.zero;
+            if (this.tag === 'scarab') console.log(`${this} wantState: ${wantState}`);
             this.state = wantState;
             this.setSketch(sketch);
         }

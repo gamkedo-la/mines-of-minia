@@ -19,7 +19,7 @@ class Random {
     }
 
     static range(min, max) {
-        return Math.random() * (max-min);
+        return Math.random() * Math.abs((max-min)) + Math.min(min,max);
     }
 
     static choose(arr) {

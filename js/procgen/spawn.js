@@ -30,6 +30,7 @@ import { Machinery } from '../entities/machinery.js';
 import { Magma } from '../entities/magma.js';
 import { Node } from '../entities/node.js';
 import { Overbearer } from '../entities/overbearer.js';
+import { Pillar } from '../entities/pillar.js';
 import { Player } from '../entities/player.js';
 import { Projectile } from '../entities/projectile.js';
 import { RagingBull } from '../entities/ragingBull.js';
@@ -38,6 +39,7 @@ import { Reactor } from '../entities/reactor.js';
 import { Rous } from '../entities/rous.js';
 import { Scarab } from '../entities/scarab.js';
 import { Shielding } from '../entities/shielding.js';
+import { Slimer } from '../entities/slimer.js';
 import { Stairs } from '../entities/stairs.js';
 import { StealthBot } from '../entities/stealthBot.js';
 import { ThumpBot } from '../entities/thumpBot.js';
@@ -45,6 +47,7 @@ import { Tile } from '../entities/tile.js';
 import { Token } from '../entities/token.js';
 import { Weapon } from '../entities/weapon.js';
 import { InventoryData } from '../inventory.js';
+import { Names } from './names.js';
 import { ProcTemplate } from './ptemplate.js';
 
 class Spawn {
@@ -113,7 +116,7 @@ class Spawn {
         if (plvl.finalDoorIdx) {
             let x_door = Door.xspec({
                 idx: plvl.finalDoorIdx,
-                facing: 'ns',
+                facing: plvl.finalDoorFacing,
                 kind: 'blue',
                 z: template.fgZed,
             });
@@ -794,9 +797,12 @@ class Spawn {
             identifiablePct += .2;
         }
         let identifiable = Prng.flip(identifiablePct);
+        // -- name
+        let name = Prng.choose(Names[kind]);
 
         // build spec
         let x_wpn = Weapon.xspec({
+            name: name,
             kind: kind,
             lvl: lvl,
             tier: tier,
@@ -1257,6 +1263,59 @@ class Spawn {
 
     }
 
+    static spawnEnemiesForBioBossRoom(template, pstate, proom, options) {
+        let plvl = pstate.plvl;
+        let plvlo = pstate.plvlo;
+        let ci = plvlo.data.ifromidx(proom.cidx);
+        let cj = plvlo.data.jfromidx(proom.cidx);
+
+        // pillar 1
+        plvl.entities.push( Pillar.xspec({
+            tag: 'pillar.1',
+            kind: 'fire',
+            x_sketch: Assets.get('pillar.fire'),
+            idx: plvlo.data.idxfromij(ci-3, cj-3),
+            z: template.fgZed,
+        }));
+
+        // pillar 2
+        plvl.entities.push( Pillar.xspec({
+            tag: 'pillar.2',
+            kind: 'ice',
+            x_sketch: Assets.get('pillar.ice'),
+            idx: plvlo.data.idxfromij(ci+3, cj-3),
+            z: template.fgZed,
+        }));
+
+        // pillar 3
+        plvl.entities.push( Pillar.xspec({
+            tag: 'pillar.3',
+            kind: 'poison',
+            x_sketch: Assets.get('pillar.poison'),
+            idx: plvlo.data.idxfromij(ci-3, cj+3),
+            z: template.fgZed,
+        }));
+
+        // pillar 4
+        plvl.entities.push( Pillar.xspec({
+            tag: 'pillar.4',
+            kind: 'dark',
+            x_sketch: Assets.get('pillar.dark'),
+            idx: plvlo.data.idxfromij(ci+3, cj+3),
+            z: template.fgZed,
+        }));
+
+        /*
+        plvl.entities.push( Slimer.xspec({
+            healthMax: 20,
+            tag: 'slimer.boss',
+            idx: proom.cidx,
+            z: template.fgZed,
+        }));
+        */
+
+    }
+
     static spawnEnemies(template, pstate) {
         // -- pull data
         let x_spawn = template.spawn || {};
@@ -1268,8 +1327,10 @@ class Spawn {
 
         // iterate through rooms
         for (const proom of prooms) {
-            if (proom.boss) {
+            if (proom.boss === 'rock') {
                 this.spawnEnemiesForRockBossRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
+            } else if (proom.boss === 'bio') {
+                this.spawnEnemiesForBioBossRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
             } else if (!template.boss) {
                 if (proom.cidx !== plvl.startIdx) {
                     this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
@@ -1325,27 +1386,26 @@ class Spawn {
             }),
             */
 
-            Scarab.xspec({
-                healthMax: 5,
-                xp: 1,
-            }),
-
-            Gem.xspec({
-                kind: 'fire',
-            }),
-
-            Weapon.xspec({
-                kind: 'bonk',
-                identifiable: true,
-                charms: [ new BooCharm() ],
-            }),
-
+            //Rous.xspec({ healthMax: 500, xp: 1, }),
 
             /*
-            Cog.xspec({
-                kind: 'invulnerability',
-            }),
+            Scarab.xspec({ healthMax: 5, xp: 1, }),
+            Gem.xspec({ kind: 'fire', }),
+            Gem.xspec({ kind: 'daze', }),
+            Gem.xspec({ kind: 'power', }),
+            Gem.xspec({ kind: 'stealth', }),
+            Weapon.xspec({ kind: 'bonk', identifiable: true, charms: [ new BooCharm() ], }),
+            Cog.xspec({ kind: 'identify', }),
+            Cog.xspec({ kind: 'lvlup', }),
+            Cog.xspec({ kind: 'invulnerability', }),
             */
+            Cog.xspec({ kind: 'purge', }),
+
+            Weapon.xspec({ name: 'bonk', tier: 1, kind: 'bonk', }),
+            Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
+            Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
+
+            //this.genWeapon(template),
 
             /*
             RangedWeapon.xspec({
@@ -1394,22 +1454,11 @@ class Spawn {
             losRange: Config.tileSize*5,
             team: 'player',
             inventory: new InventoryData({
-                numSlots: 15,
+                numSlots: 25,
                 beltSlots: 3,
-                gadgetSlots: 1,
+                gadgetSlots: 3,
             }),
         });
-
-
-        // assign initial inventory
-        /*
-        let reactor = new Reactor({
-            identified: true,
-            healthRegenPerAP: .2,
-            fuelPerAP: .025,
-            sketch: Assets.get('reactor.1', true),
-        });
-        */
 
         let x_weapon = this.genWeapon(template, {
             charmPct: 0, 

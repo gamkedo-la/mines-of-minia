@@ -26,6 +26,7 @@ class TriggerSystem extends System {
     // EVENT HANDLERS ------------------------------------------------------
     onMobileUpdate(evt) {
         let actor = evt.actor;
+        if (actor.constructor.breakable) return;
         if (actor && evt.update && evt.update.hasOwnProperty('idx')) {
             this.active = true;
             //console.log(`trigger found mobile actor moved: ${actor} idx: ${actor.idx}`);

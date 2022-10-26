@@ -4,6 +4,7 @@ import { Entity } from './base/entity.js';
 import { Events } from './base/event.js';
 import { Fmt } from './base/fmt.js';
 import { Keys } from './base/keys.js';
+import { Timer } from './base/timer.js';
 import { TurnSystem } from './systems/turnSystem.js';
 
 class DirectiveHandler extends Entity {
@@ -16,7 +17,8 @@ class DirectiveHandler extends Entity {
         Events.listen(Keys.evtDown, this.onKeyDown);
     }
     cfinal(spec) {
-        this.start();
+        let timer = new Timer({ttl: 0, cb: this.start.bind(this)});
+        //this.start();
     }
 
     destroy() {

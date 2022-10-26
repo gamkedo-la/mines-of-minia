@@ -23,7 +23,7 @@ class ActionSystem extends System {
             // listen for finished action
             action.evt.listen(action.constructor.evtDone, ActionSystem.onActionDone, Events.once);
             // start the action
-            //console.log(`starting action: ${action} action evtDone: ${action.constructor.evtDone}`);
+            console.log(`actor ${actor} starting action: ${action} action evtDone: ${action.constructor.evtDone}`);
             action.actor = actor;
             Events.trigger(action.constructor.evtStarted, { actor: actor, action: action });
             action.start(actor);
@@ -38,7 +38,7 @@ class ActionSystem extends System {
         let action = evt.action;
         let actor = evt.actor;
         Events.trigger(action.constructor.evtDone, { actor: actor, action: action });
-        //console.log(`action finished: ${Fmt.ofmt(evt)}`);
+        console.log(`actor ${actor} action finished: ${Fmt.ofmt(evt)}`);
         if (!action || !actor || action !== actor.actions[0]) return;
         // pop current action (it is done)
         actor.actions.shift();
@@ -48,7 +48,7 @@ class ActionSystem extends System {
             // listen for finished action
             action.evt.listen(action.constructor.evtDone, ActionSystem.onActionDone, Events.once);
             // start the action
-            //console.log(`starting action: ${action}`);
+            console.log(`actor ${actor} starting queued action: ${action}`);
             action.actor = actor;
             Events.trigger(action.constructor.evtStarted, { actor: actor, action: action });
             action.start(actor);

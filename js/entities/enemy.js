@@ -82,6 +82,8 @@ class Enemy extends Character {
         this.move = new AiMoveTowardsTargetDirective(x_dir);
         this.search = new AiMoveToIdxDirective(x_dir);
         this.attack = new AiMeleeTargetDirective(x_dir);
+        if (this.cls === 'Scarab') this.move.dbg = true;
+        if (this.cls === 'Scarab') this.attack.dbg = true;
         this.actionStream = this.run();
         // activate
         if (this.activateOnLoad) this.active = true;

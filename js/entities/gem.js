@@ -5,10 +5,12 @@ import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { XForm } from '../base/xform.js';
 import { DazedCharm } from '../charms/dazed.js';
 import { EnflamedCharm } from '../charms/enflamed.js';
 import { StealthCharm } from '../charms/stealth.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
+import { Dummy } from './dummy.js';
 import { Item } from './item.js';
 
 class Gem extends Item {
@@ -207,6 +209,17 @@ class Gem extends Item {
                 if (target) {
                     let charm = new EnflamedCharm();
                     target.addCharm(charm);
+                    if (!this.constructor.isDiscovered(this.kind)) this.constructor.discover(this.kind);
+                } else if (idx) {
+                    let dummy = new Dummy({
+                        idx: idx, 
+                        z: this.z,
+                        xform: new XForm({stretch: false, x: this.xform.x, y: this.xform.y}),
+                    });
+                    dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
+                    let charm = new EnflamedCharm();
+                    dummy.addCharm(charm);
+                    dummy.evt.listen('enflamed.done', (evt) => dummy.destroy() );
                     if (!this.constructor.isDiscovered(this.kind)) this.constructor.discover(this.kind);
                 }
                 break;

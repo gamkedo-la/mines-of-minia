@@ -26,6 +26,7 @@ class AiMoveTowardsTargetDirective extends AiDirective {
                 attgt = (d <= this.range);
             }
             if (attgt) {
+                if (this.dbg) console.log(`${this.actor} move to target at target, done`);
                 this.done = true;
                 return null;
             }

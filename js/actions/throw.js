@@ -117,7 +117,7 @@ class ThrowAction extends SerialAction {
 
         // if item is breakable... break upon impact
         if (this.item.constructor.breakable) {
-            let target = this.lvl.firstidx(this.idx, (v) => v.health);
+            let target = this.lvl.firstidx(this.idx, (v) => v.health || v.constructor.triggerable);
             this.subs.push( new BreakAction({
                 item: this.item,
                 target: target,

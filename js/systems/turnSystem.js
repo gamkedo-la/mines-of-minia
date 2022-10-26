@@ -40,7 +40,6 @@ class TurnSystem extends System {
         this.leaderQ = [];
         // -- turn management
         this.leaderTurn = true;
-        //this.turnActive = false;
         this.followerTurnStarting = false;
         this.turnPoints = 0;
         // -- follower mgmt
@@ -75,6 +74,7 @@ class TurnSystem extends System {
                 this.followerPoints = {};
                 // run single iteration when turn starts
                 this.active = true
+                //console.log(`onActionDone (leader) this.active = true`);
                 if (this.dbg) console.log(`-- ${this} triggering ${this.constructor.evtDone} for leader`);
                 // leader turn is done
                 Events.trigger(this.constructor.evtDone, {which: 'leader', points: this.turnPoints});
@@ -82,13 +82,33 @@ class TurnSystem extends System {
             } else {
                 if (this.dbg) console.log(`--- leader free action`)
             }
-        // check if action is tied to follower which has queued events
+        // check if action is tied to active follower
         } else if (evt.actor && this.store.has(evt.actor.gid)) {
             if (this.dbg) console.log(`follower action done ${Fmt.ofmt(evt)}`);
             this.followerActive.add(evt.actor.gid);
+
+            // account for follower points
+            let allocatedPoints = this.followerPoints[evt.actor.gid] || 0;
+            this.followerPoints[evt.actor.gid] = allocatedPoints - action.points;
+            // iterate
             if (this.iterating) {
                 this.iterateAgain = true
             } else {
+                //console.log(`onActionDone (follower) this.active = true`);
+                this.active = true
+            }
+        }
+    }
+
+    onEntityRemoved(evt) {
+        if (!this.matchPredicate(evt.actor)) return;
+        if (this.dbg) console.log(`${this} onEntityRemoved: ${Fmt.ofmt(evt)}`);
+        this.store.delete(evt.actor.gid);
+        if (!this.leaderTurn) {
+            if (this.iterating) {
+                this.iterateAgain = true
+            } else {
+                //console.log(`onEntityRemoved this.active = true`);
                 this.active = true
             }
         }
@@ -143,7 +163,7 @@ class TurnSystem extends System {
         // check if action can be started
         if (action.points <= allocatedPoints) {
             ActionSystem.assign(e, action);
-            this.followerPoints[e.gid] = allocatedPoints - action.points;
+            //this.followerPoints[e.gid] = allocatedPoints - action.points;
             //console.log(`=== post follower action: ${action} points: ${this.followerPoints[e.gid]} overflow: ${this.followerOverflow[e.gid]} allocated: ${allocatedPoints}`);
             // actor is not done
             this.followersDone = false;
@@ -157,8 +177,10 @@ class TurnSystem extends System {
     }
 
     finalize(evt) {
+        //console.log(`finalize: followersDone: ${this.followersDone} iterateAgain: ${this.iterateAgain}`);
         // clear marked followers
         this.followerActive.clear();
+        //console.log(`finalize this.active = ${this.iterateAgain}`);
         this.active = this.iterateAgain;
         this.followerTurnStarting = false;
         // check if all followers are done
@@ -178,12 +200,14 @@ class TurnSystem extends System {
                 // followers will be able to take actions <= leader action points on next follower turn
                 this.turnPoints = action.points;
             }
+            //console.log(`start leader action: ${action}`);
             // assign leader action
             ActionSystem.assign(this.leader, action);
         }
     }
 
     postLeaderAction(action) {
+        //console.log(`-- posted leader action: ${action}`);
         // -- mark action as turn delimiter
         action.isTurn = true;
         if (!this.leader) return;

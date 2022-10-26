@@ -36,6 +36,7 @@ class Cog extends Item {
         'three',
         'five',
         'fours',
+        'sixs',
     ];
     static dfltDescription = 'a strangely encoded cog';
     static descriptionMap = {

@@ -9,7 +9,6 @@ import { Shape } from './base/shape.js';
 import { Sketch } from './base/sketch.js';
 import { Sprite } from './base/sprite.js';
 import { StretchSprite } from './base/stretchSprite.js';
-import { Weapon } from './entities/weapon.js';
 import { Resurrect64 } from './resurrect64.js';
 import { Template } from './template.js';
 
@@ -91,6 +90,7 @@ let miniaAssets = [
     }),
     */
 
+    /*
     Shape.xspec({
         tag: 'bonk.1',
         fill: true,
@@ -126,6 +126,7 @@ let miniaAssets = [
         color: 'rgba(145,219,105,1)',
         borderColor: 'red',
     }),
+    */
 
     Shape.xspec({
         tag: 'shielding.1',
@@ -415,6 +416,51 @@ let miniaAssets = [
         state: 'free',
     }),
 
+    Animation.xspec({tag: 'bonk.2.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'bonk.2.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'bonk.2',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'bonk.2.carry'}),
+            'free': new AssetRef({tag: 'bonk.2.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'bonk.1.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 16, x: 16, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'bonk.1.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 32, x: 16, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'bonk.1',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'bonk.1.carry'}),
+            'free': new AssetRef({tag: 'bonk.1.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'bonk.3.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 16, x: 32, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'bonk.3.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 32, x: 32, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'bonk.3',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'bonk.3.carry'}),
+            'free': new AssetRef({tag: 'bonk.3.free'}),
+        },
+        state: 'free',
+    }),
+
     Sprite.xspec({tag: 'chest.brown.close', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*0, y: 0})}),
     Sprite.xspec({tag: 'chest.brown.open', img: new SheetRef({src: 'img/chest.png', width: 16, height: 32, x: 16*1, y: 0})}),
     Animation.xspec({tag: 'chest.brown.opening', loop: false, x_cels: [
@@ -608,6 +654,8 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 16, y: 0})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 32, y: 0})}), ttl: 150 }),
     ]}),
+
+    Template.varsprite('img/crystal-clutter.png', 'machine.crystal', [[0,0], [1,0]], {width: 32, height: 32}),
 
     // -- DOORS
     Sprite.xspec({tag: 'door.ns.brown.close', img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 0, y: 0})}), 
@@ -1130,6 +1178,7 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'currency.pickup', audio: new SfxRef({src: 'snd/currency-pickup2.mp3'}), volume: .4, loop: false }),
     Sfx.xspec({ tag: 'chest.open', audio: new SfxRef({src: 'snd/open-chest.mp3'}), volume: .4, loop: false }),
     Sfx.xspec({ tag: 'door.open', audio: new SfxRef({src: 'snd/open_door_1.mp3'}), volume: .4, loop: false }),
+    Sfx.xspec({ tag: 'door.close', audio: new SfxRef({src: 'snd/close_average_door.mp3'}), volume: .5}),
     Sfx.xspec({ tag: 'bomb.blast', audio: new SfxRef({src: 'snd/fire-ball.mp3'}), volume: .5, loop: false }),
     Sfx.xspec({ tag: 'bomb.shoot', audio: new SfxRef({src: 'snd/boom2.mp3'}), volume: .5, loop: false }),
     Sfx.xspec({ tag: 'bomb.lands', audio: new SfxRef({src: 'snd/push-block.mp3'}), volume: .5, loop: false }),
@@ -1138,6 +1187,7 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'attack.hit', audio: new SfxRef({src: 'snd/flip-switch.mp3'}), volume: .5, loop: false }),
     Sfx.xspec({ tag: 'scarab.move', audio: new SfxRef({src: 'snd/scarab-scritter-move.mp3'}), volume: .3}),
 
+    // -- rock area
     ...Template.walls('img/rock-walls.png', 'rock.wall'),
     ...Template.tiles('img/rock-floor.png', 'rock.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
     ...Template.tiles('img/rock-pit.png', 'rock.pit'),
@@ -1145,9 +1195,13 @@ let miniaAssets = [
     ...Template.walls('img/rock-outcrop.png', 'rock.outcrop', { vars: { z: [[3,1],[3,2],[3,3],[3,4]]}}),
     ...Template.tiles('img/rock-outcrop-border.png', 'rock.outcrop.border', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
 
+    // -- punk area
     ...Template.walls('img/punk-walls.png', 'punk.wall'),
     ...Template.tiles('img/punk-floor.png', 'punk.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
     ...Template.tiles('img/punk-pit-border.png', 'punk.pit.border', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
+
+    // -- bio area
+    ...Template.tiles('img/bio-pit.png', 'bio.pit', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[1,3],[2,3],[4,3],[5,3]]}}),
 
     StretchSprite.xspec({tag: 'hud.border', border: 27, img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 0, y: 16*4, scalex: 3, scaley: 3})}),
     Sprite.xspec({tag: 'hud.portrait', img: new SheetRef({src: 'img/hud.png', width: 48, height: 48, x: 0, y: 0})}),
@@ -1762,6 +1816,8 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx.png', width: 16, height: 32, x: 32+64*7, y: 32})}), ttl: 100 }),
     ]}),
 
+    Sprite.xspec({tag: 'vfx.frozen', img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 48, y: 0})}),
+
     Animation.xspec({tag: 'vfx.enflamed', jitter: true, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 50 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 50 }),
@@ -2127,5 +2183,90 @@ let miniaAssets = [
     Sprite.xspec({tag: 'talent.darkness', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*3, y: 16*2})}),
     Sprite.xspec({tag: 'talent.active', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*4, y: 16*0})}),
     Sprite.xspec({tag: 'talent.inactive', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*4, y: 16*1})}),
+
+    Sprite.xspec({tag: 'pillar.poison', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*0, y: 16*0})}),
+    Sprite.xspec({tag: 'pillar.fire', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*1, y: 16*0})}),
+    Sprite.xspec({tag: 'pillar.ice', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*2, y: 16*0})}),
+    Sprite.xspec({tag: 'pillar.dark', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*3, y: 16*0})}),
+
+    Animation.xspec({tag: 'slimer.idler', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*21, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*22, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*23, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*24, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*25, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*26, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*27, y: 0})}), ttl: 100 }),
+    ]}),
+    Animation.xspec({tag: 'slimer.mover', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*28, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*29, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*30, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*31, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*32, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*33, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*34, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*35, y: 0})}), ttl: 30 }),
+    ]}),
+
+    Animation.xspec({tag: 'slimer.idlel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 0, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*1, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*2, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*3, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*4, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*5, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*6, y: 0})}), ttl: 100 }),
+    ]}),
+    Animation.xspec({tag: 'slimer.movel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*7, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*8, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*9, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*10, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*11, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*12, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*13, y: 0})}), ttl: 30 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*14, y: 0})}), ttl: 30 }),
+    ]}),
+
+    Animation.xspec({tag: 'slimer.dyingl', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*15, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*16, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*17, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*18, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*19, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*20, y: 0})}), ttl: 50 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*20, y: 0})}), ttl: 50 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*20, y: 0})}), ttl: 50 }),
+    ]}),
+    Animation.xspec({tag: 'slimer.dyingr', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*36, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*37, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*38, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*39, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*40, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*41, y: 0})}), ttl: 100 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*41, y: 0})}), ttl: 100 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*41, y: 0})}), ttl: 100 }),
+    ]}),
+
+    Animator.xspec({
+        tag: 'slimer',
+        x_sketches: {
+            'idler': new AssetRef({tag: 'slimer.idler'}),
+            'idlel': new AssetRef({tag: 'slimer.idlel'}),
+            'mover': new AssetRef({tag: 'slimer.mover'}),
+            'movel': new AssetRef({tag: 'slimer.movel'}),
+            'dyingr': new AssetRef({tag: 'slimer.dyingr'}),
+            'dyingl': new AssetRef({tag: 'slimer.dyingl'}),
+        },
+        state: 'idler',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
+    }),
 
 ];
