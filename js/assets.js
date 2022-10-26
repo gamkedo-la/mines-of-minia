@@ -655,6 +655,8 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/brass_cog.png', width: 16, height: 16, x: 32, y: 0})}), ttl: 150 }),
     ]}),
 
+    Template.varsprite('img/crystal-clutter.png', 'machine.crystal', [[0,0], [1,0]], {width: 32, height: 32}),
+
     // -- DOORS
     Sprite.xspec({tag: 'door.ns.brown.close', img: new SheetRef({src: 'img/doors.png', width: 16, height: 32, x: 0, y: 0})}), 
     Animation.xspec({tag: 'door.ns.brown.open', loop: false, x_cels: [

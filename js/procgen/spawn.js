@@ -65,7 +65,7 @@ class Spawn {
         // -- lock and key
         this.spawnLockAndKeys(template, pstate);
         // -- enemies
-        this.spawnEnemies(template, pstate);
+        //this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
