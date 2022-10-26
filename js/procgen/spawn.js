@@ -1386,7 +1386,7 @@ class Spawn {
             }),
             */
 
-            //Rous.xspec({ healthMax: 500, xp: 1, }),
+            Rous.xspec({ healthMax: 10, xp: 1, }),
 
             /*
             Scarab.xspec({ healthMax: 5, xp: 1, }),

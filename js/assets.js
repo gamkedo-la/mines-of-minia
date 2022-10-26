@@ -1217,8 +1217,6 @@ let miniaAssets = [
     Sprite.xspec({tag: 'hud.gbutton.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*2})}),
     Sprite.xspec({tag: 'hud.gbutton.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*4})}),
 
-    //Sprite.xspec({tag: 'funguy.idler', img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*0, y: 16*0})}),
-
     Animation.xspec({tag: 'funguy.mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 25 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 25 }),
@@ -1230,7 +1228,6 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*8, y: 0})}), ttl: 25 }),
     ]}),
 
-    //Sprite.xspec({tag: 'funguy.idlel', img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*0, y: 32})}),
     Animation.xspec({tag: 'funguy.movel', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*1, y: 32})}), ttl: 25 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*2, y: 32})}), ttl: 25 }),
@@ -2264,6 +2261,60 @@ let miniaAssets = [
             'movel': new AssetRef({tag: 'slimer.movel'}),
             'dyingr': new AssetRef({tag: 'slimer.dyingr'}),
             'dyingl': new AssetRef({tag: 'slimer.dyingl'}),
+        },
+        state: 'idler',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
+    }),
+
+    Animation.xspec({tag: 'rous.idler', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*3, y: 32})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*4, y: 32})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*5, y: 32})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'rous.mover', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*3, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*4, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*5, y: 0})}), ttl: 100 }),
+    ]}),
+
+    Animation.xspec({tag: 'rous.idlel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*0, y: 32})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*1, y: 32})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*2, y: 32})}), ttl: 200 }),
+    ]}),
+    Animation.xspec({tag: 'rous.movel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*0, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*1, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*2, y: 0})}), ttl: 100 }),
+    ]}),
+
+    Animation.xspec({tag: 'rous.dyingl', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*1, y: 32*2})}), ttl: 100 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*1, y: 32*2})}), ttl: 100 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*1, y: 32*2})}), ttl: 100 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+    ]}),
+    Animation.xspec({tag: 'rous.dyingr', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*4, y: 32*2})}), ttl: 100 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*4, y: 32*2})}), ttl: 100 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rous.png', width: 32, height: 32, x: 32*4, y: 32*2})}), ttl: 100 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+    ]}),
+
+    Animator.xspec({
+        tag: 'rous',
+        x_sketches: {
+            'idler': new AssetRef({tag: 'rous.idler'}),
+            'idlel': new AssetRef({tag: 'rous.idlel'}),
+            'mover': new AssetRef({tag: 'rous.mover'}),
+            'movel': new AssetRef({tag: 'rous.movel'}),
+            'dyingr': new AssetRef({tag: 'rous.dyingr'}),
+            'dyingl': new AssetRef({tag: 'rous.dyingl'}),
         },
         state: 'idler',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,

@@ -12,7 +12,8 @@ class Rous extends Enemy{
     static xspec(spec={}) {
         // final spec
         return Object.assign( this.spec, {
-            x_sketch: Assets.get('enemy'),
+            x_sketch: Assets.get('rous'),
+            deathTTL: 500,
         }, spec);
     }
 
