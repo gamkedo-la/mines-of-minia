@@ -11,9 +11,9 @@ import { ProcTemplate } from './ptemplate.js';
 class MiniaTemplates {
 
     static rockLvl = new ProcTemplate({
-        seed: 1,
+        //seed: 1,
         //seed: 74830 -- no stairs?
-        //seed: 59894,
+        seed: 59894,
         doyield: true,
         translate: {
             floor: 'bio.floor',

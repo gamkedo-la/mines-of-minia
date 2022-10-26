@@ -65,7 +65,7 @@ class Spawn {
         // -- lock and key
         this.spawnLockAndKeys(template, pstate);
         // -- enemies
-        //this.spawnEnemies(template, pstate);
+        this.spawnEnemies(template, pstate);
         // -- traps
         this.spawnTraps(template, pstate);
         // -- growth
@@ -873,6 +873,8 @@ class Spawn {
             },
         }, overrides);
         let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
+        // -- name
+        let name = Prng.choose(Names.reactor);
         // -- lvl
         let lvl = Math.max(1, lvlTier + Prng.chooseWeightedOption(tmpl.lvlOptions).delta);
         // -- tier
@@ -906,6 +908,7 @@ class Spawn {
         }
         let identifiable = Prng.flip(identifiablePct);
         return Reactor.xspec({
+            name: name,
             tier: tier,
             lvl: lvl,
             fuelPerAP: fuelPerAP,
@@ -970,6 +973,8 @@ class Spawn {
             },
         };
         let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
+        // -- name
+        let name = Prng.choose(Names.shield);
         // -- lvl
         let lvl = Math.max(1, lvlTier + Prng.chooseWeightedOption(tmpl.lvlOptions).delta);
         // -- tier
@@ -1001,6 +1006,7 @@ class Spawn {
         }
         let identifiable = Prng.flip(identifiablePct);
         return Shielding.xspec({
+            name: name,
             tier: tier,
             lvl: lvl,
             brawn: brawn,
@@ -1048,6 +1054,8 @@ class Spawn {
         };
         let charms = [];
         let lvlTier = (template.index < 7) ? 1 : (template.index < 14) ? 2 : 3;
+        // -- name
+        let name = Prng.choose(Names.gadget);
         // -- tier
         let tier = Prng.chooseWeightedOption(tmpl.tierByLTier[lvlTier]).tier;
         // pick charm
@@ -1066,6 +1074,7 @@ class Spawn {
         }
         let identifiable = Prng.flip(identifiablePct);
         return Gadget.xspec({
+            name: name,
             tier: tier,
             identifiable: identifiable,
             charms: charms,
