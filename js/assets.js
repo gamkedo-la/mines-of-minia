@@ -9,7 +9,6 @@ import { Shape } from './base/shape.js';
 import { Sketch } from './base/sketch.js';
 import { Sprite } from './base/sprite.js';
 import { StretchSprite } from './base/stretchSprite.js';
-import { Weapon } from './entities/weapon.js';
 import { Resurrect64 } from './resurrect64.js';
 import { Template } from './template.js';
 
@@ -91,6 +90,7 @@ let miniaAssets = [
     }),
     */
 
+    /*
     Shape.xspec({
         tag: 'bonk.1',
         fill: true,
@@ -126,6 +126,7 @@ let miniaAssets = [
         color: 'rgba(145,219,105,1)',
         borderColor: 'red',
     }),
+    */
 
     Shape.xspec({
         tag: 'shielding.1',
@@ -411,6 +412,51 @@ let miniaAssets = [
         x_sketches: {
             'carry': new AssetRef({tag: 'hack.3.carry'}),
             'free': new AssetRef({tag: 'hack.3.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'bonk.2.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'bonk.2.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'bonk.2',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'bonk.2.carry'}),
+            'free': new AssetRef({tag: 'bonk.2.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'bonk.1.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 16, x: 16, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'bonk.1.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 32, x: 16, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'bonk.1',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'bonk.1.carry'}),
+            'free': new AssetRef({tag: 'bonk.1.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'bonk.3.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 16, x: 32, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'bonk.3.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/bonk-weapon.png', width: 16, height: 32, x: 32, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'bonk.3',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'bonk.3.carry'}),
+            'free': new AssetRef({tag: 'bonk.3.free'}),
         },
         state: 'free',
     }),

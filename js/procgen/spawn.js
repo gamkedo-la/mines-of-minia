@@ -77,7 +77,7 @@ class Spawn {
         // -- fuel
         this.spawnFuel(template, pstate);
         // -- test objects
-        //this.spawnTest(template, pstate);
+        this.spawnTest(template, pstate);
         yield;
     }
 
@@ -1400,6 +1400,10 @@ class Spawn {
             Cog.xspec({ kind: 'invulnerability', }),
             */
             Cog.xspec({ kind: 'purge', }),
+
+            Weapon.xspec({ name: 'bonk', tier: 1, kind: 'bonk', }),
+            Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
+            Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
 
             //this.genWeapon(template),
 
