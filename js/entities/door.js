@@ -60,6 +60,7 @@ class Door extends MiniaModel {
         this.xform.height = this.sketch.height;
         // -- los state
         this.blocksLoS = (this.state === 'close');
+        this.closeSfx = spec.closeSfx || Assets.get('door.close', true);
     }
 
     destroy() {
@@ -103,6 +104,7 @@ class Door extends MiniaModel {
     }
 
     close() {
+        if (this.closeSfx) this.closeSfx.play();
         UpdateSystem.eUpdate(this, { state: 'close', blocksLoS: true });
     }
 

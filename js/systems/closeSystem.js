@@ -12,11 +12,13 @@ class CloseSystem extends System {
     cpost(spec) {
         super.cpost(spec);
         this.lvl = spec.lvl;
+        // map between entities (gid) that impact door state and the doors they influence
         this.doorMap = {};
         // -- event handlers
         this.onDoorUpdate = this.onDoorUpdate.bind(this);
         this.onCharUpdate = this.onCharUpdate.bind(this);
         this.onLootDestroyed = this.onLootDestroyed.bind(this);
+        this.onLootPickup = this.onLootPickup.bind(this);
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -49,7 +51,11 @@ class CloseSystem extends System {
                 // check if adjacent to door
                 let adjacent = e.idx === door.idx || this.lvl.someAdjacent(e.idx, (v) => v === door);
                 if (this.dbg) console.log(`check if actor ${e} is adjacent: ${adjacent} to door: ${door}`);
-                if (!adjacent || e.state === 'dying') this.handleOpenDoor(door);
+                if (!adjacent || e.state === 'dying') {
+                    let idx = this.doorMap[e.gid].indexOf(door);
+                    if (idx !== -1) this.doorMap[e.gid].splice(idx, 1);
+                    this.handleOpenDoor(door);
+                }
             }
             if (!this.doorMap[e.gid] || this.doorMap[e.gid].length === 0) {
                 e.evt.ignore(e.constructor.evtUpdated, this.onCharUpdate);
@@ -59,11 +65,24 @@ class CloseSystem extends System {
 
     onLootDestroyed(evt) {
         let e = evt.actor;
-        if (this.dbg) console.log(`-- ${this} onCharUpdate ${Fmt.ofmt(evt)} door map from ${e.idx}: ${this.doorMap[e.gid]}`);
+        if (this.dbg) console.log(`-- ${this} onLootDestroyed ${Fmt.ofmt(evt)} door map from ${e.idx}: ${this.doorMap[e.gid]}`);
         for (const door of Array.from(this.doorMap[e.gid] || [])) {
             this.handleOpenDoor(door);
+            e.evt.ignore(e.constructor.evtDestroyed, this.onLootDestroyed);
         };
         delete this.doorMap[e.gid];
+    }
+
+    onLootPickup(evt) {
+        let e = evt.actor;
+        if (evt.update && evt.update.animState === 'carry') {
+            if (this.dbg) console.log(`-- ${this} onLootPickup ${Fmt.ofmt(evt)} door map from ${e.idx}: ${this.doorMap[e.gid]}`);
+            for (const door of Array.from(this.doorMap[e.gid] || [])) {
+                this.handleOpenDoor(door);
+            };
+            e.evt.ignore(e.constructor.evtUpdated, this.onLootPickup);
+            delete this.doorMap[e.gid];
+        }
     }
 
     // METHODS -------------------------------------------------------------
@@ -73,6 +92,7 @@ class CloseSystem extends System {
         for (const e of this.lvl.findidx(door.idx, (v) => v.constructor.lootable)) {
             lootBlocking = true;
             e.evt.listen(e.constructor.evtDestroyed, this.onLootDestroyed);
+            e.evt.listen(e.constructor.evtUpdated, this.onLootPickup);
             Util.getOrAssign(this.doorMap, e.gid).push(door);
         }
         // see what characters are adjacent

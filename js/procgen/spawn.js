@@ -1386,7 +1386,7 @@ class Spawn {
             }),
             */
 
-            Rous.xspec({ healthMax: 500, xp: 1, }),
+            //Rous.xspec({ healthMax: 500, xp: 1, }),
 
             /*
             Scarab.xspec({ healthMax: 5, xp: 1, }),
@@ -1398,8 +1398,8 @@ class Spawn {
             Cog.xspec({ kind: 'identify', }),
             Cog.xspec({ kind: 'lvlup', }),
             Cog.xspec({ kind: 'invulnerability', }),
-            Cog.xspec({ kind: 'purge', }),
             */
+            Cog.xspec({ kind: 'purge', }),
 
             //this.genWeapon(template),
 

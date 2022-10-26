@@ -1130,6 +1130,7 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'currency.pickup', audio: new SfxRef({src: 'snd/currency-pickup2.mp3'}), volume: .4, loop: false }),
     Sfx.xspec({ tag: 'chest.open', audio: new SfxRef({src: 'snd/open-chest.mp3'}), volume: .4, loop: false }),
     Sfx.xspec({ tag: 'door.open', audio: new SfxRef({src: 'snd/open_door_1.mp3'}), volume: .4, loop: false }),
+    Sfx.xspec({ tag: 'door.close', audio: new SfxRef({src: 'snd/close_average_door.mp3'}), volume: .5}),
     Sfx.xspec({ tag: 'bomb.blast', audio: new SfxRef({src: 'snd/fire-ball.mp3'}), volume: .5, loop: false }),
     Sfx.xspec({ tag: 'bomb.shoot', audio: new SfxRef({src: 'snd/boom2.mp3'}), volume: .5, loop: false }),
     Sfx.xspec({ tag: 'bomb.lands', audio: new SfxRef({src: 'snd/push-block.mp3'}), volume: .5, loop: false }),
