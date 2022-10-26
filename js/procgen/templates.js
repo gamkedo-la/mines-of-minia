@@ -16,7 +16,7 @@ class MiniaTemplates {
         //seed: 59894,
         doyield: true,
         translate: {
-            floor: 'rock.floor',
+            floor: 'bio.floor',
             wall: 'rock.wall',
             pit: 'rock.pit',
             pitb: 'rock.pit.border',

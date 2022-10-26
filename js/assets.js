@@ -1202,6 +1202,7 @@ let miniaAssets = [
 
     // -- bio area
     ...Template.tiles('img/bio-pit.png', 'bio.pit', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[1,3],[2,3],[4,3],[5,3]]}}),
+    ...Template.tiles('img/bio-floor.png', 'bio.floor', {vars: { z: [[3,1],[3,2],[3,3],[3,4],[3,5]]}}),
 
     StretchSprite.xspec({tag: 'hud.border', border: 27, img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 0, y: 16*4, scalex: 3, scaley: 3})}),
     Sprite.xspec({tag: 'hud.portrait', img: new SheetRef({src: 'img/hud.png', width: 48, height: 48, x: 0, y: 0})}),
