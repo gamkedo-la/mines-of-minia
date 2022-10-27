@@ -92,6 +92,13 @@ class AimHandler extends Entity {
         if (!this.shooter.constructor.shootable) {
             needsDestroy = this.lvl.anyidx(targetIdx, (v) => v.kind === 'pit');
         }
+        // check to see if target is hit
+        let interactTarget = null;
+        if (idx === targetIdx || this.lvl.checkAdjacentIdx(idx, targetIdx)) {
+            // is target interactable?
+            interactTarget = this.lvl.firstidx(idx, (v) => v.constructor.interactable);
+        }
+
         //console.log(`pathidxs: ${pathidxs} aim: ${idx} player: ${this.player.idx} target: ${targetIdx}`);
         // check for target drop at player's feet
         let action;
@@ -123,6 +130,7 @@ class AimHandler extends Entity {
                     item: this.shooter,
                     idx: targetIdx,
                     needsDestroy: needsDestroy,
+                    interactTarget: interactTarget,
                     x: this.lvl.xfromidx(targetIdx, true),
                     y: this.lvl.yfromidx(targetIdx, true),
                 });

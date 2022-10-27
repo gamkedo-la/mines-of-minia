@@ -10,6 +10,7 @@ import { Assets } from '../base/assets.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
 import { BreakAction } from './break.js';
 import { DropAction } from './drop.js';
+import { DoInteractAction } from './interact.js';
 
 class ThrowToAction extends Action {
     static dfltSpeed = .15;
@@ -85,6 +86,7 @@ class ThrowAction extends SerialAction {
         this.needsDestroy = spec.hasOwnProperty('needsDestroy') ? spec.needsDestroy : true;
         this.throwsfx = spec.throwsfx || this.constructor.dfltThrowSfx;
         this.hitsfx = spec.hitsfx || this.constructor.dfltHitSfx;
+        this.interactTarget = spec.interactTarget;
     }
 
     setup() {
@@ -130,6 +132,13 @@ class ThrowAction extends SerialAction {
             this.subs.push(new ApplyAction({
                 target: this.item,
                 action: new DestroyAction({}),
+            }));
+        }
+
+        // if target is interactable
+        if (this.interactTarget) {
+            this.subs.push(new DoInteractAction({
+                target: this.interactTarget,
             }))
         }
 

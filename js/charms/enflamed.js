@@ -45,7 +45,6 @@ class EnflamedCharm extends Charm {
                 if (!this.actor.charred && this.actor.burn) (this.actor.burn(this))
                 this.actor.charred = true;
             }
-            console.log(`-- enflamed expired from ${this.actor}`);
             this.unlink();
         } else if (this.actor.health) {
             let total = Math.round(this.damage*ap);

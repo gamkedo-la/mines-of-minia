@@ -1,4 +1,4 @@
-export { InteractAction };
+export { InteractAction, DoInteractAction };
 
 import { Action } from '../base/actions/action.js';
 import { MoveAction } from '../base/actions/move.js';
