@@ -168,6 +168,7 @@ class OverlaySystem extends System {
                         [1.5,-23.5], [-1.5,-23.5], [-.5,-19.5], 
                     ],
                 });
+                evt.actor.sparkleVfx = vfx;
                 this.overlay.adopt(vfx);
                 break;
             }

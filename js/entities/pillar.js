@@ -1,6 +1,7 @@
 export { Pillar };
 
-    import { Config } from '../base/config.js';
+import { Assets } from '../base/assets.js';
+import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
 import { Events } from '../base/event.js';
 import { XForm } from '../base/xform.js';
@@ -21,6 +22,12 @@ class Pillar extends Item {
     static lootable = false;
     static interactable = true;
     static dfltKind = 'fire';
+    static kindSwap = {
+        'fire': 'poison',
+        'ice': 'fire',
+        'dark': 'ice',
+        'poison': 'dark',
+    }
 
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
@@ -35,9 +42,18 @@ class Pillar extends Item {
         this.kind = spec.kind || this.constructor.dfltKind;
         this.elvl;
         this.onLevelLoaded = this.onLevelLoaded.bind(this);
+        this.onTurnDone = this.onTurnDone.bind(this);
         this.linkRange = spec.hasOwnProperty('linkRange') ? spec.linkRange : Config.tileSize*10;
         this.links = [];
+        this.dormant = false;
+        this.dormantAP = spec.dormantAP || 90;
+        this.elapsed = 0;
         Events.listen('lvl.loaded', this.onLevelLoaded, Events.once);
+        Events.listen('turn.done', this.onTurnDone);
+    }
+    destroy() {
+        super.destroy();
+        Events.ignore('turn.done', this.onTurnDone);
     }
 
     onLevelLoaded(evt) {
@@ -49,12 +65,28 @@ class Pillar extends Item {
         }
     }
 
+    onTurnDone(evt) {
+        if (!this.dormant) return;
+        let ap = evt.points || 0;
+        this.elapsed += ap;
+        if (this.elapsed >= this.dormantAP) {
+            // no longer dormant
+            this.dormant = false;
+            // reassign kind
+            this.kind = this.constructor.kindSwap[this.kind];
+            this.sketch = Assets.get(`pillar.${this.kind}`, true);
+            // re-ignite spark
+            Events.trigger(OverlaySystem.evtNotify, {which: 'sparkle', actor: this});
+        }
+    }
+
     show() {
         Events.trigger(OverlaySystem.evtNotify, {which: 'sparkle', actor: this});
     }
 
     interact(actor) {
         console.log(`${actor} interacts with ${this} kind: ${this.kind}`);
+        if (this.dormant) return;
         let kind = this.kind;
         for (const pillar of this.links.concat(this)) {
             switch (kind) {
@@ -79,9 +111,7 @@ class Pillar extends Item {
                             }
                         }
                     }
-
                     break;
-
                 }
 
                 case 'fire': {
@@ -107,7 +137,17 @@ class Pillar extends Item {
                     break;
                 }
             }
+
+            // pillar becomes dormant
+            pillar.sketch = Assets.get('pillar.dormant', true);
+            if (pillar.sparkleVfx) {
+                pillar.sparkleVfx.destroy();
+                pillar.sparkleVfx = null;
+            }
+            pillar.dormant = true;
+
         }
+
     }
 
 }

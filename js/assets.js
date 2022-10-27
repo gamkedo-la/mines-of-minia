@@ -2186,6 +2186,7 @@ let miniaAssets = [
     Sprite.xspec({tag: 'pillar.fire', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*1, y: 16*0})}),
     Sprite.xspec({tag: 'pillar.ice', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*2, y: 16*0})}),
     Sprite.xspec({tag: 'pillar.dark', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*3, y: 16*0})}),
+    Sprite.xspec({tag: 'pillar.dormant', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*4, y: 16*0})}),
 
     Animation.xspec({tag: 'slimer.idler', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/slimer.png', width: 26, height: 25, x: 26*21, y: 0})}), ttl: 100 }),
