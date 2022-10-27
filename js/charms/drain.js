@@ -1,27 +1,28 @@
-export { FrozenCharm };
+export { DrainCharm };
 
 import { Assets } from '../base/assets.js';
 import { Events } from '../base/event.js';
+import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Character } from '../entities/character.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
 import { TurnSystem } from '../systems/turnSystem.js';
 import { Charm } from './charm.js';
 
-class FrozenCharm extends Charm {
-    static dfltApTL = 100;
-    static dfltApDelta = 3;
+class DrainCharm extends Charm {
+    static dfltApTL = 30;
+    static dfltDamage = 1;
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     constructor(spec={}) {
         super(spec);
-        this.description = 'frozen charm';
+        this.description = 'drain charm';
         // number of action points to persist charm
         this.apTL = spec.apTL || this.constructor.dfltApTL;
         // number of action points elapsed
         this.elapsed = 0;
-        // action points delta (how much does frozen slow characters)
-        this.apDelta = spec.hasOwnProperty('apDelta') ? spec.apDelta : this.constructor.dfltApDelta;
-        this.vfx = spec.vfx || Assets.get('vfx.frozen', true);
+        // action points delta (how much does drain slow characters)
+        this.damage = spec.hasOwnProperty('damage') ? spec.damage : this.constructor.dfltDamage;
+        this.vfx = spec.vfx || Assets.get('vfx.drain', true);
         // -- events
         this.onTurnDone = this.onTurnDone.bind(this);
     }
@@ -36,11 +37,24 @@ class FrozenCharm extends Charm {
 
     // EVENT HANDLERS ------------------------------------------------------
     onTurnDone(evt) {
+        if (!this.actor) return;
+        // only update if at end of actor's turn
+        if (this.actor.cls === 'Player') {
+            if (evt.which !== 'leader') return;
+        } else {
+            if (evt.which !== 'follower') return;
+        }
         let ap = evt.points || 0;
         this.elapsed += ap;
         if (this.elapsed >= this.apTL) {
-            console.log(`-- frozen expired from ${this.actor}`);
             this.unlink();
+        } else if (this.actor.power) {
+            let total = Math.round(this.damage*ap);
+            if (total) {
+                let power = Math.max(0, this.actor.power-total);
+                UpdateSystem.eUpdate(this.actor, { power: power});
+                Events.trigger(OverlaySystem.evtNotify, {which: 'popup.white', actor: this.actor, msg: `-${total} pow`});
+            }
         }
     }
 
@@ -48,12 +62,9 @@ class FrozenCharm extends Charm {
     link(actor) {
         super.link(actor);
         Events.listen(TurnSystem.evtDone, this.onTurnDone);
-        if (this.apDelta && 'pointsPerTurn' in actor) {
-            this.actor.pointsPerTurn += this.apDelta;
-        }
         if (this.vfx) {
             let which = (actor instanceof Character) ? 'vfx' : 'overlay';
-            Events.trigger(OverlaySystem.evtNotify, { actor: actor, which: which, vfx: this.vfx, destroyEvt: 'frozen.done'});
+            Events.trigger(OverlaySystem.evtNotify, { actor: actor, which: which, vfx: this.vfx, destroyEvt: 'drain.done'});
         }
     }
 
@@ -62,10 +73,7 @@ class FrozenCharm extends Charm {
         let actor = this.actor;
         super.unlink();
         if (actor) {
-            if (this.apDelta && 'pointsPerTurn' in actor) {
-                actor.pointsPerTurn -= this.apDelta;
-            }
-            actor.evt.trigger('frozen.done', {actor: actor});
+            actor.evt.trigger('drain.done', {actor: actor});
         }
     }
 

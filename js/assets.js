@@ -1815,6 +1815,8 @@ let miniaAssets = [
     ]}),
 
     Sprite.xspec({tag: 'vfx.frozen', img: new SheetRef({src: 'img/vfx.png', width: 16, height: 16, x: 48, y: 0})}),
+    // FIXME: placeholder
+    Rect.xspec({tag: 'vfx.drain', width: 14, height: 14, color: 'rgba(131,28,93,.3)'}),
 
     Animation.xspec({tag: 'vfx.enflamed', jitter: true, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/vfx-fire.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 50 }),

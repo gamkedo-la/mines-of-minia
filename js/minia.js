@@ -83,6 +83,7 @@ import { PowerageCharm } from "./charms/powerage.js";
 import { ShieldCharm } from "./charms/shield.js";
 import { ShockingCharm } from "./charms/shocking.js";
 import { StealthCharm } from "./charms/stealth.js";
+import { DrainCharm } from "./charms/drain.js";
 
 
 class Minia extends Game {
@@ -139,6 +140,7 @@ class Minia extends Game {
             DarknessCharm,
             DazedCharm,
             Door,
+            DrainCharm,
             Dummy,
             EfficiencyCharm,
             Enemy,

@@ -5,6 +5,7 @@ import { Config } from '../base/config.js';
 import { Direction } from '../base/dir.js';
 import { Events } from '../base/event.js';
 import { XForm } from '../base/xform.js';
+import { DrainCharm } from '../charms/drain.js';
 import { EnflamedCharm } from '../charms/enflamed.js';
 import { FrozenCharm } from '../charms/frozen.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
@@ -136,6 +137,30 @@ class Pillar extends Item {
                     }
                     break;
                 }
+
+                case 'dark': {
+                    // apply drain to all entities around pillar
+                    for (const idx of Direction.all.map((v) => this.elvl.idxfromdir(pillar.idx, v))) {
+                        for (const e of this.elvl.findidx(idx)) {
+                            let charm = new DrainCharm({});
+                            if ('charms' in e) {
+                                console.log(`applying: ${charm} to ${e}`);
+                                e.addCharm(charm);
+                            } else {
+                                let dummy = new Dummy({
+                                    idx: idx, 
+                                    z: Config.template.bgoZed,
+                                    xform: new XForm({stretch: false, x: this.elvl.xfromidx(idx, true), y: this.elvl.yfromidx(idx, true)}),
+                                });
+                                dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
+                                dummy.addCharm(charm);
+                                dummy.evt.listen('drain.done', (evt) => dummy.destroy() );
+                            }
+                        }
+                    }
+                    break;
+                }
+
             }
 
             // pillar becomes dormant
