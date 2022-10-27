@@ -87,6 +87,11 @@ class AimHandler extends Entity {
                 break;
             }
         }
+        // check if target index is pit (and thrown object needs to be destroyed)
+        let needsDestroy = false;
+        if (!this.shooter.constructor.shootable) {
+            needsDestroy = this.lvl.anyidx(targetIdx, (v) => v.kind === 'pit');
+        }
         //console.log(`pathidxs: ${pathidxs} aim: ${idx} player: ${this.player.idx} target: ${targetIdx}`);
         // check for target drop at player's feet
         let action;
@@ -117,6 +122,7 @@ class AimHandler extends Entity {
                     points: this.player.pointsPerTurn,
                     item: this.shooter,
                     idx: targetIdx,
+                    needsDestroy: needsDestroy,
                     x: this.lvl.xfromidx(targetIdx, true),
                     y: this.lvl.yfromidx(targetIdx, true),
                 });

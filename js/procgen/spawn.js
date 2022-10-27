@@ -77,7 +77,7 @@ class Spawn {
         // -- fuel
         this.spawnFuel(template, pstate);
         // -- test objects
-        //this.spawnTest(template, pstate);
+        this.spawnTest(template, pstate);
         yield;
     }
 
@@ -1479,32 +1479,7 @@ class Spawn {
         let x_spawns = [
 
             /*
-            Fuelcell.xspec({
-                name: 'fuelcell',
-                x_sketch: Assets.get('fuelcell'),
-            }),
-
-            Rous.xspec({
-                healthMax: 5,
-                xp: 1,
-                loot: [ Token.xspec({
-                    name: 'token',
-                    x_sketch: Assets.get('token'),
-                    count: 10,
-                })],
-            }),
-            */
-
-            /*
-            Magma.xspec({
-                healthMax: 5,
-                xp: 1,
-            }),
-            */
-
             Rous.xspec({ healthMax: 10, xp: 1, }),
-
-            /*
             Scarab.xspec({ healthMax: 5, xp: 1, }),
             Gem.xspec({ kind: 'fire', }),
             Gem.xspec({ kind: 'daze', }),
@@ -1517,21 +1492,11 @@ class Spawn {
             */
             Cog.xspec({ kind: 'purge', }),
 
-            Weapon.xspec({ name: 'bonk', tier: 1, kind: 'bonk', }),
-            Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
-            Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
+            //Weapon.xspec({ name: 'bonk', tier: 1, kind: 'bonk', }),
+            //Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
+            //Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
 
-            this.genRanged(template),
-
-            /*
-            RangedWeapon.xspec({
-                name: 'ice.gun.3',
-                x_sketch: Assets.get('ice.gun.3'),
-                baseDamageMin: 15,
-                baseDamageMax: 20,
-                projectileSpec: Projectile.xspec({x_sketch: Assets.get('projectile.ice')}),
-            }),
-            */
+            //this.genRanged(template),
 
 
         ];

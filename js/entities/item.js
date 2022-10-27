@@ -30,6 +30,7 @@ class Item extends MiniaModel {
     static xspec(spec={}) {
         return Object.assign( this.spec, {
             blocks: 0,
+            blockedBy: this.block.wall,
         }, spec);
     }
 

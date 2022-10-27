@@ -1,6 +1,8 @@
 export { ThrowToAction, ThrowAction };
 
 import { Action } from '../base/actions/action.js';
+import { ApplyAction } from '../base/actions/apply.js';
+import { DestroyAction } from '../base/actions/destroy.js';
 import { MoveAction } from '../base/actions/move.js';
 import { PlaySfxAction } from '../base/actions/playSfx.js';
 import { SerialAction } from '../base/actions/serialAction.js';
@@ -80,6 +82,7 @@ class ThrowAction extends SerialAction {
         this.y = spec.y;
         this.lvl = spec.lvl;
         this.needsDrop = spec.hasOwnProperty('needsDrop') ? spec.needsDrop : true;
+        this.needsDestroy = spec.hasOwnProperty('needsDestroy') ? spec.needsDestroy : true;
         this.throwsfx = spec.throwsfx || this.constructor.dfltThrowSfx;
         this.hitsfx = spec.hitsfx || this.constructor.dfltHitSfx;
     }
@@ -123,6 +126,11 @@ class ThrowAction extends SerialAction {
                 target: target,
                 idx: this.idx,
             }));
+        } else if (this.needsDestroy) {
+            this.subs.push(new ApplyAction({
+                target: this.item,
+                action: new DestroyAction({}),
+            }))
         }
 
     }
