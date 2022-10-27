@@ -34,11 +34,18 @@ class Pillar extends Item {
         this.kind = spec.kind || this.constructor.dfltKind;
         this.elvl;
         this.onLevelLoaded = this.onLevelLoaded.bind(this);
+        this.linkRange = spec.hasOwnProperty('linkRange') ? spec.linkRange : Config.tileSize*10;
+        this.links = [];
         Events.listen('lvl.loaded', this.onLevelLoaded, Events.once);
     }
 
     onLevelLoaded(evt) {
         this.elvl = evt.lvl;
+        for (const idx of this.elvl.idxsInRange(this.idx, this.linkRange)) {
+            for (const e of this.elvl.findidx(idx, (e) => e.cls === 'Pillar' && e !== this)) {
+                this.links.push(e);
+            }
+        }
     }
 
     show() {
@@ -47,29 +54,33 @@ class Pillar extends Item {
 
     interact(actor) {
         console.log(`${actor} interacts with ${this} kind: ${this.kind}`);
-        switch (this.kind) {
-            case 'ice':
-                // apply frozen to all entities around pillar
-                for (const idx of Direction.all.map((v) => this.elvl.idxfromdir(this.idx, v))) {
-                    for (const e of this.elvl.findidx(idx)) {
-                        let charm = new FrozenCharm({});
-                        if ('charms' in e) {
-                            console.log(`applying: ${charm} to ${e}`);
-                            e.addCharm(charm);
-                        } else {
-                            let dummy = new Dummy({
-                                idx: idx, 
-                                z: Config.template.bgoZed,
-                                xform: new XForm({stretch: false, x: this.elvl.xfromidx(idx, true), y: this.elvl.yfromidx(idx, true)}),
-                            });
-                            dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
-                            console.log(`applying: ${charm} to ${dummy}`);
-                            dummy.addCharm(charm);
-                            dummy.evt.listen('enflamed.done', (evt) => dummy.destroy() );
+        let kind = this.kind;
+        for (const pillar of this.links.concat(this)) {
+            switch (kind) {
+                case 'ice': {
+                    // apply frozen to all entities around pillar
+                    for (const idx of Direction.all.map((v) => this.elvl.idxfromdir(pillar.idx, v))) {
+                        for (const e of this.elvl.findidx(idx)) {
+                            let charm = new FrozenCharm({});
+                            if ('charms' in e) {
+                                console.log(`applying: ${charm} to ${e}`);
+                                e.addCharm(charm);
+                            } else {
+                                let dummy = new Dummy({
+                                    idx: idx, 
+                                    z: Config.template.bgoZed,
+                                    xform: new XForm({stretch: false, x: this.elvl.xfromidx(idx, true), y: this.elvl.yfromidx(idx, true)}),
+                                });
+                                dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
+                                console.log(`applying: ${charm} to ${dummy}`);
+                                dummy.addCharm(charm);
+                                dummy.evt.listen('enflamed.done', (evt) => dummy.destroy() );
+                            }
                         }
                     }
+                    break;
                 }
-                break;
+            }
         }
     }
 
