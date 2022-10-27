@@ -9,7 +9,7 @@ import { Charm } from './charm.js';
 
 class PoisonedCharm extends Charm {
     // STATIC VARIABLES ----------------------------------------------------
-    static dfltApTL = 60;
+    static dfltApTL = 30;
     static dfltDamage = .5;
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
@@ -22,7 +22,7 @@ class PoisonedCharm extends Charm {
         this.elapsed = 0;
         // amount of damage per ap
         this.damage = spec.damage || this.constructor.dfltDamage;
-        //this.vfx = spec.vfx || Assets.get('vfx.enflamed', true);
+        this.vfx = spec.vfx || Assets.get('vfx.poison', true);
         this.attackKind = 'dark';
         // -- events
         this.onTurnDone = this.onTurnDone.bind(this);
@@ -38,6 +38,13 @@ class PoisonedCharm extends Charm {
 
     // EVENT HANDLERS ------------------------------------------------------
     onTurnDone(evt) {
+        if (!this.actor) return;
+        // only update if at end of actor's turn
+        if (this.actor.cls === 'Player') {
+            if (evt.which !== 'leader') return;
+        } else {
+            if (evt.which !== 'follower') return;
+        }
         let ap = evt.points || 0;
         this.elapsed += ap;
         if (this.elapsed >= this.apTL) {

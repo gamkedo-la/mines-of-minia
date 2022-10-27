@@ -39,7 +39,6 @@ class FrozenCharm extends Charm {
         let ap = evt.points || 0;
         this.elapsed += ap;
         if (this.elapsed >= this.apTL) {
-            console.log(`-- frozen expired from ${this.actor}`);
             this.unlink();
         }
     }

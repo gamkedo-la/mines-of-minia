@@ -8,6 +8,7 @@ import { XForm } from '../base/xform.js';
 import { DrainCharm } from '../charms/drain.js';
 import { EnflamedCharm } from '../charms/enflamed.js';
 import { FrozenCharm } from '../charms/frozen.js';
+import { PoisonedCharm } from '../charms/poisoned.js';
 import { OverlaySystem } from '../systems/overlaySystem.js';
 import { Dummy } from './dummy.js';
 import { Item } from './item.js';
@@ -155,6 +156,29 @@ class Pillar extends Item {
                                 dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
                                 dummy.addCharm(charm);
                                 dummy.evt.listen('drain.done', (evt) => dummy.destroy() );
+                            }
+                        }
+                    }
+                    break;
+                }
+
+                case 'poison': {
+                    // apply poisoned to all entities around pillar
+                    for (const idx of Direction.all.map((v) => this.elvl.idxfromdir(pillar.idx, v))) {
+                        for (const e of this.elvl.findidx(idx)) {
+                            let charm = new PoisonedCharm({});
+                            if ('charms' in e) {
+                                console.log(`applying: ${charm} to ${e}`);
+                                e.addCharm(charm);
+                            } else {
+                                let dummy = new Dummy({
+                                    idx: idx, 
+                                    z: Config.template.bgoZed,
+                                    xform: new XForm({stretch: false, x: this.elvl.xfromidx(idx, true), y: this.elvl.yfromidx(idx, true)}),
+                                });
+                                dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
+                                dummy.addCharm(charm);
+                                dummy.evt.listen('poisoned.done', (evt) => dummy.destroy() );
                             }
                         }
                     }
