@@ -339,6 +339,7 @@ class PlayState extends GameState {
                     overlay: this.overlay,
                     doInventory: this.doInventory.bind(this),
                     doTalents: this.doTalents.bind(this),
+                    doOptions: this.doOptions.bind(this),
                 });
                 //console.log(`== setting handler to ${this.handler}`);
             }

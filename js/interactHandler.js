@@ -33,6 +33,7 @@ class InteractHandler extends Entity {
         this.overlay = spec.overlay;
         this.doInventory = spec.doInventory;
         this.doTalents = spec.doTalents;
+        this.doOptions = spec.doOptions
 
         // -- pathfinding
         this.lvlgraph = new LevelGraph({
@@ -126,6 +127,11 @@ class InteractHandler extends Entity {
             case ' ': {
                 this.wait();
                 console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel} power: ${this.player.power} xp: ${this.player.xp}`);
+                break;
+            }
+
+            case 'Escape': {
+                this.doOptions();
                 break;
             }
 
