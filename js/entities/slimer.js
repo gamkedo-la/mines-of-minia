@@ -10,6 +10,7 @@ import { Mathf } from '../base/math.js';
 import { Random } from '../base/random.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Util } from '../base/util.js';
+import { DazedCharm } from '../charms/dazed.js';
 import { FrozenCharm } from '../charms/frozen.js';
 import { PoisonCharm } from '../charms/poison.js';
 import { LvlVar } from '../lvlVar.js';
@@ -159,10 +160,14 @@ class Slimer extends Enemy{
                 // move to water
                 this.retreat.targetIdx = bestIdx;
                 yield *this.retreat.run();
-                // check to see if water is viable (not frozen)
-                let waterTile = this.elvl.firstidx(bestIdx, (v) => v.kind === 'pit');
+
+                console.log(`best index: ${bestIdx} frozen: ${this.elvl.anyidx(bestIdx, (v) => FrozenCharm.applied(v))}`);
+                for (const e of this.elvl.findidx(bestIdx)) {
+                    console.log(`${e} charms: ${e.charms} frozen: ${FrozenCharm.applied(e)}`);
+                }
+
                 // if water is frozen, slime is stunned, and cannot submerge
-                if (FrozenCharm.applied(waterTile)) {
+                if ( this.elvl.anyidx(bestIdx, (v) => FrozenCharm.applied(v))) {
                     let dazed = new DazedCharm();
                     this.addCharm(dazed);
                     yield null;
@@ -170,11 +175,17 @@ class Slimer extends Enemy{
                     UpdateSystem.eUpdate(this, {state: 'attack'});
                 // otherwise... submerge/hide
                 } else {
+                    // recharge
                     UpdateSystem.eUpdate(this, {hidden: true, state: 'recharge'});
                 }
                 break;
 
             case 'recharge':
+                // remove any charms...
+                for (let i=this.charms.length-1; i>=0; i--) {
+                    let charm = this.charms[i];
+                    charm.destroy();
+                }
                 // wait a turn
                 yield null;
                 // pick new location

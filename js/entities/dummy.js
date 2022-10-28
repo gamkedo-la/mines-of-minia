@@ -1,3 +1,4 @@
+import { Fmt } from '../base/fmt.js';
 import { MiniaModel } from './miniaModel.js';
 
 export { Dummy };
@@ -5,11 +6,19 @@ export { Dummy };
 class Dummy extends MiniaModel {
     static flammable = true;
 
+    cpre(spec) {
+    }
     cpost(spec) {
         super.cpost(spec);
+        // hackety hack hack: bounds checking is wrong in the depths of the grid checking... so that an object 
+        // with zero dimensions is not added to the grid, and therefore not searchable when looking at level data
+        // give dummy an artifical width/height to work around this...
+        this.xform.width = 1;
+        this.xform.height = 1;
         // -- charms (buffs/debuffs)
         this.charms = [];
         if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
+        console.log(`dummy: ${Fmt.ofmt(spec)}`);
     };
 
     as_kv() {

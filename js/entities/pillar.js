@@ -106,8 +106,8 @@ class Pillar extends Item {
                                     z: Config.template.bgoZed,
                                     xform: new XForm({stretch: false, x: this.elvl.xfromidx(idx, true), y: this.elvl.yfromidx(idx, true)}),
                                 });
-                                dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
-                                console.log(`applying: ${charm} to ${dummy}`);
+                                dummy.evt.trigger('item.emerged', {actor: dummy}, true);
+                                //console.log(`applying: ${charm} to ${dummy}`);
                                 dummy.addCharm(charm);
                                 dummy.evt.listen('frozen.done', (evt) => dummy.destroy() );
                             }
@@ -130,7 +130,7 @@ class Pillar extends Item {
                                     z: Config.template.bgoZed,
                                     xform: new XForm({stretch: false, x: this.elvl.xfromidx(idx, true), y: this.elvl.yfromidx(idx, true)}),
                                 });
-                                dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
+                                dummy.evt.trigger('item.emerged', {actor: dummy}, true);
                                 dummy.addCharm(charm);
                                 dummy.evt.listen('enflamed.done', (evt) => dummy.destroy() );
                             }
@@ -153,7 +153,7 @@ class Pillar extends Item {
                                     z: Config.template.bgoZed,
                                     xform: new XForm({stretch: false, x: this.elvl.xfromidx(idx, true), y: this.elvl.yfromidx(idx, true)}),
                                 });
-                                dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
+                                dummy.evt.trigger('item.emerged', {actor: dummy}, true);
                                 dummy.addCharm(charm);
                                 dummy.evt.listen('drain.done', (evt) => dummy.destroy() );
                             }
@@ -176,7 +176,7 @@ class Pillar extends Item {
                                     z: Config.template.bgoZed,
                                     xform: new XForm({stretch: false, x: this.elvl.xfromidx(idx, true), y: this.elvl.yfromidx(idx, true)}),
                                 });
-                                dummy.evt.trigger(dummy.constructor.evtEmerged, {actor: dummy}, true);
+                                dummy.evt.trigger('item.emerged', {actor: dummy}, true);
                                 dummy.addCharm(charm);
                                 dummy.evt.listen('poisoned.done', (evt) => dummy.destroy() );
                             }
