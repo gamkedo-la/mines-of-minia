@@ -63,6 +63,7 @@ class MiniaTemplates {
             secretCacheMax: 0,
             lockRoomMin: 0,
             lockRoomMax: 0,
+            lockChestPct: 0,
             enemyList: [ 
                 { weight: 1, cls: Rous },
                 { weight: .5, cls: Funguy },
@@ -98,6 +99,7 @@ class MiniaTemplates {
             secretCacheMax: 0,
             lockRoomMin: 0,
             lockRoomMax: 0,
+            lockChestPct: 0,
             enemyList: [ 
                 { weight: 1, cls: Rous },
                 { weight: .5, cls: Funguy },
