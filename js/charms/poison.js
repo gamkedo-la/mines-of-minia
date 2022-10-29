@@ -19,7 +19,7 @@ class PoisonCharm extends Charm {
 
     as_kv() {
         return Object.assign({}, super.as_kv(), {
-            damageDice: this.damageDice.toString(),
+            pct: this.pct,
         });
     }
 

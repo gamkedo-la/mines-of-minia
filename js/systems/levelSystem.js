@@ -89,16 +89,18 @@ class LevelSystem extends System {
             }
         }
 
-        // load boss template
-        if (index === 7) {
-            let old = Config.template;
+        // load template based on level
+        let old = Config.template;
+        if (index <= 5) {
+            Config.template = MiniaTemplates.bioLvl.copy();
+        } else if (index === 6) {
             Config.template = MiniaTemplates.bioBoss.copy();
-            Config.template.seed = old.seed;
-        } else if (index === 14) {
-            let old = Config.template;
+        } else if (index<=11) {
+            Config.template = MiniaTemplates.rockLvl.copy();
+        } else {
             Config.template = MiniaTemplates.rockBoss.copy();
-            Config.template.seed = old.seed;
         }
+        Config.template.seed = old.seed;
 
         // is level to load cached?
         Config.template.index = index;

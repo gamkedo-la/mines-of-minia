@@ -408,7 +408,7 @@ class PlayState extends GameState {
 
             case '5': {
                 console.log(`-- bio boss lvl`);
-                let whichLevel = 7;
+                let whichLevel = 6;
                 let load = (whichLevel > LevelSystem.maxLevelIndex) ? false : true;
                 Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
                 break;

@@ -10,13 +10,42 @@ import { ProcTemplate } from './ptemplate.js';
 
 class MiniaTemplates {
 
-    static rockLvl = new ProcTemplate({
+    static bioLvl = new ProcTemplate({
         //seed: 1,
         //seed: 74830 -- no stairs?
         seed: 59894,
         doyield: true,
         translate: {
             floor: 'bio.floor',
+            wall: 'rock.wall',
+            pit: 'bio.pit',
+            pitb: 'rock.pit.border',
+            obs: 'rock.outcrop',
+            obsb: 'rock.outcrop.border',
+            doNoise: true,
+        },
+        spawn: {
+            enemyList: [ 
+                { weight: 1, cls: Rous },
+                { weight: 1, cls: Scarab },
+                { weight: .5, cls: Funguy },
+                { weight: .25, cls: Magma },
+                { weight: .25, cls: Energy },
+            ],
+            trapList: [ SpikeTrap ],
+            growth: 'rock.growth',
+            growthFreePct: .1,
+            growthNoisePct: .25,
+            clutter: 'rock.clutter',
+            machineTags: ['machine.gear', 'machine.crystal'],
+            machineRoomPct: .6,
+        }
+    });
+
+    static rockLvl = new ProcTemplate({
+        doyield: true,
+        translate: {
+            floor: 'rock.floor',
             wall: 'rock.wall',
             pit: 'rock.pit',
             pitb: 'rock.pit.border',
