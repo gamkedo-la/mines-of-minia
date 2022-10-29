@@ -3,6 +3,7 @@ export { Growth };
     import { DropLootAction } from '../actions/loot.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
+import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
@@ -28,6 +29,7 @@ class Growth extends Trap {
         this.blocksLoS = (this.state === 'armed');
         // -- loot
         this.loot = spec.loot || [];
+        Events.listen('lvl.loaded', (evt) => this.elvl = evt.lvl, Events.once);
     }
  
     // SERIALIZATION -------------------------------------------------------
@@ -43,6 +45,7 @@ class Growth extends Trap {
         // spawn any loot
         for (let loot of (this.loot || [])) {
             ActionSystem.assign(this, new DropLootAction({
+                lvl: this.elvl,
                 lootSpec: loot,
             }));
         }

@@ -8,6 +8,7 @@ import { UpdateAction } from '../base/actions/update.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Generator } from '../base/generator.js';
+import { Util } from '../base/util.js';
 import { SpawnAction } from './spawn.js';
 
 class DropLootAction extends SerialAction {
@@ -41,11 +42,35 @@ class DropLootAction extends SerialAction {
         this.nudgeSpeed = spec.hasOwnProperty('nudgeSpeed') ? spec.nudgeSpeed : this.constructor.dfltNudgeSpeed;
         this.lootSfx = spec.hasOwnProperty('lootSfx') ? spec.lootSfx : this.constructor.dfltLootSfx;
         this.lootThudSfx = spec.hasOwnProperty('lootThudSfx') ? spec.lootThudSfx : this.constructor.dfltLootThudSfx;
+        this.lvl = spec.lvl;
     }
 
     setup() {
         // -- spawn loot
         let loot = Generator.generate(this.lootSpec);
+        // -- check viability of loot location
+        let lvl = this.lvl;
+        let spawnTarget = this.actor;
+        // -- loot location is viable if actor is over floor tile
+        if (lvl.firstidx(spawnTarget.idx, (v) => v.cls === 'Tile').kind !== 'floor') {
+            // otherwise... find nearest viable location
+            let bestIdx = Util.findBest(
+                lvl.idxsInRange(spawnTarget.idx, Config.tileSize*5),
+                (idx) => lvl.idxdist(spawnTarget.idx, idx),
+                (d1,d2) => d1<d2,
+                (d) => true,
+                (idx) => {
+                    // check for floor
+                    let floor = lvl.firstidx(idx, (e) => e.cls === 'Tile' && e.kind === 'floor');
+                    if (!floor) return false;
+                    // check for other obstacles that could block loot
+                    if (this.lvl.anyidx(idx, (e) => loot.blockedBy & e.blocks)) return false;
+                    return true;
+                }
+            );
+            if (bestIdx) spawnTarget = lvl.firstidx(bestIdx, (e) => e.cls === 'Tile' && e.kind === 'floor');
+        }
+
         // -- hackety hack hack... hard-ware offx/offy to properly offset loot
         loot.xform.offx = -loot.xform.width*.5;
         if (loot.xform.height > Config.tileSize) {
@@ -54,7 +79,7 @@ class DropLootAction extends SerialAction {
             loot.xform.offy = -loot.xform.height*.5;
         }
         this.subs.push(new SpawnAction({
-            target: this.actor,
+            target: spawnTarget,
             spawn: loot,
             sfx: this.lootSfx,
             z: 3,       // -- note: zed is 3, to draw in front of everything else
@@ -62,8 +87,8 @@ class DropLootAction extends SerialAction {
 
         // nudge up
         if (this.nudge) {
-            let x = this.actor.xform.x;
-            let y = this.actor.xform.y - this.nudge;
+            let x = spawnTarget.xform.x;
+            let y = spawnTarget.xform.y - this.nudge;
             this.subs.push( new ApplyAction({
                 target: loot,
                 action: new MoveAction({
@@ -79,8 +104,8 @@ class DropLootAction extends SerialAction {
         }
         // nudge down
         if (this.nudge) {
-            let x = this.actor.xform.x;
-            let y = this.actor.xform.y;
+            let x = spawnTarget.xform.x;
+            let y = spawnTarget.xform.y;
             this.subs.push( new ApplyAction({
                 target: loot,
                 action: new MoveAction({

@@ -19,7 +19,7 @@ class AiMoveToIdxDirective extends AiDirective {
             //console.log(`move to idx running`);
             // check for end state
             if (this.actor.idx === this.targetIdx) {
-                //console.log(`move to idx reached ${this.targetIdx}`);
+                console.log(`move to idx reached ${this.targetIdx}`);
                 this.done = true;
                 return null;
             }
@@ -29,7 +29,7 @@ class AiMoveToIdxDirective extends AiDirective {
             if (!path) {
                 this.ok = false;
                 this.done = true;
-                //console.log(`move to idx no path to ${this.targetIdx}`);
+                console.log(`move to idx no path to ${this.targetIdx}`);
                 return null;
             }
             if (this.dbg) console.log(`move from: ${this.actor.idx} towards: ${this.targetIdx} path: ${Fmt.ofmt(path)}`);

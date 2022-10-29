@@ -161,11 +161,6 @@ class Slimer extends Enemy{
                 this.retreat.targetIdx = bestIdx;
                 yield *this.retreat.run();
 
-                console.log(`best index: ${bestIdx} frozen: ${this.elvl.anyidx(bestIdx, (v) => FrozenCharm.applied(v))}`);
-                for (const e of this.elvl.findidx(bestIdx)) {
-                    console.log(`${e} charms: ${e.charms} frozen: ${FrozenCharm.applied(e)}`);
-                }
-
                 // if water is frozen, slime is stunned, and cannot submerge
                 if ( this.elvl.anyidx(bestIdx, (v) => FrozenCharm.applied(v))) {
                     let dazed = new DazedCharm();

@@ -3,6 +3,7 @@ export { Chest };
 import { DropLootAction } from '../actions/loot.js';
 import { DestroyAction } from '../base/actions/destroy.js';
 import { Assets } from '../base/assets.js';
+import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
@@ -63,6 +64,7 @@ class Chest extends MiniaModel {
         // -- los state
         this.blocksLoS = (this.state === 'close');
         this.openTTL = spec.openTTL || this.constructor.dfltOpenTTL;
+        Events.listen('lvl.loaded', (evt) => this.elvl = evt.lvl, Events.once);
     }
 
     destroy() {
@@ -102,6 +104,7 @@ class Chest extends MiniaModel {
         // spawn any loot
         for (let loot of (this.loot || [])) {
             ActionSystem.assign(this, new DropLootAction({
+                lvl: this.elvl,
                 lootSpec: loot,
             }));
         }

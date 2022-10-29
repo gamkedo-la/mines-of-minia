@@ -123,7 +123,7 @@ class Minia extends Game {
         maxLvl: 21,
 
         //template: MiniaTemplates.rockBoss,
-        template: MiniaTemplates.rockLvl.copy(),
+        template: MiniaTemplates.bioLvl.copy(),
     };
 
     static init() {

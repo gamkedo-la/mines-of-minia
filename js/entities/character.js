@@ -127,6 +127,7 @@ class Character extends MiniaModel {
         this.evt.listen(this.constructor.evtDamaged, this.onDamaged);
         this.evt.listen(this.constructor.evtDeath, this.onDeath);
         this.evt.listen(this.constructor.evtIntent, this.onIntentForAnimState);
+        Events.listen('lvl.loaded', (evt) => this.elvl = evt.lvl, Events.once);
     }
 
     destroy() {
@@ -209,6 +210,7 @@ class Character extends MiniaModel {
             // spawn any loot
             for (let loot of (this.loot || [])) {
                 ActionSystem.assign(this, new DropLootAction({
+                    lvl: this.elvl,
                     lootSpec: loot,
                 }));
             }

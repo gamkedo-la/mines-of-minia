@@ -17,8 +17,9 @@ class Dummy extends MiniaModel {
         this.xform.height = 1;
         // -- charms (buffs/debuffs)
         this.charms = [];
+        this.blockedBy = spec.hasOwnProperty('blockedBy') ? spec.blockedBy : 0;
+        this.blocks = spec.hasOwnProperty('blocks') ? spec.blocks : 0;
         if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
-        console.log(`dummy: ${Fmt.ofmt(spec)}`);
     };
 
     as_kv() {

@@ -95,6 +95,7 @@ class ThrowAction extends SerialAction {
         if (this.needsDrop) {
             this.subs.push( new DropAction({
                 item: this.item,
+                all: false,
                 sfx: this.throwsfx,
             }));
         } else {

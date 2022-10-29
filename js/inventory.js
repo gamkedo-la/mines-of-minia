@@ -162,6 +162,15 @@ class InventoryData {
         return null;
     }
 
+    getSlot(item) {
+        for (let i=0; i<this.numSlots; i++) {
+            if (this.slots[i] && this.slots[i].gid === item.gid) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     swap(slot1, slot2) {
         let tmpi = this.slots[slot2];
         this.slots[slot2] = this.slots[slot1];
@@ -572,7 +581,6 @@ class Inventory extends UxView {
     }
 
     onStatsClick(evt) {
-        console.log(`${this} onStatsClick`);
         if (this.wantUseTarget) return;
         if (this.itemPopup) {
             this.itemPopup.destroy();
@@ -929,7 +937,6 @@ class Inventory extends UxView {
             this.itemPopup.evt.listen(this.itemPopup.constructor.evtDestroyed, this.onPopupDestroy);
             this.adopt(this.itemPopup);
         } else if (item.constructor.shootable) {
-            console.log(`${item} shootable`);
             Events.trigger('handler.wanted', {which: 'aim', shooter: item});
             this.destroy();
         } else {
@@ -943,7 +950,6 @@ class Inventory extends UxView {
     }
 
     handleUseTarget(item, target) {
-        console.log(`handleUseTarget: ${item} target: ${target}`);
         this.wantUseTarget = false;
         let action = new UseAction({
             points: this.data.actor.pointsPerTurn,
@@ -1119,7 +1125,6 @@ class ItemPopup extends UxView {
 
     onKeyDown(evt) {
         if (!this.active) return;
-        console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
         switch (evt.key) {
             case 'Escape': {
                 this.destroy();
@@ -1147,13 +1152,11 @@ class ItemPopup extends UxView {
     }
 
     onConfirmClicked(evt) {
-        console.log(`onConfirmClicked`);
         this.destroy();
         this.handleUse(this.item, this.target);
     }
 
     onCancelClicked(evt) {
-        console.log(`onCancelClicked`);
         if (!this.item.constructor.isDiscovered(this.item.kind)) {
             let prompt = new Prompt({
                 xform: new XForm({ border: .3 }),
@@ -1253,7 +1256,6 @@ class StatsPopup extends UxView {
         for (let i=0; i<leftRows.length; i++) {
             let [key, valuefcn] = leftRows[i];
             let value = valuefcn().toString();
-            console.log(`key: ${key} value: ${value}`);
             let panel = new UxPanel({
                 sketch: Sketch.zero,
                 xform: new XForm({top: size*i, bottom: 1-(i+1)*size}),
@@ -1276,7 +1278,6 @@ class StatsPopup extends UxView {
         for (let i=0; i<rightRows.length; i++) {
             let [key, valuefcn] = rightRows[i];
             let value = valuefcn().toString();
-            console.log(`key: ${key} value: ${value}`);
             let panel = new UxPanel({
                 sketch: Sketch.zero,
                 xform: new XForm({top: size*i, bottom: 1-(i+1)*size}),
@@ -1306,7 +1307,6 @@ class StatsPopup extends UxView {
 
     onKeyDown(evt) {
         if (!this.active) return;
-        console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
         switch (evt.key) {
             case 'Escape': {
                 this.destroy();

@@ -1495,6 +1495,7 @@ class Spawn {
             Cog.xspec({ kind: 'invulnerability', }),
             */
             Cog.xspec({ kind: 'purge', }),
+            Cog.xspec({ kind: 'purge', }),
 
             //Weapon.xspec({ name: 'bonk', tier: 1, kind: 'bonk', }),
             //Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),

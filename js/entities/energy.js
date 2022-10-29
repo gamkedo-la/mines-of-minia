@@ -7,6 +7,7 @@ import { AiRangeTargetDirective } from '../ai/aiRangeTargetDirective.js';
 import { DestroyAction } from '../base/actions/destroy.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
+import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Prng } from '../base/prng.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
@@ -59,6 +60,7 @@ class Energy extends Enemy{
             // spawn any loot
             for (let loot of (this.loot || [])) {
                 ActionSystem.assign(this, new DropLootAction({
+                    lvl: this.elvl,
                     lootSpec: loot,
                 }));
             }
