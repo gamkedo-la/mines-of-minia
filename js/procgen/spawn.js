@@ -1426,6 +1426,12 @@ class Spawn {
             tag: 'slimer.boss',
             idx: proom.cidx,
             z: template.fgZed,
+            loot: [
+                Key.xspec({
+                    kind: 'blue',
+                    z: template.fgZed,
+                }),
+            ],
         }));
 
     }
