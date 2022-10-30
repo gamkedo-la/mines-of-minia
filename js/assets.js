@@ -2325,4 +2325,20 @@ let miniaAssets = [
         stateAccessor: (e) => e.animState,
     }),
 
+    Sprite.xspec({tag: 'rock.carry', img: new SheetRef({src: 'img/rock.png', width: 16, height: 16, x: 0, y: 32})}),
+    Animation.xspec({tag: 'rock.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rock.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rock.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rock.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/rock.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'rock',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'rock.carry'}),
+            'free': new AssetRef({tag: 'rock.free'}),
+        },
+        state: 'free',
+    }),
+
 ];

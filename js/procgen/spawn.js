@@ -76,6 +76,10 @@ class Spawn {
         this.spawnClutter(template, pstate);
         // -- fuel
         this.spawnFuel(template, pstate);
+        // -- rocks
+        if (template.boss === 'bio') {
+            this.spawnRocks(template, pstate);
+        }
         // -- test objects
         this.spawnTest(template, pstate);
         yield;
@@ -301,7 +305,6 @@ class Spawn {
         let plvl = pstate.plvl;
         let quota = Prng.rangeInt(x_spawn.fuelMin, x_spawn.fuelMax);
         console.log(`-- fuel quota: ${quota}`);
-
         let iterations = 100;
         let choices = Array.from(prooms);
         while (iterations-- > 0 && quota > 0) {
@@ -319,7 +322,26 @@ class Spawn {
                 quota--;
             }
         }
+    }
 
+    static spawnRocks(template, pstate) {
+        let prooms = pstate.prooms || [];
+        let x_spawn = template.spawn || {};
+        let plvl = pstate.plvl;
+        for (const proom of prooms) {
+            // pick candidate room
+            let idx = this.chooseSpawnIdx(plvl, proom.idxs);
+            if (idx !== -1) {
+                let x_spawn = Projectile.xspec({
+                    name: 'smooth rock',
+                    description: 'a nicely weighted rock that fits snuggly in your activator',
+                    idx: idx,
+                    z: template.fgZed,
+                    x_sketch: Assets.get('rock'),
+                });
+                plvl.entities.push(x_spawn);
+            }
+        }
     }
 
     static spawnMachinery(template, pstate) {
@@ -1496,6 +1518,7 @@ class Spawn {
             */
             Cog.xspec({ kind: 'purge', }),
             Cog.xspec({ kind: 'purge', }),
+            Projectile.xspec({ x_sketch: Assets.get('rock')}),
 
             //Weapon.xspec({ name: 'bonk', tier: 1, kind: 'bonk', }),
             //Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),

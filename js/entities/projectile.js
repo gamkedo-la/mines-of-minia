@@ -5,7 +5,8 @@ import { Item } from './item.js';
 
 
 class Projectile extends Item {
-    static lootable = false;
+    static lootable = true;
+    static stackable = true;
 
     static get dfltSketch() {
         return new Rect({ width: 4, height: 4, color: 'rgba(255,255,0,.75)' });
