@@ -81,7 +81,7 @@ class Spawn {
             this.spawnRocks(template, pstate);
         }
         // -- test objects
-        this.spawnTest(template, pstate);
+        //this.spawnTest(template, pstate);
         yield;
     }
 

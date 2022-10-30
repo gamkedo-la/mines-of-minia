@@ -30,6 +30,7 @@ class Slimer extends Enemy{
             x_sketch: Assets.get('slimer'),
             pointsPerTurn: 10,
             blockedBy: this.block.wall,
+            aggroRange: Config.tileSize*3,
         }, spec);
     }
 
@@ -55,6 +56,12 @@ class Slimer extends Enemy{
         this.attack.target = evt.target;
         UpdateSystem.eUpdate(this, {state: 'attack'});
         this.actionStream = this.run();
+        this.aggroRange = Config.tileSize*12;
+        // lock the room
+        for (const door of this.elvl.find((v) => v.cls === 'Door' && v.boss)) {
+            console.log(`-- locking ${door}`);
+            door.locked = true;
+        }
     }
 
     onAggroLost(evt) {
@@ -88,6 +95,15 @@ class Slimer extends Enemy{
             this.attack.stop();
             console.log(`-- transition to retreat`)
             UpdateSystem.eUpdate(this, {state: 'retreat'});
+        }
+    }
+
+    onDeath(evt) {
+        super.onDeath(evt);
+        // unlock the room
+        for (const door of this.elvl.find((v) => v.cls === 'Door' && v.boss)) {
+            console.log(`-- unlocking ${door}`);
+            door.locked = false;
         }
     }
 
