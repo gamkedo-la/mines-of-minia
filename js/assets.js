@@ -912,6 +912,7 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 200 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 200 }),
     ]}),
+    Sprite.xspec({tag: 'vendor_portrait', img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*0, y: 0})}),
 
     Animation.xspec({tag: 'stealthbot.mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/stealthbot.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 50 }),
