@@ -45,6 +45,7 @@ import { StealthBot } from '../entities/stealthBot.js';
 import { ThumpBot } from '../entities/thumpBot.js';
 import { Tile } from '../entities/tile.js';
 import { Token } from '../entities/token.js';
+import { Vendor } from '../entities/vendor.js';
 import { Weapon } from '../entities/weapon.js';
 import { InventoryData } from '../inventory.js';
 import { Names } from './names.js';
@@ -81,7 +82,7 @@ class Spawn {
             this.spawnRocks(template, pstate);
         }
         // -- test objects
-        //this.spawnTest(template, pstate);
+        this.spawnTest(template, pstate);
         yield;
     }
 
@@ -1515,14 +1516,15 @@ class Spawn {
             Cog.xspec({ kind: 'identify', }),
             Cog.xspec({ kind: 'lvlup', }),
             Cog.xspec({ kind: 'invulnerability', }),
+            Cog.xspec({ kind: 'purge', }),
             */
-            Cog.xspec({ kind: 'purge', }),
-            Cog.xspec({ kind: 'purge', }),
-            Projectile.xspec({ x_sketch: Assets.get('rock')}),
 
             //Weapon.xspec({ name: 'bonk', tier: 1, kind: 'bonk', }),
             //Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
             //Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
+
+            Vendor.xspec({ name: 'bigsby'}),
+
 
             //this.genRanged(template),
 

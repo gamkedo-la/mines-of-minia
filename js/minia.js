@@ -84,6 +84,7 @@ import { ShieldCharm } from "./charms/shield.js";
 import { ShockingCharm } from "./charms/shocking.js";
 import { StealthCharm } from "./charms/stealth.js";
 import { DrainCharm } from "./charms/drain.js";
+import { Vendor } from "./entities/vendor.js";
 
 
 class Minia extends Game {
@@ -195,6 +196,7 @@ class Minia extends Game {
             ThumpBot,
             Token,
             Trap,
+            Vendor,
             Weapon,
         ]);
         //Font.dfltFamily = "Medula One";

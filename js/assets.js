@@ -961,7 +961,7 @@ let miniaAssets = [
     ]}),
 
     Animator.xspec({
-        tag: 'stealthBot',
+        tag: 'stealthbot',
         x_sketches: {
             'idlel': new AssetRef({tag: 'stealthbot.idlel'}),
             'idler': new AssetRef({tag: 'stealthbot.idler'}),
@@ -969,11 +969,6 @@ let miniaAssets = [
             'mover': new AssetRef({tag: 'stealthbot.mover'}),
             'dyingl': new AssetRef({tag: 'stealthbot.dyingl'}),
             'dyingr': new AssetRef({tag: 'stealthbot.dyingr'}),
-            //'stealth': Rect.xspec({width: 14, height: 14, color: 'grey'}),
-            //'approach': Rect.xspec({width: 14, height: 14, color: 'orange'}),
-            //'retreat': Rect.xspec({width: 14, height: 14, color: 'yellow'}),
-            //'melee': Rect.xspec({width: 14, height: 14, color: 'blue'}),
-            //'dying': new AssetRef({tag: 'dying'}),
         },
         state: 'idle',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
@@ -2341,4 +2336,76 @@ let miniaAssets = [
         state: 'free',
     }),
 
+    Animation.xspec({tag: 'sneak.idlel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*0, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*1, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*2, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*4, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*5, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*6, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*7, y: 0})}), ttl: 200 }),
+    ]}),
+
+    Animation.xspec({tag: 'sneak.movel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*8, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*9, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*10, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*11, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*12, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*13, y: 0})}), ttl: 50 }),
+    ]}),
+
+    Animation.xspec({tag: 'sneak.dyingl', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*14, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*15, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*16, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*17, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*18, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*19, y: 0})}), ttl: 100 }),
+    ]}),
+
+    Animation.xspec({tag: 'sneak.idler', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*20, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*21, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*22, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*23, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*24, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*25, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*26, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*27, y: 0})}), ttl: 200 }),
+    ]}),
+
+    Animation.xspec({tag: 'sneak.mover', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*28, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*29, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*30, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*31, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*32, y: 0})}), ttl: 50 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*33, y: 0})}), ttl: 50 }),
+    ]}),
+
+    Animation.xspec({tag: 'sneak.dyingr', loop: false, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*34, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*35, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*36, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*37, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*38, y: 0})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/sneak.png', width: 27, height: 32, x: 27*39, y: 0})}), ttl: 100 }),
+    ]}),
+
+    Animator.xspec({
+        tag: 'sneak',
+        x_sketches: {
+            'idlel': new AssetRef({tag: 'sneak.idlel'}),
+            'idler': new AssetRef({tag: 'sneak.idler'}),
+            'movel': new AssetRef({tag: 'sneak.movel'}),
+            'mover': new AssetRef({tag: 'sneak.mover'}),
+            'dyingl': new AssetRef({tag: 'sneak.dyingl'}),
+            'dyingr': new AssetRef({tag: 'sneak.dyingr'}),
+        },
+        state: 'idle',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
+    }),
+    
 ];

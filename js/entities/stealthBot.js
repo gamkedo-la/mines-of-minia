@@ -35,7 +35,7 @@ class StealthBot extends Enemy {
             xp: 5,
             healthMax: health,
             attackRating: 75,
-            x_sketch: Assets.get('stealthBot'),
+            x_sketch: Assets.get('sneak'),
             maxSpeed: Config.tileSize/.3/1000,
             losRange: Config.tileSize*14,
             aggroRange: Config.tileSize*14,
