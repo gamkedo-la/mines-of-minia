@@ -1671,6 +1671,15 @@ let miniaAssets = [
         state: 'armed',
     }),
 
+    Animator.xspec({
+        tag: 'vine.growth',
+        x_sketches: {
+            'armed': Template.varsprite('img/vine-growth.png', 'vine.growth.armed', [[0,0], [1,0], [2,0], [3,0]], {width: 20, height: 32}),
+            'inactive': Sprite.xspec({img: new SheetRef({src: 'img/vine-growth.png', width: 20, height: 32, x: 20*4, y: 0})}),
+        },
+        state: 'armed',
+    }),
+
     Animation.xspec({tag: 'magma.idler', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/magma.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/magma.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 150 }),

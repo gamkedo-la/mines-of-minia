@@ -33,7 +33,7 @@ class MiniaTemplates {
                 { weight: .25, cls: Energy },
             ],
             trapList: [ SpikeTrap ],
-            growth: 'rock.growth',
+            growth: 'vine.growth',
             growthFreePct: .1,
             growthNoisePct: .25,
             clutter: 'rock.clutter',
