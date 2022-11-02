@@ -17,7 +17,7 @@ class MiniaTemplates {
         doyield: true,
         translate: {
             floor: 'bio.floor',
-            wall: 'rock.wall',
+            wall: 'bio.wall',
             pit: 'bio.pit',
             pitb: 'rock.pit.border',
             obs: 'rock.outcrop',
