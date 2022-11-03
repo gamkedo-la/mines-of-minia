@@ -36,7 +36,7 @@ class MiniaTemplates {
             growth: 'vine.growth',
             growthFreePct: .1,
             growthNoisePct: .25,
-            clutter: 'rock.clutter',
+            clutter: 'bio.clutter',
             machineTags: ['machine.gear', 'machine.crystal'],
             machineRoomPct: .6,
         }
