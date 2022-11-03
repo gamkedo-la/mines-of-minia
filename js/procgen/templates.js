@@ -19,9 +19,9 @@ class MiniaTemplates {
             floor: 'bio.floor',
             wall: 'bio.wall',
             pit: 'bio.pit',
-            pitb: 'rock.pit.border',
+            pitb: 'bio.pit.border',
             obs: 'rock.outcrop',
-            obsb: 'rock.outcrop.border',
+            obsb: 'bio.pit.border',
             doNoise: true,
         },
         spawn: {
