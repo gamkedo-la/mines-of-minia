@@ -20,9 +20,21 @@ import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
 import { Key } from './entities/key.js';
 import { Prompt } from './prompt.js';
+import { Resurrect64 } from './resurrect64.js';
 import { TurnSystem } from './systems/turnSystem.js';
 
 const textColor = "yellow";
+
+function button(text, spec) {
+    return new UxButton(Object.assign({}, UxButton.xspec({
+        x_textXform: XForm.xspec({offset: 10}),
+        highlight: Sketch.zero,
+        unpressed: Sketch.zero,
+        pressed: Sketch.zero,
+        text: new Text({text: text, color: Resurrect64.colors[0]}),
+        hltext: new Text({text: text, color: Resurrect64.colors[10]}),
+    }), spec));
+}
 
 class UxVendor extends UxView {
     // STATIC PROPERTIES ---------------------------------------------------
@@ -54,13 +66,14 @@ class UxVendor extends UxView {
         // bind event handlers before setting data
         this.onInventoryAdded = this.onInventoryAdded.bind(this);
         this.onInventoryRemoved = this.onInventoryRemoved.bind(this);
-        this.onBeltChanged = this.onBeltChanged.bind(this);
-        this.onEquipChanged = this.onEquipChanged.bind(this);
         this.onSlotClick = this.onSlotClick.bind(this);
         this.onOtherChanged = this.onOtherChanged.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onPopupDestroy = this.onPopupDestroy.bind(this);
         this.onStatsClick = this.onStatsClick.bind(this);
+        this.onBuyClicked = this.onBuyClicked.bind(this);
+        this.onSellClicked = this.onSellClicked.bind(this);
+        this.mode = 'buy';
 
         this.bg = new UxPanel({
             sketch: Assets.get('oframe.red', true),
@@ -77,7 +90,7 @@ class UxVendor extends UxView {
                         }),
                         new UxPanel({
                             sketch: Assets.get('vendor_portrait', true, { lockRatio: true }),
-                            xform: new XForm({top: -.1, bottom: .0, left: -.2, right: -.2}),
+                            xform: new XForm({top: .1, bottom: .1, left: -.2, right: -.2}),
                         }),
 
                         this.counter({ tag: 'tokens', xform: new XForm({offset: 10, left: 0, right: .75, top: .8, bottom: .05}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
@@ -91,11 +104,11 @@ class UxVendor extends UxView {
                     sketch: Assets.get('frame.red', true),
                     children: [
                         new UxText({
-                            text: new Text({text: 'quick slots', color: textColor}),
+                            text: new Text({text: 'vendor actions', color: textColor}),
                             xform: new XForm({top: .1, bottom: .65}),
                         }),
-                        this.slot({ tag: 'buy', xform: new XForm({offset: 10, top: .3, left: .2, right: .6}), }, '2'),
-                        this.slot({ tag: 'sell', xform: new XForm({offset: 10, top: .3, left: .6, right: .2}), }, '4'),
+                        button('buy', { tag: 'vendor.buy', xform: new XForm({top: .3, left: .2, right: .6}), }),
+                        button('sell', { tag: 'vendor.sell', xform: new XForm({top: .3, left: .6, right: .2}), }),
                     ],
                 }),
 
@@ -105,6 +118,7 @@ class UxVendor extends UxView {
                     sketch: Assets.get('frame.red', true),
                     children: [
                         new UxText({
+                            tag: 'transact.text',
                             text: new Text({text: 'wares', color: textColor}),
                             xform: new XForm({top: .025, bottom: .9}),
                         }),
@@ -150,7 +164,12 @@ class UxVendor extends UxView {
             ],
         });
         this.adopt(this.bg);
-        this.setData(spec.data || new InventoryData);
+        //this.setData(spec.data || new InventoryData);
+        this.buyButton = Hierarchy.find(this.bg, (v) =>v.tag === 'vendor.buy');
+        this.buyButton.evt.listen(this.buyButton.constructor.evtMouseClicked, this.onBuyClicked);
+        this.sellButton = Hierarchy.find(this.bg, (v) =>v.tag === 'vendor.sell');
+        this.sellButton.evt.listen(this.buyButton.constructor.evtMouseClicked, this.onSellClicked);
+        this.transactText = Hierarchy.find(this.bg, (v) => v.tag === 'transact.text');
         this.selected;
         this.marked = [];
         this.filtered = [];
@@ -176,10 +195,24 @@ class UxVendor extends UxView {
     onKeyDown(evt) {
         if (!this.active) return;
         switch (evt.key) {
-            case 'i':
+            case 'v':
             case 'Escape':
                 this.destroy();
                 break;
+        }
+    }
+
+    onBuyClicked(evt) {
+        if (this.mode !== 'buy') {
+            this.mode = 'buy';
+            this.transactText.text = 'wares';
+        }
+    }
+
+    onSellClicked(evt) {
+        if (this.mode !== 'sell') {
+            this.mode = 'sell';
+            this.transactText.text = 'inventory';
         }
     }
 

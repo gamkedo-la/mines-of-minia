@@ -57,6 +57,7 @@ import { Spawn } from './procgen/spawn.js';
 import { GameOver } from './gameOver.js';
 import { BurningSystem } from './systems/burningSystem.js';
 import { Timer } from './base/timer.js';
+import { UxVendor } from './uxVendor.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -443,6 +444,11 @@ class PlayState extends GameState {
                 break;
             }
 
+            case 'v': {
+                this.doVendor();
+                break;
+            }
+
         }
     }
 
@@ -488,6 +494,27 @@ class PlayState extends GameState {
             this.loadHandler('interact');
         });
         this.view.adopt(this.inventory);
+    }
+
+    doVendor() {
+        // disable level/hud
+        this.lvl.active = false;
+        this.hudroot.active = false;
+        this.loadHandler('none');
+        if (this.vendor) this.vendor.destroy();
+        this.vendor = new UxVendor({
+            tag: 'vendor',
+            xform: new XForm({border: .1}),
+        });
+        // handle closing, re-enable
+        this.vendor.evt.listen(this.vendor.constructor.evtDestroyed, () => {
+            this.vendor = null;
+            this.lvl.active = true;
+            this.hudroot.active = true;
+            //console.log(`== doTalents restore`);
+            this.loadHandler('interact');
+        });
+        this.view.adopt(this.vendor);
     }
 
     doTalents() {
