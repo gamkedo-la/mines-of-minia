@@ -37,7 +37,7 @@ class MiniaTemplates {
             growthFreePct: .1,
             growthNoisePct: .25,
             clutter: 'bio.clutter',
-            machineTags: ['machine.gear', 'machine.crystal'],
+            machineTags: ['machine.cart', 'machine.tnt', 'machine.gear', 'machine.crystal'],
             machineRoomPct: .6,
         }
     });
@@ -66,7 +66,7 @@ class MiniaTemplates {
             growthFreePct: .1,
             growthNoisePct: .25,
             clutter: 'rock.clutter',
-            machineTags: ['machine.gear', 'machine.crystal'],
+            machineTags: ['machine.cart', 'machine.tnt', 'machine.gear', 'machine.crystal'],
             machineRoomPct: .6,
         }
     });
@@ -103,7 +103,7 @@ class MiniaTemplates {
             growthFreePct: .1,
             growthNoisePct: .25,
             clutter: 'rock.clutter',
-            machineTags: ['machine.gear'],
+            machineTags: ['machine.cart', 'machine.tnt', 'machine.gear', 'machine.crystal'],
         }
     });
 
@@ -139,7 +139,7 @@ class MiniaTemplates {
             growthFreePct: .1,
             growthNoisePct: .25,
             clutter: 'rock.clutter',
-            machineTags: ['machine.gear'],
+            machineTags: ['machine.cart', 'machine.tnt', 'machine.gear', 'machine.crystal'],
         }
     });
 

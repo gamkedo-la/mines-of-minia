@@ -2420,5 +2420,8 @@ let miniaAssets = [
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
         stateAccessor: (e) => e.animState,
     }),
+
+    Sprite.xspec({tag: 'machine.cart', img: new SheetRef({src: 'img/mineProps.png', width: 16, height: 32, x: 16*0, y: 0})}),
+    Sprite.xspec({tag: 'machine.tnt', img: new SheetRef({src: 'img/mineProps.png', width: 16, height: 32, x: 16*1, y: 0})}),
     
 ];
