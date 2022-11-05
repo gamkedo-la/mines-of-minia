@@ -2,6 +2,7 @@ import { Events } from "./base/event.js";
 import { Minia } from "./minia.js";
 import { Game } from "./base/game.js";
 
+// Practice commit - will remove
 /** ========================================================================
  * start the game when page is loaded
  */
