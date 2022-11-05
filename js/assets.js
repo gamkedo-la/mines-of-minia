@@ -1746,6 +1746,7 @@ let miniaAssets = [
 
     // -- menu
     Rect.xspec({tag: 'options.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
+    Rect.xspec({tag: 'credits.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
     Rect.xspec({tag: 'gameover.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
 
     // -- vfx

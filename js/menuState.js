@@ -16,6 +16,7 @@ import { UxPanel } from './base/uxPanel.js';
 import { UxText } from './base/uxText.js';
 import { XForm } from './base/xform.js';
 import { Options } from './options.js';
+import { Credits } from './credits.js';
 import { Prompt } from './prompt.js';
 import { Resurrect64 } from './resurrect64.js';
 import { Serialization } from './serialization.js';
@@ -75,6 +76,15 @@ class MenuState extends GameState {
 
     onCreditsClicked(evt) {
         console.log(`${this} onCreditsClicked: ${Fmt.ofmt(evt)}`);
+        // disable
+        this.panel.active = false;
+        let credits = new Credits({
+            xform: new XForm({border: .0125}),
+        });
+        this.view.adopt(credits);
+        credits.evt.listen(credits.constructor.evtDestroyed, () => {
+            this.panel.active = true;
+        });
     }
 
     async ready() {
