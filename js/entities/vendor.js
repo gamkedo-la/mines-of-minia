@@ -16,4 +16,10 @@ class Vendor extends Character {
         }, spec);
     }
 
+    cpost(spec) {
+        super.cpost(spec);
+        this.inventory = spec.inventory || new InventoryData();
+        this.inventory.actor = this;
+    }
+
 }

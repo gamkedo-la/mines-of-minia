@@ -250,6 +250,9 @@ class PlayState extends GameState {
     }
         
     onLevelLoaded(evt) {
+        this.vendor = Hierarchy.find(this.view, (v) => v.tag === 'bigsby');
+        console.log(`-- vendor: ${this.vendor}`);
+
         // update game debug
         console.log(`lvl: ${this.lvl.index} seed: ${Config.template.seed} gamedbg: ${this.gamedbg}`);
         if (this.gamedbg) {
@@ -501,20 +504,22 @@ class PlayState extends GameState {
         this.lvl.active = false;
         this.hudroot.active = false;
         this.loadHandler('none');
-        if (this.vendor) this.vendor.destroy();
-        this.vendor = new UxVendor({
-            tag: 'vendor',
+        if (this.vendorui) this.vendorui.destroy();
+        this.vendorui = new UxVendor({
+            tag: 'vendorui',
             xform: new XForm({border: .1}),
+            player: this.player,
+            vendor: this.vendor,
         });
         // handle closing, re-enable
-        this.vendor.evt.listen(this.vendor.constructor.evtDestroyed, () => {
-            this.vendor = null;
+        this.vendorui.evt.listen(this.vendorui.constructor.evtDestroyed, () => {
+            this.vendorui = null;
             this.lvl.active = true;
             this.hudroot.active = true;
             //console.log(`== doTalents restore`);
             this.loadHandler('interact');
         });
-        this.view.adopt(this.vendor);
+        this.view.adopt(this.vendorui);
     }
 
     doTalents() {

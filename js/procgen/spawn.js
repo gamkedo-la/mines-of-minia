@@ -81,6 +81,8 @@ class Spawn {
         if (template.boss === 'bio') {
             this.spawnRocks(template, pstate);
         }
+        // -- spawn vendor
+        this.spawnVendor(template, pstate);
         // -- test objects
         this.spawnTest(template, pstate);
         yield;
@@ -1489,6 +1491,33 @@ class Spawn {
 
     }
 
+    static spawnVendor(template, pstate) {
+        let plvl = pstate.plvl;
+        let prooms = pstate.prooms || [];
+        // FIXME: start index should be on level somewhere, not starting room
+        let sroom = prooms.find((v) => v.cidx === plvl.startIdx);
+        let idx = this.chooseSpawnIdx(plvl, sroom.idxs)
+        // iterate items to spawn
+        let x_vendor = Vendor.xspec({ 
+            idx: idx,
+            z: template.fgZed,
+            name: 'bigsby', 
+            tag: 'bigsby',
+        });
+        plvl.entities.push(x_vendor);
+
+        x_vendor.x_inventory = { 
+            cls: 'InventoryData',
+            x_slots: [
+                Cog.xspec({ kind: 'identify' }),
+            ],
+        };
+
+        //player.inventory.equip('reactor', reactor);
+        //player.inventory.equip('weapon', weapon);
+
+    }
+
     static spawnTest(template, pstate) {
         let plvl = pstate.plvl;
         let prooms = pstate.prooms || [];
@@ -1521,9 +1550,8 @@ class Spawn {
 
             //Weapon.xspec({ name: 'bonk', tier: 1, kind: 'bonk', }),
             //Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
-            //Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
-
-            Vendor.xspec({ name: 'bigsby'}),
+            Cog.xspec({ kind: 'purge', }),
+            Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
 
 
             //this.genRanged(template),
