@@ -681,9 +681,7 @@ class Spawn {
         let prooms = pstate.prooms || [];
         let plvl = pstate.plvl;
         let x_spawn = template.spawn || {};
-
         let keys = [];
-
         // -- determine locked room quota
         let quota = Prng.rangeInt(x_spawn.lockRoomMin, x_spawn.lockRoomMax);
         console.log(`-- room lock quota: ${quota}`);
@@ -701,7 +699,6 @@ class Spawn {
                 keys.push(key);
             }
         }
-
         // lock chests
         // -- iterate through chests... 
         for (const chest of plvl.entities.filter((v) => v.cls === 'Chest')) {
@@ -714,7 +711,6 @@ class Spawn {
                 keys.push(key);
             }
         }
-
         // distribute keys along the critical path ... this ensures keys to enter rooms are accessible
         // -- find critical rooms
         let crooms = prooms.filter((v) => v.critical);
@@ -735,7 +731,6 @@ class Spawn {
                 }
             }
         }
-
     }
 
     static genWeapon(template, overrides={}) {
@@ -822,12 +817,16 @@ class Spawn {
             identifiablePct += .2;
         }
         let identifiable = Prng.flip(identifiablePct);
+        // -- cost
+        let cost = (tier === 3) ? 400 : (tier === 2) ? 200 : 100;
+        cost += lvl*25;
+        cost += charms.reduce((pv, cv) => (!cv.curse) ? pv + 1 : pv, 0) * 100;
         // -- name
         let name = Prng.choose(Names[kind]);
-
         // build spec
         let x_wpn = Weapon.xspec({
             name: name,
+            cost: cost,
             kind: kind,
             lvl: lvl,
             tier: tier,
@@ -839,7 +838,6 @@ class Spawn {
             charms: charms,
             identifiable: identifiable,
         });
-
         return x_wpn;
     }
 
@@ -927,11 +925,16 @@ class Spawn {
             identifiablePct += .2;
         }
         let identifiable = Prng.flip(identifiablePct);
+        // -- cost
+        let cost = (tier === 3) ? 600 : (tier === 2) ? 300 : 150;
+        cost += lvl*25;
+        cost += charms.reduce((pv, cv) => (!cv.curse) ? pv + 1 : pv, 0) * 100;
         // -- name
         let name = Prng.choose(Names[kind]);
         // build spec
         let x_wpn = RangedWeapon.xspec({
             name: name,
+            cost: cost,
             kind: kind,
             lvl: lvl,
             tier: tier,
@@ -1035,8 +1038,13 @@ class Spawn {
             identifiablePct += .2;
         }
         let identifiable = Prng.flip(identifiablePct);
+        // -- cost
+        let cost = (tier === 3) ? 300 : (tier === 2) ? 150 : 75;
+        cost += lvl*25;
+        cost += charms.reduce((pv, cv) => (!cv.curse) ? pv + 1 : pv, 0) * 100;
         return Reactor.xspec({
             name: name,
+            cost: cost,
             tier: tier,
             lvl: lvl,
             fuelPerAP: fuelPerAP,
@@ -1133,8 +1141,13 @@ class Spawn {
             identifiablePct += .2;
         }
         let identifiable = Prng.flip(identifiablePct);
+        // -- cost
+        let cost = (tier === 3) ? 300 : (tier === 2) ? 150 : 75;
+        cost += lvl*25;
+        cost += charms.reduce((pv, cv) => (!cv.curse) ? pv + 1 : pv, 0) * 100;
         return Shielding.xspec({
             name: name,
+            cost: cost,
             tier: tier,
             lvl: lvl,
             brawn: brawn,
@@ -1201,8 +1214,12 @@ class Spawn {
             identifiablePct += .2;
         }
         let identifiable = Prng.flip(identifiablePct);
+        // -- cost
+        let cost = (tier === 3) ? 300 : (tier === 2) ? 150 : 75;
+        cost += charms.reduce((pv, cv) => (!cv.curse) ? pv + 1 : pv, 0) * 100;
         return Gadget.xspec({
             name: name,
+            cost: cost,
             tier: tier,
             identifiable: identifiable,
             charms: charms,
@@ -1550,9 +1567,9 @@ class Spawn {
             //Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
             Cog.xspec({ kind: 'purge', }),
             Gem.xspec({ kind: 'fire', }),
-            Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
+            //Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
             Token.xspec({ name: 'token', x_sketch: Assets.get('token'), count: 50 }),
-
+            this.genWeapon(template),
 
             //this.genRanged(template),
 
