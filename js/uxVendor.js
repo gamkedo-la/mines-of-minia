@@ -4,8 +4,10 @@ export { UxVendor };
 import { DropAction } from './actions/drop.js';
 import { UseAction } from './actions/use.js';
 import { Assets } from './base/assets.js';
+import { Config } from './base/config.js';
 import { Events } from './base/event.js';
 import { Fmt } from './base/fmt.js';
+import { Generator } from './base/generator.js';
 import { Hierarchy } from './base/hierarchy.js';
 import { Keys } from './base/keys.js';
 import { Rect } from './base/rect.js';
@@ -19,6 +21,7 @@ import { XForm } from './base/xform.js';
 import { Key } from './entities/key.js';
 import { Prompt } from './prompt.js';
 import { Resurrect64 } from './resurrect64.js';
+import { OverlaySystem } from './systems/overlaySystem.js';
 import { TurnSystem } from './systems/turnSystem.js';
 
 const textColor = "yellow";
@@ -32,6 +35,28 @@ function button(text, spec) {
         text: new Text({text: text, color: Resurrect64.colors[0]}),
         hltext: new Text({text: text, color: Resurrect64.colors[10]}),
     }), spec));
+}
+
+function counter(spec, count) {
+    let tag = spec.tag || 'counter';
+    let panel = new UxPanel( Object.assign( {
+        children: [
+            new UxPanel({
+                tag: `${tag}.cpanel`,
+                xform: new XForm({left: .6, top: .75, bottom: -.25}),
+                sketch: Sketch.zero,
+                children: [
+                    new UxText({
+                        tag: `${tag}.ctext`,
+                        text: new Text({text: '0', color: textColor}),
+                        xform: new XForm({bottom: -.15}),
+                    }),
+                ],
+            }),
+        ],
+    }, spec));
+    panel.xform.lockRatio = true;
+    return panel;
 }
 
 class UxVendor extends UxView {
@@ -73,6 +98,7 @@ class UxVendor extends UxView {
         this.mode = 'buy';
         this.player = spec.player;
         this.vendor = spec.vendor;
+        this.failedSfx = spec.failedSfx || Assets.get('action.failed', true);
 
         this.bg = new UxPanel({
             sketch: Assets.get('oframe.red', true),
@@ -91,7 +117,7 @@ class UxVendor extends UxView {
                             sketch: Assets.get('vendor_portrait', true, { lockRatio: true }),
                             xform: new XForm({top: .1, bottom: .1, left: -.2, right: -.2}),
                         }),
-                        this.counter({ tag: 'tokens', xform: new XForm({offset: 10, left: 0, right: .75, top: .8, bottom: .05}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
+                        counter({ tag: 'tokens', xform: new XForm({offset: 10, left: 0, right: .75, top: .8, bottom: .05}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
                     ],
                 }),
                 new UxPanel({
@@ -298,6 +324,9 @@ class UxVendor extends UxView {
             //let slot = Hierarchy.find(this.bg, tag);
             this.updateSlot(tag, inventory.slots[i]);
         }
+        // display player tokens
+        let ctext = Hierarchy.find(this.bg, (v) => v.tag === 'tokens.ctext');
+        ctext.text = `${this.player.inventory.tokens}`;
     }
 
     getItemForSlot(slot) {
@@ -387,28 +416,6 @@ class UxVendor extends UxView {
         return button;
     }
 
-    counter(spec, count) {
-        let tag = spec.tag || 'counter';
-        let panel = new UxPanel( Object.assign( {
-            children: [
-                new UxPanel({
-                    tag: `${tag}.cpanel`,
-                    xform: new XForm({left: .6, top: .75, bottom: -.25}),
-                    sketch: Sketch.zero,
-                    children: [
-                        new UxText({
-                            tag: `${tag}.ctext`,
-                            text: new Text({text: '0', color: textColor}),
-                            xform: new XForm({bottom: -.15}),
-                        }),
-                    ],
-                }),
-            ],
-        }, spec));
-        panel.xform.lockRatio = true;
-        return panel;
-    }
-
     markCompatibleSlots(item) {
         if (item.constructor.slot === 'belt') {
             for (let i=0; i<this.data.beltSlots; i++) {
@@ -489,24 +496,69 @@ class UxVendor extends UxView {
     }
 
     reset() {
-        /*
-        for (const button of Array.from(this.marked)) {
-            button.unpressed = this.constructor.dfltUnpressed;
-        }
-        for (const slot of Array.from(this.filtered)) {
-            this.toggleSlot(slot, true);
-        }
-        this.filtered = [];
-        */
         if (this.selected) this.unselect(this.selected);
         if (this.itemPopup) this.itemPopup.destroy();
     }
 
-
     handleSell(item, all=false) {
+        let slot = this.player.inventory.getSlot(item);
+        this.player.inventory.removeItem(item, true);
+        let cost = item.cost;
+        if (!all && item.count > 1) {
+            // split item from inventory
+            let x_leftover = item.as_kv();
+            x_leftover.count -= 1;
+            delete x_leftover.gid;
+            x_leftover.xform = new XForm({stretch: false});
+            let leftover = Generator.generate(x_leftover);
+            let h = leftover.xform.height;
+            leftover.xform.offx = -leftover.xform.width*.5;
+            if (h > Config.tileSize) {
+                leftover.xform.offy = Config.tileSize*.5 - leftover.xform.height;
+            } else {
+                leftover.xform.offy = -leftover.xform.height*.5;
+            }
+            this.player.inventory.add(leftover, slot);
+        }
+        this.vendor.inventory.add(item);
+        this.player.inventory.tokens += cost;
+        this.updateSlots();
     }
 
     handleBuy(item) {
+        console.log(`handleBuy`);
+        let cost = Math.round(item.cost * 2.5);
+        if (this.player.inventory.tokens < cost) {
+            Events.trigger(OverlaySystem.evtNotify, { actor: this.player, which: 'warn', msg: `insufficient funds` });
+            if (this.failedSfx) this.failedSfx.play();
+            return;
+        }
+        let slot = this.vendor.inventory.getSlot(item);
+        this.vendor.inventory.removeItem(item, true);
+        if (item.count > 1) {
+            // split item from inventory
+            let x_leftover = item.as_kv();
+            x_leftover.count -= 1;
+            delete x_leftover.gid;
+            x_leftover.xform = new XForm({stretch: false});
+            let leftover = Generator.generate(x_leftover);
+            let h = leftover.xform.height;
+            leftover.xform.offx = -leftover.xform.width*.5;
+            if (h > Config.tileSize) {
+                leftover.xform.offy = Config.tileSize*.5 - leftover.xform.height;
+            } else {
+                leftover.xform.offy = -leftover.xform.height*.5;
+            }
+            this.vendor.inventory.add(leftover, slot);
+        }
+        let ok = this.player.inventory.add(item);
+        if (ok) {
+            this.player.inventory.tokens -= cost;
+        } else {
+            Events.trigger(OverlaySystem.evtNotify, { actor: this.player, which: 'warn', msg: `insufficient space` });
+            this.vendor.inventory.add(item);
+        }
+        this.updateSlots();
     }
 
 }
@@ -579,7 +631,7 @@ class VendorPopup extends UxView {
 
                 // buttons
                 new UxPanel({
-                    xform: new XForm({top: .8}),
+                    xform: new XForm({top: .7, bottom: .1}),
                     sketch: Sketch.zero,
                     children: [
                         new UxButton({
@@ -604,6 +656,14 @@ class VendorPopup extends UxView {
                         }),
                     ]
                 }),
+                new UxPanel({
+                    xform: new XForm({top: .85}),
+                    sketch: Sketch.zero,
+                    children: [
+                        counter({ tag: 'tokens', xform: new XForm({left: 0, right: .66, bottom: .25}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
+                        counter({ tag: 'tokens.all', xform: new XForm({left: .33, right: .33, bottom: .25}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
+                    ],
+                }),
             ]
         });
         this.adopt(this.panel);
@@ -618,15 +678,19 @@ class VendorPopup extends UxView {
         this.sellButton = Hierarchy.find(this, (v) => v.tag === 'item.sell');
         this.sellallButton = Hierarchy.find(this, (v) => v.tag === 'item.sellall');
         this.cancelButton = Hierarchy.find(this, (v) => v.tag === 'item.cancel');
+        this.tokens = Hierarchy.find(this, (v) => v.tag === 'tokens');
+        this.tokensall = Hierarchy.find(this, (v) => v.tag === 'tokens.all');
         // set button state
         // -- want target state... hide use/drop/throw
         if (this.mode === 'buy') {
             this.sellButton.active = this.sellButton.visible = false;
             this.sellallButton.active = this.sellallButton.visible = false;
+            this.tokensall.active = this.tokensall.visible = false;
         } else {
             this.buyButton.active = this.buyButton.visible = false;
             if (!this.item || !this.item || this.item.count < 2) {
                 this.sellallButton.active = this.sellallButton.visible = false;
+                this.tokensall.active = this.tokensall.visible = false;
             }
         }
 
@@ -643,7 +707,7 @@ class VendorPopup extends UxView {
         this.cancelButton.evt.listen(this.cancelButton.constructor.evtMouseClicked, this.onCancelClicked);
 
         this.item = spec.item;
-        if (spec.item && !this.wantTarget) this.setItem(spec.item);
+        if (spec.item) this.setItem(spec.item);
 
     }
 
@@ -692,6 +756,15 @@ class VendorPopup extends UxView {
         this.kind.text = `-- ${item.constructor.slot} --`;
         this.description.text = item.description;
         this.item = item;
+        // token counts/costs
+        let count = item.count || 1;
+        let ctext = Hierarchy.find(this, (v) => v.tag === 'tokens.ctext');
+        let cost = (this.mode === 'buy') ? Math.round(item.cost * 2.5) : item.cost;
+        console.log(`cost: ${cost}`);
+        ctext.text = `${cost}`;
+        ctext = Hierarchy.find(this, (v) => v.tag === 'tokens.all');
+        ctext.text = `${cost*count}`;
+
     }
 
 }

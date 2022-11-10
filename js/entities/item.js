@@ -16,6 +16,7 @@ class Item extends MiniaModel {
     static usable = false;
     static dfltDescription = 'an unremarkable item';
     static dfltState = 'free';
+    static dfltCost = 10;
     static evtEquipped = 'item.equipped';
     static evtUnequipped = 'item.unequipped';
     static evtUse = 'item.use';
@@ -47,6 +48,7 @@ class Item extends MiniaModel {
         // -- loot
         this.loot = spec.loot || [];
         this.state = spec.state || this.constructor.dfltState;
+        this.cost = spec.cost || this.constructor.dfltCost;
         // -- identifiable/purgeable
         this.identifiable = spec.hasOwnProperty('identifiable') ? spec.identifiable : false;
         this.purgeable = this.identifiable;

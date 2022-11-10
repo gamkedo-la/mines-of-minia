@@ -19,6 +19,7 @@ import { MouseSystem } from './base/systems/mouseSystem.js';
 import { Vect } from './base/vect.js';
 import { Enemy } from './entities/enemy.js';
 import { Stairs } from './entities/stairs.js';
+import { Vendor } from './entities/vendor.js';
 import { LevelGraph } from './lvlGraph.js';
 import { TurnSystem } from './systems/turnSystem.js';
 
@@ -31,6 +32,7 @@ class InteractHandler extends Entity {
         this.lvl = spec.lvl;
         this.player = spec.player;
         this.overlay = spec.overlay;
+        this.doVendor = spec.doVendor;
         this.doInventory = spec.doInventory;
         this.doTalents = spec.doTalents;
         this.doOptions = spec.doOptions
@@ -196,7 +198,9 @@ class InteractHandler extends Entity {
         // what's at index?
         let others = Array.from(this.lvl.findidx(idx, (v) => v.idx === idx));
         let tookAction = true;
-        if (others.some((v) => v.active && v instanceof Enemy && v.state !== 'dying')) {
+        if (others.some((v) => v.active && v instanceof Vendor)) {
+            this.doVendor();
+        } else if (others.some((v) => v.active && v instanceof Enemy && v.state !== 'dying')) {
             let target = others.find((v) => v instanceof Enemy);
             TurnSystem.postLeaderAction( new MeleeAttackAction({
                 target: target,

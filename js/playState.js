@@ -341,6 +341,7 @@ class PlayState extends GameState {
                     lvl: this.lvl,
                     player: this.player,
                     overlay: this.overlay,
+                    doVendor: this.doVendor.bind(this),
                     doInventory: this.doInventory.bind(this),
                     doTalents: this.doTalents.bind(this),
                     doOptions: this.doOptions.bind(this),
@@ -444,11 +445,6 @@ class PlayState extends GameState {
 
             case '9': {
                 Stats.enabled = !Stats.enabled;
-                break;
-            }
-
-            case 'v': {
-                this.doVendor();
                 break;
             }
 

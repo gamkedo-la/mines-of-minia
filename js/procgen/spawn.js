@@ -1510,11 +1510,9 @@ class Spawn {
             cls: 'InventoryData',
             x_slots: [
                 Cog.xspec({ kind: 'identify' }),
+                Cog.xspec({ kind: 'lvlup' }),
             ],
         };
-
-        //player.inventory.equip('reactor', reactor);
-        //player.inventory.equip('weapon', weapon);
 
     }
 
@@ -1552,6 +1550,7 @@ class Spawn {
             //Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
             Cog.xspec({ kind: 'purge', }),
             Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
+            Token.xspec({ name: 'token', x_sketch: Assets.get('token'), count: 50 }),
 
 
             //this.genRanged(template),
