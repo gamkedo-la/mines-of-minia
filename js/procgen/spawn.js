@@ -1549,6 +1549,7 @@ class Spawn {
             //Weapon.xspec({ name: 'bonk', tier: 1, kind: 'bonk', }),
             //Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
             Cog.xspec({ kind: 'purge', }),
+            Gem.xspec({ kind: 'fire', }),
             Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
             Token.xspec({ name: 'token', x_sketch: Assets.get('token'), count: 50 }),
 

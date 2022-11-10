@@ -46,6 +46,13 @@ class Gem extends Item {
         'power': 'a gem that restores a small amount of the player\'s power',
         'stealth': 'a gem that grants target stealth until next attack',
     }
+    static costMap = {
+        'fire': 150,
+        'health': 50,
+        'daze': 100,
+        'power': 50,
+        'stealth': 100,
+    }
 
     // -- maps kind->secretKind
     static kindSecretMap = {}
@@ -113,6 +120,13 @@ class Gem extends Item {
     static discover(kind) {
         this.discoveredKinds.add(kind);
         Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `discovered ${kind} gem`});
+    }
+
+    static xspec(spec={}) {
+        let kind = spec.kind;
+        return Object.assign( {}, this.spec, {
+            cost: this.costMap[kind] || this.dfltCost,
+        }, spec);
     }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------

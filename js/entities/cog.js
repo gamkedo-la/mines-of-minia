@@ -48,6 +48,15 @@ class Cog extends Item {
         'purge': 'a cog that allows the purges all curses from a piece of equipment',
         'lvlup': 'a cog that raises the level of an equipment item',
     };
+    static costMap = {
+        'identify': 50,
+        'spry': 200,
+        'savvy': 200,
+        'brawn': 200,
+        'invulnerability': 100,
+        'purge': 50,
+        'lvlup': 150,
+    };
 
     // -- maps kind->secretKind
     static kindSecretMap = {}
@@ -116,6 +125,13 @@ class Cog extends Item {
     static discover(kind) {
         this.discoveredKinds.add(kind);
         Events.trigger(OverlaySystem.evtNotify, {which: 'info', msg: `discovered ${kind} cog`});
+    }
+
+    static xspec(spec={}) {
+        let kind = spec.kind;
+        return Object.assign( {}, this.spec, {
+            cost: this.costMap[kind] || this.dfltCost,
+        }, spec);
     }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
