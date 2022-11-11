@@ -161,39 +161,6 @@ let miniaAssets = [
         borderColor: 'red',
     }),
 
-    Shape.xspec({
-        tag: 'gadget.1',
-        fill: true,
-        verts: [ 
-            {x:6, y:6}, {x:10, y:6}, {x:10, y:10}, {x:6, y:10},
-        ],
-        border: 1,
-        color: 'rgba(155,171,178,1)',
-        borderColor: 'red',
-    }),
-
-    Shape.xspec({
-        tag: 'gadget.2',
-        fill: true,
-        verts: [ 
-            {x:6, y:6}, {x:10, y:6}, {x:10, y:10}, {x:6, y:10},
-        ],
-        border: 1,
-        color: 'rgba(247,150,23,1)',
-        borderColor: 'red',
-    }),
-
-    Shape.xspec({
-        tag: 'gadget.3',
-        fill: true,
-        verts: [ 
-            {x:6, y:6}, {x:10, y:6}, {x:10, y:10}, {x:6, y:10},
-        ],
-        border: 1,
-        color: 'rgba(145,219,105,1)',
-        borderColor: 'red',
-    }),
-
     //Rect.xspec({tag: 'fuelcell', width: 8, height: 12, color: 'blue', borderColor: 'red', border: 1}),
     Rect.xspec({tag: 'reticle.aim.ok', width: 12, height: 12, borderColor: 'green', border: 1, fill: false}),
     Rect.xspec({tag: 'reticle.aim.nok', width: 12, height: 12, borderColor: 'red', border: 1, fill: false}),
@@ -2485,5 +2452,65 @@ let miniaAssets = [
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
         stateAccessor: (e) => e.animState,
     }),
-     
+
+    Animation.xspec({tag: 'gadget.1.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 16, x: 16*3, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 16, x: 16*6, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'gadget.1.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*6, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'gadget.1',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'gadget.1.carry'}),
+            'free': new AssetRef({tag: 'gadget.1.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'gadget.2.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 16, x: 16*4, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 16, x: 16*7, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'gadget.2.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*1, y: 16})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*7, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'gadget.2',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'gadget.2.carry'}),
+            'free': new AssetRef({tag: 'gadget.2.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'gadget.3.carry', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 16, x: 16*5, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 16, x: 16*8, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'gadget.3.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*2, y: 16})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*8, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gizmo1.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'gadget.3',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'gadget.3.carry'}),
+            'free': new AssetRef({tag: 'gadget.3.free'}),
+        },
+        state: 'free',
+    }),
+
 ];
