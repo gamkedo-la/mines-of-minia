@@ -197,7 +197,7 @@ class InventoryData {
     }
 
     equip(slot, item) {
-        if (item.constructor.slot !== slot) return false;
+        if (!slot.startsWith(item.constructor.slot)) return false;
         this.removeItem(item);
         this[slot] = item;
         this.evt.trigger(this.constructor.evtEquipChanged, {actor: this.actor, slot: slot, target: item}, true);
@@ -500,7 +500,6 @@ class Inventory extends UxView {
     }
 
     onSlotClick(evt) {
-        //console.log(`onSlotClick: ${Fmt.ofmt(evt)} selected: ${this.selected}`);
         let item = this.getItemForSlot(evt.actor.tag);
         if (this.wantUseTarget && this.itemPopup) {
             this.itemPopup.setTarget(item);
@@ -525,7 +524,7 @@ class Inventory extends UxView {
                     }
                 // -- try to equip
                 } else {
-                    if (selectedItem && selectedItem.constructor.slot === evt.actor.tag) {
+                    if (selectedItem && evt.actor.tag.startsWith(selectedItem.constructor.slot)) {
                         let targetIdx = parseInt(this.selected.tag.slice('3'));
                         this.data.equip(evt.actor.tag, selectedItem);
                         if (item) this.data.add(item, targetIdx);
@@ -756,6 +755,10 @@ class Inventory extends UxView {
             let button = Hierarchy.find(this, (v) => v.tag === `reactor`);
             this.markButton(button);
         } else if (item.constructor.slot === 'gadget') {
+            for (let i=0; i<this.data.gadgetSlots; i++) {
+                let button = Hierarchy.find(this, (v) => v.tag === `gadget${i}`);
+                this.markButton(button);
+            }
         }
     }
 

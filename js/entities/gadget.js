@@ -1,6 +1,7 @@
 export { Gadget };
 
 import { Assets } from '../base/assets.js';
+import { Fmt } from '../base/fmt.js';
 import { Charm } from '../charms/charm.js';
 import { Item } from './item.js';
 
