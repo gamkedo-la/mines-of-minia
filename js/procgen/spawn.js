@@ -1265,6 +1265,15 @@ class Spawn {
         });
     }
 
+    static genFuel(template, pstate) {
+        let x_spawn = Fuelcell.xspec({
+            name: 'fuelcell',
+            z: template.fgZed,
+            x_sketch: Assets.get('fuelcell'),
+        });
+        return x_spawn;
+    }
+
     static genLoot(template, pstate, options) {
         // -- pick loot option
         let option = Prng.chooseWeightedOption(options);
@@ -1305,6 +1314,10 @@ class Spawn {
             }
             case 'cog': {
                 loot.push(this.genCog(template, pstate));
+                break;
+            }
+            case 'fuel': {
+                loot.push(this.genFuel(template, pstate));
                 break;
             }
         }
@@ -1511,8 +1524,12 @@ class Spawn {
     static spawnVendor(template, pstate) {
         let plvl = pstate.plvl;
         let prooms = pstate.prooms || [];
-        // FIXME: start index should be on level somewhere, not starting room
-        let sroom = prooms.find((v) => v.cidx === plvl.startIdx);
+        let x_spawn = template.spawn || {};
+        let flip = Prng.flip(x_spawn.vendorSpawnPct);
+        if (!flip) return;
+        // pick starting room (off of critical path)
+        let choices = prooms.filter((v) => !v.critical);
+        let sroom = Prng.choose(choices);
         let idx = this.chooseSpawnIdx(plvl, sroom.idxs)
         // iterate items to spawn
         let x_vendor = Vendor.xspec({ 
@@ -1522,15 +1539,17 @@ class Spawn {
             tag: 'bigsby',
         });
         plvl.entities.push(x_vendor);
-
+        // fill vendor loots
+        let loots = [];
+        let quota = Prng.rangeInt(x_spawn.vendorLootMin, x_spawn.vendorLootMax);
+        for (let i=0; i<quota; i++) {
+            let loot = this.genLoot(template, pstate, x_spawn.vendorLootOptions);
+            loots.push( ...loot );
+        }
         x_vendor.x_inventory = { 
             cls: 'InventoryData',
-            x_slots: [
-                Cog.xspec({ kind: 'identify' }),
-                Cog.xspec({ kind: 'lvlup' }),
-            ],
+            x_slots: loots,
         };
-
     }
 
     static spawnTest(template, pstate) {
@@ -1565,11 +1584,11 @@ class Spawn {
 
             //Weapon.xspec({ name: 'bonk', tier: 1, kind: 'bonk', }),
             //Weapon.xspec({ name: 'bonk', tier: 2, kind: 'bonk', }),
-            Cog.xspec({ kind: 'purge', }),
-            Gem.xspec({ kind: 'fire', }),
+            //Cog.xspec({ kind: 'purge', }),
+            //Gem.xspec({ kind: 'fire', }),
             //Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
-            Token.xspec({ name: 'token', x_sketch: Assets.get('token'), count: 50 }),
-            this.genWeapon(template),
+            //Token.xspec({ name: 'token', x_sketch: Assets.get('token'), count: 50 }),
+            //this.genWeapon(template),
 
             //this.genRanged(template),
 

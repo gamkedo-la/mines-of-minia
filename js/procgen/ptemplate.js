@@ -123,6 +123,21 @@ class ProcTemplate {
             { weight: .1, kind: 'gadget'},
         ]);
 
+        // -- vendor
+        this.spawn.vendorSpawnPct = Util.getpath(spec, 'spawn.vendorSpawnPct', .4);
+        this.spawn.vendorLootMin = Util.getpath(spec, 'spawn.vendorLootMin', 10);
+        this.spawn.vendorLootMax = Util.getpath(spec, 'spawn.vendorLootMax', 20);
+        this.spawn.vendorLootOptions = Util.getpath(spec, 'spawn.vendorLootOptions', [
+            { weight: .3, kind: 'fuel'},
+            { weight: .5, kind: 'cog'},
+            { weight: .5, kind: 'gem'},
+            { weight: .1, kind: 'weapon'},
+            { weight: .08, kind: 'ranged'},
+            { weight: .1, kind: 'reactor'},
+            { weight: .1, kind: 'shielding'},
+            { weight: .1, kind: 'gadget'},
+        ]);
+
         // -- secrets
         this.spawn.secretRoomMin = Util.getpath(spec, 'spawn.secretRoomMin', 1);
         this.spawn.secretRoomMax = Util.getpath(spec, 'spawn.secretRoomMax', 4);
