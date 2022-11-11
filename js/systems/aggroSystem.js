@@ -54,14 +54,14 @@ class AggroSystem extends System {
     }
 
     onAggroActorUpdate(evt) {
-        if (evt.update && evt.update.hasOwnProperty('idx') || evt.update.hasOwnProperty('active')) {
+        if (evt.update && (evt.update.hasOwnProperty('idx') || evt.update.hasOwnProperty('active'))) {
             this.active = true;
         }
     }
 
     onAggroTargetUpdate(evt) {
         // check if actor index has changed
-        if (evt.update && evt.update.hasOwnProperty('idx') || evt.update.hasOwnProperty('hidden')) {
+        if (evt.update && (evt.update.hasOwnProperty('idx') || evt.update.hasOwnProperty('hidden'))) {
             //console.log(`onAggroTargetUpdate: ${Fmt.ofmt(evt)}`);
             // aggro actor has changed index, iterate
             this.active = true;

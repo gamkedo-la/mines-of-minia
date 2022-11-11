@@ -2,6 +2,7 @@ export { Player };
 
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
+import { Fmt } from '../base/fmt.js';
 import { InventoryData } from '../inventory.js';
 import { Character } from './character.js';
 import { Weapon } from './weapon.js';
@@ -86,6 +87,8 @@ class Player extends Character {
         this.inventory = spec.inventory || new InventoryData();
         this.inventory.actor = this;
         this.blockRating = spec.blockRating || this.dfltBlockRating;
+        this.onEquipChanged = this.onEquipChanged.bind(this);
+        this.inventory.evt.listen(this.inventory.constructor.evtEquipChanged, this.onEquipChanged);
         // -- scan distance for detecting secrets/traps
         this.scanRange = spec.scanRange || this.constructor.dfltScanRange;
         // -- sfx
@@ -97,6 +100,7 @@ class Player extends Character {
         this.xform.stretchx = false;
         this.xform.stretchy = false;
         //this.dbg = { xform: true };
+
     }
 
     // SERIALIZATION -------------------------------------------------------
@@ -131,6 +135,22 @@ class Player extends Character {
     }
     get damageReduction() {
         return (this.inventory && this.inventory.shielding) ? this.inventory.shielding.damageReduction : 0;
+    }
+
+    onEquipChanged(evt) {
+        console.log(`${this} onEquipChanged: ${Fmt.ofmt(evt)}`);
+        if (evt.slot !== 'shielding') return;
+        // lookup player sketch for shielding tier
+        let tag;
+        if (!evt.target) {
+            tag = 'player';
+        } else {
+            tag = `player.s${evt.target.tier}`;
+        }
+        if (this.sketch.tag !== tag) {
+            let sketch = Assets.get(tag, true);
+            this.sketch = sketch;
+        }
     }
 
 

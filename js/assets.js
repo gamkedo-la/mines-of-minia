@@ -50,118 +50,10 @@ let miniaAssets = [
         color: 'white',
         borderColor: 'red',
     }),
-    /*
-    Shape.xspec({
-        tag: 'stairs_up',
-        fill: true,
-        verts: [ 
-            {x:8, y:2}, {x:14, y:8}, {x:14, y:14}, {x:2, y:14}, {x:2, y:8},
-        ],
-        border: 1,
-        color: 'gray',
-        borderColor: 'red',
-    }),
-    Shape.xspec({
-        tag: 'stairs_down',
-        fill: true,
-        verts: [ 
-            {x:8, y:14}, {x:2, y:8}, {x:2, y:2}, {x:14, y:2}, {x:14, y:8},
-        ],
-        border: 1,
-        color: 'gray',
-        borderColor: 'red',
-    }),
-    */
 
     Sprite.xspec({tag: 'stairs_down', img: new SheetRef({src: 'img/stairs.png', width: 16, height: 16, x: 2, y: 12})}),
     Sprite.xspec({tag: 'stairs_up', img: new SheetRef({src: 'img/stairs.png', width: 17, height: 19, x: 20, y: 8})}),
 
-    /*
-    Shape.xspec({
-        tag: 'key.gold',
-        fill: true,
-        verts: [ 
-            {x:2, y:8}, {x:5, y:5}, {x:7, y:7}, {x:14, y:7},
-            {x:14, y:11}, {x:12, y: 11}, {x:12, y: 9}, {x:7, y:9}, {x:5, y:11}
-        ],
-        border: 1,
-        color: 'gold',
-        borderColor: 'red',
-    }),
-    */
-
-    /*
-    Shape.xspec({
-        tag: 'bonk.1',
-        fill: true,
-        verts: [ 
-            {x:2, y:6}, {x:10, y:6}, {x:10, y:4}, {x:14, y:4},
-            {x:14, y: 12}, {x:10, y: 12}, {x: 10, y: 10}, { x: 2, y: 10},
-        ],
-        border: 1,
-        color: 'rgba(155,171,178,1)',
-        borderColor: 'red',
-    }),
-
-    Shape.xspec({
-        tag: 'bonk.2',
-        fill: true,
-        verts: [ 
-            {x:2, y:6}, {x:10, y:6}, {x:10, y:4}, {x:14, y:4},
-            {x:14, y: 12}, {x:10, y: 12}, {x: 10, y: 10}, { x: 2, y: 10},
-        ],
-        border: 1,
-        color: 'rgba(247,150,23,1)',
-        borderColor: 'red',
-    }),
-
-    Shape.xspec({
-        tag: 'bonk.3',
-        fill: true,
-        verts: [ 
-            {x:2, y:6}, {x:10, y:6}, {x:10, y:4}, {x:14, y:4},
-            {x:14, y: 12}, {x:10, y: 12}, {x: 10, y: 10}, { x: 2, y: 10},
-        ],
-        border: 1,
-        color: 'rgba(145,219,105,1)',
-        borderColor: 'red',
-    }),
-    */
-
-    Shape.xspec({
-        tag: 'shielding.1',
-        fill: true,
-        verts: [ 
-            {x:4, y:4}, {x:12, y:4}, {x:12, y:12}, {x:4, y:12},
-        ],
-        border: 1,
-        color: 'rgba(155,171,178,1)',
-        borderColor: 'red',
-    }),
-
-    Shape.xspec({
-        tag: 'shielding.2',
-        fill: true,
-        verts: [ 
-            {x:4, y:4}, {x:12, y:4}, {x:12, y:12}, {x:4, y:12},
-        ],
-        border: 1,
-        color: 'rgba(247,150,23,1)',
-        borderColor: 'red',
-    }),
-
-    Shape.xspec({
-        tag: 'shielding.3',
-        fill: true,
-        verts: [ 
-            {x:4, y:4}, {x:12, y:4}, {x:12, y:12}, {x:4, y:12},
-        ],
-        border: 1,
-        color: 'rgba(145,219,105,1)',
-        borderColor: 'red',
-    }),
-
-    //Rect.xspec({tag: 'fuelcell', width: 8, height: 12, color: 'blue', borderColor: 'red', border: 1}),
     Rect.xspec({tag: 'reticle.aim.ok', width: 12, height: 12, borderColor: 'green', border: 1, fill: false}),
     Rect.xspec({tag: 'reticle.aim.nok', width: 12, height: 12, borderColor: 'red', border: 1, fill: false}),
 
@@ -533,6 +425,93 @@ let miniaAssets = [
             'idlel': new AssetRef({tag: 'player_idlel'}),
             'mover': new AssetRef({tag: 'player_mover'}),
             'movel': new AssetRef({tag: 'player_movel'}),
+        },
+        state: 'idler',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
+    }),
+
+    Animation.xspec({tag: 'player_idler.s1', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s1.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s1.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'player_idlel.s1', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s1.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s1.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'player_mover.s1', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s1.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s1.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'player_movel.s1', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s1.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s1.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 250 }),
+    ]}),
+    Animator.xspec({
+        tag: 'player.s1',
+        x_sketches: {
+            'idler': new AssetRef({tag: 'player_idler.s1'}),
+            'idlel': new AssetRef({tag: 'player_idlel.s1'}),
+            'mover': new AssetRef({tag: 'player_mover.s1'}),
+            'movel': new AssetRef({tag: 'player_movel.s1'}),
+        },
+        state: 'idler',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
+    }),
+
+    Animation.xspec({tag: 'player_idler.s2', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s2.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s2.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'player_idlel.s2', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s2.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s2.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'player_mover.s2', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s2.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s2.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'player_movel.s2', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s2.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s2.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 250 }),
+    ]}),
+    Animator.xspec({
+        tag: 'player.s2',
+        x_sketches: {
+            'idler': new AssetRef({tag: 'player_idler.s2'}),
+            'idlel': new AssetRef({tag: 'player_idlel.s2'}),
+            'mover': new AssetRef({tag: 'player_mover.s2'}),
+            'movel': new AssetRef({tag: 'player_movel.s2'}),
+        },
+        state: 'idler',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
+    }),
+
+    Animation.xspec({tag: 'player_idler.s3', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s3.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s3.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'player_idlel.s3', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s3.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s3.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'player_mover.s3', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s3.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s3.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 250 }),
+    ]}),
+    Animation.xspec({tag: 'player_movel.s3', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s3.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 350 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/player-s3.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 250 }),
+    ]}),
+    Animator.xspec({
+        tag: 'player.s3',
+        x_sketches: {
+            'idler': new AssetRef({tag: 'player_idler.s3'}),
+            'idlel': new AssetRef({tag: 'player_idlel.s3'}),
+            'mover': new AssetRef({tag: 'player_mover.s3'}),
+            'movel': new AssetRef({tag: 'player_movel.s3'}),
         },
         state: 'idler',
         evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
@@ -2509,6 +2488,54 @@ let miniaAssets = [
         x_sketches: {
             'carry': new AssetRef({tag: 'gadget.3.carry'}),
             'free': new AssetRef({tag: 'gadget.3.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'shielding.1.carry', img: new SheetRef({src: 'img/shielding.png', width: 16, height: 16, x: 0, y: 0})}), 
+    Animation.xspec({tag: 'shielding.1.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 0, y: 16})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*6, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*3, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'shielding.1',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'shielding.1.carry'}),
+            'free': new AssetRef({tag: 'shielding.1.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'shielding.2.carry', img: new SheetRef({src: 'img/shielding.png', width: 16, height: 16, x: 16*1, y: 0})}), 
+    Animation.xspec({tag: 'shielding.2.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*1, y: 16})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*7, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*4, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'shielding.2',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'shielding.2.carry'}),
+            'free': new AssetRef({tag: 'shielding.2.free'}),
+        },
+        state: 'free',
+    }),
+
+    Sprite.xspec({tag: 'shielding.3.carry', img: new SheetRef({src: 'img/shielding.png', width: 16, height: 16, x: 16*2, y: 0})}), 
+    Animation.xspec({tag: 'shielding.3.free', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*2, y: 16})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*8, y: 16})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/shielding.png', width: 16, height: 32, x: 16*5, y: 16})}), ttl: 150 }),
+    ]}),
+    Animator.xspec({
+        tag: 'shielding.3',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'shielding.3.carry'}),
+            'free': new AssetRef({tag: 'shielding.3.free'}),
         },
         state: 'free',
     }),

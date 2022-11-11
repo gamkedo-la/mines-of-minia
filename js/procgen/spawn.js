@@ -1590,6 +1590,7 @@ class Spawn {
             //Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
             //Token.xspec({ name: 'token', x_sketch: Assets.get('token'), count: 50 }),
             this.genGadget(template),
+            this.genShielding(template),
 
             //this.genRanged(template),
             Digger.xspec({ healthMax: 10, xp: 1, }),
