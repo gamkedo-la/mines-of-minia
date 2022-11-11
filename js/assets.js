@@ -2424,5 +2424,66 @@ let miniaAssets = [
 
     Sprite.xspec({tag: 'machine.cart', img: new SheetRef({src: 'img/mineProps.png', width: 16, height: 32, x: 16*0, y: 0})}),
     Sprite.xspec({tag: 'machine.tnt', img: new SheetRef({src: 'img/mineProps.png', width: 16, height: 32, x: 16*1, y: 0})}),
-    
+
+    Animation.xspec({tag: 'digger.idlel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*0, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 200 }),
+    ]}),
+
+    Animation.xspec({tag: 'digger.idler', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*0, y: 32*1})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*1, y: 32*1})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*2, y: 32*1})}), ttl: 200 }),
+    ]}),
+
+    Animation.xspec({tag: 'digger.movel', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*0, y: 32*2})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*1, y: 32*2})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*2, y: 32*2})}), ttl: 200 }),
+    ]}),
+
+    Animation.xspec({tag: 'digger.mover', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*0, y: 32*3})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*1, y: 32*3})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*2, y: 32*3})}), ttl: 200 }),
+    ]}),
+
+    Animation.xspec({tag: 'digger.dyingl', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*0, y: 32*4})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*1, y: 32*4})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*2, y: 32*4})}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*2, y: 32*4})}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*2, y: 32*4})}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+    ]}),
+
+    Animation.xspec({tag: 'digger.dyingr', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*0, y: 32*5})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*1, y: 32*5})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*2, y: 32*5})}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*2, y: 32*5})}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/diggerBot.png', width: 16, height: 32, x: 16*2, y: 32*5})}), ttl: 200 }),
+        Cel.xspec({sketch: Sketch.zero, ttl: 100 }),
+    ]}),
+
+    Animator.xspec({
+        tag: 'digger',
+        x_sketches: {
+            'idlel': new AssetRef({tag: 'digger.idlel'}),
+            'idler': new AssetRef({tag: 'digger.idler'}),
+            'movel': new AssetRef({tag: 'digger.movel'}),
+            'mover': new AssetRef({tag: 'digger.mover'}),
+            'dyingl': new AssetRef({tag: 'digger.dyingl'}),
+            'dyingr': new AssetRef({tag: 'digger.dyingr'}),
+        },
+        state: 'idle',
+        evtAccessor: (evt) => (evt.update && evt.update.animState) ? evt.update.animState : null,
+        stateAccessor: (e) => e.animState,
+    }),
+     
 ];

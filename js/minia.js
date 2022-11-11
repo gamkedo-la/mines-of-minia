@@ -85,6 +85,7 @@ import { ShockingCharm } from "./charms/shocking.js";
 import { StealthCharm } from "./charms/stealth.js";
 import { DrainCharm } from "./charms/drain.js";
 import { Vendor } from "./entities/vendor.js";
+import { Digger } from "./entities/digger.js";
 
 
 class Minia extends Game {
@@ -140,6 +141,7 @@ class Minia extends Game {
             Cog,
             DarknessCharm,
             DazedCharm,
+            Digger,
             Door,
             DrainCharm,
             Dummy,

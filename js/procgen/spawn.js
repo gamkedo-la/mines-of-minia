@@ -16,6 +16,7 @@ import { Bomb } from '../entities/bomb.js';
 import { Chest } from '../entities/chest.js';
 import { Clutter } from '../entities/clutter.js';
 import { Cog } from '../entities/cog.js';
+import { Digger } from '../entities/digger.js';
 import { Door } from '../entities/door.js';
 import { Enemy } from '../entities/enemy.js';
 import { Energy } from '../entities/energy.js';
@@ -1591,6 +1592,7 @@ class Spawn {
             //this.genWeapon(template),
 
             //this.genRanged(template),
+            Digger.xspec({ healthMax: 10, xp: 1, }),
 
 
         ];
