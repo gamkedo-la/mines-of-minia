@@ -20,6 +20,7 @@ import { Credits } from './credits.js';
 import { Prompt } from './prompt.js';
 import { Resurrect64 } from './resurrect64.js';
 import { Serialization } from './serialization.js';
+import { Help } from './help.js';
 
 function button(text, spec) {
     return Object.assign({}, UxButton.xspec({
@@ -68,7 +69,15 @@ class MenuState extends GameState {
     }
 
     onHelpClicked(evt) {
-        console.log(`${this} onHelpClicked: ${Fmt.ofmt(evt)}`);
+        // disable
+        this.panel.active = false;
+        let help = new Help({
+            xform: new XForm({border: .2}),
+        });
+        this.view.adopt(help);
+        help.evt.listen(help.constructor.evtDestroyed, () => {
+            this.panel.active = true;
+        });
     }
 
     onCreditsClicked(evt) {
