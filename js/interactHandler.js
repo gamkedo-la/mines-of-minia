@@ -104,6 +104,7 @@ class InteractHandler extends Entity {
                 break;
             }
 
+            case 's': 
             case 'x': {
                 let nidx = this.lvl.idxfromdir(this.player.idx, Direction.south);
                 this.interactIdx(nidx);
