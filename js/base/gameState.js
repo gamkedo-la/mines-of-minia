@@ -19,7 +19,7 @@ class GameState {
     static evtLoaded = 'state.loaded';
     static evtStarted = 'state.started';
     static evt = Events.main;
-    static dbg = true;
+    static dbg = false;
     static tag = 'play';
 
     // STATIC METHODS ------------------------------------------------------

@@ -5,7 +5,6 @@ export { Config };
  */
 class Config {
     static init(spec={}) {
-        console.log(`config.init`);
         Object.assign(this, spec);
     }
 }

@@ -251,17 +251,15 @@ class PlayState extends GameState {
         
     onLevelLoaded(evt) {
         this.vendor = Hierarchy.find(this.view, (v) => v.tag === 'bigsby');
-        console.log(`-- vendor: ${this.vendor}`);
-
         // update game debug
-        console.log(`lvl: ${this.lvl.index} seed: ${Config.template.seed} gamedbg: ${this.gamedbg}`);
+        //console.log(`lvl: ${this.lvl.index} seed: ${Config.template.seed} gamedbg: ${this.gamedbg}`);
         if (this.gamedbg) {
             this.gamedbg.text = `game state - seed ${Config.template.seed} lvl: ${Config.template.index}`;
         }
         //console.log(`${this} onLevelLoaded`);
         if (this.lvl.index > this.maxIndex) {
             this.maxIndex = this.lvl.index;
-            console.log(`-- new max level index: ${this.maxIndex}`);
+            //console.log(`-- new max level index: ${this.maxIndex}`);
         }
         // update player position
         let idx = this.player.idx;

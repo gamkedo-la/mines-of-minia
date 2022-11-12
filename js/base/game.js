@@ -92,7 +92,6 @@ class Game {
     }
 
     static onInteract(evt) {
-        console.log(`--- onInteract`);
         Events.trigger(this.evtInteracted);
     }
 
@@ -100,7 +99,6 @@ class Game {
     }
 
     static onStateChanged(evt) {
-        console.log(`onStateChanged: ${Fmt.ofmt(evt)}`);
         let newState = evt.state;
         let data = evt.data;
         if (newState && newState !== this.currentState) {
@@ -120,7 +118,6 @@ class Game {
     }
 
     static startState(tag, data) {
-        console.log(`startState`);
         let state = this.states[tag];
         if (!state) {
             console.error(`invalid state: ${tag}`);

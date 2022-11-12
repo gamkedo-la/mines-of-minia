@@ -111,9 +111,9 @@ class Minia extends Game {
                 update: false,
                 mouse: false,
                 render: false,
-                move: true,
+                move: false,
                 aggro: false,
-                turn: true,
+                turn: false,
                 close: false,
             },
             keys: false,
@@ -129,7 +129,6 @@ class Minia extends Game {
     };
 
     static init() {
-        console.log(`${this.name}.init`);
         Registry.extend([
             Bomb,
             BonkersCharm,

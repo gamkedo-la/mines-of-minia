@@ -308,7 +308,6 @@ class Spawn {
         let x_spawn = template.spawn || {};
         let plvl = pstate.plvl;
         let quota = Prng.rangeInt(x_spawn.fuelMin, x_spawn.fuelMax);
-        console.log(`-- fuel quota: ${quota}`);
         let iterations = 100;
         let choices = Array.from(prooms);
         while (iterations-- > 0 && quota > 0) {
@@ -422,7 +421,6 @@ class Spawn {
         let plvl = pstate.plvl;
         let x_spawn = template.spawn || {};
         let quota = Prng.rangeInt(x_spawn.chestMin, x_spawn.chestMax);
-        console.log(`-- chest quota: ${quota}`);
 
         // chests will not appear along critical path (stair to stair)
         let choices = prooms.filter((v) => !v.critical);
@@ -505,7 +503,6 @@ class Spawn {
         let x_spawn = template.spawn || {};
         let prooms = pstate.prooms || [];
         let quota = Prng.rangeInt(x_spawn.secretRoomMin, x_spawn.secretRoomMax);
-        console.log(`-- secret room quota: ${quota}`);
         // find any terminal rooms
         for (const proom of prooms) {
             if (quota <= 0) break;
@@ -543,7 +540,6 @@ class Spawn {
         let plvlo = pstate.plvlo;
         let prooms = pstate.prooms || [];
         let quota = Prng.rangeInt(x_spawn.secretCacheMin, x_spawn.secretCacheMax);
-        console.log(`-- secret cache quota: ${quota}`);
         for (let i=0; i<quota; i++) {
             // pick target room
             let proom = Prng.choose(prooms);
@@ -685,7 +681,6 @@ class Spawn {
         let keys = [];
         // -- determine locked room quota
         let quota = Prng.rangeInt(x_spawn.lockRoomMin, x_spawn.lockRoomMax);
-        console.log(`-- room lock quota: ${quota}`);
         //console.log(`lock room quota: ${quota}`);
         // -- filter candidate rooms
         let lrooms = prooms.filter((v) => !v.critical && !v.hidden);

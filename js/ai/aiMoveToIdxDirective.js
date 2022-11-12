@@ -29,7 +29,7 @@ class AiMoveToIdxDirective extends AiDirective {
             if (!path) {
                 this.ok = false;
                 this.done = true;
-                console.log(`move to idx no path to ${this.targetIdx}`);
+                if (this.dbg) console.log(`move to idx no path to ${this.targetIdx}`);
                 return null;
             }
             if (this.dbg) console.log(`move from: ${this.actor.idx} towards: ${this.targetIdx} path: ${Fmt.ofmt(path)}`);

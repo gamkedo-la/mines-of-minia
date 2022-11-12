@@ -47,18 +47,15 @@ class MenuState extends GameState {
             this.view.adopt(prompt);
         } else {
             Serialization.reset();
-            console.log(`${this} onNewClicked: ${Fmt.ofmt(evt)}`);
             Events.trigger(Game.evtStateChanged, {state: 'play'});
         }
     }
 
     onLoadClicked(evt) {
-        console.log(`${this} onLoadClicked: ${Fmt.ofmt(evt)}`);
         Events.trigger(Game.evtStateChanged, {state: 'play', data: {load: true}});
     }
 
     onOptionsClicked(evt) {
-        console.log(`${this} onOptionsClicked: ${Fmt.ofmt(evt)}`);
         // disable
         this.panel.active = false;
         let options = new Options({
@@ -75,7 +72,6 @@ class MenuState extends GameState {
     }
 
     onCreditsClicked(evt) {
-        console.log(`${this} onCreditsClicked: ${Fmt.ofmt(evt)}`);
         // disable
         this.panel.active = false;
         let credits = new Credits({
@@ -118,7 +114,6 @@ class MenuState extends GameState {
             ]
         });
         this.view = Generator.generate(x_view);
-        console.log(`${this} view: ${this.view}`);
         // -- ui elements
         this.panel = Hierarchy.find(this.view, (v) => v.tag === 'menu.panel');
         this.newButton = Hierarchy.find(this.view, (v) => v.tag === 'menu.new');

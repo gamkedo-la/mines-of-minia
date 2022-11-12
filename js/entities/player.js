@@ -138,7 +138,6 @@ class Player extends Character {
     }
 
     onEquipChanged(evt) {
-        console.log(`${this} onEquipChanged: ${Fmt.ofmt(evt)}`);
         if (evt.slot !== 'shielding') return;
         // lookup player sketch for shielding tier
         let tag;

@@ -69,7 +69,7 @@ class Cog extends Item {
         }
         if (spec.discoveredKinds) {
             this.discoveredKinds = new Set(spec.discoveredKinds);
-            console.log(`setting discovered: ${Array.from(this.discoveredKinds)}`);
+            //console.log(`setting discovered: ${Array.from(this.discoveredKinds)}`);
         }
     }
 
@@ -79,7 +79,7 @@ class Cog extends Item {
             let pick = Prng.rangeInt(0, tags.length-1);
             let tag = tags[pick];
             tags.splice(pick, 1);
-            console.log(`-- discovery: ${this.name} ${this.kinds[i]} gets tag: ${tag}}`);
+            //console.log(`-- discovery: ${this.name} ${this.kinds[i]} gets tag: ${tag}}`);
             this.kindSecretMap[this.kinds[i]] = tag;
         }
     }
@@ -189,7 +189,6 @@ class Cog extends Item {
         switch (this.kind) {
             case 'identify': {
                 if (target) {
-                    console.log(`identifying: ${target}`);
                     UpdateSystem.eUpdate(target, { identifiable: false, purgeable: false });
                 }
                 break;
@@ -198,7 +197,6 @@ class Cog extends Item {
                 if (target && target.charms) {
                     for (let i=target.charms.length-1; i>=0; i--) {
                         let charm = target.charms[i];
-                        console.log(`purging: ${charm} from ${target}`);
                         if (charm.curse) charm.unlink();
                     }
                     UpdateSystem.eUpdate(target, { purgeable: false });

@@ -36,7 +36,7 @@ class AiMoveTowardsTargetDirective extends AiDirective {
             if (!path) {
                 this.ok = false;
                 this.done = true;
-                console.log(`pathfinding failed`);
+                if (this.dbg) console.log(`pathfinding failed`);
                 return null;
             }
             // iterate through pathfinder actions
