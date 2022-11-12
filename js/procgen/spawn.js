@@ -1567,10 +1567,6 @@ class Spawn {
             /*
             Rous.xspec({ healthMax: 10, xp: 1, }),
             Scarab.xspec({ healthMax: 5, xp: 1, }),
-            Gem.xspec({ kind: 'fire', }),
-            Gem.xspec({ kind: 'daze', }),
-            Gem.xspec({ kind: 'power', }),
-            Gem.xspec({ kind: 'stealth', }),
             Weapon.xspec({ kind: 'bonk', identifiable: true, charms: [ new BooCharm() ], }),
             Cog.xspec({ kind: 'identify', }),
             Cog.xspec({ kind: 'lvlup', }),
@@ -1584,6 +1580,10 @@ class Spawn {
             //Gem.xspec({ kind: 'fire', }),
             //Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
             //Token.xspec({ name: 'token', x_sketch: Assets.get('token'), count: 50 }),
+            //Gem.xspec({ kind: 'fire', }),
+            //Gem.xspec({ kind: 'daze', }),
+            //Gem.xspec({ kind: 'power', }),
+            //Gem.xspec({ kind: 'stealth', }),
             this.genGadget(template),
             this.genShielding(template),
 

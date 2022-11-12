@@ -1556,36 +1556,110 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 150 }),
     ]}),
 
-    Animation.xspec({tag: 'gem.red', jitter: true, x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 0, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*1, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*2, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*3, y: 0})}), ttl: 150 }),
+    Animation.xspec({tag: 'gem.red.carry', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 80*0, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 80*1, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 80*2, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 80*3, y: 0})}), ttl: 167 }),
     ]}),
-    Animation.xspec({tag: 'gem.purple', jitter: true, x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 0, y: 16})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*1, y: 16})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*2, y: 16})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*3, y: 16})}), ttl: 150 }),
+    Animation.xspec({tag: 'gem.red.free', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 80*0, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 80*1, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 80*2, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 80*3, y: 16})}), ttl: 167 }),
     ]}),
-    Animation.xspec({tag: 'gem.green', jitter: true, x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 0, y: 32})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*1, y: 32})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*2, y: 32})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*3, y: 32})}), ttl: 150 }),
+    Animator.xspec({
+        tag: 'gem.red',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'gem.red.carry'}),
+            'free': new AssetRef({tag: 'gem.red.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'gem.purple.carry', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 16+80*0, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 16+80*1, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 16+80*2, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 16+80*3, y: 0})}), ttl: 167 }),
     ]}),
-    Animation.xspec({tag: 'gem.aqua', jitter: true, x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 0, y: 48})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*1, y: 48})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*2, y: 48})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*3, y: 48})}), ttl: 150 }),
+    Animation.xspec({tag: 'gem.purple.free', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 16+80*0, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 16+80*1, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 16+80*2, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 16+80*3, y: 16})}), ttl: 167 }),
     ]}),
-    Animation.xspec({tag: 'gem.blue', jitter: true, x_cels: [
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 0, y: 64})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*1, y: 64})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*2, y: 64})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-2.png', width: 16, height: 16, x: 16*3, y: 64})}), ttl: 150 }),
+    Animator.xspec({
+        tag: 'gem.purple',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'gem.purple.carry'}),
+            'free': new AssetRef({tag: 'gem.purple.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'gem.green.carry', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 32+80*0, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 32+80*1, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 32+80*2, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 32+80*3, y: 0})}), ttl: 167 }),
     ]}),
+    Animation.xspec({tag: 'gem.green.free', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 32+80*0, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 32+80*1, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 32+80*2, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 32+80*3, y: 16})}), ttl: 167 }),
+    ]}),
+    Animator.xspec({
+        tag: 'gem.green',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'gem.green.carry'}),
+            'free': new AssetRef({tag: 'gem.green.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'gem.aqua.carry', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 48+80*0, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 48+80*1, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 48+80*2, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 48+80*3, y: 0})}), ttl: 167 }),
+    ]}),
+    Animation.xspec({tag: 'gem.aqua.free', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 48+80*0, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 48+80*1, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 48+80*2, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 48+80*3, y: 16})}), ttl: 167 }),
+    ]}),
+    Animator.xspec({
+        tag: 'gem.aqua',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'gem.aqua.carry'}),
+            'free': new AssetRef({tag: 'gem.aqua.free'}),
+        },
+        state: 'free',
+    }),
+
+    Animation.xspec({tag: 'gem.blue.carry', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 64+80*0, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 64+80*1, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 64+80*2, y: 0})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 16, x: 64+80*3, y: 0})}), ttl: 167 }),
+    ]}),
+    Animation.xspec({tag: 'gem.blue.free', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 64+80*0, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 64+80*1, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 64+80*2, y: 16})}), ttl: 167 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem3.png', width: 16, height: 32, x: 64+80*3, y: 16})}), ttl: 167 }),
+    ]}),
+    Animator.xspec({
+        tag: 'gem.blue',
+        x_sketches: {
+            'carry': new AssetRef({tag: 'gem.blue.carry'}),
+            'free': new AssetRef({tag: 'gem.blue.free'}),
+        },
+        state: 'free',
+    }),
 
 
     // -- trap
@@ -1795,7 +1869,6 @@ let miniaAssets = [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fuel-cell.png', width: 16, height: 16, x: 64*6, y: 0})}), ttl: 100 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fuel-cell.png', width: 16, height: 16, x: 64*7, y: 0})}), ttl: 100 }),
     ]}),
-
     Animation.xspec({tag: 'fuelcell.carry', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fuel-cell.png', width: 16, height: 16, x: 64*0+16, y: 0})}), ttl: 100 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/fuel-cell.png', width: 16, height: 16, x: 64*1+16, y: 0})}), ttl: 100 }),
