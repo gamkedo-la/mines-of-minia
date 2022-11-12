@@ -44,7 +44,7 @@ class Item extends MiniaModel {
         this.count = spec.count || 1;
         // -- charms (buffs/debuffs)
         this.charms = [];
-        if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
+        if (spec.charms) spec.charms.forEach(() => this.addCharm.bind(this));
         // -- loot
         this.loot = spec.loot || [];
         this.state = spec.state || this.constructor.dfltState;
