@@ -28,6 +28,7 @@ class Hud extends UxView {
         this.doInventory = spec.doInventory;
         this.doTalents = spec.doTalents;
         this.doOptions = spec.doOptions;
+        this.doBeltClick = spec.doBeltClick;
         // build out hud
         this.adopt( new UxPanel({
             sketch: Assets.get('hud.border', true),
@@ -94,7 +95,9 @@ class Hud extends UxView {
                                 }),
                                 new UxPanel({
                                     sketch: Sketch.zero,
-                                    xform: new XForm({left: .375, lockRatio: true}),
+                                    xform: new XForm({ left: .375, lockRatio: true }),
+                                    mouseBlock: true,
+                                    mousePriority: 1,
                                     children: [
                                         this.beltslot(0),
                                         this.beltslot(1),
@@ -186,23 +189,7 @@ class Hud extends UxView {
     }
 
     onBeltClicked(evt) {
-        console.log(`onBeltClicked: ${Fmt.ofmt(evt)}`);
-        if (this.getCurrentHandler() !== 'interact') return;
-        let beltIdx = evt.actor.beltIdx;
-        let gid = this.player.inventory.belt[beltIdx];
-        let item = this.player.inventory.getByGid(gid);
-        if (item) {
-            if (item.constructor.shootable) {
-                console.log(`${item} shootable`);
-                Events.trigger('handler.wanted', {which: 'aim', shooter: item});
-            } else {
-                let action = new UseAction({
-                    points: this.player.pointsPerTurn,
-                    item: item,
-                });
-                TurnSystem.postLeaderAction(action);
-            }
-        }
+        if (this.doBeltClick) this.doBeltClick(evt)
     }
 
     onPlayerUpdate(evt) {
@@ -339,6 +326,8 @@ class Hud extends UxView {
                 new UxButton({
                     tag: `belt.button.${idx}`,
                     text: Sketch.zero,
+                    mouseBlock: true,
+                    mousePriority: 1,
                     pressed: Assets.get('hud.sbutton.unpressed', true),
                     unpressed: Assets.get('hud.sbutton.unpressed', true),
                     highlight: Assets.get('hud.sbutton.highlight', true),

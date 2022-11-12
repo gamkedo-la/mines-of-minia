@@ -36,6 +36,7 @@ class InteractHandler extends Entity {
         this.doInventory = spec.doInventory;
         this.doTalents = spec.doTalents;
         this.doOptions = spec.doOptions
+        this.doBeltClick = spec.doBeltClick
 
         // -- pathfinding
         this.lvlgraph = new LevelGraph({
@@ -67,7 +68,19 @@ class InteractHandler extends Entity {
     onKeyDown(evt) {
         //console.log(`-- ${this.constructor.name} onKeyDown: ${Fmt.ofmt(evt)}`);
         switch (evt.key) {
-
+            case '1': {
+                this.doBeltClick({actor: {beltIdx: 0}})
+                break;
+            }
+            case '2': {
+                this.doBeltClick({actor: {beltIdx: 1}})
+                break;
+            }
+            case '3': {
+                this.doBeltClick({actor: {beltIdx: 2}})
+                break;
+            }
+                
             case 'q': {
                 let nidx = this.lvl.idxfromdir(this.player.idx, Direction.northWest);
                 this.interactIdx(nidx);
