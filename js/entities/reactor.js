@@ -104,7 +104,7 @@ class Reactor extends Item {
             d += `and consumes fuel at a *${this.constructor.getFuelRating(this.fuelPerAP)}* rate. `
             d += `it has a *level* but you're not sure what it is. `
             d += `it may or may not have a *charm* applied. `
-            if (Charm.cursed) {
+            if (Charm.cursed(this)) {
                 d += `this item is *cursed* with an unknown affliction.  `
             } else {
                 d += `this item is free from any *curses*. `
@@ -114,7 +114,7 @@ class Reactor extends Item {
             d += `this reactor has a *${Math.round(this.healthPerAP*1000)}* health regen rating and a *${Math.round(this.powerPerAP*1000)}* power regen rating `
             d += `and consumes fuel at a rating of *${Math.round(1/this.fuelPerAP)}*. `
             d += `it is a level *${this.lvl}* reactor. `
-            if (this.charms) d += `\n -- charms --\n`;
+            if (this.charms.length) d += `\n -- charms --\n`;
             // append charm descriptions
             for (const charm of this.charms) {
                 d += charm.description + '\n';

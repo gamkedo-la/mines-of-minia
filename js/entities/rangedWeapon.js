@@ -25,6 +25,18 @@ class RangedWeapon extends Item {
         3: 2.5,
     };
 
+    static getSkillLevel(skill) {
+        if (skill <= 10) return 'low';
+        if (skill <= 15) return 'medium';
+        return 'high';
+    }
+
+    static getDamageLevel(damage) {
+        if (damage <= 10) return 'low';
+        if (damage <= 20) return 'medium';
+        return 'high';
+    }
+
     static xspec(spec={}) {
         let kind = spec.kind || this.dfltKind;
         let tier = spec.tier || this.dfltTier;
@@ -42,7 +54,8 @@ class RangedWeapon extends Item {
         this.lvl = spec.lvl || 1;
         this.tier = spec.tier || 1;
         // -- required savvy
-        this.savvy = spec.savvy || this.constructor.dfltSavvy;
+        this._savvy = spec.savvy || this.constructor.dfltSavvy;
+        this.savvyReductionPerLvl = spec.savvyReductionPerLvl || 0;
         // -- damage
         this.damageScale = spec.damageScale || this.constructor.damageScaleByTier[this.tier];
         this.baseDamageMin = spec.baseDamageMin || this.constructor.dfltBaseDamageMin;
@@ -59,7 +72,8 @@ class RangedWeapon extends Item {
             kind: this.kind,
             lvl: this.lvl,
             tier: this.tier,
-            savvy: this.savvy,
+            savvy: this._savvy,
+            savvyReductionPerLvl: this.savvyReductionPerLvl,
             damageScale: this.damageScale,
             baseDamageMin: this.baseDamageMin,
             baseDamageMax: this.baseDamageMax,
@@ -74,6 +88,40 @@ class RangedWeapon extends Item {
     }
     get damageMax() {
         return Math.round(this.baseDamageMax*this.lvl*(this.damageScale-1));
+    }
+
+    get savvy() {
+        let b = Math.round(this._savvy - this.lvl*this.savvyReductionPerLvl);
+        return b;
+    }
+
+    get description() {
+        let d = `a *tier ${this.tier}* ranged weapon that does *${this.kind}* damage. `
+        if (this.purgeable) {
+            d += `requires a *${this.constructor.getSkillLevel(this.savvy)}* level of savvy to wield effectively and does a *${this.constructor.getDamageLevel(this.damageMin)}* amount of damage. `;
+            d += `it has a *level* but you're not sure what it is. `
+            d += `it may or may not have a *charm* or *curse* applied. `
+            d += `...identify to determine exact stats...`
+        } else if (this.identifiable) {
+            d += `requires a *${this.constructor.getSkillLevel(this.savvy)}* level of savvy to wield effectively and does a *${this.constructor.getDamageLevel(this.damageMin)}* amount of damage. `;
+            d += `it has a *level* but you're not sure what it is. `
+            d += `it may or may not have a *charm* applied. `
+            if (Charm.cursed(this)) {
+                d += `this item is *cursed* with an unknown affliction.  `
+            } else {
+                d += `this item is free from any *curses*. `
+            }
+            d += `...identify to determine exact stats...`
+        } else {
+            d += `requires *${this.savvy}* savvy to wield effectively and does *${this.damageMin}-${this.damageMax}* damage. `;
+            d += `it is a level *${this.lvl}* weapon. `
+            if (this.charms.length) d += `\n -- charms --\n`;
+            // append charm descriptions
+            for (const charm of this.charms) {
+                d += charm.description + '\n';
+            }
+        }
+        return d;
     }
 
 }

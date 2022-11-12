@@ -124,7 +124,7 @@ class Shielding extends Item {
             d += `requires a *${this.constructor.getSkillLevel(this.brawn)}* level of brawn to use effectively. `;
             d += `it has a *level* but you're not sure what it is. `
             d += `it may or may not have a *charm* applied. `
-            if (Charm.cursed) {
+            if (Charm.cursed(this)) {
                 d += `this item is *cursed* with an unknown affliction.  `
             } else {
                 d += `this item is free from any *curses*. `
@@ -134,7 +134,7 @@ class Shielding extends Item {
             d += `provides *${this.damageReductionMin}-${this.damageReductionMax}* of general damage reduction. `;
             d += `requires *${this.brawn}* brawn to use effectively. `;
             d += `it is a level *${this.lvl}* shielding unit. `
-            if (this.charms) d += `\n -- charms --\n`;
+            if (this.charms.length) d += `\n -- charms --\n`;
             // append charm descriptions
             for (const charm of this.charms) {
                 d += charm.description + '\n';

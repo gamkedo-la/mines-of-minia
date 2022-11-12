@@ -1592,7 +1592,7 @@ class Spawn {
             this.genGadget(template),
             this.genShielding(template),
 
-            //this.genRanged(template),
+            this.genRanged(template),
             Digger.xspec({ healthMax: 10, xp: 1, }),
 
 

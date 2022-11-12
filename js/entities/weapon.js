@@ -112,7 +112,7 @@ class Weapon extends Item {
         } else {
             d += `requires *${this.spry}* spry to wield effectively and does *${this.damageMin}-${this.damageMax}* damage. `;
             d += `it is a level *${this.lvl}* weapon. `
-            if (this.charms) d += `\n -- charms --\n`;
+            if (this.charms.length) d += `\n -- charms --\n`;
             // append charm descriptions
             for (const charm of this.charms) {
                 d += charm.description + '\n';
