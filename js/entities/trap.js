@@ -39,7 +39,7 @@ class Trap extends MiniaModel {
         this._linkSketch('_sketch', spec.sketch || this.constructor.dfltSketch, false);
         // -- charms (buffs/debuffs)
         this.charms = [];
-        if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
+        if (spec.charms) spec.charms.forEach(() => this.addCharm.bind(this));
         // -- sfx
         this.triggerSfx = (spec.hasOwnProperty('triggerSfx')) ? spec.triggerSfx : this.constructor.dfltTriggerSfx;
         // -- sync xform to match sketch dimensions

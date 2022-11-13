@@ -58,6 +58,7 @@ import { GameOver } from './gameOver.js';
 import { BurningSystem } from './systems/burningSystem.js';
 import { Timer } from './base/timer.js';
 import { UxVendor } from './uxVendor.js';
+import { UseAction } from './actions/use.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -128,6 +129,7 @@ class PlayState extends GameState {
                             doInventory: this.doInventory.bind(this),
                             doOptions: this.doOptions.bind(this),
                             doTalents: this.doTalents.bind(this),
+                            doBeltClick: this.doBeltClick.bind(this),
                             getCurrentHandler: () => this.currentHandler,
                         }),
                     ],
@@ -343,6 +345,7 @@ class PlayState extends GameState {
                     doInventory: this.doInventory.bind(this),
                     doTalents: this.doTalents.bind(this),
                     doOptions: this.doOptions.bind(this),
+                    doBeltClick: this.doBeltClick.bind(this),
                 });
                 //console.log(`== setting handler to ${this.handler}`);
             }
@@ -398,24 +401,24 @@ class PlayState extends GameState {
                 break;
             }
 
-            case '1': {
-                let toggle = this.lvl.fowEnabled;
-                this.lvl.fowEnabled = !toggle;
-                this.lvl.losEnabled = !toggle;
-                for (const gidx of this.lvl.grid.keys()) this.lvl.gidupdates.add(gidx);
-                this.lvl.evt.trigger(this.lvl.constructor.evtUpdated, {actor: this.lvl});
-                break;
-            }
+            // case '1': {
+            //     let toggle = this.lvl.fowEnabled;
+            //     this.lvl.fowEnabled = !toggle;
+            //     this.lvl.losEnabled = !toggle;
+            //     for (const gidx of this.lvl.grid.keys()) this.lvl.gidupdates.add(gidx);
+            //     this.lvl.evt.trigger(this.lvl.constructor.evtUpdated, {actor: this.lvl});
+            //     break;
+            // }
 
-            // FIXME: remove
+            // // FIXME: remove
 
-            case '5': {
-                console.log(`-- bio boss lvl`);
-                let whichLevel = 6;
-                let load = (whichLevel > LevelSystem.maxLevelIndex) ? false : true;
-                Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
-                break;
-            }
+            // case '5': {
+            //     console.log(`-- bio boss lvl`);
+            //     let whichLevel = 6;
+            //     let load = (whichLevel > LevelSystem.maxLevelIndex) ? false : true;
+            //     Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
+            //     break;
+            // }
 
             case '6': {
                 console.log(`-- next lvl`);
@@ -579,6 +582,26 @@ class PlayState extends GameState {
         if (this.currentHandler !== 'directive') return;
         //console.log(`== doCancel`);
         this.loadHandler('interact');
+    }
+
+    doBeltClick(evt) {
+        console.log(`onBeltClicked: ${Fmt.ofmt(evt)}`);
+        if (this.currentHandler !== 'interact') return;
+        let beltIdx = evt.actor.beltIdx;
+        let gid = this.player.inventory.belt[beltIdx];
+        let item = this.player.inventory.getByGid(gid);
+        if (item) {
+            if (item.constructor.shootable) {
+                console.log(`${item} shootable`);
+                Events.trigger('handler.wanted', {which: 'aim', shooter: item});
+            } else {
+                let action = new UseAction({
+                    points: this.player.pointsPerTurn,
+                    item: item,
+                });
+                TurnSystem.postLeaderAction(action);
+            }
+        }
     }
 
     doGameOver() {

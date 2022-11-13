@@ -19,7 +19,7 @@ class Dummy extends MiniaModel {
         this.charms = [];
         this.blockedBy = spec.hasOwnProperty('blockedBy') ? spec.blockedBy : 0;
         this.blocks = spec.hasOwnProperty('blocks') ? spec.blocks : 0;
-        if (spec.charms) spec.charms.map((this.addCharm.bind(this)));
+        if (spec.charms) spec.charms.forEach(() => this.addCharm.bind(this));
     };
 
     as_kv() {
