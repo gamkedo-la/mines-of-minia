@@ -18,15 +18,10 @@ import { Enemy } from './enemy.js';
 
 class Energy extends Enemy{
     static gHealth = new LvlVar({ baseMin: 4, baseMax: 8, perLvlMin: 1, perLvlMax: 3 } );
-    static gXp = new LvlVar({ base: 3, perLvl: 1 } );
+    static gXp = new LvlVar({ base: 5, perLvl: 2 } );
 
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
-        // parse lvl
-        let lvl = spec.lvl || 1;
-        // health
-        let health = Prng.rangeInt(3,8);
-        for (let i=1; i<lvl; i++) health += Prng.rangeInt(1,3);
         // final spec
         return Object.assign( {}, this.spec, {
             x_sketch: Assets.get('energy-shock'),

@@ -1,0 +1,11 @@
+level 1: enemies: 35 xp: 165
+level 2: enemies: 37 xp: 210 375
+level 3: enemies: 34 xp: 241 616
+level 4: enemies: 38 xp: 315 921
+level 5: enemies: 36 xp: 345 1266
+
+level 7: enemies: 35 xp: 514 1780
+level 8: enemies: 36 xp: 576 2356
+level 9: enemies: 36 xp: 628 2984
+level 10: enemies: 38 xp: 721 3705
+level 11: enemies: 36 xp: 755 4460

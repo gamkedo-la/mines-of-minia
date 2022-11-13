@@ -19,32 +19,29 @@ class Player extends Character {
     static dfltFuelMax = 50;
     static dfltPowerMax = 20;
     static dfltScanRange = 48;
-    // FIXME
     static dfltCritPct = .15;
-    // FIXME: need to do some number crunching and trial runs here to see if these levels make sense
     static xpReqsByLvl = {
-        1: 10,
-        2: 40,
-        3: 80,
-        4: 130,
-        5: 200,
-        6: 300,
-        7: 500,
-        8: 1000,
-        9: 2000,
-        9: 4000,
-        10: 7000,
-        11: 11000,
-        12: 15000,
-        13: 21000,
-        14: 30000,
-        15: 40000,
-        16: 60000,
-        17: 100000,
-        18: 200000,
-        19: 400000,
-        20: 800000,
-        21: 1000000,
+        1: 50,
+        2: 120,
+        3: 210,
+        4: 340,
+        5: 420,
+        6: 600,
+        7: 750,
+        8: 900,
+        9: 1050,
+        10: 1200,
+        11: 1450,
+        12: 1700,
+        13: 2000,
+        14: 2300,
+        15: 2600,
+        16: 2900,
+        17: 3300,
+        18: 3700,
+        19: 4050,
+        20: 4400,
+        21: 5000,
     }
     static attUpdatesByLvl = {
         2: {

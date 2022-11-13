@@ -1,7 +1,9 @@
 export { MiniaTemplates };
 
+import { Digger } from '../entities/digger.js';
 import { Energy } from '../entities/energy.js';
 import { Funguy } from '../entities/funguy.js';
+import { Golem } from '../entities/golem.js';
 import { Magma } from '../entities/magma.js';
 import { Rous } from '../entities/rous.js';
 import { Scarab } from '../entities/scarab.js';
@@ -11,9 +13,12 @@ import { ProcTemplate } from './ptemplate.js';
 class MiniaTemplates {
 
     static bioLvl = new ProcTemplate({
-        //seed: 1,
-        //seed: 74830 -- no stairs?
-        seed: 59894,
+        //seed: 59894, // hanging door
+        //seed: 78683, // procgen crash (rock)
+        //seed: 73560, // procgen crash (rock/8)
+        //seed: 37699, // procgen crash (rock/8)
+        //seed: 79469, // procgen crash (rock/8)
+        //seed: 34836, // procgen crash (rock/8)
         doyield: true,
         translate: {
             floor: 'bio.floor',
@@ -27,10 +32,10 @@ class MiniaTemplates {
         spawn: {
             enemyList: [ 
                 { weight: 1, cls: Rous },
-                { weight: 1, cls: Scarab },
-                { weight: .5, cls: Funguy },
-                { weight: .25, cls: Magma },
-                { weight: .25, cls: Energy },
+                { weight: .5, cls: Scarab },
+                { weight: .5, cls: Digger },
+                { weight: .25, cls: Funguy },
+                { weight: .15, cls: Energy },
             ],
             trapList: [ SpikeTrap ],
             growth: 'vine.growth',
@@ -56,10 +61,10 @@ class MiniaTemplates {
         spawn: {
             enemyList: [ 
                 { weight: 1, cls: Rous },
-                { weight: 1, cls: Scarab },
-                { weight: .5, cls: Funguy },
+                { weight: .5, cls: Golem },
+                { weight: .5, cls: Digger },
                 { weight: .25, cls: Magma },
-                { weight: .25, cls: Energy },
+                { weight: .15, cls: Energy },
             ],
             trapList: [ SpikeTrap ],
             growth: 'rock.growth',
@@ -93,11 +98,7 @@ class MiniaTemplates {
             lockRoomMin: 0,
             lockRoomMax: 0,
             lockChestPct: 0,
-            enemyList: [ 
-                { weight: 1, cls: Rous },
-                { weight: .5, cls: Funguy },
-                { weight: .5, cls: Magma },
-            ],
+            enemyList: [],
             trapList: [ SpikeTrap ],
             growth: 'rock.growth',
             growthFreePct: .1,
@@ -129,11 +130,7 @@ class MiniaTemplates {
             lockRoomMin: 0,
             lockRoomMax: 0,
             lockChestPct: 0,
-            enemyList: [ 
-                { weight: 1, cls: Rous },
-                { weight: .5, cls: Funguy },
-                { weight: .5, cls: Magma },
-            ],
+            enemyList: [],
             trapList: [ SpikeTrap ],
             growth: 'rock.growth',
             growthFreePct: .1,

@@ -3,9 +3,13 @@ export { Golem };
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Prng } from '../base/prng.js';
+import { LvlVar } from '../lvlVar.js';
 import { Enemy } from './enemy.js';
 
 class Golem extends Enemy{
+    static gHealth = new LvlVar({ baseMin: 8, baseMax: 12, perLvlMin: 3, perLvlMax: 5 } );
+    static gXp = new LvlVar({ base: 5, perLvl: 2.5 } );
+
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
         // parse lvl

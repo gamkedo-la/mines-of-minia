@@ -157,7 +157,7 @@ class ProcTemplate {
             { weight: .5, delta: 0 },
             { weight: .25, delta: 1 },
             { weight: .25, delta: -1 },
-            { weight: .1, delta: 5 },
+            { weight: .1, delta: 4 },
         ]);
         this.spawn.enemyRoomOptions = Util.getpath(spec, 'spawn.enemyRoomOptions', [
             { weight: .2, chance: 0 },
@@ -168,7 +168,6 @@ class ProcTemplate {
             { weight: .5, chance: 0 },
             { weight: .5, chance: 1, min: 1, max: 2 },
         ]);
-        //this.spawn.roomSpawnChance = Util.getpath(spec, 'spawn.roomSpawnChance', .5);
         // -- traps
         this.spawn.trapList = Util.getpath(spec, 'spawn.trapList', []);
         this.spawn.trapHiddenPct = Util.getpath(spec, 'spawn.trapHiddenPct', .75);

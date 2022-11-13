@@ -1,22 +1,14 @@
 export { ProcGen };
 
-    import { Assets } from '../base/assets.js';
-import { Config } from '../base/config.js';
-import { Fmt } from '../base/fmt.js';
 import { SimpleNoise } from '../base/noise.js';
 import { Prng } from '../base/prng.js';
 import { Random } from '../base/random.js';
 import { UxDbg } from '../base/uxDbg.js';
-import { XForm } from '../base/xform.js';
-import { Player } from '../entities/player.js';
-import { Reactor } from '../entities/reactor.js';
-import { Weapon } from '../entities/weapon.js';
-import { InventoryData } from '../inventory.js';
 import { Discovery } from './discovery.js';
 import { Layout } from './layout.js';
 import { Outline } from './outline.js';
-import { ProcRoom } from './proom.js';
 import { Spawn } from './spawn.js';
+import { MiniaTemplates } from './templates.js';
 import { Translate } from './translate.js';
 
 class ProcGen {
@@ -35,25 +27,56 @@ class ProcGen {
     }
 
     static *levelGenerator(template={}, pstate={}) {
-        // -- general initialization
-        yield *this.initGenerator(template, pstate);
-        let validLevel = true;
-        do {
-            // -- generate room layout
-            yield *Layout.generator(template, pstate);
-            // -- generate level outline
-            yield *Outline.generator(template, pstate);
-            validLevel = Outline.validate(template, pstate);
-            if (!validLevel) {
-                for (const key in pstate) {
-                    if (key !== 'pnoise') delete pstate[key];
-                }
+        /*
+        let xpt = 0;
+        let enemyt = 0;
+        template = MiniaTemplates.rockLvl.copy();
+        template.index = 11;
+        */
+        let ok = false;
+        let tries = 100;
+        let resetSeed = template.seed === 0;
+        while (!ok && tries > 0) {
+            tries--;
+            try {
+                // -- general initialization
+                yield *this.initGenerator(template, pstate);
+                console.log(`-- seed: ${template.seed}`);
+                let validLevel = true;
+                do {
+                    // -- generate room layout
+                    yield *Layout.generator(template, pstate);
+                    // -- generate level outline
+                    yield *Outline.generator(template, pstate);
+                    validLevel = Outline.validate(template, pstate);
+                    if (!validLevel) {
+                        for (const key in pstate) {
+                            if (key !== 'pnoise') delete pstate[key];
+                        }
+                    }
+                } while (!validLevel);
+                // -- translate level outline to level data
+                yield *Translate.generator(template, pstate);
+                // -- spawn non-tile entities
+                if (template.dospawn) yield *Spawn.generator(template, pstate);
+                ok = true;
+            } catch (error) {
+                console.log(`-- generator error: ${error}`);
+                if (resetSeed) template.seed=0;
             }
-        } while (!validLevel);
-        // -- translate level outline to level data
-        yield *Translate.generator(template, pstate);
-        // -- spawn non-tile entities
-        if (template.dospawn) yield *Spawn.generator(template, pstate);
+        }
+        /*
+        let xp = pstate.plvl.entities.reduce((pv, cv) => (cv.xp) ? pv+cv.xp : pv, 0);
+        let enemies = pstate.plvl.entities.reduce((pv, cv) => (['Rous', 'Digger', 'Energy', 'Funguy', 'Golem', 'Magma', 'Scarab'].includes(cv.cls)) ? pv+1 : pv, 0);
+        console.log(`rooms: ${pstate.prooms.length} halls: ${pstate.phalls.length} `+
+            `enemies: ${enemies} `+
+            `xp: ${xp}`);
+        xpt += xp;
+        enemyt += enemies;
+        template.seed=0;
+        console.log(`-- xp avg ${Math.round(xpt/100)}`);
+        console.log(`-- enemy avg ${Math.round(enemyt/100)}`);
+        */
     }
 
     static dbgGenerateLevel(generator, pstate) {
