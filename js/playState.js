@@ -137,6 +137,7 @@ class PlayState extends GameState {
 
                 UxPanel.xspec({
                     tag: 'dbgroot',
+                    visible: false,
                     sketch: Sketch.zero,
                     x_xform: XForm.xspec({ left: .75, right: .05, top: .1, bottom: .5}),
                     x_children: [
@@ -394,12 +395,14 @@ class PlayState extends GameState {
                 break;
             }
 
+            /*
             case '0': {
-                let toggle = this.dbgroot.active;
+                let toggle = this.dbgroot.visible;
                 this.dbgroot.active = !toggle;
                 this.dbgroot.visible = !toggle;
                 break;
             }
+            */
 
             // case '1': {
             //     let toggle = this.lvl.fowEnabled;
@@ -420,6 +423,7 @@ class PlayState extends GameState {
             //     break;
             // }
 
+            /*
             case '6': {
                 console.log(`-- next lvl`);
                 let whichLevel = LevelSystem.currentLevelIndex + 1;
@@ -427,7 +431,9 @@ class PlayState extends GameState {
                 Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
                 break;
             }
+            */
 
+            /*
             case '7': {
                 UpdateSystem.eUpdate(this.player, {
                     lvl: this.player.lvl+1,
@@ -443,11 +449,14 @@ class PlayState extends GameState {
                 console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel} power: ${this.player.power}`);
                 break;
             }
+            */
 
+            /*
             case '9': {
                 Stats.enabled = !Stats.enabled;
                 break;
             }
+            */
 
         }
     }
