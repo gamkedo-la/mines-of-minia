@@ -19,6 +19,8 @@ class Magma extends Enemy{
             x_sketch: Assets.get('magma'),
             deathTTL: 600,
             attackKind: 'fire',
+            baseDamageMin: 3,
+            baseDamageMax: 7,
             pointsPerTurn: 16,
         }, spec);
     }

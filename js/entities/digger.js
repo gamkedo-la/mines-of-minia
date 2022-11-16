@@ -15,6 +15,10 @@ class Digger extends Enemy{
         return Object.assign( this.spec, {
             x_sketch: Assets.get('digger'),
             deathTTL: 1000,
+            baseDamageMin: 4,
+            baseDamageMin: 9,
+            attackKind: 'hack',
+            pointsPerTurn: 12,
         }, spec);
     }
 

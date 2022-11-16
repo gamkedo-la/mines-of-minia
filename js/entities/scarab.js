@@ -18,6 +18,9 @@ class Scarab extends Enemy{
             moveSfx: Assets.get('scarab.move', true),
             x_sketch: Assets.get('scarab'),
             pointsPerTurn: 6,
+            attackKind: 'hack',
+            baseDamageMin: 1,
+            baseDamageMin: 2,
         }, spec);
     }
 

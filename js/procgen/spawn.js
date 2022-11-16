@@ -1584,11 +1584,11 @@ class Spawn {
             //Gem.xspec({ kind: 'daze', }),
             //Gem.xspec({ kind: 'power', }),
             //Gem.xspec({ kind: 'stealth', }),
-            this.genGadget(template),
-            this.genShielding(template),
+            //this.genGadget(template),
+            //this.genShielding(template),
 
             this.genRanged(template),
-            Digger.xspec({ healthMax: 10, xp: 1, }),
+            Funguy.xspec({lvl: 2}),
 
 
         ];
@@ -1623,7 +1623,7 @@ class Spawn {
             sketch: Assets.get('player', true),
             maxSpeed: Config.tileSize/.3/1000,
             z: template.fgZed,
-            healthMax: 100,
+            healthMax: 25,
             losRange: Config.tileSize*5,
             team: 'player',
             inventory: new InventoryData({

@@ -4,8 +4,8 @@ import { AiBombTargetDirective } from '../ai/aiBombTargetDirective.js';
 import { AiThumpTargetDirective } from '../ai/aiThumpTargetDirective.js';
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
-import { Prng } from '../base/prng.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
+import { LvlVar } from '../lvlVar.js';
 import { Enemy } from './enemy.js';
 
 
@@ -18,23 +18,21 @@ import { Enemy } from './enemy.js';
 class ThumpBot extends Enemy {
     static dfltAnimState = 'idle.west';
     static mobile = false;
+    static gHealth = new LvlVar({ baseMin: 5, baseMax: 8, perLvlMin: 2, perLvlMax: 3 } );
+    static gXp = new LvlVar({ base: 4, perLvl: 2 } );
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
-        // parse lvl
-        let lvl = spec.lvl || 1;
-        // health
-        let health = Prng.rangeInt(3,8);
-        for (let i=1; i<lvl; i++) health += Prng.rangeInt(1,3);
         // final spec
         return Object.assign( {}, this.spec, {
-            xp: 5,
-            healthMax: health,
             attackRating: 75,
             x_sketch: Assets.get('thumpBot'),
             maxSpeed: Config.tileSize/.3/1000,
             losRange: Config.tileSize*14,
             aggroRange: Config.tileSize*14,
             deathTTL: 1000,
+            attackKind: 'bonk',
+            baseDamageMin: 5,
+            baseDamageMin: 15,
         }, spec);
     }
 

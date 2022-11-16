@@ -18,6 +18,7 @@ class Enemy extends Character {
     static dfltHealth = 1;
     static dfltDamage = 1;
     static dfltXp= 1;
+    static dfltDamageScale = 1.25;
     // generator info
     static gHealth = new LvlVar({ base: 1 });
     static gXp = new LvlVar({ base: 1 });
@@ -38,8 +39,9 @@ class Enemy extends Character {
         this.xp = spec.xp || this.constructor.dfltXp;
         // -- damage
         this.attackKind = spec.attackKind || this.constructor.dfltAttackKind;
-        this.damageMin = spec.damageMin || this.constructor.dfltDamage;
-        this.damageMax = spec.damageMax || this.constructor.dfltDamage;
+        this.baseDamageMin = spec.baseDamageMin || this.constructor.dfltDamage;
+        this.baseDamageMax = spec.baseDamageMax || this.constructor.dfltDamage;
+        this.damageScale = spec.damageScale || this.constructor.dfltDamageScale;
         // -- bind event handlers
         this.onLevelLoaded = this.onLevelLoaded.bind(this);
         this.onAggro = this.onAggro.bind(this);
@@ -64,12 +66,18 @@ class Enemy extends Character {
             defenseRating: this.defenseRating,
             xp: this.xp,
             attackKind: this.attackKind,
-            damageMin: this.damageMin,
-            damageMax: this.damageMax,
+            baseDamageMin: this.baseDamageMin,
+            baseDamageMax: this.baseDamageMax,
         });
     }
 
     // PROPERTIES ----------------------------------------------------------
+    get damageMin() {
+        return Math.round(this.baseDamageMin*this.lvl*(this.damageScale-1));
+    }
+    get damageMax() {
+        return Math.round(this.baseDamageMax*this.lvl*(this.damageScale-1));
+    }
 
     // EVENT HANDLERS ------------------------------------------------------
     onLevelLoaded(evt) {

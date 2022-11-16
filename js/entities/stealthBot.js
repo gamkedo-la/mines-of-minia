@@ -8,10 +8,10 @@ import { AiMoveTowardsTargetDirective } from '../ai/aiMoveTowardsTargetDirective
 import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Fmt } from '../base/fmt.js';
-import { Prng } from '../base/prng.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { DazedCharm } from '../charms/dazed.js';
+import { LvlVar } from '../lvlVar.js';
 import { Enemy } from './enemy.js';
 
 /**
@@ -23,22 +23,21 @@ import { Enemy } from './enemy.js';
  * -- after attacking or being attacked, will move to range and re-enter stealth
  */
 class StealthBot extends Enemy {
+    static gHealth = new LvlVar({ baseMin: 4, baseMax: 7, perLvlMin: 2, perLvlMax: 3 } );
+    static gXp = new LvlVar({ base: 4, perLvl: 2 } );
+
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
-        // parse lvl
-        let lvl = spec.lvl || 1;
-        // health
-        let health = Prng.rangeInt(3,8);
-        for (let i=1; i<lvl; i++) health += Prng.rangeInt(1,3);
         // final spec
         return Object.assign( {}, this.spec, {
-            xp: 5,
-            healthMax: health,
             attackRating: 75,
             x_sketch: Assets.get('sneak'),
             maxSpeed: Config.tileSize/.3/1000,
             losRange: Config.tileSize*14,
             aggroRange: Config.tileSize*14,
+            baseDamageMin: 4,
+            baseDamageMin: 8,
+            attackKind: 'hack',
             deathTTL: 1000,
         }, spec);
     }

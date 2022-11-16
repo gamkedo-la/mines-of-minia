@@ -18,7 +18,7 @@ import { Enemy } from './enemy.js';
 
 class Energy extends Enemy{
     static gHealth = new LvlVar({ baseMin: 4, baseMax: 8, perLvlMin: 1, perLvlMax: 3 } );
-    static gXp = new LvlVar({ base: 5, perLvl: 2 } );
+    static gXp = new LvlVar({ base: 10, perLvl: 2 } );
 
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
@@ -27,6 +27,8 @@ class Energy extends Enemy{
             x_sketch: Assets.get('energy-shock'),
             deathTTL: 600,
             attackKind: 'shock',
+            baseDamageMin: 3,
+            baseDamageMax: 6,
             animState: 'idle',
             pointsPerTurn: 8,
         }, spec);

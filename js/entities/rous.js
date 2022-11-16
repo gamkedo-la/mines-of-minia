@@ -14,6 +14,9 @@ class Rous extends Enemy{
         return Object.assign( this.spec, {
             x_sketch: Assets.get('rous'),
             deathTTL: 500,
+            baseDamageMin: 1,
+            baseDamageMax: 3,
+            attackKind: 'poke',
         }, spec);
     }
 

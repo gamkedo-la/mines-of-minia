@@ -31,6 +31,9 @@ class Slimer extends Enemy{
             pointsPerTurn: 10,
             blockedBy: this.block.wall,
             aggroRange: Config.tileSize*3,
+            attackKind: 'bonk',
+            baseDamageMin: 4,
+            baseDamageMin: 8,
         }, spec);
     }
 

@@ -44,12 +44,26 @@ class Player extends Character {
         21: 5000,
     }
     static attUpdatesByLvl = {
-        2: {
-            healthMax: 10,
-        },
-        3: {
-            healthMax: 10,
-        },
+        2: { healthMax: 10 },
+        3: { healthMax: 10 },
+        4: { healthMax: 10 },
+        5: { healthMax: 10, powerMax: 5 },
+        6: { healthMax: 10 },
+        7: { healthMax: 10 },
+        8: { healthMax: 10 },
+        9: { healthMax: 10 },
+        10: { healthMax: 10, powerMax: 5 },
+        11: { healthMax: 10 },
+        12: { healthMax: 10 },
+        13: { healthMax: 10 },
+        14: { healthMax: 10 },
+        15: { healthMax: 10, powerMax: 5 },
+        16: { healthMax: 10 },
+        17: { healthMax: 10 },
+        18: { healthMax: 10 },
+        19: { healthMax: 10 },
+        20: { healthMax: 10, powerMax: 5 },
+        21: { healthMax: 10 },
     }
 
     static dfltWeapon = new Weapon({
