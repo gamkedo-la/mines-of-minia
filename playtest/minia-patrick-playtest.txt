@@ -1,0 +1,246 @@
+time stamps are pretty rough.
+went by the time on the clock, and converted them after the fact. 
+sorry about that x_x
+
+gonna turn this into a rough transcription to start
+and then go back for exact quotes as needs
+unless noted like so
+
+> quote
+
+quote marks likely denote a paraphrased sentance 
+
+# 0:00
+
+"can i click to move?"
+"can i use the arrow keys?"
+
+# +1:00 (starting at 9:49pm)
+pat wonders about the TNT, if he can interact with it
+
+esc will back out of menu
+and also back out of full screen 
+
+wondering about the turn based progression
+am i missing?
+^ additional feedback 
+
+is that what the scan does?
+did i just hit a trap?
+
+i'm getting whoomped
+"can i go diagonal"
+^ he can but he doesn't know that 
+
+door baiting
+
+curious about the tnt
+
+same level same seed 
+seems hard to clear the first stage
+the diagonal advantage is too strong
+
+"attacking first seems like the way to go"
+
+9:54 
+"talents...i didn't look at this before
+
+how to heal?
+what's the green plus?
+
+the mushroom can shoot through walls...feels really really cheap
+
+what is fuel?
+
+"fuel is not health"
+
+"i'm just gonna speed around for a bit"
+
+a: are you using the mouse?
+...he did start using the mouse
+
+"can't cacel out of the mouse
+
+^ noting displeasure 
+
+shrooms can't fire close range?
+
+9:57 what did i pick up?
+i'm moving it...i just wanna click it
+
+invuln cog
+
+what is power?
+9:59 do i have a power to use the power?
+
+"ok i *can* use the ax...is it just more effective if I have the spry
+
+10:00 what is a medium level of spry
+^ is it cursed?
+
+10:01 i'm level 2, when did that happen?
+p is trying to see if changing weapons is changing his stats 
+
+10:02
+"how will i know what the charm is"
+
+10:03 does scanning cost me anything?
+
+10:04 if if me or perf...but sometimes the movement is jumpy
+
+god, traps all over this room
+
+a: do the keys work 
+
+"i wish i could hold the arrow key"
+like just hold and keep going
+
+does leveling up increase your stats
+
+"didn't know the enemies could hit that traps, that's awesome"
+
+idk what the yellow bar is...
+"i assume the yellow bar is the fuel bar"
+"guess i'll have to find that often enough 
+
+10:08
+"now that i understand i have fuel...not sure i wanna go back"
+"can i go back if i go up...gamer intuition is telling me no"
+
+10:09
+we broke the build
+just refer back to this point, for error reporting
+
+concrete stuff to give tylor
+
+10:12 reloaded the page...and i got a new level
+"i can learn the level if i just never reload"
+
+helment
+"now i can see myself whereing it...
+maybe bc it was gold same color
+
+"idk if the colored door signifies things...one asked me for a key
+"i guess i used a key
+
+"i was unware i used my key
+"upright v sideways
+
+idk if the orange doors take keys
+
+"last level had them all horitzonal...so i didn't know"
+
+10:17
+"this is where i wanna hold to run, backtracking"
+"so i use the mouse"
+
+10:17
+"i hope this is a trader"
+wants to use his coins, hasn't seen a chance to do that yet
+
+still hasn't figured out diagonal strike
+is it too easy to just camp in a doorway?
+
+10:19 clicking stat changes dmg red. 
+^ is it just bc of the gadget?
+
+"i really need fuel, idk where to find it"
+"do i need to scan for fuel, or does scanning take fuel"
+
+10:23 
+"door to a dead end"
+
+
+10:25
+re: charms
+"i'm just assume their all good
+
+"idk what the tnt is about
+"does it take more fuel to go through these vines?
+
+"do seem to not be taking dmg from the spiders
+^ is this armor very op
+
+10:27
+
+"then i have to click on the screen to get focused
+
+is he just missing?
+i think more feedback is needed
+
+sound, something anything
+"phew" - miss. 
+
+10:28 "i have 92 money
+
+meet with liz...ask her how to best process video and notes, etc 
+the heck do i know
+
+10:30
+i can throw things?
+"i'm gonna save the gems till i'm in trouble...idk what they do but i assume they're gonna help"
+
+1031 "is that a gun??
+discovers the quick slot
+"ah now i'm using the blue bar
+
+10:32 performance is taking a hit
+
+10:33 oh god it's really bad here 
+is this what he's selling?
+
+- woah...massive goal for sells
+^ it seems kinda imba...
+but that could be a valid thing idk
+
+why haven't i equipped this reactor?
+
+1035 the rector didn't look like an icon 
+
+10:36
+he's takin all the fuel
+fuel is v cheap...yeah there are balance issues here 
+
+switched over a bit to do some soundtrack
+i think he went upstairs
+i he thinks his health is bugged
+
+oh the level up seems to be upgrading the talents
+- he kinda forgot about it
+idk how much of this is usability problems v...
+it's an interface he needs to learn 
+
+shield is bugged too?
+
+he's very proactive. it's nice ^_^
+
+"this feels like a good stopping point"
+
+can slow it down by scanning spam 
+
+scan lag (@ end of second tape)
+
+attacking without a weapon breaks the game
+
+"the snappiness of the movement bothers me
+it doesn't feel linear"
+something about the camera 
+it's not a smooth stop a little jerky at the end
+
+i wish i knew what some of the items were doing more
+^ tool tips
+
+i like the myster aspect of the items
+
+you discover it over time
+he's aware of what the items are generally
+and the mystery intention
+but "it would take few items"
+
+"couldn't figure out what they were doing after i equipement"
+
+"definitely fun"
+"i wanna know what all the things do"
+likes the movement as attack 
+
+"i do wonder how many levels there are...do take some time"

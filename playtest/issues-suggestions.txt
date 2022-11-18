@@ -1,0 +1,3 @@
+# issues/suggestions
+
+pat seemed to be unable to figure out that QEZC (or i guess clicking a diagonally adjacent tile) allows for diagonal attacks/motion. mentioned several times that enemies had a "diagonal advantage" over the bot. 
