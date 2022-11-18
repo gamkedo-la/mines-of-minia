@@ -303,25 +303,25 @@ class InventoryData {
 class Inventory extends UxView {
     // STATIC PROPERTIES ---------------------------------------------------
     static get dfltSelectedUnpressed() {
-        return Assets.get('frame.blue.2', true, {lockRatio: true});
+        return Assets.get('equip.slot.blue', true, {lockRatio: true});
     }
     static get dfltSelectedPressed() {
-        return Assets.get('frame.red.2', true, {lockRatio: true});
+        return Assets.get('equip.slot.blue', true, {lockRatio: true});
     }
     static get dfltSelectedHighlight() {
-        return Assets.get('frame.yellow.2', true, {lockRatio: true});
+        return Assets.get('equip.slot.yellow', true, {lockRatio: true});
     }
     static get dfltUnpressed() {
-        return Assets.get('frame.blue', true, {lockRatio: true});
+        return Assets.get('equip.slot.trans', true, {lockRatio: true});
     }
     static get dfltPressed() {
-        return Assets.get('frame.red', true, {lockRatio: true});
+        return Assets.get('equip.slot.trans', true, {lockRatio: true});
     }
     static get dfltHighlight() {
-        return Assets.get('frame.yellow', true, {lockRatio: true});
+        return Assets.get('equip.slot.yellow', true, {lockRatio: true});
     }
     static get dfltMark() {
-        return Assets.get('frame.green.2', true, {lockRatio: true});
+        return Assets.get('equip.slot.green', true, {lockRatio: true});
     }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
@@ -339,13 +339,14 @@ class Inventory extends UxView {
         this.onStatsClick = this.onStatsClick.bind(this);
 
         this.bg = new UxPanel({
-            sketch: Assets.get('oframe.red', true),
-            xform: new XForm({offset: 10, right:.3}),
+            sketch: Assets.get('equip.bg', true),
+            xform: new XForm({right:11/33}),
             children: [
                 new UxPanel({
                     tag: 'equip',
                     xform: new XForm({offset: 10, top: .1, bottom: .2, right:.6}),
-                    sketch: Assets.get('frame.red', true),
+                    //sketch: Assets.get('frame.red', true),
+                    sketch: Sketch.zero,
                     children: [
                         new UxText({
                             text: new Text({text: 'equipment', color: invTextColor}),

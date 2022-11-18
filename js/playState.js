@@ -492,7 +492,7 @@ class PlayState extends GameState {
         if (this.inventory) this.inventory.destroy();
         this.inventory = new Inventory({
             tag: 'inventory',
-            xform: new XForm({border: .1}),
+            xform: new XForm({left: 4/39, right: 2/39, top: 1/21, bottom: 1/21, width: 33, height: 19, lockRatio: true}),
             data: this.player.inventory,
         });
         // handle inventory closing, re-enable
