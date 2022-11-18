@@ -35,118 +35,104 @@ class Hud extends UxView {
             //sketch: Sketch.zero,
             children: [
                 new UxPanel({
-                    sketch: Sketch.zero,
-                    xform: new XForm({oleft: 22, otop: 22, origx: 0, origy: 0, right: .7, bottom: .75, width: 220, height: 100, lockRatio: true}),
-                    //xform: new XForm({oleft: 22, otop: 22, bottom: .75, right: .7}),
+                    sketch: Assets.get('hud.bar.panel', true),
+                    xform: new XForm({right: 23/30, bottom: 18/22, width: 7, height: 4, origx: 0, origy: 0, lockRatio: true}),
                     children: [
-                        new UxPanel({
-                            sketch: Sketch.zero,
-                            xform: new XForm({bottom: .3, right: .3}),
-                            children: [
-                                new UxPanel({
-                                    sketch: Assets.get('hud.portrait', true, {lockRatio: true}),
-                                    xform: new XForm({right: .6,}),
-                                }),
-                                new UxPanel({
-                                    sketch: Sketch.zero,
-                                    //xform: new XForm({left: .35, top: .2, bottom: .2, lockRatio: true, width: 22, height: 10, origx: 0, origy: 0}),
-                                    xform: new XForm({left: .2, right: -.1, top: .1, bottom: .1 }),
-                                    children: [
-                                        this.sliderBar('bar.health', new XForm({bottom: .67}), "rgba(179,56,49,1)"),
-                                        this.sliderBar('bar.power', new XForm({left: .05, right: -.05, top: .33, bottom: .33}), "rgba(77,101,180,1)"),
-                                        this.sliderBar('bar.fuel', new XForm({top: .67}), "rgba(247,150,23,1)"),
-                                    ],
-                                }),
-                            ],
+                        this.sliderBar('bar.health', new XForm({left: 0/7, right: 2/7, top: 0/4, bottom: 3/4}), "rgba(179,56,49,1)"),
+                        this.sliderBar('bar.power', new XForm({left: 0/7, right: 2/7, top: 1/4, bottom: 2/4}), "rgba(77,101,180,1)"),
+                        this.sliderBar('bar.fuel', new XForm({left: 0/7, right: 2/7, top: 2/4, bottom: 1/4}), "rgba(247,150,23,1)"),
+                    ],
+                }),
+
+                new UxPanel({
+                    sketch: Assets.get('hud.button.panel', true),
+                    xform: new XForm({left: 8/30, right: 6/30, bottom: 19/22, width: 16, height: 3, origx: .5, origy: 0, lockRatio: true}),
+                    children: [
+                        new UxButton({
+                            tag: 'hud.wait',
+                            text: Text.zero,
+                            pressed: Assets.get('hud.wait.pressed', true),
+                            unpressed: Assets.get('hud.wait.unpressed', true),
+                            highlight: Assets.get('hud.wait.highlight', true),
+                            xform: new XForm({left: 1/16, right: 13/16, top: 0/3, bottom: 1/3}),
+                            mouseBlock: true,
+                            mousePriority: 1,
                         }),
+                        new UxButton({
+                            tag: 'hud.scan',
+                            text: Text.zero,
+                            pressed: Assets.get('hud.scan.pressed', true),
+                            unpressed: Assets.get('hud.scan.unpressed', true),
+                            highlight: Assets.get('hud.scan.highlight', true),
+                            xform: new XForm({left: 3/16, right: 11/16, top: 0/3, bottom: 1/3}),
+                            mouseBlock: true,
+                            mousePriority: 1,
+                        }),
+                        new UxButton({
+                            tag: 'hud.cancel',
+                            text: Text.zero,
+                            pressed: Assets.get('hud.cancel.pressed', true),
+                            unpressed: Assets.get('hud.cancel.unpressed', true),
+                            highlight: Assets.get('hud.cancel.highlight', true),
+                            xform: new XForm({left: 5/16, right: 9/16, top: 0/3, bottom: 1/3}),
+                            mouseBlock: true,
+                            mousePriority: 1,
+                        }),
+                        this.beltslot(0, new XForm({left: 9/16, right: 5/16, top: 0/3, bottom: 1/3})),
+                        this.beltslot(1, new XForm({left: 11/16, right: 3/16, top: 0/3, bottom: 1/3})),
+                        this.beltslot(2, new XForm({left: 13/16, right: 1/16, top: 0/3, bottom: 1/3})),
+                    ],
+                }),
+
+                new UxPanel({
+                    sketch: Assets.get('hud.toggle.panel', true),
+                    xform: new XForm({left: 25/30, bottom: 15/22, width: 5, height: 7, origx: 1, origy: 0, lockRatio: true}),
+                    //xform: new XForm({left: 25/30, bottom: 15/22}),
+                    children: [
+
                         new UxPanel({
-                            sketch: Sketch.zero,
-                            xform: new XForm({top: .7}),
-                            children: [
-                                new UxButton({
-                                    tag: 'hud.wait',
-                                    text: new Text({text: '    wait    '}),
-                                    pressed: Assets.get('hud.gbutton.pressed', true),
-                                    unpressed: Assets.get('hud.gbutton.unpressed', true),
-                                    highlight: Assets.get('hud.gbutton.highlight', true),
-                                    xform: new XForm({offset: 1, right: .875, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
-                                    mouseBlock: true,
-                                    mousePriority: 1,
-                                }),
-                                new UxButton({
-                                    tag: 'hud.scan',
-                                    text: new Text({text: '    scan    '}),
-                                    pressed: Assets.get('hud.gbutton.pressed', true),
-                                    unpressed: Assets.get('hud.gbutton.unpressed', true),
-                                    highlight: Assets.get('hud.gbutton.highlight', true),
-                                    xform: new XForm({offset: 1, left: .125, right: .75, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
-                                    mouseBlock: true,
-                                    mousePriority: 1,
-                                }),
-                                new UxButton({
-                                    tag: 'hud.cancel',
-                                    text: new Text({text: '   cancel   '}),
-                                    pressed: Assets.get('hud.button.pressed', true),
-                                    unpressed: Assets.get('hud.button.unpressed', true),
-                                    highlight: Assets.get('hud.button.highlight', true),
-                                    xform: new XForm({offset: 1, left: .25, right: .625, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
-                                    mouseBlock: true,
-                                    mousePriority: 1,
-                                }),
-                                new UxPanel({
-                                    sketch: Sketch.zero,
-                                    xform: new XForm({ left: .375, lockRatio: true }),
-                                    mouseBlock: true,
-                                    mousePriority: 1,
-                                    children: [
-                                        this.beltslot(0),
-                                        this.beltslot(1),
-                                        this.beltslot(2),
-                                        this.beltslot(3),
-                                        this.beltslot(4),
-                                    ],
-                                }),
-                            ],
+                            sketch: Assets.get('hud.options.panel', true),
+                            xform: new XForm({left: 1/5, right: 2/5, top: 0/7, bottom: 5/7}),
+                        }),
+                        new UxButton({
+                            tag: 'hud.options',
+                            text: Text.zero,
+                            pressed: Assets.get('hud.switch.pressed', true),
+                            unpressed: Assets.get('hud.switch.unpressed', true),
+                            highlight: Assets.get('hud.switch.highlight', true),
+                            xform: new XForm({left: 3/5, right: 0/5, top: 0/7, bottom: 5/7}),
+                            mouseBlock: true,
+                            mousePriority: 1,
                         }),
 
                         new UxPanel({
-                            sketch: Sketch.zero,
-                            xform: new XForm({top: 0, left: .7, bottom: .3}),
-                            children: [
-                                new UxButton({
-                                    tag: 'hud.options',
-                                    text: new Text({text: '    options    '}),
-                                    pressed: Assets.get('hud.button.pressed', true),
-                                    unpressed: Assets.get('hud.button.unpressed', true),
-                                    highlight: Assets.get('hud.button.highlight', true),
-                                    xform: new XForm({offset: 1, left: .5, bottom: .67, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
-                                    mouseBlock: true,
-                                    mousePriority: 1,
-                                }),
+                            sketch: Assets.get('hud.equip.panel', true),
+                            xform: new XForm({left: 1/5, right: 2/5, top: 2/7, bottom: 3/7}),
+                        }),
+                        new UxButton({
+                            tag: 'hud.equip',
+                            text: Text.zero,
+                            pressed: Assets.get('hud.switch.pressed', true),
+                            unpressed: Assets.get('hud.switch.unpressed', true),
+                            highlight: Assets.get('hud.switch.highlight', true),
+                            xform: new XForm({left: 3/5, right: 0/5, top: 2/7, bottom: 3/7}),
+                            mouseBlock: true,
+                            mousePriority: 1,
+                        }),
 
-                                new UxButton({
-                                    tag: 'hud.equip',
-                                    text: new Text({text: '    equip    '}),
-                                    pressed: Assets.get('hud.button.pressed', true),
-                                    unpressed: Assets.get('hud.button.unpressed', true),
-                                    highlight: Assets.get('hud.button.highlight', true),
-                                    xform: new XForm({offset: 1, left: .5, top: .33, bottom: .33, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
-                                    mouseBlock: true,
-                                    mousePriority: 1,
-                                }),
-
-                                new UxButton({
-                                    tag: 'hud.talents',
-                                    text: new Text({text: '  talents  '}),
-                                    pressed: Assets.get('hud.button.pressed', true),
-                                    unpressed: Assets.get('hud.button.unpressed', true),
-                                    highlight: Assets.get('hud.button.highlight', true),
-                                    xform: new XForm({offset: 1, left: .5, top: .67, lockRatio: true, width: 10, height: 10, origx: .5, origy: .5}),
-                                    mouseBlock: true,
-                                    mousePriority: 1,
-                                }),
-
-                            ],
+                        new UxPanel({
+                            sketch: Assets.get('hud.talents.panel', true),
+                            xform: new XForm({left: 1/5, right: 2/5, top: 4/7, bottom: 1/7}),
+                        }),
+                        new UxButton({
+                            tag: 'hud.talents',
+                            text: Text.zero,
+                            pressed: Assets.get('hud.switch.pressed', true),
+                            unpressed: Assets.get('hud.switch.unpressed', true),
+                            highlight: Assets.get('hud.switch.highlight', true),
+                            xform: new XForm({left: 3/5, right: 0/5, top: 4/7, bottom: 1/7}),
+                            mouseBlock: true,
+                            mousePriority: 1,
                         }),
 
                     ],
@@ -184,8 +170,8 @@ class Hud extends UxView {
 
     // EVENT HANDLERS ------------------------------------------------------
     onBeltChanged(evt) {
-        let inactive = 5-this.player.inventory.beltSlots;
-        this.assignBelt(evt.slot, inactive+evt.slot);
+        //let inactive = 3-this.player.inventory.beltSlots;
+        this.assignBelt(evt.slot, evt.slot);
     }
 
     onBeltClicked(evt) {
@@ -231,14 +217,16 @@ class Hud extends UxView {
     linkPlayer(player) {
         this.player = player;
         // disable inactive belt slots
-        let inactive = 5-this.player.inventory.beltSlots;
+        /*
+        let inactive = 3-this.player.inventory.beltSlots;
         for (let i=0; i<inactive; i++) {
             let root = Hierarchy.find(this, (v) => v.tag === `belt.root.${i}`);
             root.active = false;
             root.visible = false;
         }
-        for (let i=inactive; i<5; i++) {
-            this.assignBelt(i-inactive, i);
+        */
+        for (let i=0; i<3; i++) {
+            this.assignBelt(i, i);
         }
         this.assignHealth(this.player.health, this.player.healthMax);
         this.assignPower(this.player.power, this.player.powerMax);
@@ -296,7 +284,7 @@ class Hud extends UxView {
             children: [
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({left: .225, right: .225, top: .31, bottom: .31, }),
+                    xform: new XForm({left: .15, right: .15, top: .31, bottom: .31, }),
                     children: [
                         new UxPanel({
                             tag: tag,
@@ -305,21 +293,20 @@ class Hud extends UxView {
                     ],
                 }),
                 new UxPanel({
-                    sketch: Assets.get('hud.bar', true, {lockRatio: true}),
+                    //sketch: Assets.get('hud.bar', true, {lockRatio: true}),
+                    sketch: Assets.get('hud.bar', true),
                 }),
             ],
         });
 
     }
 
-    beltslot(idx) {
+    beltslot(idx, xform) {
 
         return new UxPanel({
-            // idx: 0 left: 0 right: .8
-            // idx: 1 left: .2 right: .6
             tag: `belt.root.${idx}`,
             sketch: Sketch.zero,
-            xform: new XForm({left: idx*.2, right: 1-(idx+1)*.2, offset: 4, lockRatio: true, width: 10, height: 10, origy: 1}),
+            xform: xform,
             children: [
                 new UxPanel({ sketch: Assets.get('hud.sbutton.bg', true) }),
                 new UxPanel({ tag: `belt.${idx}`, sketch: Sketch.zero, xform: new XForm({ border: .175 }) }),

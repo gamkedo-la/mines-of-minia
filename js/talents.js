@@ -211,7 +211,6 @@ class Talents extends UxView {
     }
 
     onKeyDown(evt) {
-        console.log(`onKeyDown: ${Fmt.ofmt(evt)}`);
         if (!this.active) return;
         switch (evt.key) {
         case 't':
@@ -273,7 +272,6 @@ class Talents extends UxView {
     slot(spec, slot=null) {
         let slotTag = slot || 'slot';
         let sketch = Assets.get(`talent.${slotTag}`, true);
-        console.log(`slot: ${slot}, sketch: ${sketch}`);
         // outer panel for positioning...
         let panel = new UxPanel( Object.assign( {
             sketch: Sketch.zero,
