@@ -992,7 +992,7 @@ class ItemPopup extends UxView {
         super.cpost(spec);
         this.handleUse = spec.handleUse;
         this.handleDrop = spec.handleDrop;
-        let title = spec.title || 'info';
+        //let title = spec.title || 'info';
         this.wantTarget = spec.wantTarget;
         this.item;
         this.target;
@@ -1001,55 +1001,95 @@ class ItemPopup extends UxView {
             sketch: Assets.get('equip.pop.bg', true),
             children: [
                 // title
+                /*
                 new UxText({
                     tag: 'title',
                     xform: new XForm({offset: 5, bottom: .9}),
                     text: new Text({ text: title, color: invTextColor}),
                 }),
+                */
 
-                // top panel
                 new UxPanel({
-                    xform: new XForm({top: .1, bottom: .7}),
-                    sketch: Sketch.zero,
+                    xform: new XForm({left: 2/11, right: 7/11, top: 2/13, bottom: 9/13}),
+                    sketch: Assets.get('equip.slot.trans', true),
                     children: [
                         new UxPanel({
-                            xform: new XForm({offset: 10, right: .7, width: 10, height: 10, lockRatio: true}),
-                            sketch: Assets.get('frame.red', true),
-                            children: [
-                                new UxPanel({
-                                    tag: 'item.picture',
-                                    xform: new XForm({border: .1}),
-                                    sketch: Sketch.zero,
-                                }),
-                            ],
+                            tag: 'item.picture',
+                            xform: new XForm({border: .1}),
+                            sketch: Sketch.zero,
                         }),
+                    ],
+                }),
 
-                        new UxText({
-                            tag: 'item.name',
-                            xform: new XForm({left: .3, offset: 5, top: .1, bottom: .4}),
-                            text: new Text({ text: 'name', color: invTextColor, align: 'left'}),
-                        }),
+                new UxText({
+                    tag: 'item.name',
+                    xform: new XForm({left: 4.5/11, right: 2.75/11, top: 2/13, bottom: 10/13}),
+                    text: new Text({ text: 'name', color: invTextColor, align: 'left'}),
+                }),
 
-                        new UxText({
-                            tag: 'item.kind',
-                            xform: new XForm({left: .3, offset: 5, top: .5, bottom: .1}),
-                            text: new Text({ text: 'kind', color: invTextColor, align: 'left'}),
-                        }),
-
-                    ]
+                new UxText({
+                    tag: 'item.kind',
+                    xform: new XForm({left: 5/11, right: 3/11, top: 3/13, bottom: 9/13}),
+                    text: new Text({ text: 'kind', color: invTextColor, align: 'left'}),
                 }),
 
                 // description
                 new UxPanel({
-                    xform: new XForm({top: .325, bottom: .225}),
+                    xform: new XForm({left: 2/11, right: 3/11, top: 6/13, bottom: 4/13}),
                     sketch: Sketch.zero,
                     children: [
                         new UxText({
                             tag: 'item.description',
-                            xform: new XForm({offset: 15}),
+                            xform: new XForm({offset: 0}),
                             text: new Text({wrap: true, text: 'description', color: invTextColor, valign: 'top', align: 'left'}),
                         }),
                     ]
+                }),
+
+                // buttons
+                new UxButton({
+                    tag: 'item.use',
+                    xform: new XForm({left: 1/11, right: 8/11, top: 10/13, bottom: 1/13}),
+                    unpressed: Assets.get('hud.green.unpressed', true),
+                    pressed: Assets.get('hud.green.pressed', true),
+                    highlight: Assets.get('hud.green.highlight', true),
+                    text: new Text({text: '    use    '}),
+                }),
+
+                new UxButton({
+                    tag: 'item.confirm',
+                    xform: new XForm({left: 1/11, right: 8/11, top: 10/13, bottom: 1/13}),
+                    text: new Text({text: ' confirm '}),
+                    unpressed: Assets.get('hud.green.unpressed', true),
+                    pressed: Assets.get('hud.green.pressed', true),
+                    highlight: Assets.get('hud.green.highlight', true),
+                }),
+
+                new UxButton({
+                    tag: 'item.drop',
+                    xform: new XForm({left: 3/11, right: 6/11, top: 10/13, bottom: 1/13}),
+                    text: new Text({text: '    drop    '}),
+                    unpressed: Assets.get('hud.green.unpressed', true),
+                    pressed: Assets.get('hud.green.pressed', true),
+                    highlight: Assets.get('hud.green.highlight', true),
+                }),
+
+                new UxButton({
+                    tag: 'item.throw',
+                    xform: new XForm({left: 5/11, right: 4/11, top: 10/13, bottom: 1/13}),
+                    text: new Text({text: '    throw    '}),
+                    unpressed: Assets.get('hud.green.unpressed', true),
+                    pressed: Assets.get('hud.green.pressed', true),
+                    highlight: Assets.get('hud.green.highlight', true),
+                }),
+
+                new UxButton({
+                    tag: 'item.cancel',
+                    xform: new XForm({left: 8/11, right: 1/11, top: 10/13, bottom: 1/13}),
+                    text: Text.zero,
+                    unpressed: Assets.get('hud.cancel.unpressed', true),
+                    pressed: Assets.get('hud.cancel.pressed', true),
+                    highlight: Assets.get('hud.cancel.highlight', true),
                 }),
 
                 // buttons
@@ -1057,31 +1097,7 @@ class ItemPopup extends UxView {
                     xform: new XForm({top: .8}),
                     sketch: Sketch.zero,
                     children: [
-                        new UxButton({
-                            tag: 'item.use',
-                            xform: new XForm({offset: 10, right:.67}),
-                            text: new Text({text: '   use   '}),
-                        }),
-                        new UxButton({
-                            tag: 'item.confirm',
-                            xform: new XForm({offset: 10, right:.67}),
-                            text: new Text({text: ' confirm '}),
-                        }),
-                        new UxButton({
-                            tag: 'item.drop',
-                            xform: new XForm({offset: 10, left:.33, right:.33}),
-                            text: new Text({text: '  drop  '}),
-                        }),
-                        new UxButton({
-                            tag: 'item.throw',
-                            xform: new XForm({offset: 10, left:.67}),
-                            text: new Text({text: ' throw '}),
-                        }),
-                        new UxButton({
-                            tag: 'item.cancel',
-                            xform: new XForm({offset: 10, left:.67}),
-                            text: new Text({text: ' cancel '}),
-                        }),
+
                     ]
                 }),
             ]
@@ -1089,7 +1105,7 @@ class ItemPopup extends UxView {
         this.adopt(this.panel);
 
         // ui elements
-        this.title = Hierarchy.find(this, (v) => v.tag === 'title');
+        //this.title = Hierarchy.find(this, (v) => v.tag === 'title');
         this.picture = Hierarchy.find(this, (v) => v.tag === 'item.picture');
         this.name = Hierarchy.find(this, (v) => v.tag === 'item.name');
         this.kind = Hierarchy.find(this, (v) => v.tag === 'item.kind');
@@ -1110,7 +1126,7 @@ class ItemPopup extends UxView {
         // item info state... hide confirm/cancel
         } else {
             this.confirmButton.active = this.confirmButton.visible = false;
-            this.cancelButton.active = this.cancelButton.visible = false;
+            //this.cancelButton.active = this.cancelButton.visible = false;
             // disable use button
             this.useButton.active = false;
         }
@@ -1173,7 +1189,7 @@ class ItemPopup extends UxView {
     }
 
     onCancelClicked(evt) {
-        if (!this.item.constructor.isDiscovered(this.item.kind)) {
+        if (this.item.discoverable && !this.item.constructor.isDiscovered(this.item.kind)) {
             let prompt = new Prompt({
                 xform: new XForm({ border: .3 }),
                 title: 'confirm',
