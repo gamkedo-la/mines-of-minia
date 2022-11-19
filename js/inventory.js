@@ -554,7 +554,7 @@ class Inventory extends UxView {
         } else {
             if (item) {
                 this.itemPopup = new ItemPopup({
-                    xform: new XForm({ left: 22/33, top: .2, top: 3/19, bottom: 3/19}),
+                    xform: new XForm({ left: 22/33, top: 3/19, bottom: 3/19}),
                     item: item,
                     handleUse: this.handleUse.bind(this),
                     handleDrop: this.handleDrop.bind(this),
@@ -577,7 +577,7 @@ class Inventory extends UxView {
         }
         this.itemPopup = new StatsPopup({
             player: this.data.actor,
-            xform: new XForm({ left: .7, top: .2, bottom: .2}),
+            xform: new XForm({ left: 22/33, right: -1/33, top: 3/19, bottom: 3/19}),
         });
         this.itemPopup.evt.listen(this.itemPopup.constructor.evtDestroyed, this.onPopupDestroy);
         this.adopt(this.itemPopup);
@@ -1237,30 +1237,43 @@ class StatsPopup extends UxView {
         super.cpost(spec);
         this.player = spec.player;
         this.panel = new UxPanel({
-            sketch: Assets.get('oframe.red', true),
+            sketch: Assets.get('stats.bg', true),
             children: [
                 // title
                 new UxText({
                     tag: 'title',
-                    xform: new XForm({offset: 5, bottom: .9}),
+                    xform: new XForm({left: 2/12, right: 4/12, top: 1.5/13, bottom: 10.5/13}),
                     text: new Text({ text: 'stats', color: invTextColor}),
                 }),
 
                 new UxPanel({
                     tag: 'left.panel',
                     sketch: Sketch.zero,
-                    xform: new XForm({top: .15, bottom: .15, right: .5}),
+                    xform: new XForm({left: 1.5/12, right: 7/12, top: 4/13, bottom: 2/13}),
                 }),
 
                 new UxPanel({
                     tag: 'right.panel',
                     sketch: Sketch.zero,
-                    xform: new XForm({top: .15, bottom: .15, left: .5}),
+                    xform: new XForm({left: 5/12, right: 3.5/12, top: 4/13, bottom: 2/13}),
+                }),
+
+                new UxButton({
+                    unpressed: Assets.get('hud.cancel.unpressed', true),
+                    pressed: Assets.get('hud.cancel.pressed', true),
+                    highlight: Assets.get('hud.cancel.highlight', true),
+                    tag: 'cancel.button',
+                    xform: new XForm({left: 9/12, right: 1/12, top: 10/13, bottom: 1/13}),
+                    text: Text.zero,
+                    mouseClickedSound: Assets.get('menu.click', true),
                 }),
 
             ],
         });
         this.adopt(this.panel);
+
+        let button = Hierarchy.find(this.panel, (v) => v.tag === 'cancel.button');
+        button.evt.listen(button.constructor.evtMouseClicked, () => this.destroy());
 
         let leftPanel = Hierarchy.find(this.panel, (v) => v.tag === 'left.panel');
         let leftRows = [
@@ -1293,11 +1306,11 @@ class StatsPopup extends UxView {
                 xform: new XForm({top: size*i, bottom: 1-(i+1)*size}),
                 children: [
                     new UxText({
-                        xform: new XForm({offset: 5, left: .1, right: .5}),
+                        xform: new XForm({offset: 5, left: .02, right: .5}),
                         text: new Text({ align: 'left', text: key, color: invTextColor}),
                     }),
                     new UxInput({
-                        xform: new XForm({offset: 5, left: .6, right: .1}),
+                        xform: new XForm({offset: 5, left: .6, right: 0}),
                         text: new Text({ text: value, color: invTextColor}),
                         active: false,
                     }),
@@ -1315,11 +1328,11 @@ class StatsPopup extends UxView {
                 xform: new XForm({top: size*i, bottom: 1-(i+1)*size}),
                 children: [
                     new UxText({
-                        xform: new XForm({offset: 5, left: .1, right: .5}),
+                        xform: new XForm({offset: 5, left: 0, right: .5}),
                         text: new Text({ align: 'left', text: key, color: invTextColor}),
                     }),
                     new UxInput({
-                        xform: new XForm({offset: 5, left: .6, right: .1}),
+                        xform: new XForm({offset: 5, left: .6, right: .02}),
                         text: new Text({ text: value, color: invTextColor}),
                         active: false,
                     }),

@@ -1196,6 +1196,8 @@ let miniaAssets = [
     Sprite.xspec({tag: 'equip.bg', img: new SheetRef({src: 'img/equip.png', width: 16*22, height: 16*19, x: 16*4, y: 16*1})}),
     Sprite.xspec({tag: 'equip.pop.bg', img: new SheetRef({src: 'img/equip.png', width: 16*11, height: 16*13, x: 16*26, y: 16*5})}),
 
+    Sprite.xspec({tag: 'stats.bg', img: new SheetRef({src: 'img/stats.png', width: 16*12, height: 16*13, x: 16*0, y: 16*0})}),
+
     Animation.xspec({tag: 'funguy.mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 25 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 25 }),
@@ -2647,5 +2649,7 @@ let miniaAssets = [
         },
         state: 'free',
     }),
+
+    Sprite.xspec({tag: 'title.bg', img: new ImageRef({src: 'img/Title_320x240.png'})}), 
 
 ];

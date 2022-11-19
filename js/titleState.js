@@ -1,5 +1,6 @@
 export { TitleState };
 
+    import { Assets } from './base/assets.js';
 import { Events } from './base/event.js';
 import { Game } from './base/game.js';
 import { GameState } from './base/gameState.js';
@@ -9,6 +10,7 @@ import { Keys } from './base/keys.js';
 import { MouseSystem } from './base/systems/mouseSystem.js';
 import { Text } from './base/text.js';
 import { UxCanvas } from './base/uxCanvas.js';
+import { UxPanel } from './base/uxPanel.js';
 import { UxText } from './base/uxText.js';
 import { XForm } from './base/xform.js';
 
@@ -25,6 +27,9 @@ class TitleState extends GameState {
             cvsid: 'game.canvas',
             tag: 'cvs.0',
             x_children: [
+                UxPanel.xspec({
+                    x_sketch: Assets.get('title.bg'),
+                }),
                 UxText.xspec({
                     x_text: Text.xspec({text: 'Mines of Minia', color: 'blue'}),
                     x_xform: XForm.xspec({top: .2, bottom: .6, left: .1, right: .1}),
