@@ -22,7 +22,7 @@ import { Prompt } from './prompt.js';
 import { Resurrect64 } from './resurrect64.js';
 import { TurnSystem } from './systems/turnSystem.js';
 
-const invTextColor = "yellow";
+const invTextColor = Resurrect64.colors[18];
 const counterColor = Resurrect64.colors[11];
 
 class InventoryData {
