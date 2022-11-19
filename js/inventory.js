@@ -554,7 +554,7 @@ class Inventory extends UxView {
         } else {
             if (item) {
                 this.itemPopup = new ItemPopup({
-                    xform: new XForm({ left: .7, top: .2, bottom: .2}),
+                    xform: new XForm({ left: 22/33, top: .2, top: 3/19, bottom: 3/19}),
                     item: item,
                     handleUse: this.handleUse.bind(this),
                     handleDrop: this.handleDrop.bind(this),
@@ -998,7 +998,7 @@ class ItemPopup extends UxView {
         this.target;
 
         this.panel = new UxPanel({
-            sketch: Assets.get('oframe.red', true),
+            sketch: Assets.get('equip.pop.bg', true),
             children: [
                 // title
                 new UxText({

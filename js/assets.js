@@ -1190,7 +1190,7 @@ let miniaAssets = [
     Sprite.xspec({tag: 'hud.stats.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*34, y: 16*4})}),
 
     Sprite.xspec({tag: 'equip.bg', img: new SheetRef({src: 'img/equip.png', width: 16*22, height: 16*19, x: 16*4, y: 16*1})}),
-    Sprite.xspec({tag: 'equip.pop.bg', img: new SheetRef({src: 'img/equip.png', width: 16*11, height: 16*11, x: 16*26, y: 16*5})}),
+    Sprite.xspec({tag: 'equip.pop.bg', img: new SheetRef({src: 'img/equip.png', width: 16*11, height: 16*13, x: 16*26, y: 16*5})}),
 
     Animation.xspec({tag: 'funguy.mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 25 }),
