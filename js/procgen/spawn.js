@@ -85,7 +85,7 @@ class Spawn {
         // -- spawn vendor
         this.spawnVendor(template, pstate);
         // -- test objects
-        //this.spawnTest(template, pstate);
+        this.spawnTest(template, pstate);
         yield;
     }
 
@@ -1580,15 +1580,16 @@ class Spawn {
             //Gem.xspec({ kind: 'fire', }),
             //Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
             //Token.xspec({ name: 'token', x_sketch: Assets.get('token'), count: 50 }),
-            //Gem.xspec({ kind: 'fire', }),
+            Gem.xspec({ kind: 'fire', }),
+            Gem.xspec({ kind: 'fire', }),
             //Gem.xspec({ kind: 'daze', }),
             //Gem.xspec({ kind: 'power', }),
             //Gem.xspec({ kind: 'stealth', }),
             //this.genGadget(template),
             //this.genShielding(template),
 
-            this.genRanged(template),
-            Funguy.xspec({lvl: 2}),
+            //this.genRanged(template),
+            //Funguy.xspec({lvl: 2}),
 
 
         ];

@@ -1161,6 +1161,11 @@ let miniaAssets = [
     Sprite.xspec({tag: 'equip.slot.yellow', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*10, y: 16*4})}),
     Sprite.xspec({tag: 'equip.slot.blue', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*10, y: 16*6})}),
 
+    Sprite.xspec({tag: 'equip.slotc.trans', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*36, y: 16*0})}),
+    Sprite.xspec({tag: 'equip.slotc.green', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*38, y: 16*0})}),
+    Sprite.xspec({tag: 'equip.slotc.yellow', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*36, y: 16*2})}),
+    Sprite.xspec({tag: 'equip.slotc.blue', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*38, y: 16*2})}),
+
     Sprite.xspec({tag: 'hud.scan.unpressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*0})}),
     Sprite.xspec({tag: 'hud.scan.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*2})}),
     Sprite.xspec({tag: 'hud.scan.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*14, y: 16*4})}),
@@ -1180,6 +1185,9 @@ let miniaAssets = [
     Sprite.xspec({tag: 'hud.bar.panel', img: new SheetRef({src: 'img/hud.png', width: 16*7, height: 16*4, x: 16*22, y: 16*0})}),
     Sprite.xspec({tag: 'hud.button.panel', img: new SheetRef({src: 'img/hud.png', width: 16*16, height: 16*3, x: 16*22, y: 16*7})}),
     Sprite.xspec({tag: 'hud.toggle.panel', img: new SheetRef({src: 'img/hud.png', width: 16*5, height: 16*7, x: 16*29, y: 16*0})}),
+    Sprite.xspec({tag: 'hud.stats.unpressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*34, y: 16*0})}),
+    Sprite.xspec({tag: 'hud.stats.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*34, y: 16*2})}),
+    Sprite.xspec({tag: 'hud.stats.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*34, y: 16*4})}),
 
     Sprite.xspec({tag: 'equip.bg', img: new SheetRef({src: 'img/equip.png', width: 16*22, height: 16*19, x: 16*4, y: 16*1})}),
     Sprite.xspec({tag: 'equip.pop.bg', img: new SheetRef({src: 'img/equip.png', width: 16*11, height: 16*11, x: 16*26, y: 16*5})}),

@@ -19,9 +19,11 @@ import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
 import { Key } from './entities/key.js';
 import { Prompt } from './prompt.js';
+import { Resurrect64 } from './resurrect64.js';
 import { TurnSystem } from './systems/turnSystem.js';
 
 const invTextColor = "yellow";
+const counterColor = Resurrect64.colors[11];
 
 class InventoryData {
     // STATIC VARIABLES ----------------------------------------------------
@@ -47,7 +49,7 @@ class InventoryData {
         this.numSlots = spec.numSlots || 25;
         // -- belt
         this.belt = spec.belt || [];
-        this.beltSlots = spec.beltSlots || 5;
+        this.beltSlots = spec.beltSlots || 3;
         this.evt = new EvtStream();
         // -- other
         this.tokens = spec.tokens || 0;
@@ -302,27 +304,21 @@ class InventoryData {
 
 class Inventory extends UxView {
     // STATIC PROPERTIES ---------------------------------------------------
-    static get dfltSelectedUnpressed() {
-        return Assets.get('equip.slot.blue', true, {lockRatio: true});
-    }
-    static get dfltSelectedPressed() {
-        return Assets.get('equip.slot.blue', true, {lockRatio: true});
-    }
-    static get dfltSelectedHighlight() {
-        return Assets.get('equip.slot.yellow', true, {lockRatio: true});
-    }
-    static get dfltUnpressed() {
-        return Assets.get('equip.slot.trans', true, {lockRatio: true});
-    }
-    static get dfltPressed() {
-        return Assets.get('equip.slot.trans', true, {lockRatio: true});
-    }
-    static get dfltHighlight() {
-        return Assets.get('equip.slot.yellow', true, {lockRatio: true});
-    }
-    static get dfltMark() {
-        return Assets.get('equip.slot.green', true, {lockRatio: true});
-    }
+    static get dfltSelectedUnpressed() { return Assets.get('equip.slot.blue', true, {lockRatio: true}); }
+    static get dfltSelectedPressed() { return Assets.get('equip.slot.blue', true, {lockRatio: true}); }
+    static get dfltSelectedHighlight() { return Assets.get('equip.slot.yellow', true, {lockRatio: true}); }
+    static get dfltUnpressed() { return Assets.get('equip.slot.trans', true, {lockRatio: true}); }
+    static get dfltPressed() { return Assets.get('equip.slot.trans', true, {lockRatio: true}); }
+    static get dfltHighlight() { return Assets.get('equip.slot.yellow', true, {lockRatio: true}); }
+    static get dfltMark() { return Assets.get('equip.slot.green', true, {lockRatio: true}); }
+
+    static get dfltSelectedUnpressedCnt() { return Assets.get('equip.slotc.blue', true, {lockRatio: true}); }
+    static get dfltSelectedPressedCnt() { return Assets.get('equip.slotc.blue', true, {lockRatio: true}); }
+    static get dfltSelectedHighlightCnt() { return Assets.get('equip.slotc.yellow', true, {lockRatio: true}); }
+    static get dfltUnpressedCnt() { return Assets.get('equip.slotc.trans', true, {lockRatio: true}); }
+    static get dfltPressedCnt() { return Assets.get('equip.slotc.trans', true, {lockRatio: true}); }
+    static get dfltHighlightCnt() { return Assets.get('equip.slotc.yellow', true, {lockRatio: true}); }
+    static get dfltMarkCnt() { return Assets.get('equip.slotc.green', true, {lockRatio: true}); }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
@@ -342,106 +338,88 @@ class Inventory extends UxView {
             sketch: Assets.get('equip.bg', true),
             xform: new XForm({right:11/33}),
             children: [
-                new UxPanel({
-                    tag: 'equip',
-                    xform: new XForm({offset: 10, top: .1, bottom: .2, right:.6}),
-                    //sketch: Assets.get('frame.red', true),
-                    sketch: Sketch.zero,
-                    children: [
-                        new UxText({
-                            text: new Text({text: 'equipment', color: invTextColor}),
-                            xform: new XForm({top: .025, bottom: .9}),
-                        }),
-                        new UxPanel({
-                            sketch: Assets.get('player_portrait', true, { lockRatio: true }),
-                            xform: new XForm({top: -.1, bottom: .0, left: -.2, right: -.2}),
-                        }),
-                        this.slot({ tag: 'gadget0', xform: new XForm({left: .1, right: .65, top: .2, bottom: .6}), }),
-                        this.slot({ tag: 'gadget1', xform: new XForm({left: .375, right: .375, top: .2, bottom: .6}), }),
-                        this.slot({ tag: 'gadget2', xform: new XForm({left: .65, right: .1, top: .2, bottom: .6}), }),
-                        this.slot({ tag: 'weapon', xform: new XForm({left: .1, right: .65, top: .4, bottom: .4}), }),
-                        this.slot({ tag: 'reactor', xform: new XForm({left: .375, right: .375, top: .4, bottom: .4}), }),
-                        this.slot({ tag: 'shielding', xform: new XForm({left: .65, right: .1, top: .4, bottom: .4}), }),
 
-                        new UxButton({
-                            sketch: Assets.get('frame.yellow', true),
-                            tag: 'player.stats',
-                            xform: new XForm({top: .6, bottom: .2, left: .67, right: .1, lockRatio: true, width: 10, height: 10}),
-                            text: new Text({text: ' stats '}),
-                            mouseClickedSound: Assets.get('menu.click', true),
-                        }),
-
-                        this.counter({ tag: 'tokens', xform: new XForm({offset: 10, left: 0, right: .75, top: .8, bottom: .05}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
-                        this.counter({ tag: 'key.blue', xform: new XForm({offset: 10, left: .25, right: .5, top: .8, bottom: .05}), sketch: Assets.get('key.blue', true, {lockRatio: true})}),
-                        this.counter({ tag: 'key.dark', xform: new XForm({offset: 10, left: .5, right: .25, top: .8, bottom: .05}), sketch: Assets.get('key.dark', true, {lockRatio: true})}),
-                        this.counter({ tag: 'key.green', xform: new XForm({offset: 10, left: .75, right: .0, top: .8, bottom: .05}), sketch: Assets.get('key.green', true, {lockRatio: true})}),
-
-                    ],
+                new UxText({
+                    text: new Text({text: 'equipment', color: invTextColor }),
+                    xform: new XForm({top: 4/19, bottom: 14/19, left: 2/22, right: 14/22}),
                 }),
 
-                new UxPanel({
-                    tag: 'belt',
-                    xform: new XForm({offset: 10, left:.4, bottom: .75}),
-                    sketch: Assets.get('frame.red', true),
-                    children: [
-                        new UxText({
-                            text: new Text({text: 'quick slots', color: invTextColor}),
-                            xform: new XForm({top: .1, bottom: .65}),
-                        }),
-                        this.slot({ tag: 'belt0', xform: new XForm({offset: 10, top: .3, left: .0, right: .8}), }, '1'),
-                        this.slot({ tag: 'belt1', xform: new XForm({offset: 10, top: .3, left: .2, right: .6}), }, '2'),
-                        this.slot({ tag: 'belt2', xform: new XForm({offset: 10, top: .3, left: .4, right: .4}), }, '3'),
-                        this.slot({ tag: 'belt3', xform: new XForm({offset: 10, top: .3, left: .6, right: .2}), }, '4'),
-                        this.slot({ tag: 'belt4', xform: new XForm({offset: 10, top: .3, left: .8, right: .0}), }, '5'),
-                    ],
+                this.slot({ tag: 'gadget0', xform: new XForm({left: 2/22, right: 18/22, top: 6/19, bottom: 11/19}), }),
+                this.slot({ tag: 'gadget1', xform: new XForm({left: 4/22, right: 16/22, top: 6/19, bottom: 11/19}), }),
+                this.slot({ tag: 'gadget2', xform: new XForm({left: 6/22, right: 14/22, top: 6/19, bottom: 11/19}), }),
+
+                this.slot({ tag: 'weapon', xform: new XForm({left: 2/22, right: 18/22, top: 8/19, bottom: 9/19}), }),
+                this.slot({ tag: 'reactor', xform: new XForm({left: 4/22, right: 16/22, top: 8/19, bottom: 9/19}), }),
+                this.slot({ tag: 'shielding', xform: new XForm({left: 6/22, right: 14/22, top: 8/19, bottom: 9/19}), }),
+
+
+                this.counter({ tag: 'tokens', xform: new XForm({left: 2/22, right: 18/22, top: 11/19, bottom: 6/19}), 
+                               sketch: Assets.get('token.carry', true)}),
+
+                new UxButton({
+                    unpressed: Assets.get('hud.stats.unpressed', true),
+                    pressed: Assets.get('hud.stats.pressed', true),
+                    highlight: Assets.get('hud.stats.highlight', true),
+                    tag: 'player.stats',
+                    xform: new XForm({left: 6/22, right: 14/22, top: 11/19, bottom: 6/19}),
+                    text: Text.zero,
+                    mouseClickedSound: Assets.get('menu.click', true),
                 }),
 
-                new UxPanel({
-                    tag: 'backback',
-                    xform: new XForm({offset: 10, left:.4, top: .25}),
-                    sketch: Assets.get('frame.red', true),
-                    children: [
-                        new UxText({
-                            text: new Text({text: 'backpack', color: invTextColor}),
-                            xform: new XForm({top: .025, bottom: .9}),
-                        }),
-                        new UxPanel({
-                            xform: new XForm({top: .1}),
-                            sketch: Sketch.zero,
-                            children: [
-                                this.slot({ tag: 'inv0', xform: new XForm({offset: 10, left: .0, right: .8, top: .0, bottom: .8}), }),
-                                this.slot({ tag: 'inv1', xform: new XForm({offset: 10, left: .2, right: .6, top: .0, bottom: .8}), }),
-                                this.slot({ tag: 'inv2', xform: new XForm({offset: 10, left: .4, right: .4, top: .0, bottom: .8}), }),
-                                this.slot({ tag: 'inv3', xform: new XForm({offset: 10, left: .6, right: .2, top: .0, bottom: .8}), }),
-                                this.slot({ tag: 'inv4', xform: new XForm({offset: 10, left: .8, right: .0, top: .0, bottom: .8}), }),
+                this.counter({ tag: 'key.blue', xform: new XForm({left: 2/22, right: 18/22, top: 13/19, bottom: 4/19}), 
+                               sketch: Assets.get('key.blue', true)}),
+                this.counter({ tag: 'key.dark', xform: new XForm({left: 4/22, right: 16/22, top: 13/19, bottom: 4/19}), 
+                               sketch: Assets.get('key.dark', true)}),
+                this.counter({ tag: 'key.green', xform: new XForm({left: 6/22, right: 14/22, top: 13/19, bottom: 4/19}), 
+                               sketch: Assets.get('key.green', true)}),
 
-                                this.slot({ tag: 'inv5', xform: new XForm({offset: 10, left: .0, right: .8, top: .2, bottom: .6}), }),
-                                this.slot({ tag: 'inv6', xform: new XForm({offset: 10, left: .2, right: .6, top: .2, bottom: .6}), }),
-                                this.slot({ tag: 'inv7', xform: new XForm({offset: 10, left: .4, right: .4, top: .2, bottom: .6}), }),
-                                this.slot({ tag: 'inv8', xform: new XForm({offset: 10, left: .6, right: .2, top: .2, bottom: .6}), }),
-                                this.slot({ tag: 'inv9', xform: new XForm({offset: 10, left: .8, right: .0, top: .2, bottom: .6}), }),
+                new UxText({
+                    text: new Text({text: 'quick slots', color: invTextColor}),
+                    xform: new XForm({ left: 12/22, right: 4/22, top: 1.75/19, bottom: 16.25/19 }),
+                }),
 
-                                this.slot({ tag: 'inv10', xform: new XForm({offset: 10, left: .0, right: .8, top: .4, bottom: .4}), }),
-                                this.slot({ tag: 'inv11', xform: new XForm({offset: 10, left: .2, right: .6, top: .4, bottom: .4}), }),
-                                this.slot({ tag: 'inv12', xform: new XForm({offset: 10, left: .4, right: .4, top: .4, bottom: .4}), }),
-                                this.slot({ tag: 'inv13', xform: new XForm({offset: 10, left: .6, right: .2, top: .4, bottom: .4}), }),
-                                this.slot({ tag: 'inv14', xform: new XForm({offset: 10, left: .8, right: .0, top: .4, bottom: .4}), }),
+                this.slot({ tag: 'belt0', xform: new XForm({left: 12/22, right: 8/22, top: 3/19, bottom: 14/19}), }, '1'),
+                this.slot({ tag: 'belt1', xform: new XForm({left: 14/22, right: 6/22, top: 3/19, bottom: 14/19}), }, '2'),
+                this.slot({ tag: 'belt2', xform: new XForm({left: 16/22, right: 4/22, top: 3/19, bottom: 14/19}), }, '3'),
 
-                                this.slot({ tag: 'inv15', xform: new XForm({offset: 10, left: .0, right: .8, top: .6, bottom: .2}), }),
-                                this.slot({ tag: 'inv16', xform: new XForm({offset: 10, left: .2, right: .6, top: .6, bottom: .2}), }),
-                                this.slot({ tag: 'inv17', xform: new XForm({offset: 10, left: .4, right: .4, top: .6, bottom: .2}), }),
-                                this.slot({ tag: 'inv18', xform: new XForm({offset: 10, left: .6, right: .2, top: .6, bottom: .2}), }),
-                                this.slot({ tag: 'inv19', xform: new XForm({offset: 10, left: .8, right: .0, top: .6, bottom: .2}), }),
+                this.slot({ tag: 'inv0', xform: new XForm({left: 10/22, right: 10/22, top: 7/19, bottom: 10/19}), }),
+                this.slot({ tag: 'inv1', xform: new XForm({left: 12/22, right: 8/22, top: 7/19, bottom: 10/19}), }),
+                this.slot({ tag: 'inv2', xform: new XForm({left: 14/22, right: 6/22, top: 7/19, bottom: 10/19}), }),
+                this.slot({ tag: 'inv3', xform: new XForm({left: 16/22, right: 4/22, top: 7/19, bottom: 10/19}), }),
+                this.slot({ tag: 'inv4', xform: new XForm({left: 18/22, right: 2/22, top: 7/19, bottom: 10/19}), }),
 
-                                this.slot({ tag: 'inv20', xform: new XForm({offset: 10, left: .0, right: .8, top: .8, bottom: .0}), }),
-                                this.slot({ tag: 'inv21', xform: new XForm({offset: 10, left: .2, right: .6, top: .8, bottom: .0}), }),
-                                this.slot({ tag: 'inv22', xform: new XForm({offset: 10, left: .4, right: .4, top: .8, bottom: .0}), }),
-                                this.slot({ tag: 'inv23', xform: new XForm({offset: 10, left: .6, right: .2, top: .8, bottom: .0}), }),
-                                this.slot({ tag: 'inv24', xform: new XForm({offset: 10, left: .8, right: .0, top: .8, bottom: .0}), }),
-                            ],
-                        }),
+                this.slot({ tag: 'inv5', xform: new XForm({left: 10/22, right: 10/22, top: 9/19, bottom: 8/19}), }),
+                this.slot({ tag: 'inv6', xform: new XForm({left: 12/22, right: 8/22, top: 9/19, bottom: 8/19}), }),
+                this.slot({ tag: 'inv7', xform: new XForm({left: 14/22, right: 6/22, top: 9/19, bottom: 8/19}), }),
+                this.slot({ tag: 'inv8', xform: new XForm({left: 16/22, right: 4/22, top: 9/19, bottom: 8/19}), }),
+                this.slot({ tag: 'inv9', xform: new XForm({left: 18/22, right: 2/22, top: 9/19, bottom: 8/19}), }),
 
-                    ],
+                this.slot({ tag: 'inv10', xform: new XForm({left: 10/22, right: 10/22, top: 11/19, bottom: 6/19}), }),
+                this.slot({ tag: 'inv11', xform: new XForm({left: 12/22, right: 8/22, top: 11/19, bottom: 6/19}), }),
+                this.slot({ tag: 'inv12', xform: new XForm({left: 14/22, right: 6/22, top: 11/19, bottom: 6/19}), }),
+                this.slot({ tag: 'inv13', xform: new XForm({left: 16/22, right: 4/22, top: 11/19, bottom: 6/19}), }),
+                this.slot({ tag: 'inv14', xform: new XForm({left: 18/22, right: 2/22, top: 11/19, bottom: 6/19}), }),
+
+                this.slot({ tag: 'inv15', xform: new XForm({left: 10/22, right: 10/22, top: 13/19, bottom: 4/19}), }),
+                this.slot({ tag: 'inv16', xform: new XForm({left: 12/22, right: 8/22, top: 13/19, bottom: 4/19}), }),
+                this.slot({ tag: 'inv17', xform: new XForm({left: 14/22, right: 6/22, top: 13/19, bottom: 4/19}), }),
+                this.slot({ tag: 'inv18', xform: new XForm({left: 16/22, right: 4/22, top: 13/19, bottom: 4/19}), }),
+                this.slot({ tag: 'inv19', xform: new XForm({left: 18/22, right: 2/22, top: 13/19, bottom: 4/19}), }),
+
+                this.slot({ tag: 'inv20', xform: new XForm({left: 10/22, right: 10/22, top: 15/19, bottom: 2/19}), }),
+                this.slot({ tag: 'inv21', xform: new XForm({left: 12/22, right: 8/22, top: 15/19, bottom: 2/19}), }),
+                this.slot({ tag: 'inv22', xform: new XForm({left: 14/22, right: 6/22, top: 15/19, bottom: 2/19}), }),
+                this.slot({ tag: 'inv23', xform: new XForm({left: 16/22, right: 4/22, top: 15/19, bottom: 2/19}), }),
+                this.slot({ tag: 'inv24', xform: new XForm({left: 18/22, right: 2/22, top: 15/19, bottom: 2/19}), }),
+
+                new UxButton({
+                    unpressed: Assets.get('hud.cancel.unpressed', true),
+                    pressed: Assets.get('hud.cancel.pressed', true),
+                    highlight: Assets.get('hud.cancel.highlight', true),
+                    tag: 'cancel.button',
+                    xform: new XForm({left: 1/22, right: 19/22, top: 16/19, bottom: 1/19}),
+                    text: Text.zero,
+                    mouseClickedSound: Assets.get('menu.click', true),
                 }),
 
             ],
@@ -453,23 +431,34 @@ class Inventory extends UxView {
         this.filtered = [];
 
         // disable excess belts
+        /*
         for (let i=4; i+1>this.data.beltSlots; i--) {
             this.toggleSlot(`belt${i}`, false);
         }
+        */
 
         // disable gadget slots
+        /*
         for (let i=2; i+1>this.data.gadgetSlots; i--) {
             this.toggleSlot(`gadget${i}`, false);
         }
+        */
 
         // disable backpack slots
+        /*
         for (let i=24; i+1>this.data.numSlots; i--) {
             this.toggleSlot(`inv${i}`, false);
         }
+        */
 
         let button = Hierarchy.find(this, (v) => v.tag === `player.stats`);
         if (button) {
             button.evt.listen(button.constructor.evtMouseClicked, this.onStatsClick);
+        }
+
+        button = Hierarchy.find(this, (v) => v.tag === 'cancel.button');
+        if (button) {
+            button.evt.listen(button.constructor.evtMouseClicked, () => this.destroy());
         }
 
         Events.listen(Keys.evtDown, this.onKeyDown);
@@ -633,20 +622,6 @@ class Inventory extends UxView {
         super.hide();
     }
 
-    changeSlotCount(tag, count) {
-        let cpanel = Hierarchy.find(this, (v) => v.tag === `${tag}.cpanel`);
-        let ctext = Hierarchy.find(this, (v) => v.tag === `${tag}.ctext`);
-        // disable slot counter if not stacked
-        if (!count || count <= 1) {
-            cpanel.enable = false;
-            cpanel.visible = false;
-        } else {
-            cpanel.enable = true;
-            cpanel.visible = true;
-            ctext.text = `${count}`;
-        }
-    }
-
     slot(spec, slotid=null, sketch=null) {
         let slotTag = spec.tag || 'slot';
         if (!sketch) sketch = Sketch.zero;
@@ -665,17 +640,18 @@ class Inventory extends UxView {
                             xform: new XForm({ border: .1 }),
                             sketch: sketch,
                         }),
-                        this.button({ tag: slotTag }, this.onSlotClick),
+                        this.button({ tag: slotTag }, this.onSlotClick, slotid !== null),
                         new UxPanel({
                             tag: `${slotTag}.cpanel`,
-                            xform: new XForm({left: .6, top: .85, bottom: -.15, oright: 5}),
+                            sketch: Sketch.zero,
+                            xform: new XForm({left: 15/32, right: 8/32, top: 24/32, bottom: 0}),
                             active: (slotid !== null),
                             visible: (slotid !== null),
                             children: [
                                 new UxText({
                                     tag: `${slotTag}.ctext`,
-                                    text: new Text({text: slotid || '0', color: invTextColor}),
-                                    xform: new XForm({bottom: -.15}),
+                                    text: new Text({text: slotid || '0', color: counterColor}),
+                                    xform: new XForm({top: -.1, bottom: -.15}),
                                 }),
                             ],
                         }),
@@ -692,38 +668,46 @@ class Inventory extends UxView {
         return panel;
     }
 
-    button(spec, cb) {
+    button(spec, cb, count=false) {
         let final = Object.assign( {
             text: Sketch.zero,
-            pressed: this.constructor.dfltPressed,
-            unpressed: this.constructor.dfltUnpressed,
-            highlight: this.constructor.dfltHighlight,
+            pressed: (count) ? this.constructor.dfltPressedCnt : this.constructor.dfltPressed,
+            unpressed: (count) ? this.constructor.dfltUnpressedCnt : this.constructor.dfltUnpressed,
+            highlight: (count) ? this.constructor.dfltHighlightCnt : this.constructor.dfltHighlight,
             mouseClickedSound: Assets.get('menu.click', true),
         }, spec);
         let button = new UxButton(final);
+        button.counter = count;
         button.evt.listen(button.constructor.evtMouseClicked, cb);
         return button;
     }
 
     counter(spec, count) {
         let tag = spec.tag || 'counter';
-        let panel = new UxPanel( Object.assign( {
+        let panel = new UxPanel( {
+            tag: `${tag}.outer`,
+            xform: spec.xform,
+            sketch: Assets.get('equip.slotc.trans', true),
             children: [
                 new UxPanel({
                     tag: `${tag}.cpanel`,
-                    xform: new XForm({left: .6, top: .75, bottom: -.25}),
+                    xform: new XForm({left: 15/32, right: 8/32, top: 24/32, bottom: 0}),
                     sketch: Sketch.zero,
                     children: [
                         new UxText({
                             tag: `${tag}.ctext`,
-                            text: new Text({text: '0', color: invTextColor}),
-                            xform: new XForm({bottom: -.15}),
+                            text: new Text({text: '0', color: counterColor}),
+                            xform: new XForm({top: -.1, bottom: -.15}),
                         }),
                     ],
                 }),
+                new UxPanel({
+                    tag: tag,
+                    sketch: spec.sketch,
+                    xform: new XForm({border: .2}),
+                }),
             ],
-        }, spec));
-        panel.xform.lockRatio = true;
+        });
         return panel;
     }
 
@@ -764,12 +748,12 @@ class Inventory extends UxView {
     }
 
     markButton(button) {
-        button.unpressed = this.constructor.dfltMark;
+        button.unpressed = (button.counter) ? this.constructor.dfltMarkCnt : this.constructor.dfltMark;
         this.marked.push(button);
     }
 
     unmarkButton(button) {
-        button.unpressed = this.constructor.dfltUnpressed;
+        button.unpressed = (button.counter) ? this.constructor.dfltUnpressedCnt : this.constructor.dfltUnpressed;
         let idx = this.marked.indexOf(button);
         if (idx !== -1) {
             this.marked.splice(idx, 1);
@@ -778,16 +762,28 @@ class Inventory extends UxView {
 
     select(button) {
         if (this.selected) this.unselect(this.selected);
-        button.pressed = this.constructor.dfltSelectedPressed;
-        button.unpressed = this.constructor.dfltSelectedUnpressed;
-        button.highlight = this.constructor.dfltSelectedHighlight;
+        if (button.counter) {
+            button.pressed = this.constructor.dfltSelectedPressedCnt;
+            button.unpressed = this.constructor.dfltSelectedUnpressedCnt;
+            button.highlight = this.constructor.dfltSelectedHighlightCnt;
+        } else {
+            button.pressed = this.constructor.dfltSelectedPressed;
+            button.unpressed = this.constructor.dfltSelectedUnpressed;
+            button.highlight = this.constructor.dfltSelectedHighlight;
+        }
         this.selected = button;
     }
 
     unselect(button) {
-        button.pressed = this.constructor.dfltPressed;
-        button.unpressed = this.constructor.dfltUnpressed;
-        button.highlight = this.constructor.dfltHighlight;
+        if (button.counter) {
+            button.pressed = this.constructor.dfltPressedCnt;
+            button.unpressed = this.constructor.dfltUnpressedCnt;
+            button.highlight = this.constructor.dfltHighlightCnt;
+        } else {
+            button.pressed = this.constructor.dfltPressed;
+            button.unpressed = this.constructor.dfltUnpressed;
+            button.highlight = this.constructor.dfltHighlight;
+        }
         if (this.selected === button) this.selected = null;
     }
 
@@ -825,7 +821,7 @@ class Inventory extends UxView {
 
     reset() {
         for (const button of Array.from(this.marked)) {
-            button.unpressed = this.constructor.dfltUnpressed;
+            button.unpressed = (button.counter) ? this.constructor.dfltUnpressedCnt : this.constructor.dfltUnpressed;
         }
         for (const slot of Array.from(this.filtered)) {
             this.toggleSlot(slot, true);
@@ -867,10 +863,20 @@ class Inventory extends UxView {
             if (!alwaysShowCount && count <= 1) {
                 cpanel.enable = false;
                 cpanel.visible = false;
+                let button = Hierarchy.find(this.bg, (v) => v.tag === slot);
+                button.counter = false;
+                button.pressed = this.constructor.dfltPressed;
+                button.unpressed = this.constructor.dfltUnpressed;
+                button.highlight = this.constructor.dfltHighlight;
             } else {
                 cpanel.enable = true;
                 cpanel.visible = true;
                 ctext.text = `${count}`;
+                let button = Hierarchy.find(this.bg, (v) => v.tag === slot);
+                button.counter = true;
+                button.pressed = this.constructor.dfltPressedCnt;
+                button.unpressed = this.constructor.dfltUnpressedCnt;
+                button.highlight = this.constructor.dfltHighlightCnt;
             }
         }
     }
@@ -908,19 +914,25 @@ class Inventory extends UxView {
         }
 
         // disable gadget slots
+        /*
         for (let i=2; i+1>this.data.gadgetSlots; i--) {
             this.toggleSlot(`gadget${i}`, false);
         }
+        */
 
         // disable excess belts
+        /*
         for (let i=4; i+1>this.data.beltSlots; i--) {
             this.toggleSlot(`belt${i}`, false);
         }
+        */
 
         // disable backpack slots
+        /*
         for (let i=0; i<25; i++) {
             this.toggleSlot(`inv${i}`, (i<data.numSlots));
         }
+        */
     }
 
     handleUse(item) {
