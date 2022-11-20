@@ -1204,6 +1204,8 @@ let miniaAssets = [
 
     Sprite.xspec({tag: 'stats.bg', img: new SheetRef({src: 'img/stats.png', width: 16*12, height: 16*13, x: 16*0, y: 16*0})}),
 
+    Sprite.xspec({tag: 'prompt.bg', img: new SheetRef({src: 'img/prompt.png', width: 16*15, height: 16*8, x: 16*13, y: 16*7})}),
+
     Animation.xspec({tag: 'funguy.mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 25 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 25 }),

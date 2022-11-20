@@ -945,7 +945,7 @@ class Inventory extends UxView {
             // popup item select view
             this.itemPopup = new ItemPopup({
                 title: `select ${item.kind} target`,
-                xform: new XForm({ left: .7, top: .2, bottom: .2}),
+                xform: new XForm({ left: 22/33, top: 3/19, bottom: 3/19}),
                 item: item,
                 wantTarget: true,
                 handleUse: this.handleUseTarget.bind(this),
@@ -1024,13 +1024,13 @@ class ItemPopup extends UxView {
                 new UxText({
                     tag: 'item.name',
                     xform: new XForm({left: 4.5/11, right: 2.75/11, top: 2/13, bottom: 10/13}),
-                    text: new Text({ text: 'name', color: invTextColor, align: 'left'}),
+                    text: new Text({ text: 'select target', color: invTextColor, align: 'left'}),
                 }),
 
                 new UxText({
                     tag: 'item.kind',
                     xform: new XForm({left: 5/11, right: 3/11, top: 3/13, bottom: 9/13}),
-                    text: new Text({ text: 'kind', color: invTextColor, align: 'left'}),
+                    text: new Text({ text: '---', color: invTextColor, align: 'left'}),
                 }),
 
                 // description
@@ -1041,7 +1041,7 @@ class ItemPopup extends UxView {
                         new UxText({
                             tag: 'item.description',
                             xform: new XForm({offset: 0}),
-                            text: new Text({wrap: true, text: 'description', color: invTextColor, valign: 'top', align: 'left'}),
+                            text: new Text({wrap: true, text: ' ', color: invTextColor, valign: 'top', align: 'left'}),
                         }),
                     ]
                 }),
@@ -1059,7 +1059,7 @@ class ItemPopup extends UxView {
                 new UxButton({
                     tag: 'item.confirm',
                     xform: new XForm({left: 1/11, right: 8/11, top: 10/13, bottom: 1/13}),
-                    text: new Text({text: ' confirm '}),
+                    text: new Text({text: '    ok    '}),
                     unpressed: Assets.get('hud.green.unpressed', true),
                     pressed: Assets.get('hud.green.pressed', true),
                     highlight: Assets.get('hud.green.highlight', true),
@@ -1189,9 +1189,9 @@ class ItemPopup extends UxView {
     }
 
     onCancelClicked(evt) {
-        if (this.item.discoverable && !this.item.constructor.isDiscovered(this.item.kind)) {
+        if (this.item && this.item.constructor.discoverable && !this.item.constructor.isDiscovered(this.item.kind)) {
             let prompt = new Prompt({
-                xform: new XForm({ border: .3 }),
+                xform: new XForm({ left: 9/33, right: 9/33, top: 6/19, bottom: 5/19}),
                 title: 'confirm',
                 prompt: `*${this.item.name}* has just been discovered. canceling now will still consume the item without applying its effect. are you sure?`,
                 handleConfirm: () => {

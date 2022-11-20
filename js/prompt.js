@@ -12,8 +12,9 @@ import { UxPanel } from './base/uxPanel.js';
 import { UxText } from './base/uxText.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
+import { Resurrect64 } from './resurrect64.js';
 
-const textColor = "yellow";
+const textColor = Resurrect64.colors[18];
 
 class Prompt extends UxView {
 
@@ -25,45 +26,47 @@ class Prompt extends UxView {
         let prompt = spec.prompt || 'prompt';
 
         this.panel = new UxPanel({
-            sketch: Assets.get('oframe.red', true),
+            sketch: Assets.get('prompt.bg', true),
             children: [
                 // title
                 new UxText({
                     tag: 'title',
-                    xform: new XForm({offset: 5, bottom: .9}),
+                    xform: new XForm({left: 1.5/15, right: 11/15, top: 3.5/8, bottom: 3.5/8}),
                     text: new Text({ text: title, color: textColor}),
                 }),
 
                 // prompt
                 new UxPanel({
-                    xform: new XForm({top: .325, bottom: .325}),
+                    xform: new XForm({left: 5/15, right: 4/15, top: 2/8, bottom: 2/8}),
                     sketch: Sketch.zero,
                     children: [
                         new UxText({
                             tag: 'prompt',
-                            xform: new XForm({offset: 15}),
                             text: new Text({wrap: true, text: prompt, color: textColor}),
                         }),
                     ]
                 }),
 
-                // buttons
-                new UxPanel({
-                    xform: new XForm({top: .8}),
-                    sketch: Sketch.zero,
-                    children: [
-                        new UxButton({
-                            tag: 'confirm',
-                            xform: new XForm({offset: 10, right:.67}),
-                            text: new Text({text: ' confirm '}),
-                        }),
-                        new UxButton({
-                            tag: 'cancel',
-                            xform: new XForm({offset: 10, left:.67}),
-                            text: new Text({text: ' cancel '}),
-                        }),
-                    ]
+                new UxButton({
+                    tag: 'confirm',
+                    xform: new XForm({left: 12/15, right: 1/15, top: 1/8, bottom: 5/8}),
+                    text: new Text({text: '    ok    '}),
+                    unpressed: Assets.get('hud.green.unpressed', true),
+                    pressed: Assets.get('hud.green.pressed', true),
+                    highlight: Assets.get('hud.green.highlight', true),
+                    mouseClickedSound: Assets.get('menu.click', true),
                 }),
+
+                new UxButton({
+                    tag: 'cancel',
+                    xform: new XForm({left: 12/15, right: 1/15, top: 5/8, bottom: 1/8}),
+                    text: Text.zero,
+                    unpressed: Assets.get('hud.cancel.unpressed', true),
+                    pressed: Assets.get('hud.cancel.pressed', true),
+                    highlight: Assets.get('hud.cancel.highlight', true),
+                    mouseClickedSound: Assets.get('menu.click', true),
+                }),
+
             ]
         });
         this.adopt(this.panel);

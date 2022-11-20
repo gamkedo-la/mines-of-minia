@@ -1568,7 +1568,6 @@ class Spawn {
             Rous.xspec({ healthMax: 10, xp: 1, }),
             Scarab.xspec({ healthMax: 5, xp: 1, }),
             Weapon.xspec({ kind: 'bonk', identifiable: true, charms: [ new BooCharm() ], }),
-            Cog.xspec({ kind: 'identify', }),
             Cog.xspec({ kind: 'lvlup', }),
             Cog.xspec({ kind: 'invulnerability', }),
             Cog.xspec({ kind: 'purge', }),
@@ -1589,9 +1588,12 @@ class Spawn {
             //this.genShielding(template),
             //this.genRanged(template),
 
+            Cog.xspec({ kind: 'identify', }),
+
             RangedWeapon.xspec({
                 name: 'shock.test',
                 kind: 'shock',
+                identifiable: 'true',
             }),
 
             RangedWeapon.xspec({
