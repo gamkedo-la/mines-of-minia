@@ -1580,15 +1580,35 @@ class Spawn {
             //Gem.xspec({ kind: 'fire', }),
             //Weapon.xspec({ name: 'bonk', tier: 3, kind: 'bonk', }),
             //Token.xspec({ name: 'token', x_sketch: Assets.get('token'), count: 50 }),
-            Gem.xspec({ kind: 'fire', }),
-            Gem.xspec({ kind: 'fire', }),
+            //Gem.xspec({ kind: 'fire', }),
+            //Gem.xspec({ kind: 'fire', }),
             //Gem.xspec({ kind: 'daze', }),
             //Gem.xspec({ kind: 'power', }),
             //Gem.xspec({ kind: 'stealth', }),
             //this.genGadget(template),
             //this.genShielding(template),
-
             //this.genRanged(template),
+
+            RangedWeapon.xspec({
+                name: 'shock.test',
+                kind: 'shock',
+            }),
+
+            RangedWeapon.xspec({
+                name: 'fire.test',
+                kind: 'fire',
+            }),
+
+            RangedWeapon.xspec({
+                name: 'dark.test',
+                kind: 'dark',
+            }),
+
+            RangedWeapon.xspec({
+                name: 'ice.test',
+                kind: 'ice',
+            }),
+
             //Funguy.xspec({lvl: 2}),
 
 

@@ -33,7 +33,7 @@ class ShootAction extends SerialAction {
         this.idx = spec.idx;
         this.x = spec.x;
         this.y = spec.y;
-        this.shootsfx = spec.shootsfx || this.constructor.dfltShootSfx;
+        this.shootsfx = spec.shootsfx || this.weapon.sfx || this.constructor.dfltShootSfx;
         this.hitsfx = spec.hitsfx || this.constructor.dfltHitSfx;
         this.projectileSpec = (this.weapon && this.weapon.projectileSpec) ? this.weapon.projectileSpec : Projectile.xspec();
     }

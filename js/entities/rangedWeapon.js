@@ -15,6 +15,7 @@ class RangedWeapon extends Item {
         'dark',
     ];
     static dfltKind = 'fire';
+    static dfltTier = 1;
     static dfltBaseDamageMin = 1;
     static dfltBaseDamageMax = 2;
     static dfltSavvy = 10;
@@ -63,6 +64,8 @@ class RangedWeapon extends Item {
         this.power = spec.power || this.constructor.dfltPower;
         // -- projectile
         this.projectileSpec = spec.projectileSpec;
+        // -- shoot sfx
+        this.sfx = spec.sfx || Assets.get(`shoot.${this.kind}`, true);
     }
 
     // SERIALIZATION -------------------------------------------------------

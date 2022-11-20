@@ -57,6 +57,7 @@ class Hud extends UxView {
                             xform: new XForm({left: 1/16, right: 13/16, top: 0/3, bottom: 1/3}),
                             mouseBlock: true,
                             mousePriority: 1,
+                            mouseClickedSound: Assets.get('menu.click', true),
                         }),
                         new UxButton({
                             tag: 'hud.scan',
@@ -67,6 +68,7 @@ class Hud extends UxView {
                             xform: new XForm({left: 3/16, right: 11/16, top: 0/3, bottom: 1/3}),
                             mouseBlock: true,
                             mousePriority: 1,
+                            mouseClickedSound: Assets.get('menu.click', true),
                         }),
                         new UxButton({
                             tag: 'hud.cancel',
@@ -77,6 +79,7 @@ class Hud extends UxView {
                             xform: new XForm({left: 5/16, right: 9/16, top: 0/3, bottom: 1/3}),
                             mouseBlock: true,
                             mousePriority: 1,
+                            mouseClickedSound: Assets.get('menu.click', true),
                         }),
                         this.beltslot(0, new XForm({left: 9/16, right: 5/16, top: 0/3, bottom: 1/3})),
                         this.beltslot(1, new XForm({left: 11/16, right: 3/16, top: 0/3, bottom: 1/3})),
@@ -103,6 +106,7 @@ class Hud extends UxView {
                             xform: new XForm({left: 3/5, right: 0/5, top: 0/7, bottom: 5/7}),
                             mouseBlock: true,
                             mousePriority: 1,
+                            mouseClickedSound: Assets.get('switch.toggle', true),
                         }),
 
                         new UxPanel({
@@ -118,6 +122,7 @@ class Hud extends UxView {
                             xform: new XForm({left: 3/5, right: 0/5, top: 2/7, bottom: 3/7}),
                             mouseBlock: true,
                             mousePriority: 1,
+                            mouseClickedSound: Assets.get('switch.toggle', true),
                         }),
 
                         new UxPanel({
@@ -133,6 +138,7 @@ class Hud extends UxView {
                             xform: new XForm({left: 3/5, right: 0/5, top: 4/7, bottom: 1/7}),
                             mouseBlock: true,
                             mousePriority: 1,
+                            mouseClickedSound: Assets.get('switch.toggle', true),
                         }),
 
                     ],
@@ -318,6 +324,7 @@ class Hud extends UxView {
                     pressed: Assets.get('hud.sbutton.unpressed', true),
                     unpressed: Assets.get('hud.sbutton.unpressed', true),
                     highlight: Assets.get('hud.sbutton.highlight', true),
+                    mouseClickedSound: Assets.get('menu.click', true),
                 }),
 
             ],
