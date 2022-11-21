@@ -85,7 +85,7 @@ class Spawn {
         // -- spawn vendor
         this.spawnVendor(template, pstate);
         // -- test objects
-        this.spawnTest(template, pstate);
+        //this.spawnTest(template, pstate);
         yield;
     }
 
