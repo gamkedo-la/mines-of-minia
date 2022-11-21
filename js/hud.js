@@ -140,6 +140,7 @@ class Hud extends UxView {
                         }),
 
                         new UxPanel({
+                            tag: 'hud.talents.icon',
                             sketch: Assets.get('hud.talents.panel', true),
                             xform: new XForm({left: 1/5, right: 2/5, top: 4/7, bottom: 1/7}),
                         }),
@@ -179,6 +180,7 @@ class Hud extends UxView {
         this.onWaitClicked = this.onWaitClicked.bind(this);
         this.onScanClicked = this.onScanClicked.bind(this);
         this.onCancelClicked = this.onCancelClicked.bind(this);
+        this.onTalentUpdate = this.onTalentUpdate.bind(this);
 
         this.optionsButton.evt.listen(this.optionsButton.constructor.evtMouseClicked, this.onOptionsClicked);
         this.equipButton.evt.listen(this.equipButton.constructor.evtMouseClicked, this.onEquipClicked);
@@ -186,6 +188,9 @@ class Hud extends UxView {
         this.waitButton.evt.listen(this.waitButton.constructor.evtMouseClicked, this.onWaitClicked);
         this.scanButton.evt.listen(this.scanButton.constructor.evtMouseClicked, this.onScanClicked);
         this.cancelButton.evt.listen(this.cancelButton.constructor.evtMouseClicked, this.onCancelClicked);
+
+        Events.listen('talents.updated', this.onTalentUpdate);
+
     }
 
     // EVENT HANDLERS ------------------------------------------------------
@@ -207,6 +212,21 @@ class Hud extends UxView {
         }
         if (evt.update && (evt.update.hasOwnProperty('power') || evt.update.hasOwnProperty('powerMax'))) {
             this.assignPower(this.player.power, this.player.powerMax);
+        }
+        if (evt.update && (evt.update.hasOwnProperty('lvl'))) {
+        }
+    }
+
+    onTalentUpdate(evt) {
+        let unspent = (evt.update && evt.update.hasOwnProperty('unspent')) ? evt.update.unspent : 0;
+        let panel = Hierarchy.find(this, (v) => v.tag === 'hud.talents.icon');
+        console.log(`unspent: ${unspent} flash: ${this.flashTalents}`);
+        if (unspent && !this.flashTalents) {
+            panel.sketch = Assets.get('hud.talents.flash', true);
+            this.flashTalents = true;
+        } else if (!unspent && this.flashTalents) {
+            panel.sketch = Assets.get('hud.talents.panel', true);
+            this.flashTalents = false;
         }
     }
 
