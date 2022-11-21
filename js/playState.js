@@ -434,7 +434,6 @@ class PlayState extends GameState {
             }
             */
 
-            /*
             case '7': {
                 UpdateSystem.eUpdate(this.player, {
                     lvl: this.player.lvl+1,
@@ -444,13 +443,13 @@ class PlayState extends GameState {
             }
             case '8': {
                 UpdateSystem.eUpdate(this.player, {
-                    health: this.player.health - 10,
-                    power: this.player.power - 5,
+                    health: Math.max(0, this.player.health - 5),
+                    power: Math.max(0, this.player.power - 5),
+                    fuel: Math.max(0, this.player.fuel - 10),
                 });
                 console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel} power: ${this.player.power}`);
                 break;
             }
-            */
 
             /*
             case '9': {

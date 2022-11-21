@@ -1195,9 +1195,34 @@ let miniaAssets = [
     Sprite.xspec({tag: 'hud.stats.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*34, y: 16*2})}),
     Sprite.xspec({tag: 'hud.stats.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*34, y: 16*4})}),
 
+    Animation.xspec({tag: 'hud.talents.flash', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*18, y: 16*2})}), ttl: 200 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*22, y: 16*4})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*24, y: 16*4})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*26, y: 16*4})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*24, y: 16*4})}), ttl: 100 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*22, y: 16*4})}), ttl: 100 }),
+    ]}),
+
     Sprite.xspec({tag: 'hud.green.unpressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*0, y: 16*6})}),
     Sprite.xspec({tag: 'hud.green.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*0, y: 16*8})}),
     Sprite.xspec({tag: 'hud.green.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*0, y: 16*10})}),
+
+    Sprite.xspec({tag: 'hud.health', img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*12, y: 16*6})}),
+    Animation.xspec({tag: 'hud.health.flash', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*12, y: 16*6})}), ttl: 170 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*13, y: 16*6})}), ttl: 170 }),
+    ]}),
+    Sprite.xspec({tag: 'hud.fuel', img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*14, y: 16*6})}),
+    Animation.xspec({tag: 'hud.fuel.flash', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*14, y: 16*6})}), ttl: 225 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*15, y: 16*6})}), ttl: 225 }),
+    ]}),
+    Sprite.xspec({tag: 'hud.power', img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*16, y: 16*6})}),
+    Animation.xspec({tag: 'hud.power.flash', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*16, y: 16*6})}), ttl: 250 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*17, y: 16*6})}), ttl: 250 }),
+    ]}),
 
     Sprite.xspec({tag: 'equip.bg', img: new SheetRef({src: 'img/equip.png', width: 16*22, height: 16*19, x: 16*4, y: 16*1})}),
     Sprite.xspec({tag: 'equip.pop.bg', img: new SheetRef({src: 'img/equip.png', width: 16*11, height: 16*13, x: 16*26, y: 16*5})}),

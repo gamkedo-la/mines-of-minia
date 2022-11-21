@@ -32,7 +32,6 @@ class Hud extends UxView {
         // build out hud
         this.adopt( new UxPanel({
             sketch: Assets.get('hud.border', true),
-            //sketch: Sketch.zero,
             children: [
                 new UxPanel({
                     sketch: Assets.get('hud.bar.panel', true),
@@ -41,6 +40,21 @@ class Hud extends UxView {
                         this.sliderBar('bar.health', new XForm({left: 0/7, right: 2/7, top: 0/4, bottom: 3/4}), "rgba(179,56,49,1)"),
                         this.sliderBar('bar.power', new XForm({left: 0/7, right: 2/7, top: 1/4, bottom: 2/4}), "rgba(77,101,180,1)"),
                         this.sliderBar('bar.fuel', new XForm({left: 0/7, right: 2/7, top: 2/4, bottom: 1/4}), "rgba(247,150,23,1)"),
+                        new UxPanel({
+                            tag: 'hud.health',
+                            sketch: Assets.get('hud.health', true),
+                            xform: new XForm({left: 5/7, right: 1/7, top: 0/4, bottom: 3/4}),
+                        }),
+                        new UxPanel({
+                            tag: 'hud.power',
+                            sketch: Assets.get('hud.power', true),
+                            xform: new XForm({left: 5/7, right: 1/7, top: 1/4, bottom: 2/4}),
+                        }),
+                        new UxPanel({
+                            tag: 'hud.fuel',
+                            sketch: Assets.get('hud.fuel', true),
+                            xform: new XForm({left: 5/7, right: 1/7, top: 2/4, bottom: 1/4}),
+                        }),
                     ],
                 }),
 
@@ -268,18 +282,46 @@ class Hud extends UxView {
         let panel = Hierarchy.find(this, (v) => v.tag === 'bar.health');
         let pct = Mathf.clamp(current/max, 0, 1);
         panel.xform.right = 1-pct;
+        if (current >= Math.round(max*.25) && this.flashHealth) {
+            let indicator = Hierarchy.find(this, (v) => v.tag === 'hud.health');
+            indicator.sketch = Assets.get('hud.health', true);
+            this.flashHealth = false;
+        } else if (current < Math.round(max*.25) && !this.flashHealth) {
+            let indicator = Hierarchy.find(this, (v) => v.tag === 'hud.health');
+            indicator.sketch = Assets.get('hud.health.flash', true);
+            this.flashHealth = true;
+        }
+
     }
 
     assignFuel(current, max) {
         let panel = Hierarchy.find(this, (v) => v.tag === 'bar.fuel');
         let pct = Mathf.clamp(current/max, 0, 1);
         panel.xform.right = 1-pct;
+        if (current >= Math.round(max*.25) && this.flashFuel) {
+            let indicator = Hierarchy.find(this, (v) => v.tag === 'hud.fuel');
+            indicator.sketch = Assets.get('hud.fuel', true);
+            this.flashFuel = false;
+        } else if (current < Math.round(max*.25) && !this.flashFuel) {
+            let indicator = Hierarchy.find(this, (v) => v.tag === 'hud.fuel');
+            indicator.sketch = Assets.get('hud.fuel.flash', true);
+            this.flashFuel = true;
+        }
     }
 
     assignPower(current, max) {
         let panel = Hierarchy.find(this, (v) => v.tag === 'bar.power');
         let pct = Mathf.clamp(current/max, 0, 1);
         panel.xform.right = 1-pct;
+        if (current >= Math.round(max*.25) && this.flashPower) {
+            let indicator = Hierarchy.find(this, (v) => v.tag === 'hud.power');
+            indicator.sketch = Assets.get('hud.power', true);
+            this.flashPower = false;
+        } else if (current < Math.round(max*.25) && !this.flashPower) {
+            let indicator = Hierarchy.find(this, (v) => v.tag === 'hud.power');
+            indicator.sketch = Assets.get('hud.power.flash', true);
+            this.flashPower = true;
+        }
     }
 
     sliderBar(tag, xform, color) {
