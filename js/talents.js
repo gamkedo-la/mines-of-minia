@@ -14,33 +14,22 @@ import { UxText } from './base/uxText.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
 import { Prompt } from './prompt.js';
+import { Resurrect64 } from './resurrect64.js';
 import { TalentSystem } from './systems/talentSystem.js';
 
 class Talents extends UxView {
     // STATIC PROPERTIES ---------------------------------------------------
-    static get dfltSelectedUnpressed() {
-        return Assets.get('frame.blue.2', true, {lockRatio: true});
-    }
-    static get dfltSelectedPressed() {
-        return Assets.get('frame.red.2', true, {lockRatio: true});
-    }
-    static get dfltSelectedHighlight() {
-        return Assets.get('frame.yellow.2', true, {lockRatio: true});
-    }
     static get dfltUnpressed() {
-        return Assets.get('frame.blue', true, {lockRatio: true});
+        return Assets.get('talent.button', true);
     }
     static get dfltPressed() {
-        return Assets.get('frame.red', true, {lockRatio: true});
+        return Assets.get('talent.button.pressed', true);
     }
     static get dfltHighlight() {
-        return Assets.get('frame.yellow', true, {lockRatio: true});
+        return Assets.get('talent.button.hl', true);
     }
-    static get dfltMark() {
-        return Assets.get('frame.green.2', true, {lockRatio: true});
-    }
-    static dfltTextColor = 'yellow';
-    static dfltHighlightTextColor = 'green';
+    static dfltTextColor = Resurrect64.colors[28];
+    static dfltHighlightTextColor = Resurrect64.colors[32];
 
     // CONSTRUCTOR/DECONSTRUCTOR -------------------------------------------
     cpost(spec) {
@@ -50,123 +39,78 @@ class Talents extends UxView {
         this.onPopupDestroy = this.onPopupDestroy.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.bg = new UxPanel({
-            sketch: Assets.get('oframe.red', true),
-            xform: new XForm({offset: 10, right:.3}),
+            sketch: Assets.get('talents.bg', true),
+            xform: new XForm({right: 12/26}),
             children: [
-                new UxPanel({
-                    sketch: Sketch.zero,
-                    xform: new XForm({ top: 0, bottom: .85}),
-                    children: [
-                        new UxText({
-                            text: new Text({text: 'talents', color: this.constructor.dfltTextColor}),
-                            xform: new XForm({top: .25, bottom: .1}),
-                        }),
-                        new UxText({
-                            tag: 'talent.unspent',
-                            text: new Text({text: '+1', color: this.constructor.dfltHighlightTextColor}),
-                            xform: new XForm({left: .8, top: .35, bottom: .2}),
-                        }),
-                    ]
+                new UxText({
+                    text: new Text({text: 'talents', color: this.constructor.dfltTextColor}),
+                    xform: new XForm({left: 5/14, right: 3/14, top: 2/17, bottom: 14/17}),
                 }),
-                new UxPanel({
-                    sketch: Sketch.zero,
-                    xform: new XForm({ top: .15, bottom: 0}),
-                    children: [
-                        new UxPanel({
-                            sketch: Assets.get('oframe.red', true),
-                            xform: new XForm({ oleft: 20, oright: 20, obottom: 20, top: 0, bottom: .66}),
-                            children: [
-                                new UxPanel({
-                                    sketch: Sketch.zero,
-                                    xform: new XForm({ bottom: .7}),
-                                    children: [
-                                        new UxText({
-                                            text: new Text({text: 'tier 1', color: this.constructor.dfltTextColor}),
-                                            xform: new XForm({top: .15, bottom: .1}),
-                                        }),
-                                        new UxText({
-                                            tag: 't1.count',
-                                            text: new Text({text: '0/7', color: this.constructor.dfltTextColor}),
-                                            xform: new XForm({left: .85, top: .2, bottom: .2}),
-                                        }),
-                                    ],
-                                }),
-                                new UxPanel({
-                                    sketch: Sketch.zero,
-                                    xform: new XForm({ top: .3, bottom: .1}),
-                                    children: [
-                                        this.slot({ xform: new XForm({offset: 8, left: 0, right: .75}), }, 'golddigger'),
-                                        this.slot({ xform: new XForm({offset: 8, left: .25, right: .5}), }, 'efficiency'),
-                                        this.slot({ xform: new XForm({offset: 8, left: .5, right: .25}), }, 'shielding'),
-                                        this.slot({ xform: new XForm({offset: 8, left: .75, right: 0}), }, 'gems'),
-                                    ],
-                                }),
-                            ],
-                        }),
-                        new UxPanel({
-                            sketch: Assets.get('oframe.red', true),
-                            xform: new XForm({ oleft: 20, oright: 20, obottom: 20, top: .33, bottom: .33}),
-                            children: [
-                                new UxPanel({
-                                    sketch: Sketch.zero,
-                                    xform: new XForm({ bottom: .7}),
-                                    children: [
-                                        new UxText({
-                                            text: new Text({text: 'tier 2', color: this.constructor.dfltTextColor}),
-                                            xform: new XForm({top: .15, bottom: .1}),
-                                        }),
-                                        new UxText({
-                                            tag: 't2.count',
-                                            text: new Text({text: '0/7', color: this.constructor.dfltTextColor}),
-                                            xform: new XForm({left: .85, top: .2, bottom: .2}),
-                                        }),
-                                    ],
-                                }),
-                                new UxPanel({
-                                    sketch: Sketch.zero,
-                                    xform: new XForm({ top: .3, bottom: .1}),
-                                    children: [
-                                        this.slot({ xform: new XForm({offset: 8, left: 0, right: .75}), }, 'bonkers'),
-                                        this.slot({ xform: new XForm({offset: 8, left: .25, right: .5}), }, 'pointy'),
-                                        this.slot({ xform: new XForm({offset: 8, left: .5, right: .25}), }, 'hackety'),
-                                        this.slot({ xform: new XForm({offset: 8, left: .75, right: 0}), }, 'powerage'),
-                                    ],
-                                }),
-                            ],
-                        }),
-                        new UxPanel({
-                            sketch: Assets.get('oframe.red', true),
-                            xform: new XForm({ oleft: 20, oright: 20, obottom: 20, top: .66, bottom: 0}),
-                            children: [
-                                new UxPanel({
-                                    sketch: Sketch.zero,
-                                    xform: new XForm({ bottom: .7}),
-                                    children: [
-                                        new UxText({
-                                            text: new Text({text: 'tier 3', color: this.constructor.dfltTextColor}),
-                                            xform: new XForm({top: .15, bottom: .1}),
-                                        }),
-                                        new UxText({
-                                            tag: 't3.count',
-                                            text: new Text({text: '0/7', color: this.constructor.dfltTextColor}),
-                                            xform: new XForm({left: .85, top: .2, bottom: .2}),
-                                        }),
-                                    ],
-                                }),
-                                new UxPanel({
-                                    sketch: Sketch.zero,
-                                    xform: new XForm({ top: .3, bottom: .1}),
-                                    children: [
-                                        this.slot({ xform: new XForm({offset: 8, left: 0, right: .75}), }, 'frosty'),
-                                        this.slot({ xform: new XForm({offset: 8, left: .25, right: .5}), }, 'fuego'),
-                                        this.slot({ xform: new XForm({offset: 8, left: .5, right: .25}), }, 'shocking'),
-                                        this.slot({ xform: new XForm({offset: 8, left: .75, right: 0}), }, 'darkness'),
-                                    ],
-                                }),
-                            ],
-                        }),
-                    ]
+
+                new UxText({
+                    tag: 'talent.unspent',
+                    text: new Text({text: '+1', color: this.constructor.dfltHighlightTextColor}),
+                    xform: new XForm({left: 11/14, right: 2/14, top: 2/17, bottom: 14/17}),
                 }),
+
+                new UxText({
+                    text: new Text({text: 'tier 1', color: this.constructor.dfltTextColor}),
+                    xform: new XForm({left: 5/14, right: 3/14, top: 4.5/17, bottom: 11.5/17}),
+                }),
+
+                new UxText({
+                    tag: 't1.count',
+                    text: new Text({text: '0/7', color: this.constructor.dfltTextColor}),
+                    xform: new XForm({left: 11/14, right: 2/14, top: 4.5/17, bottom: 11.5/17}),
+                }),
+
+                this.slot({ xform: new XForm({left: 4/14, right: 8/14, top: 5.5/17, bottom: 9.5/17}), }, 'golddigger'),
+                this.slot({ xform: new XForm({left: 6/14, right: 6/14, top: 5.5/17, bottom: 9.5/17}), }, 'efficiency'),
+                this.slot({ xform: new XForm({left: 8/14, right: 4/14, top: 5.5/17, bottom: 9.5/17}), }, 'shielding'),
+                this.slot({ xform: new XForm({left: 10/14, right: 2/14, top: 5.5/17, bottom: 9.5/17}), }, 'gems'),
+
+                new UxText({
+                    text: new Text({text: 'tier 2', color: this.constructor.dfltTextColor}),
+                    xform: new XForm({left: 5/14, right: 3/14, top: 8.5/17, bottom: 7.5/17}),
+                }),
+
+                new UxText({
+                    tag: 't2.count',
+                    text: new Text({text: '0/7', color: this.constructor.dfltTextColor}),
+                    xform: new XForm({left: 11/14, right: 2/14, top: 8.5/17, bottom: 7.5/17}),
+                }),
+
+                this.slot({ xform: new XForm({left: 4/14, right: 8/14, top: 9.5/17, bottom: 5.5/17}), }, 'bonkers'),
+                this.slot({ xform: new XForm({left: 6/14, right: 6/14, top: 9.5/17, bottom: 5.5/17}), }, 'pointy'),
+                this.slot({ xform: new XForm({left: 8/14, right: 4/14, top: 9.5/17, bottom: 5.5/17}), }, 'hackety'),
+                this.slot({ xform: new XForm({left: 10/14, right: 2/14, top: 9.5/17, bottom: 5.5/17}), }, 'powerage'),
+
+                new UxText({
+                    text: new Text({text: 'tier 3', color: this.constructor.dfltTextColor}),
+                    xform: new XForm({left: 5/14, right: 3/14, top: 12.5/17, bottom: 3.5/17}),
+                }),
+
+                new UxText({
+                    tag: 't3.count',
+                    text: new Text({text: '0/7', color: this.constructor.dfltTextColor}),
+                    xform: new XForm({left: 11/14, right: 2/14, top: 12.5/17, bottom: 3.5/17}),
+                }),
+
+                this.slot({ xform: new XForm({left: 4/14, right: 8/14, top: 13.5/17, bottom: 1.5/17}), }, 'frosty'),
+                this.slot({ xform: new XForm({left: 6/14, right: 6/14, top: 13.5/17, bottom: 1.5/17}), }, 'fuego'),
+                this.slot({ xform: new XForm({left: 8/14, right: 4/14, top: 13.5/17, bottom: 1.5/17}), }, 'shocking'),
+                this.slot({ xform: new XForm({left: 10/14, right: 2/14, top: 13.5/17, bottom: 1.5/17}), }, 'darkness'),
+
+                new UxButton({
+                    tag: 'cancel.button',
+                    unpressed: Assets.get('hud.cancel.unpressed', true),
+                    pressed: Assets.get('hud.cancel.pressed', true),
+                    highlight: Assets.get('hud.cancel.highlight', true),
+                    xform: new XForm({left: 1/14, right: 11/14, top: 14/17, bottom: 1/17}),
+                    text: Text.zero,
+                    mouseClickedSound: Assets.get('menu.click', true),
+                }),
+
             ],
         });
         this.adopt(this.bg);
@@ -177,6 +121,10 @@ class Talents extends UxView {
         this.updateCounts();
         this.updateUnspent();
         Events.listen(Keys.evtDown, this.onKeyDown);
+        let button = Hierarchy.find(this, (v) => v.tag === 'cancel.button');
+        if (button) {
+            button.evt.listen(button.constructor.evtMouseClicked, () => this.destroy());
+        }
     }
 
     destroy() {
@@ -199,7 +147,7 @@ class Talents extends UxView {
             lvl: lvl,
             locked: locked,
             tierCount: this.getTierCount(talent.tier),
-            xform: new XForm({ left: .7, top: .2, bottom: .2}),
+            xform: new XForm({ left: 14/26, top: 2/17, bottom: 3/17}),
             handleLvlUp: this.handleLvlUp.bind(this),
         });
         this.popup.evt.listen(this.popup.constructor.evtDestroyed, this.onPopupDestroy);
@@ -269,9 +217,8 @@ class Talents extends UxView {
         this.updateUnspent();
     }
 
-    slot(spec, slot=null) {
-        let slotTag = slot || 'slot';
-        let sketch = Assets.get(`talent.${slotTag}`, true);
+    slot(spec, tag) {
+        let sketch = Assets.get(`talent.${tag}`, true);
         // outer panel for positioning...
         let panel = new UxPanel( Object.assign( {
             sketch: Sketch.zero,
@@ -283,31 +230,31 @@ class Talents extends UxView {
                     sketch: Sketch.zero,
                     children: [
                         new UxPanel({
-                            tag: `${slotTag}.icon`,
-                            xform: new XForm({ offset: 3}),
+                            tag: `${tag}.icon`,
+                            //xform: new XForm({ offset: 3}),
                             sketch: sketch,
                         }),
-                        this.button({ tag: slotTag }, this.onSlotClick),
+                        this.button({ tag: tag }, this.onSlotClick),
                         new UxPanel({
-                            tag: `${slotTag}.overlay`,
+                            tag: `${tag}.overlay`,
                             sketch: Sketch.zero,
                         }),
                         new UxPanel({
-                            tag: `${slotTag}.1`,
-                            xform: new XForm({ left: .85, bottom: .66, width: 10, height: 10, lockRatio: true}),
+                            tag: `${tag}.1`,
+                            xform: new XForm({ left: 25/32, right: 3/32, top: 7/32, bottom: 21/32 }),
                         }),
                         new UxPanel({
-                            tag: `${slotTag}.2`,
-                            xform: new XForm({ left: .85, top: .33, bottom: .33, width: 10, height: 10, lockRatio: true}),
+                            tag: `${tag}.2`,
+                            xform: new XForm({ left: 25/32, right: 3/32, top: 14/32, bottom: 14/32 }),
                         }),
                         new UxPanel({
-                            tag: `${slotTag}.3`,
-                            xform: new XForm({ left: .85, top: .66, width: 10, height: 10, lockRatio: true}),
+                            tag: `${tag}.3`,
+                            xform: new XForm({ left: 25/32, right: 3/32, top: 21/32, bottom: 7/32 }),
                         }),
                     ],
                 }),
             ],
-        }, spec, {tag: `${slotTag}.bg`}));
+        }, spec, {tag: `${tag}.bg`}));
         panel.xform.lockRatio = true;
         return panel;
     }
@@ -347,100 +294,77 @@ class TalentPopup extends UxView {
         this.unspent = spec.unspent || 0;
 
         this.bg = new UxPanel({
-            sketch: Assets.get('oframe.red', true),
+            sketch: Assets.get('talents.popup.bg', true),
             children: [
-                // title
-                new UxText({
-                    tag: 'title',
-                    xform: new XForm({offset: 5, bottom: .9}),
-                    text: new Text({ text: 'talent info', color: this.constructor.dfltTextColor}),
-                }),
-
-                // top panel
                 new UxPanel({
-                    xform: new XForm({top: .1, bottom: .7}),
+                    xform: new XForm({left: 2/12, right: 8/12, top: 2/12, bottom: 8/12}),
                     sketch: Sketch.zero,
                     children: [
                         new UxPanel({
-                            xform: new XForm({offset: 10, right: .7, width: 10, height: 10, lockRatio: true}),
-                            sketch: Assets.get('frame.red', true),
-                            children: [
-                                new UxPanel({
-                                    tag: 'talent.picture',
-                                    xform: new XForm({offset: 3}),
-                                    sketch: Assets.get(`talent.${this.talent.tag}`, true),
-                                }),
-                            ],
-                        }),
-
-                        new UxText({
-                            tag: 'talent.name',
-                            xform: new XForm({left: .3, offset: 5, top: .1, bottom: .4}),
-                            text: new Text({ text: this.talent.name, color: this.constructor.dfltTextColor, align: 'left'}),
-                        }),
-
-                        new UxText({
-                            tag: 'talent.tier',
-                            xform: new XForm({left: .3, offset: 5, top: .5, bottom: .1}),
-                            text: new Text({ text: `tier ${this.talent.tier}`, color: this.constructor.dfltTextColor, align: 'left'}),
-                        }),
-                    ]
-                }),
-
-                // stars
-                new UxPanel({
-                    xform: new XForm({top: .3, bottom: .6}),
-                    sketch: Sketch.zero,
-                    children: [
-                        new UxPanel({
-                            sketch: (this.lvl >= 1) ? Assets.get('talent.active', true) : Assets.get('talent.inactive', true),
-                            xform: new XForm({left: .2, right: .7, width: 10, height: 10, lockRatio: true}),
+                            tag: 'talent.picture',
+                            sketch: Assets.get(`talent.${this.talent.tag}`, true),
                         }),
                         new UxPanel({
-                            sketch: (this.lvl >= 2) ? Assets.get('talent.active', true) : Assets.get('talent.inactive', true),
-                            xform: new XForm({left: .45, right: .45, width: 10, height: 10, lockRatio: true}),
-                        }),
-                        new UxPanel({
-                            sketch: (this.lvl >= 3) ? Assets.get('talent.active', true) : Assets.get('talent.inactive', true),
-                            xform: new XForm({left: .7, right: .2, width: 10, height: 10, lockRatio: true}),
+                            sketch: Assets.get(`talent.frame`, true),
                         }),
                     ],
                 }),
 
-                // description
-                new UxPanel({
-                    xform: new XForm({top: .425, bottom: .225}),
-                    sketch: Sketch.zero,
-                    children: [
-                        new UxText({
-                            tag: 'talent.description',
-                            xform: new XForm({offset: 15}),
-                            text: new Text({wrap: true, text: this.talent.description, color: this.constructor.dfltTextColor, valign: 'top', align: 'left'}),
-                        }),
-                        new UxText({
-                            tag: 'talent.locked',
-                            xform: new XForm({offset: 15}),
-                            text: new Text({wrap: true, text: '-- tier is locked, spend points in lower tier first --', color: this.constructor.dfltWarnTextColor, valign: 'bottom'}),
-                        }),
-                    ]
+                new UxText({
+                    tag: 'talent.name',
+                    xform: new XForm({left: 4.5/12, right: 3.75/12, top: 1.5/12, bottom: 8.5/12}),
+                    text: new Text({ text: this.talent.name, color: this.constructor.dfltTextColor, align: 'center'}),
                 }),
 
-                // buttons
+                new UxText({
+                    tag: 'talent.tier',
+                    xform: new XForm({left: 5/12, right: 4/12, top: 3.25/12, bottom: 8/12}),
+                    text: new Text({ text: `tier ${this.talent.tier}`, color: this.constructor.dfltTextColor, align: 'center'}),
+                }),
+
                 new UxPanel({
-                    xform: new XForm({top: .8}),
-                    sketch: Sketch.zero,
-                    children: [
-                        new UxButton({
-                            tag: 'talent.lvlup',
-                            xform: new XForm({offset: 10, right:.67}),
-                            text: new Text({text: '  level up  '}),
-                        }),
-                        new UxButton({
-                            tag: 'talent.cancel',
-                            xform: new XForm({offset: 10, left:.67}),
-                            text: new Text({text: ' cancel '}),
-                        }),
-                    ]
+                    sketch: (this.lvl >= 1) ? Assets.get('talent.active.lg', true) : Assets.get('talent.inactive.lg', true),
+                    xform: new XForm({left: 5/12, right: 6/12, top: 5/12, bottom: 6/12}),
+                }),
+                new UxPanel({
+                    sketch: (this.lvl >= 2) ? Assets.get('talent.active.lg', true) : Assets.get('talent.inactive.lg', true),
+                    xform: new XForm({left: 6/12, right: 5/12, top: 5/12, bottom: 6/12}),
+                }),
+                new UxPanel({
+                    sketch: (this.lvl >= 3) ? Assets.get('talent.active.lg', true) : Assets.get('talent.inactive.lg', true),
+                    xform: new XForm({left: 7/12, right: 4/12, top: 5/12, bottom: 6/12}),
+                }),
+
+                new UxText({
+                    tag: 'talent.description',
+                    xform: new XForm({left: 2/12, right: 4/12, top: 7/12, bottom: 3/12}),
+                    text: new Text({wrap: true, text: this.talent.description, color: this.constructor.dfltTextColor, valign: 'top', align: 'left'}),
+                }),
+
+                new UxText({
+                    tag: 'talent.locked',
+                    xform: new XForm({left: 2/12, right: 4/12, top: 9/12, bottom: 2/12}),
+                    text: new Text({wrap: true, text: '-- tier is locked, spend points in lower tier first --', color: this.constructor.dfltWarnTextColor, valign: 'bottom'}),
+                }),
+
+                new UxButton({
+                    tag: 'talent.lvlup',
+                    unpressed: Assets.get('hud.plus.unpressed', true),
+                    pressed: Assets.get('hud.plus.pressed', true),
+                    highlight: Assets.get('hud.plus.highlight', true),
+                    xform: new XForm({left: 9/12, right: 1/12, top: 7/12, bottom: 3/12}),
+                    text: Text.zero,
+                    mouseClickedSound: Assets.get('menu.click', true),
+                }),
+
+                new UxButton({
+                    tag: 'talent.cancel',
+                    unpressed: Assets.get('hud.cancel.unpressed', true),
+                    pressed: Assets.get('hud.cancel.pressed', true),
+                    highlight: Assets.get('hud.cancel.highlight', true),
+                    xform: new XForm({left: 9/12, right: 1/12, top: 9/12, bottom: 1/12}),
+                    text: Text.zero,
+                    mouseClickedSound: Assets.get('menu.click', true),
                 }),
 
             ],

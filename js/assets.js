@@ -1195,6 +1195,10 @@ let miniaAssets = [
     Sprite.xspec({tag: 'hud.stats.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*34, y: 16*2})}),
     Sprite.xspec({tag: 'hud.stats.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*34, y: 16*4})}),
 
+    Sprite.xspec({tag: 'hud.plus.unpressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*2, y: 16*6})}),
+    Sprite.xspec({tag: 'hud.plus.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*2, y: 16*8})}),
+    Sprite.xspec({tag: 'hud.plus.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*2, y: 16*10})}),
+
     Animation.xspec({tag: 'hud.talents.flash', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*18, y: 16*2})}), ttl: 200 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*22, y: 16*4})}), ttl: 100 }),
@@ -1230,6 +1234,9 @@ let miniaAssets = [
     Sprite.xspec({tag: 'stats.bg', img: new SheetRef({src: 'img/stats.png', width: 16*12, height: 16*13, x: 16*0, y: 16*0})}),
 
     Sprite.xspec({tag: 'prompt.bg', img: new SheetRef({src: 'img/prompt.png', width: 16*15, height: 16*8, x: 16*13, y: 16*7})}),
+
+    Sprite.xspec({tag: 'talents.bg', img: new SheetRef({src: 'img/talents-bg.png', width: 16*14, height: 16*17, x: 16*0, y: 16*0})}),
+    Sprite.xspec({tag: 'talents.popup.bg', img: new SheetRef({src: 'img/talents-bg.png', width: 16*12, height: 16*12, x: 16*14, y: 16*3})}),
 
     Animation.xspec({tag: 'funguy.mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 25 }),
@@ -2268,20 +2275,29 @@ let miniaAssets = [
     //Rect.xspec({tag: 'talent.active', width: 12, height: 12, color: 'red', borderColor: 'gold', border: 1}),
     //Rect.xspec({tag: 'talent.inactive', width: 12, height: 12, color: 'rgba(55,55,55,1)', borderColor: 'rgba(127,127,127,1)', border: 1}),
 
-    Sprite.xspec({tag: 'talent.golddigger', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*0, y: 16*0})}),
-    Sprite.xspec({tag: 'talent.efficiency', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*1, y: 16*0})}),
-    Sprite.xspec({tag: 'talent.shielding', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*2, y: 16*0})}),
-    Sprite.xspec({tag: 'talent.gems', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*3, y: 16*0})}),
-    Sprite.xspec({tag: 'talent.bonkers', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*0, y: 16*1})}),
-    Sprite.xspec({tag: 'talent.pointy', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*1, y: 16*1})}),
-    Sprite.xspec({tag: 'talent.hackety', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*2, y: 16*1})}),
-    Sprite.xspec({tag: 'talent.powerage', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*3, y: 16*1})}),
-    Sprite.xspec({tag: 'talent.frosty', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*0, y: 16*2})}),
-    Sprite.xspec({tag: 'talent.fuego', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*1, y: 16*2})}),
-    Sprite.xspec({tag: 'talent.shocking', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*2, y: 16*2})}),
-    Sprite.xspec({tag: 'talent.darkness', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*3, y: 16*2})}),
-    Sprite.xspec({tag: 'talent.active', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*4, y: 16*0})}),
-    Sprite.xspec({tag: 'talent.inactive', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*4, y: 16*1})}),
+    Sprite.xspec({tag: 'talent.golddigger', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*0, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.efficiency', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*2, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.shielding', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*4, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.gems', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*6, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.bonkers', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*0, y: 16*2})}),
+    Sprite.xspec({tag: 'talent.pointy', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*2, y: 16*2})}),
+    Sprite.xspec({tag: 'talent.hackety', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*4, y: 16*2})}),
+    Sprite.xspec({tag: 'talent.powerage', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*6, y: 16*2})}),
+    Sprite.xspec({tag: 'talent.frosty', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*0, y: 16*4})}),
+    Sprite.xspec({tag: 'talent.fuego', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*2, y: 16*4})}),
+    Sprite.xspec({tag: 'talent.shocking', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*4, y: 16*4})}),
+    Sprite.xspec({tag: 'talent.darkness', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*6, y: 16*4})}),
+
+    Sprite.xspec({tag: 'talent.active', img: new SheetRef({src: 'img/talents.png', width: 4, height: 4, x: 16*8, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.inactive', img: new SheetRef({src: 'img/talents.png', width: 4, height: 4, x: 16*8+4, y: 16*0})}),
+
+    Sprite.xspec({tag: 'talent.button', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*9, y: 16*0})}),
+    Sprite.xspec({tag: 'talent.button.hl', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*9, y: 16*2})}),
+    Sprite.xspec({tag: 'talent.button.pressed', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*9, y: 16*4})}),
+    Sprite.xspec({tag: 'talent.frame', img: new SheetRef({src: 'img/talents.png', width: 32, height: 32, x: 16*11, y: 16*0})}),
+
+    Sprite.xspec({tag: 'talent.inactive.lg', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*11, y: 16*2})}),
+    Sprite.xspec({tag: 'talent.active.lg', img: new SheetRef({src: 'img/talents.png', width: 16, height: 16, x: 16*12, y: 16*2})}),
 
     Sprite.xspec({tag: 'pillar.poison', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*0, y: 16*0})}),
     Sprite.xspec({tag: 'pillar.fire', img: new SheetRef({src: 'img/pillars.png', width: 16, height: 32, x: 16*1, y: 16*0})}),
