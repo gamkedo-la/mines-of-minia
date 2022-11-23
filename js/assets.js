@@ -1212,6 +1212,10 @@ let miniaAssets = [
     Sprite.xspec({tag: 'hud.green.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*0, y: 16*8})}),
     Sprite.xspec({tag: 'hud.green.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*0, y: 16*10})}),
 
+    Sprite.xspec({tag: 'hud.greenc.unpressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*4, y: 16*6})}),
+    Sprite.xspec({tag: 'hud.greenc.pressed', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*4, y: 16*8})}),
+    Sprite.xspec({tag: 'hud.greenc.highlight', img: new SheetRef({src: 'img/hud.png', width: 32, height: 32, x: 16*4, y: 16*10})}),
+
     Sprite.xspec({tag: 'hud.health', img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*12, y: 16*6})}),
     Animation.xspec({tag: 'hud.health.flash', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/hud.png', width: 16, height: 16, x: 16*12, y: 16*6})}), ttl: 170 }),

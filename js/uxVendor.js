@@ -589,9 +589,9 @@ class VendorPopup extends UxView {
                 }),
 
                 new UxButton({
-                    unpressed: Assets.get('hud.green.unpressed', true),
-                    pressed: Assets.get('hud.green.pressed', true),
-                    highlight: Assets.get('hud.green.highlight', true),
+                    unpressed: Assets.get('hud.greenc.unpressed', true),
+                    pressed: Assets.get('hud.greenc.pressed', true),
+                    highlight: Assets.get('hud.greenc.highlight', true),
                     tag: 'item.buy',
                     xform: new XForm({left: 1/11, right: 8/11, top: 10/13, bottom: 1/13}),
                     text: new Text({text: '   buy   '}),
@@ -599,9 +599,9 @@ class VendorPopup extends UxView {
                 }),
 
                 new UxButton({
-                    unpressed: Assets.get('hud.green.unpressed', true),
-                    pressed: Assets.get('hud.green.pressed', true),
-                    highlight: Assets.get('hud.green.highlight', true),
+                    unpressed: Assets.get('hud.greenc.unpressed', true),
+                    pressed: Assets.get('hud.greenc.pressed', true),
+                    highlight: Assets.get('hud.greenc.highlight', true),
                     tag: 'item.sell',
                     xform: new XForm({left: 1/11, right: 8/11, top: 10/13, bottom: 1/13}),
                     text: new Text({text: '   sell   '}),
@@ -618,41 +618,27 @@ class VendorPopup extends UxView {
                     mouseClickedSound: Assets.get('menu.click', true),
                 }),
 
-                // buttons
                 new UxPanel({
-                    xform: new XForm({top: .7, bottom: .1}),
+                    tag: 'buysell.cpanel',
+                    xform: new XForm({left: 1/11, right: 8/11, top: 10/13, bottom: 1/13}),
                     sketch: Sketch.zero,
                     children: [
-                        /*
-                        new UxButton({
-                            tag: 'item.buy',
-                            xform: new XForm({offset: 10, right:.67}),
-                            text: new Text({text: '   buy   '}),
+                        new UxText({
+                            tag: 'buysell.ctext',
+                            text: new Text({text: '0', color: textColor}),
+                            xform: new XForm({left: 12/32, right: 12/32, top: 24/32, bottom: 2/32}),
                         }),
-                        new UxButton({
-                            tag: 'item.sell',
-                            xform: new XForm({offset: 10, right:.67}),
-                            text: new Text({text: ' sell '}),
-                        }),
-                        new UxButton({
-                            tag: 'item.sellall',
-                            xform: new XForm({offset: 10, left:.33, right:.33}),
-                            text: new Text({text: ' sell all '}),
-                        }),
-                        new UxButton({
-                            tag: 'item.cancel',
-                            xform: new XForm({offset: 10, left:.67}),
-                            text: new Text({text: ' cancel '}),
-                        }),
-                        */
-                    ]
+                    ],
                 }),
+
+                // buttons
+
                 new UxPanel({
                     xform: new XForm({top: .85}),
                     sketch: Sketch.zero,
                     children: [
-                        counter({ tag: 'tokens', xform: new XForm({left: 0, right: .66, bottom: .25}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
-                        counter({ tag: 'tokens.all', xform: new XForm({left: .33, right: .33, bottom: .25}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
+                        //counter({ tag: 'tokens', xform: new XForm({left: 0, right: .66, bottom: .25}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
+                        //counter({ tag: 'tokens.all', xform: new XForm({left: .33, right: .33, bottom: .25}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
                     ],
                 }),
             ]
@@ -669,18 +655,18 @@ class VendorPopup extends UxView {
         //this.sellallButton = Hierarchy.find(this, (v) => v.tag === 'item.sellall');
         this.cancelButton = Hierarchy.find(this, (v) => v.tag === 'item.cancel');
         this.tokens = Hierarchy.find(this, (v) => v.tag === 'tokens');
-        this.tokensall = Hierarchy.find(this, (v) => v.tag === 'tokens.all');
+        //this.tokensall = Hierarchy.find(this, (v) => v.tag === 'tokens.all');
         // set button state
         // -- want target state... hide use/drop/throw
         if (this.mode === 'buy') {
             this.sellButton.active = this.sellButton.visible = false;
             //this.sellallButton.active = this.sellallButton.visible = false;
-            this.tokensall.active = this.tokensall.visible = false;
+            //this.tokensall.active = this.tokensall.visible = false;
         } else {
             this.buyButton.active = this.buyButton.visible = false;
             if (!this.item || !this.item || this.item.count < 2) {
                 //this.sellallButton.active = this.sellallButton.visible = false;
-                this.tokensall.active = this.tokensall.visible = false;
+                //this.tokensall.active = this.tokensall.visible = false;
             }
         }
 
@@ -748,12 +734,11 @@ class VendorPopup extends UxView {
         this.item = item;
         // token counts/costs
         let count = item.count || 1;
-        let ctext = Hierarchy.find(this, (v) => v.tag === 'tokens.ctext');
+        let ctext = Hierarchy.find(this, (v) => v.tag === 'buysell.ctext');
         let cost = (this.mode === 'buy') ? Math.round(item.cost * 2.5) : item.cost;
-        console.log(`cost: ${cost}`);
         ctext.text = `${cost}`;
-        ctext = Hierarchy.find(this, (v) => v.tag === 'tokens.all');
-        ctext.text = `${cost*count}`;
+        //ctext = Hierarchy.find(this, (v) => v.tag === 'tokens.all');
+        //ctext.text = `${cost*count}`;
 
     }
 
