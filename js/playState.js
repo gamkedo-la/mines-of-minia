@@ -450,6 +450,13 @@ class PlayState extends GameState {
                 console.log(`-- player health: ${this.player.health}/${this.player.healthMax} fuel: ${this.player.fuel} power: ${this.player.power}`);
                 break;
             }
+            case 'v': {
+                console.log(`this.vendor: ${this.vendor}`);
+                if (this.vendor) {
+                    this.doVendor();
+                }
+                break;
+            }
 
             /*
             case '9': {
@@ -513,7 +520,7 @@ class PlayState extends GameState {
         if (this.vendorui) this.vendorui.destroy();
         this.vendorui = new UxVendor({
             tag: 'vendorui',
-            xform: new XForm({border: .1}),
+            xform: new XForm({left: 3/39, right: 3/39, top: 2/21, bottom: 3/21, width: 33, height: 16, lockRatio: true}),
             player: this.player,
             vendor: this.vendor,
         });

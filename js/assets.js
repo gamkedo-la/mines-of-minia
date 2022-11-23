@@ -1230,13 +1230,12 @@ let miniaAssets = [
 
     Sprite.xspec({tag: 'equip.bg', img: new SheetRef({src: 'img/equip.png', width: 16*22, height: 16*19, x: 16*4, y: 16*1})}),
     Sprite.xspec({tag: 'equip.pop.bg', img: new SheetRef({src: 'img/equip.png', width: 16*11, height: 16*13, x: 16*26, y: 16*5})}),
-
     Sprite.xspec({tag: 'stats.bg', img: new SheetRef({src: 'img/stats.png', width: 16*12, height: 16*13, x: 16*0, y: 16*0})}),
-
     Sprite.xspec({tag: 'prompt.bg', img: new SheetRef({src: 'img/prompt.png', width: 16*15, height: 16*8, x: 16*13, y: 16*7})}),
-
     Sprite.xspec({tag: 'talents.bg', img: new SheetRef({src: 'img/talents-bg.png', width: 16*14, height: 16*17, x: 16*0, y: 16*0})}),
     Sprite.xspec({tag: 'talents.popup.bg', img: new SheetRef({src: 'img/talents-bg.png', width: 16*12, height: 16*12, x: 16*14, y: 16*3})}),
+    Sprite.xspec({tag: 'vendor.bg', img: new SheetRef({src: 'img/vendor.png', width: 16*22, height: 16*16, x: 16*0, y: 16*0})}),
+    Sprite.xspec({tag: 'vendor.popup.bg', img: new SheetRef({src: 'img/vendor.png', width: 16*11, height: 16*13, x: 16*22, y: 16*1})}),
 
     Animation.xspec({tag: 'funguy.mover', x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/funguy.png', width: 16, height: 32, x: 16*1, y: 0})}), ttl: 25 }),

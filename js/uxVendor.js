@@ -1,8 +1,6 @@
 
 export { UxVendor };
 
-import { DropAction } from './actions/drop.js';
-import { UseAction } from './actions/use.js';
 import { Assets } from './base/assets.js';
 import { Config } from './base/config.js';
 import { Events } from './base/event.js';
@@ -18,13 +16,12 @@ import { UxPanel } from './base/uxPanel.js';
 import { UxText } from './base/uxText.js';
 import { UxView } from './base/uxView.js';
 import { XForm } from './base/xform.js';
-import { Key } from './entities/key.js';
-import { Prompt } from './prompt.js';
 import { Resurrect64 } from './resurrect64.js';
 import { OverlaySystem } from './systems/overlaySystem.js';
-import { TurnSystem } from './systems/turnSystem.js';
 
-const textColor = "yellow";
+const textColor = Resurrect64.colors[18];
+const buttonTextColor = Resurrect64.colors[0];
+const counterColor = Resurrect64.colors[11];
 
 function button(text, spec) {
     return new UxButton(Object.assign({}, UxButton.xspec({
@@ -39,49 +36,48 @@ function button(text, spec) {
 
 function counter(spec, count) {
     let tag = spec.tag || 'counter';
-    let panel = new UxPanel( Object.assign( {
+    let panel = new UxPanel( {
+        tag: `${tag}.outer`,
+        xform: spec.xform,
+        sketch: Assets.get('equip.slotc.trans', true),
         children: [
             new UxPanel({
                 tag: `${tag}.cpanel`,
-                xform: new XForm({left: .6, top: .75, bottom: -.25}),
+                xform: new XForm({left: 15/32, right: 8/32, top: 24/32, bottom: 0}),
                 sketch: Sketch.zero,
                 children: [
                     new UxText({
                         tag: `${tag}.ctext`,
-                        text: new Text({text: '0', color: textColor}),
-                        xform: new XForm({bottom: -.15}),
+                        text: new Text({text: '0', color: counterColor}),
+                        xform: new XForm({top: -.1, bottom: -.15}),
                     }),
                 ],
             }),
+            new UxPanel({
+                tag: tag,
+                sketch: spec.sketch,
+                xform: new XForm({border: .2}),
+            }),
         ],
-    }, spec));
-    panel.xform.lockRatio = true;
+    });
     return panel;
 }
 
 class UxVendor extends UxView {
     // STATIC PROPERTIES ---------------------------------------------------
-    static get dfltSelectedUnpressed() {
-        return Assets.get('frame.blue.2', true, {lockRatio: true});
-    }
-    static get dfltSelectedPressed() {
-        return Assets.get('frame.red.2', true, {lockRatio: true});
-    }
-    static get dfltSelectedHighlight() {
-        return Assets.get('frame.yellow.2', true, {lockRatio: true});
-    }
-    static get dfltUnpressed() {
-        return Assets.get('frame.blue', true, {lockRatio: true});
-    }
-    static get dfltPressed() {
-        return Assets.get('frame.red', true, {lockRatio: true});
-    }
-    static get dfltHighlight() {
-        return Assets.get('frame.yellow', true, {lockRatio: true});
-    }
-    static get dfltMark() {
-        return Assets.get('frame.green.2', true, {lockRatio: true});
-    }
+    static get dfltSelectedUnpressed() { return Assets.get('equip.slot.blue', true, {lockRatio: true}); }
+    static get dfltSelectedPressed() { return Assets.get('equip.slot.blue', true, {lockRatio: true}); }
+    static get dfltSelectedHighlight() { return Assets.get('equip.slot.yellow', true, {lockRatio: true}); }
+    static get dfltUnpressed() { return Assets.get('equip.slot.trans', true, {lockRatio: true}); }
+    static get dfltPressed() { return Assets.get('equip.slot.trans', true, {lockRatio: true}); }
+    static get dfltHighlight() { return Assets.get('equip.slot.yellow', true, {lockRatio: true}); }
+
+    static get dfltSelectedUnpressedCnt() { return Assets.get('equip.slotc.blue', true, {lockRatio: true}); }
+    static get dfltSelectedPressedCnt() { return Assets.get('equip.slotc.blue', true, {lockRatio: true}); }
+    static get dfltSelectedHighlightCnt() { return Assets.get('equip.slotc.yellow', true, {lockRatio: true}); }
+    static get dfltUnpressedCnt() { return Assets.get('equip.slotc.trans', true, {lockRatio: true}); }
+    static get dfltPressedCnt() { return Assets.get('equip.slotc.trans', true, {lockRatio: true}); }
+    static get dfltHighlightCnt() { return Assets.get('equip.slotc.yellow', true, {lockRatio: true}); }
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
     cpost(spec) {
@@ -101,86 +97,89 @@ class UxVendor extends UxView {
         this.failedSfx = spec.failedSfx || Assets.get('action.failed', true);
 
         this.bg = new UxPanel({
-            sketch: Assets.get('oframe.red', true),
-            xform: new XForm({offset: 10, right:.3}),
+            sketch: Assets.get('vendor.bg', true),
+            xform: new XForm({right:11/33}),
             children: [
+
                 new UxPanel({
-                    tag: 'equip',
-                    xform: new XForm({offset: 10, top: .1, bottom: .2, right:.6}),
-                    sketch: Assets.get('frame.red', true),
-                    children: [
-                        new UxText({
-                            text: new Text({text: 'bigsby', color: textColor}),
-                            xform: new XForm({top: .025, bottom: .9}),
-                        }),
-                        new UxPanel({
-                            sketch: Assets.get('vendor_portrait', true, { lockRatio: true }),
-                            xform: new XForm({top: .1, bottom: .1, left: -.2, right: -.2}),
-                        }),
-                        counter({ tag: 'tokens', xform: new XForm({offset: 10, left: 0, right: .75, top: .8, bottom: .05}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
-                    ],
+                    sketch: Assets.get('vendor_portrait', true, { lockRatio: true }),
+                    xform: new XForm({top: 2/16, bottom: 11/16, left: 2/22, right: 17/22}),
                 }),
-                new UxPanel({
-                    tag: 'trade',
-                    xform: new XForm({offset: 10, left:.4, bottom: .75}),
-                    sketch: Assets.get('frame.red', true),
-                    children: [
-                        new UxText({
-                            text: new Text({text: 'vendor actions', color: textColor}),
-                            xform: new XForm({top: .1, bottom: .65}),
-                        }),
-                        button('buy', { tag: 'vendor.buy', xform: new XForm({top: .3, left: .2, right: .6}), }),
-                        button('sell', { tag: 'vendor.sell', xform: new XForm({top: .3, left: .6, right: .2}), }),
-                    ],
+                new UxText({
+                    text: new Text({text: 'bigsby', color: textColor}),
+                    xform: new XForm({top: 2.5/16, bottom: 12.5/16, left: 5.5/22, right: 13.5/22}),
                 }),
-                new UxPanel({
-                    tag: 'transaction',
-                    xform: new XForm({offset: 10, left:.4, top: .25}),
-                    sketch: Assets.get('frame.red', true),
-                    children: [
-                        new UxText({
-                            tag: 'transact.text',
-                            text: new Text({text: 'wares', color: textColor}),
-                            xform: new XForm({top: .025, bottom: .9}),
-                        }),
-                        new UxPanel({
-                            xform: new XForm({top: .1}),
-                            sketch: Sketch.zero,
-                            children: [
-                                this.slot({ tag: 'slot.0', xform: new XForm({offset: 10, left: .0, right: .8, top: .0, bottom: .8}), }),
-                                this.slot({ tag: 'slot.1', xform: new XForm({offset: 10, left: .2, right: .6, top: .0, bottom: .8}), }),
-                                this.slot({ tag: 'slot.2', xform: new XForm({offset: 10, left: .4, right: .4, top: .0, bottom: .8}), }),
-                                this.slot({ tag: 'slot.3', xform: new XForm({offset: 10, left: .6, right: .2, top: .0, bottom: .8}), }),
-                                this.slot({ tag: 'slot.4', xform: new XForm({offset: 10, left: .8, right: .0, top: .0, bottom: .8}), }),
-
-                                this.slot({ tag: 'slot.5', xform: new XForm({offset: 10, left: .0, right: .8, top: .2, bottom: .6}), }),
-                                this.slot({ tag: 'slot.6', xform: new XForm({offset: 10, left: .2, right: .6, top: .2, bottom: .6}), }),
-                                this.slot({ tag: 'slot.7', xform: new XForm({offset: 10, left: .4, right: .4, top: .2, bottom: .6}), }),
-                                this.slot({ tag: 'slot.8', xform: new XForm({offset: 10, left: .6, right: .2, top: .2, bottom: .6}), }),
-                                this.slot({ tag: 'slot.9', xform: new XForm({offset: 10, left: .8, right: .0, top: .2, bottom: .6}), }),
-
-                                this.slot({ tag: 'slot.10', xform: new XForm({offset: 10, left: .0, right: .8, top: .4, bottom: .4}), }),
-                                this.slot({ tag: 'slot.11', xform: new XForm({offset: 10, left: .2, right: .6, top: .4, bottom: .4}), }),
-                                this.slot({ tag: 'slot.12', xform: new XForm({offset: 10, left: .4, right: .4, top: .4, bottom: .4}), }),
-                                this.slot({ tag: 'slot.13', xform: new XForm({offset: 10, left: .6, right: .2, top: .4, bottom: .4}), }),
-                                this.slot({ tag: 'slot.14', xform: new XForm({offset: 10, left: .8, right: .0, top: .4, bottom: .4}), }),
-
-                                this.slot({ tag: 'slot.15', xform: new XForm({offset: 10, left: .0, right: .8, top: .6, bottom: .2}), }),
-                                this.slot({ tag: 'slot.16', xform: new XForm({offset: 10, left: .2, right: .6, top: .6, bottom: .2}), }),
-                                this.slot({ tag: 'slot.17', xform: new XForm({offset: 10, left: .4, right: .4, top: .6, bottom: .2}), }),
-                                this.slot({ tag: 'slot.18', xform: new XForm({offset: 10, left: .6, right: .2, top: .6, bottom: .2}), }),
-                                this.slot({ tag: 'slot.19', xform: new XForm({offset: 10, left: .8, right: .0, top: .6, bottom: .2}), }),
-
-                                this.slot({ tag: 'slot.20', xform: new XForm({offset: 10, left: .0, right: .8, top: .8, bottom: .0}), }),
-                                this.slot({ tag: 'slot.21', xform: new XForm({offset: 10, left: .2, right: .6, top: .8, bottom: .0}), }),
-                                this.slot({ tag: 'slot.22', xform: new XForm({offset: 10, left: .4, right: .4, top: .8, bottom: .0}), }),
-                                this.slot({ tag: 'slot.23', xform: new XForm({offset: 10, left: .6, right: .2, top: .8, bottom: .0}), }),
-                                this.slot({ tag: 'slot.24', xform: new XForm({offset: 10, left: .8, right: .0, top: .8, bottom: .0}), }),
-                            ],
-                        }),
-
-                    ],
+                new UxText({
+                    text: new Text({text: '-- vendor --', color: textColor}),
+                    xform: new XForm({top: 3.5/16, bottom: 11.5/16, left: 5.5/22, right: 13.5/22}),
                 }),
+
+                new UxButton({ unpressed: Assets.get('hud.green.unpressed', true),
+                    pressed: Assets.get('hud.green.pressed', true),
+                    highlight: Assets.get('hud.green.highlight', true),
+                    tag: 'vendor.buy',
+                    xform: new XForm({left: 2/22, right: 18/22, top: 7/16, bottom: 7/16}),
+                    text: new Text({text: '    buy    ', color: buttonTextColor}),
+                    mouseClickedSound: Assets.get('menu.click', true),
+                }),
+
+                new UxButton({
+                    unpressed: Assets.get('hud.green.unpressed', true),
+                    pressed: Assets.get('hud.green.pressed', true),
+                    highlight: Assets.get('hud.green.highlight', true),
+                    tag: 'vendor.sell',
+                    xform: new XForm({left: 6/22, right: 14/22, top: 7/16, bottom: 7/16}),
+                    text: new Text({text: '    sell    ', color: buttonTextColor}),
+                    mouseClickedSound: Assets.get('menu.click', true),
+                }),
+
+                new UxButton({
+                    unpressed: Assets.get('hud.cancel.unpressed', true),
+                    pressed: Assets.get('hud.cancel.pressed', true),
+                    highlight: Assets.get('hud.cancel.highlight', true),
+                    tag: 'vendor.cancel',
+                    xform: new XForm({left: 1/22, right: 19/22, top: 13/16, bottom: 1/16}),
+                    text: Text.zero,
+                    mouseClickedSound: Assets.get('menu.click', true),
+                }),
+
+                counter({ tag: 'tokens', xform: new XForm({left: 2/22, right: 18/22, top: 10/16, bottom: 4/16}), sketch: Assets.get('token.carry', true, {lockRatio: true})}),
+
+                new UxText({
+                    tag: 'transact.text',
+                    text: new Text({text: 'wares', color: textColor}),
+                    xform: new XForm({left: 12/22, right: 4/22, top: 1.5/16, bottom: 13.5/16}),
+                }),
+
+                this.slot({ tag: 'slot.0', xform: new XForm({left: 10/22, right: 10/22, top: 4/16, bottom: 10/16}), }),
+                this.slot({ tag: 'slot.1', xform: new XForm({left: 12/22, right: 8/22, top: 4/16, bottom: 10/16}), }),
+                this.slot({ tag: 'slot.2', xform: new XForm({left: 14/22, right: 6/22, top: 4/16, bottom: 10/16}), }),
+                this.slot({ tag: 'slot.3', xform: new XForm({left: 16/22, right: 4/22, top: 4/16, bottom: 10/16}), }),
+                this.slot({ tag: 'slot.4', xform: new XForm({left: 18/22, right: 2/22, top: 4/16, bottom: 10/16}), }),
+
+                this.slot({ tag: 'slot.5', xform: new XForm({left: 10/22, right: 10/22, top: 6/16, bottom: 8/16}), }),
+                this.slot({ tag: 'slot.6', xform: new XForm({left: 12/22, right: 8/22, top: 6/16, bottom: 8/16}), }),
+                this.slot({ tag: 'slot.7', xform: new XForm({left: 14/22, right: 6/22, top: 6/16, bottom: 8/16}), }),
+                this.slot({ tag: 'slot.8', xform: new XForm({left: 16/22, right: 4/22, top: 6/16, bottom: 8/16}), }),
+                this.slot({ tag: 'slot.9', xform: new XForm({left: 18/22, right: 2/22, top: 6/16, bottom: 8/16}), }),
+
+                this.slot({ tag: 'slot.10', xform: new XForm({left: 10/22, right: 10/22, top: 8/16, bottom: 6/16}), }),
+                this.slot({ tag: 'slot.11', xform: new XForm({left: 12/22, right: 8/22, top: 8/16, bottom: 6/16}), }),
+                this.slot({ tag: 'slot.12', xform: new XForm({left: 14/22, right: 6/22, top: 8/16, bottom: 6/16}), }),
+                this.slot({ tag: 'slot.13', xform: new XForm({left: 16/22, right: 4/22, top: 8/16, bottom: 6/16}), }),
+                this.slot({ tag: 'slot.14', xform: new XForm({left: 18/22, right: 2/22, top: 8/16, bottom: 6/16}), }),
+
+                this.slot({ tag: 'slot.15', xform: new XForm({left: 10/22, right: 10/22, top: 10/16, bottom: 4/16}), }),
+                this.slot({ tag: 'slot.16', xform: new XForm({left: 12/22, right: 8/22, top: 10/16, bottom: 4/16}), }),
+                this.slot({ tag: 'slot.17', xform: new XForm({left: 14/22, right: 6/22, top: 10/16, bottom: 4/16}), }),
+                this.slot({ tag: 'slot.18', xform: new XForm({left: 16/22, right: 4/22, top: 10/16, bottom: 4/16}), }),
+                this.slot({ tag: 'slot.19', xform: new XForm({left: 18/22, right: 2/22, top: 10/16, bottom: 4/16}), }),
+
+                this.slot({ tag: 'slot.20', xform: new XForm({left: 10/22, right: 10/22, top: 12/16, bottom: 2/16}), }),
+                this.slot({ tag: 'slot.21', xform: new XForm({left: 12/22, right: 8/22, top: 12/16, bottom: 2/16}), }),
+                this.slot({ tag: 'slot.22', xform: new XForm({left: 14/22, right: 6/22, top: 12/16, bottom: 2/16}), }),
+                this.slot({ tag: 'slot.23', xform: new XForm({left: 16/22, right: 4/22, top: 12/16, bottom: 2/16}), }),
+                this.slot({ tag: 'slot.24', xform: new XForm({left: 18/22, right: 2/22, top: 12/16, bottom: 2/16}), }),
 
             ],
         });
@@ -193,6 +192,11 @@ class UxVendor extends UxView {
         this.sellButton.evt.listen(this.buyButton.constructor.evtMouseClicked, this.onSellClicked);
         this.transactText = Hierarchy.find(this.bg, (v) => v.tag === 'transact.text');
         this.selected;
+
+        let button = Hierarchy.find(this.bg, (v) => v.tag === 'vendor.cancel');
+        if (button) {
+            button.evt.listen(button.constructor.evtMouseClicked, () => this.destroy());
+        }
 
         Events.listen(Keys.evtDown, this.onKeyDown);
 
@@ -247,7 +251,7 @@ class UxVendor extends UxView {
         }
         if (item) {
             this.itemPopup = new VendorPopup({
-                xform: new XForm({ left: .7, top: .2, bottom: .2}),
+                xform: new XForm({ left: 22/33, top: 1/16, bottom: 2/16}),
                 mode: this.mode,
                 item: item,
                 handleSell: this.handleSell.bind(this),
@@ -376,17 +380,18 @@ class UxVendor extends UxView {
                             xform: new XForm({ border: .1 }),
                             sketch: sketch,
                         }),
-                        this.button({ tag: slotTag }, this.onSlotClick),
+                        this.button({ tag: slotTag }, this.onSlotClick, slotid !== null),
                         new UxPanel({
                             tag: `${slotTag}.cpanel`,
-                            xform: new XForm({left: .6, top: .85, bottom: -.15, oright: 5}),
+                            sketch: Sketch.zero,
+                            xform: new XForm({left: 15/32, right: 8/32, top: 24/32, bottom: 0}),
                             active: (slotid !== null),
                             visible: (slotid !== null),
                             children: [
                                 new UxText({
                                     tag: `${slotTag}.ctext`,
-                                    text: new Text({text: slotid || '0', color: textColor}),
-                                    xform: new XForm({bottom: -.15}),
+                                    text: new Text({text: slotid || '0', color: counterColor}),
+                                    xform: new XForm({top: -.1, bottom: -.15}),
                                 }),
                             ],
                         }),
@@ -403,49 +408,18 @@ class UxVendor extends UxView {
         return panel;
     }
 
-    button(spec, cb) {
+    button(spec, cb, count=false) {
         let final = Object.assign( {
             text: Sketch.zero,
-            pressed: this.constructor.dfltPressed,
-            unpressed: this.constructor.dfltUnpressed,
-            highlight: this.constructor.dfltHighlight,
+            pressed: (count) ? this.constructor.dfltPressedCnt : this.constructor.dfltPressed,
+            unpressed: (count) ? this.constructor.dfltUnpressedCnt : this.constructor.dfltUnpressed,
+            highlight: (count) ? this.constructor.dfltHighlightCnt : this.constructor.dfltHighlight,
             mouseClickedSound: Assets.get('menu.click', true),
         }, spec);
         let button = new UxButton(final);
+        button.counter = count;
         button.evt.listen(button.constructor.evtMouseClicked, cb);
         return button;
-    }
-
-    markCompatibleSlots(item) {
-        if (item.constructor.slot === 'belt') {
-            for (let i=0; i<this.data.beltSlots; i++) {
-                let button = Hierarchy.find(this, (v) => v.tag === `belt${i}`);
-                this.markButton(button);
-            }
-        } else if (item.constructor.slot === 'weapon') {
-            let button = Hierarchy.find(this, (v) => v.tag === `weapon`);
-            this.markButton(button);
-        } else if (item.constructor.slot === 'shielding') {
-            let button = Hierarchy.find(this, (v) => v.tag === `shielding`);
-            this.markButton(button);
-        } else if (item.constructor.slot === 'reactor') {
-            let button = Hierarchy.find(this, (v) => v.tag === `reactor`);
-            this.markButton(button);
-        } else if (item.constructor.slot === 'gadget') {
-        }
-    }
-
-    markButton(button) {
-        button.unpressed = this.constructor.dfltMark;
-        this.marked.push(button);
-    }
-
-    unmarkButton(button) {
-        button.unpressed = this.constructor.dfltUnpressed;
-        let idx = this.marked.indexOf(button);
-        if (idx !== -1) {
-            this.marked.splice(idx, 1);
-        }
     }
 
     select(button) {
@@ -570,63 +544,78 @@ class VendorPopup extends UxView {
         this.handleSell = spec.handleSell;
         this.handleBuy = spec.handleBuy;
         this.mode = spec.mode || 'buy';
-        let title = spec.title || 'info';
         this.item;
         this.target;
 
         this.panel = new UxPanel({
-            sketch: Assets.get('oframe.red', true),
+            sketch: Assets.get('vendor.popup.bg', true),
             children: [
-                // title
-                new UxText({
-                    tag: 'title',
-                    xform: new XForm({offset: 5, bottom: .9}),
-                    text: new Text({ text: title, color: textColor}),
-                }),
 
-                // top panel
                 new UxPanel({
-                    xform: new XForm({top: .1, bottom: .7}),
-                    sketch: Sketch.zero,
+                    xform: new XForm({left: 2/11, right: 7/11, top: 2/13, bottom: 9/13}),
+                    sketch: Assets.get('equip.slot.trans', true),
                     children: [
                         new UxPanel({
-                            xform: new XForm({offset: 10, right: .7, width: 10, height: 10, lockRatio: true}),
-                            sketch: Assets.get('frame.red', true),
-                            children: [
-                                new UxPanel({
-                                    tag: 'item.picture',
-                                    xform: new XForm({border: .1}),
-                                    sketch: Sketch.zero,
-                                }),
-                            ],
+                            tag: 'item.picture',
+                            xform: new XForm({border: .1}),
+                            sketch: Sketch.zero,
                         }),
+                    ],
+                }),
 
-                        new UxText({
-                            tag: 'item.name',
-                            xform: new XForm({left: .3, offset: 5, top: .1, bottom: .4}),
-                            text: new Text({ text: 'name', color: textColor, align: 'left'}),
-                        }),
+                new UxText({
+                    tag: 'item.name',
+                    xform: new XForm({left: 4.5/11, right: 2.75/11, top: 2/13, bottom: 10/13}),
+                    text: new Text({ text: 'select target', color: textColor, align: 'left'}),
+                }),
 
-                        new UxText({
-                            tag: 'item.kind',
-                            xform: new XForm({left: .3, offset: 5, top: .5, bottom: .1}),
-                            text: new Text({ text: 'kind', color: textColor, align: 'left'}),
-                        }),
-
-                    ]
+                new UxText({
+                    tag: 'item.kind',
+                    xform: new XForm({left: 5/11, right: 3/11, top: 3/13, bottom: 9/13}),
+                    text: new Text({ text: '---', color: textColor, align: 'left'}),
                 }),
 
                 // description
                 new UxPanel({
-                    xform: new XForm({top: .325, bottom: .225}),
+                    xform: new XForm({left: 2/11, right: 3/11, top: 6/13, bottom: 4/13}),
                     sketch: Sketch.zero,
                     children: [
                         new UxText({
                             tag: 'item.description',
-                            xform: new XForm({offset: 15}),
-                            text: new Text({wrap: true, text: 'description', color: textColor, valign: 'top', align: 'left'}),
+                            xform: new XForm({offset: 0}),
+                            text: new Text({wrap: true, text: ' ', color: textColor, valign: 'top', align: 'left'}),
                         }),
                     ]
+                }),
+
+                new UxButton({
+                    unpressed: Assets.get('hud.green.unpressed', true),
+                    pressed: Assets.get('hud.green.pressed', true),
+                    highlight: Assets.get('hud.green.highlight', true),
+                    tag: 'item.buy',
+                    xform: new XForm({left: 1/11, right: 8/11, top: 10/13, bottom: 1/13}),
+                    text: new Text({text: '   buy   '}),
+                    mouseClickedSound: Assets.get('menu.click', true),
+                }),
+
+                new UxButton({
+                    unpressed: Assets.get('hud.green.unpressed', true),
+                    pressed: Assets.get('hud.green.pressed', true),
+                    highlight: Assets.get('hud.green.highlight', true),
+                    tag: 'item.sell',
+                    xform: new XForm({left: 1/11, right: 8/11, top: 10/13, bottom: 1/13}),
+                    text: new Text({text: '   sell   '}),
+                    mouseClickedSound: Assets.get('menu.click', true),
+                }),
+
+                new UxButton({
+                    unpressed: Assets.get('hud.cancel.unpressed', true),
+                    pressed: Assets.get('hud.cancel.pressed', true),
+                    highlight: Assets.get('hud.cancel.highlight', true),
+                    tag: 'item.cancel',
+                    xform: new XForm({left: 8/11, right: 1/11, top: 10/13, bottom: 1/13}),
+                    text: Text.zero,
+                    mouseClickedSound: Assets.get('menu.click', true),
                 }),
 
                 // buttons
@@ -634,6 +623,7 @@ class VendorPopup extends UxView {
                     xform: new XForm({top: .7, bottom: .1}),
                     sketch: Sketch.zero,
                     children: [
+                        /*
                         new UxButton({
                             tag: 'item.buy',
                             xform: new XForm({offset: 10, right:.67}),
@@ -654,6 +644,7 @@ class VendorPopup extends UxView {
                             xform: new XForm({offset: 10, left:.67}),
                             text: new Text({text: ' cancel '}),
                         }),
+                        */
                     ]
                 }),
                 new UxPanel({
@@ -669,14 +660,13 @@ class VendorPopup extends UxView {
         this.adopt(this.panel);
 
         // ui elements
-        this.title = Hierarchy.find(this, (v) => v.tag === 'title');
         this.picture = Hierarchy.find(this, (v) => v.tag === 'item.picture');
         this.name = Hierarchy.find(this, (v) => v.tag === 'item.name');
         this.kind = Hierarchy.find(this, (v) => v.tag === 'item.kind');
         this.description = Hierarchy.find(this, (v) => v.tag === 'item.description');
         this.buyButton = Hierarchy.find(this, (v) => v.tag === 'item.buy');
         this.sellButton = Hierarchy.find(this, (v) => v.tag === 'item.sell');
-        this.sellallButton = Hierarchy.find(this, (v) => v.tag === 'item.sellall');
+        //this.sellallButton = Hierarchy.find(this, (v) => v.tag === 'item.sellall');
         this.cancelButton = Hierarchy.find(this, (v) => v.tag === 'item.cancel');
         this.tokens = Hierarchy.find(this, (v) => v.tag === 'tokens');
         this.tokensall = Hierarchy.find(this, (v) => v.tag === 'tokens.all');
@@ -684,12 +674,12 @@ class VendorPopup extends UxView {
         // -- want target state... hide use/drop/throw
         if (this.mode === 'buy') {
             this.sellButton.active = this.sellButton.visible = false;
-            this.sellallButton.active = this.sellallButton.visible = false;
+            //this.sellallButton.active = this.sellallButton.visible = false;
             this.tokensall.active = this.tokensall.visible = false;
         } else {
             this.buyButton.active = this.buyButton.visible = false;
             if (!this.item || !this.item || this.item.count < 2) {
-                this.sellallButton.active = this.sellallButton.visible = false;
+                //this.sellallButton.active = this.sellallButton.visible = false;
                 this.tokensall.active = this.tokensall.visible = false;
             }
         }
@@ -697,12 +687,12 @@ class VendorPopup extends UxView {
         // event handlers
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onSellClicked = this.onSellClicked.bind(this);
-        this.onSellAllClicked = this.onSellAllClicked.bind(this);
+        //this.onSellAllClicked = this.onSellAllClicked.bind(this);
         this.onBuyClicked = this.onBuyClicked.bind(this);
         this.onCancelClicked = this.onCancelClicked.bind(this);
         Events.listen(Keys.evtDown, this.onKeyDown);
         this.sellButton.evt.listen(this.sellButton.constructor.evtMouseClicked, this.onSellClicked);
-        this.sellallButton.evt.listen(this.sellallButton.constructor.evtMouseClicked, this.onSellAllClicked);
+        //this.sellallButton.evt.listen(this.sellallButton.constructor.evtMouseClicked, this.onSellAllClicked);
         this.buyButton.evt.listen(this.buyButton.constructor.evtMouseClicked, this.onBuyClicked);
         this.cancelButton.evt.listen(this.cancelButton.constructor.evtMouseClicked, this.onCancelClicked);
 
