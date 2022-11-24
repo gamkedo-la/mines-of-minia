@@ -2713,6 +2713,10 @@ let miniaAssets = [
     Sprite.xspec({tag: 'cog7', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 32, height: 32, x: 64, y: 64})}),
 
     StretchSprite.xspec({tag: 'menu.button', border: 30, img: new SheetRef({src: 'img/menu-button.png', width: 24, height: 24, scalex: 3, scaley: 3})}),
-    Sprite.xspec({tag: 'menu.bg', img: new SheetRef({src: 'img/menu-layout.png', width: 16*12, height: 16*16})}),
+    Sprite.xspec({tag: 'menu.bg', img: new SheetRef({src: 'img/menu-layout.png', width: 16*11, height: 16*16, x: 16*13, y: 16*3})}),
+    Sprite.xspec({tag: 'tcog.gray', img: new SheetRef({src: 'img/menu-layout.png', width: 32, height: 32, x: 16*24, y: 16*3})}),
+    Sprite.xspec({tag: 'tcog.blue', img: new SheetRef({src: 'img/menu-layout.png', width: 32, height: 32, x: 16*26, y: 16*3})}),
+    Sprite.xspec({tag: 'tcog.orange', img: new SheetRef({src: 'img/menu-layout.png', width: 32, height: 32, x: 16*28, y: 16*3})}),
+    Sprite.xspec({tag: 'tcog.green', img: new SheetRef({src: 'img/menu-layout.png', width: 32, height: 32, x: 16*30, y: 16*3})}),
 
 ];
