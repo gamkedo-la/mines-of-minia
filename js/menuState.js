@@ -144,7 +144,7 @@ class MenuState extends GameState {
                 }),
                 UxPanel.xspec({
                     tag: 'cog0',
-                    sketch: Assets.get('tcog.orange', true),
+                    sketch: Assets.get('cog8', true),
                     x_xform: XForm.xspec({left: 2.8/39, right: 32.2/39, top: 14/21, bottom: 5/21, width: 2, height: 2, lockRatio: true}),
                 }),
                 UxPanel.xspec({
@@ -174,7 +174,7 @@ class MenuState extends GameState {
                 }),
                 UxPanel.xspec({
                     tag: 'cog5',
-                    sketch: Assets.get('tcog.orange', true),
+                    sketch: Assets.get('cog9', true),
                     x_xform: XForm.xspec({left: 22/39, right: 15/39, top: 3/21, bottom: 16/21, width: 2, height: 2, lockRatio: true}),
                 }),
                 UxPanel.xspec({

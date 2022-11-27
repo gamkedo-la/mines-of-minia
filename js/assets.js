@@ -2711,6 +2711,8 @@ let miniaAssets = [
     Sprite.xspec({tag: 'cog5', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 17, height: 17, x: 16, y: 64})}),
     Sprite.xspec({tag: 'cog6', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 32, height: 32, x: 32, y: 64})}),
     Sprite.xspec({tag: 'cog7', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 32, height: 32, x: 64, y: 64})}),
+    Sprite.xspec({tag: 'cog8', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 32, height: 32, x: 0, y: 16*8})}),
+    Sprite.xspec({tag: 'cog9', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 32, height: 32, x: 16*2, y: 16*8})}),
 
     StretchSprite.xspec({tag: 'menu.button', border: 30, img: new SheetRef({src: 'img/menu-button.png', width: 24, height: 24, scalex: 3, scaley: 3})}),
     Sprite.xspec({tag: 'menu.bg', img: new SheetRef({src: 'img/menu-layout.png', width: 16*11, height: 16*16, x: 16*13, y: 16*3})}),
