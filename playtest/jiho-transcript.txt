@@ -1,0 +1,247 @@
+starts moving immediately
+
+seeing that close range bug...
+maybe not a bug
+
+combo mouse/arrow key usage
+
+he seems to have rebalanced the health oh maybe not
+
+3:56 what is this?
+
+4:44 goes right instead
+
+i don't think he's using the scan 
+dies to trap 
+
+maybe the player could figure out a run that would level them up, 
+and allow them to progress
+
+ala franken 
+
+7:25~ notcied diagonal movement 
+also it seems like "you notcied something" will happen if close to a trap
+scan is not required per se?
+
+8:45 what did you just do?
+
+2x deaths 
+i wonder if he can actually progress
+
+he keeps trying different ways though. 
+i'm not getting a great sense of 
+
+9:40 - opens talents for first time 
+
+11:25 i think he's figured out what the traps are
+
+oh maybe record to transcript?
+keep yourself on mute and talk into a recorder?
+then otter it?
+
+he's gonna die off a fuel death
+
+there's no real indicator
+
+14:10 perhaps a message or a flashing bar?
+
+or no death, idk, maybe it's broken 
+that's a bug too. 
+ooooooo
+it's just -1
+
+15:21 - weird teleport bug
+
+ok he sees that it's yellow
+ok so he does know 
+
+so sometimes i think you spawn with a fuel cell...
+but sometimes not
+
+and i haven't seen a drop of one
+
+yeah this is a balance issue
+
+something needs to be done to like either
+drop that more
+or reduce the penalty
+or maybe it really is...you need the right run through 
+
+how you feeling: "keep dying"
+"slightly frustrated"
+"not much of a gamer"
+^ feeling like this is a reflection of your ability?
+^ could have asked what he meant by that ok ok . 
+
+^ what did you mean, not much of a gamer?
+
+ah he's trying to run...
+pursue
+
+22...HMMMMM
+"this is difficult"
+
+24:30 my only strat is run back to the door
+other than that...not really sure what my strat would be, just going blind rn
+
+damn this is like actually a tough problem...
+
+i do wanna play it myself, see what they are seeing with my own hands and eyes
+
+26:30 oh there *is* fuel on this map - maybe the page refreshed or something though 
+
+the flame balls can attack up close, maybe the mushrooms just cannot 
+
+28:30 - going for the level up
+29:30 i wanna burn less fuel and not dy
+and also sheilding...
+
+v concerned about dying to enemies and fuel
+i mean those *are* the obstacles, but he's playing v defensively bc he feels he has to 
+
+AH! use the fuel cell icon AS the icon next to the meeter
+good visual que, couldn't be that hard to set up
+
+31:00 has a sheild on, somehow
+^ relates to one of the charms that he uses?
+^ it's not coming off...
+i think pat had this bug as well
+ok so there is a pause period before you start draining health
+
+the game is pretty hard
+not sure if my ability or game is hard
+even if i survive i keep running out of fuel
+
+the UI
+not quite familiar to me...
+seems turn based...it was a little weird
+didn't know how to attack
+didn't know that i had to run into them 
+
+gamer...
+my brother is a gamer
+3-4x a week
+seems like he' plays all day 
+
+he's here to skill up 
+
+i had a shortcut key to go into inventory and talents
+i knew that from the debug screen
+without that i would have been confused 
+
+some other game might have figured it out 
+
+preference for keys rather than mouse 
+
+i and t will close that
+
+i liked visual armor, it was cute
+i liked the running 
+"if there was the fuel limit, i would have kept exploring"
+
+"i'm super directionless"
+"i kept getting lost, i need to wander a lot to find my way"
+
+i didn't know this, but he had played the game prior, so he had some prior knowledge, perhaps this further emphasizes his points.
+
+noted that he started moving immediately, didn't take any time to poke around the HUD
+
+# ux research techniques
+use a recorder, rather than notes
+- enable push to talk
+- keep yourself on mute and talk into a recorder
+- then otter it
+
+# observations
+- he uses both the arrows and the keys
+- he didn't seem to know that you can use scan to spot traps
+	- died to a lot of traps
+- he died quite a lot
+	- cheifly to fuel deaths
+- possible balance issue with the fuel
+	- sometimes you spawn with a tank, but sometimes you don't
+	- if you don't happen upon one, you are totally screwed
+- he said that he felt slightly frustrated because he kept dying
+	- at one point sighed audibly and chuckled 
+		- "hmmmmm...this is hard"
+	- attributed this to his ability 
+		- says he's not much of a gamer
+
+# suggestions
+- make fuel deaths less opaque
+	- put the fuel tank icon to the left of the fuel gauge
+	- perhaps have that gauge blink yellow and white @ 25%
+- reduce possibility of fuel death suggestions
+	- increase fuel drops
+	- reduce/change the penalty
+
+# time stamps
+- 9:40 - opens talents for first time 
+- 15:21 - weird teleport bug
+
+[[shelving scrubs till later...]]
+
+# current
+
+[[pause to actually play the thing]]
+
+24:30 my only strat is run back to the door
+other than that...not really sure what my strat would be, just going blind rn
+
+damn this is like actually a tough problem...
+
+i do wanna play it myself, see what they are seeing with my own hands and eyes
+
+26:30 oh there *is* fuel on this map - maybe the page refreshed or something though 
+
+the flame balls can attack up close, maybe the mushrooms just cannot 
+
+28:30 - going for the level up
+29:30 i wanna burn less fuel and not dy
+and also sheilding...
+
+v concerned about dying to enemies and fuel
+i mean those *are* the obstacles, but he's playing v defensively bc he feels he has to 
+
+AH! use the fuel cell icon AS the icon next to the meeter
+good visual que, couldn't be that hard to set up
+
+31:00 has a sheild on, somehow
+^ relates to one of the charms that he uses?
+^ it's not coming off...
+i think pat had this bug as well
+ok so there is a pause period before you start draining health
+
+the game is pretty hard
+not sure if my ability or game is hard
+even if i survive i keep running out of fuel
+
+the UI
+not quite familiar to me...
+seems turn based...it was a little weird
+didn't know how to attack
+didn't know that i had to run into them 
+
+gamer...
+my brother is a gamer
+3-4x a week
+seems like he' plays all day 
+
+he's here to skill up 
+
+i had a shortcut key to go into inventory and talents
+i knew that from the debug screen
+without that i would have been confused 
+
+some other game might have figured it out 
+
+preference for keys rather than mouse 
+
+i and t will close that
+
+i liked visual armor, it was cute
+i liked the running 
+"if there was the fuel limit, i would have kept exploring"
+
+"i'm super directionless"
+"i kept getting lost, i need to wander a lot to find my way"
