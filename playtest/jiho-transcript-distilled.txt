@@ -1,0 +1,48 @@
+
+# ux research techniques
+use a recorder, rather than notes
+- enable push to talk
+- keep yourself on mute and talk into a recorder
+- then otter it
+
+# observations
+- he uses both the arrows and the keys
+	- but hey preferred the arrow keys
+- he didn't seem to know that you can use scan to spot traps
+	- died to a lot of traps
+- he died quite a lot
+	- cheifly to fuel deaths
+- possible balance issue with the fuel
+	- sometimes you spawn with a tank, but sometimes you don't
+	- if you don't happen upon one, you are totally screwed
+- he said that he felt slightly frustrated because he kept dying
+	- at one point sighed audibly and chuckled 
+		- "hmmmmm...this is hard"
+	- attributed this to his ability 
+		- says he's not much of a gamer
+- when he was leveling up talents, he wanted to burn less fuel and not die
+	- those *are* the obstacles
+	- but it seems he's playing v defensively bc he feels he has to 
+
+# frustrations
+- felt as though the game is pretty hard
+	- wasn't sure if it was his ability or the games difficulty
+	- "even if i survive i keep running out of fuel"
+- he was a little confused by the turn based movement. but it eventually made sense to him
+- didn't know that he had to run into enemies to attack them, but he eventually figured that out.
+
+# suggestions
+- make fuel deaths less opaque
+	- put the fuel tank icon to the left of the fuel gauge
+	- perhaps have that gauge blink yellow and white @ 25%
+- reduce possibility of fuel death suggestions
+	- increase fuel drops
+	- reduce/change the penalty
+- show the player that i/t will open/close inventory/talents
+
+# what he liked
+- the visual armor, "it was cute"
+- exploring and running around
+	- "if there was no fuel limit, i would have kept exploring"
+	- "i'm super directionless"
+	- "i kept getting lost, i need to wander a lot to find my way"
