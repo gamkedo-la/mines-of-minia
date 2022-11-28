@@ -131,71 +131,78 @@ class MenuState extends GameState {
                 UxPanel.xspec({
                     sketch: Sketch.zero,
                 }),
-                // -- cogs
+                // -- cog panel
                 UxPanel.xspec({
-                    tag: 'cog0l',
-                    sketch: Assets.get('tcog.blue', true),
-                    x_xform: XForm.xspec({left: -7.2/39, right: 22.2/39, top: 4/21, bottom: -5/21, width: 22, height: 22, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog1',
-                    sketch: Assets.get('tcog.gray', true),
-                    x_xform: XForm.xspec({left: -3/39, right: 34/39, top: 8/21, bottom: 5/21, width: 8, height: 8, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog0',
-                    sketch: Assets.get('cog8', true),
-                    x_xform: XForm.xspec({left: 2.8/39, right: 32.2/39, top: 14/21, bottom: 5/21, width: 2, height: 2, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog2',
-                    sketch: Assets.get('tcog.green', true),
-                    x_xform: XForm.xspec({left: .5/39, right: 34.5/39, top: 4.3/21, bottom: 12.7/21, width: 4, height: 4, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog3',
-                    sketch: Assets.get('tcog.orange', true),
-                    x_xform: XForm.xspec({left: 4/39, right: 23/39, top: -2/21, bottom: 11/21, width: 12, height: 12, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog6',
-                    sketch: Assets.get('tcog.green', true),
-                    x_xform: XForm.xspec({left: 19/39, right: 12/39, top: 0/21, bottom: 13/21, width: 8, height: 8, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog4',
-                    sketch: Assets.get('tcog.blue', true),
-                    x_xform: XForm.xspec({left: 16/39, right: 17/39, top: 1/21, bottom: 14/21, width: 6, height: 6, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog11',
-                    sketch: Assets.get('tcog.blue', true),
-                    x_xform: XForm.xspec({left: 23.2/39, right: -0.2/39, top: 8/21, bottom: -1/21, width: 14, height: 14, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog5',
-                    sketch: Assets.get('cog9', true),
-                    x_xform: XForm.xspec({left: 22/39, right: 15/39, top: 3/21, bottom: 16/21, width: 2, height: 2, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog7',
-                    sketch: Assets.get('tcog.gray', true),
-                    x_xform: XForm.xspec({left: 24/39, right: 11/39, top: 7/21, bottom: 10/21, width: 4, height: 4, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog8',
-                    sketch: Assets.get('tcog.gray', true),
-                    x_xform: XForm.xspec({left: 23/39, right: 12/39, top: 10.8/21, bottom: 6.2/21, width: 4, height: 4, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog9',
-                    sketch: Assets.get('tcog.gray', true),
-                    x_xform: XForm.xspec({left: 26.2/39, right: 8.8/39, top: 13/21, bottom: 4/21, width: 4, height: 4, lockRatio: true}),
-                }),
-                UxPanel.xspec({
-                    tag: 'cog10',
-                    sketch: Assets.get('tcog.orange', true),
-                    x_xform: XForm.xspec({left: 29.2/39, right: 5.8/39, top: 14/21, bottom: 5/21, width: 2, height: 2, lockRatio: true}),
+                    sketch: Sketch.zero,
+                    x_xform: XForm.xspec({width: 39, height: 21, lockRatio: true}),
+                    x_children: [
+                        // -- cogs
+                        UxPanel.xspec({
+                            tag: 'cog0l',
+                            sketch: Assets.get('tcog.blue', true),
+                            x_xform: XForm.xspec({left: -7.2/39, right: 22.2/39, top: 4/21, bottom: -5/21, width: 22, height: 22, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog1',
+                            sketch: Assets.get('tcog.gray', true),
+                            x_xform: XForm.xspec({left: -3/39, right: 34/39, top: 8/21, bottom: 5/21, width: 8, height: 8, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog0',
+                            sketch: Assets.get('cog2', true),
+                            x_xform: XForm.xspec({left: 2.8/39, right: 32.2/39, top: 14/21, bottom: 5/21, width: 2, height: 2, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog2',
+                            sketch: Assets.get('cog4', true),
+                            x_xform: XForm.xspec({left: .5/39, right: 34.5/39, top: 4.3/21, bottom: 12.7/21, width: 4, height: 4, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog3',
+                            sketch: Assets.get('tcog.orange', true),
+                            x_xform: XForm.xspec({left: 4/39, right: 23/39, top: -2/21, bottom: 11/21, width: 12, height: 12, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog6',
+                            sketch: Assets.get('tcog.green', true),
+                            x_xform: XForm.xspec({left: 19/39, right: 12/39, top: 0/21, bottom: 13/21, width: 8, height: 8, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog4',
+                            sketch: Assets.get('cog6', true),
+                            x_xform: XForm.xspec({left: 16/39, right: 17/39, top: 1/21, bottom: 14/21, width: 6, height: 6, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog11',
+                            sketch: Assets.get('tcog.blue', true),
+                            x_xform: XForm.xspec({left: 23.2/39, right: -0.2/39, top: 8/21, bottom: -1/21, width: 14, height: 14, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog5',
+                            sketch: Assets.get('cog2', true),
+                            x_xform: XForm.xspec({left: 22/39, right: 15/39, top: 3/21, bottom: 16/21, width: 2, height: 2, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog7',
+                            sketch: Assets.get('cog4', true),
+                            x_xform: XForm.xspec({left: 24/39, right: 11/39, top: 7/21, bottom: 10/21, width: 4, height: 4, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog8',
+                            sketch: Assets.get('cog4', true),
+                            x_xform: XForm.xspec({angle: .1, left: 23/39, right: 12/39, top: 10.8/21, bottom: 6.2/21, width: 4, height: 4, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog9',
+                            sketch: Assets.get('cog4', true),
+                            x_xform: XForm.xspec({left: 26.2/39, right: 8.8/39, top: 13/21, bottom: 4/21, width: 4, height: 4, lockRatio: true}),
+                        }),
+                        UxPanel.xspec({
+                            tag: 'cog10',
+                            sketch: Assets.get('cog2', true),
+                            x_xform: XForm.xspec({left: 29.2/39, right: 5.8/39, top: 14/21, bottom: 5/21, width: 2, height: 2, lockRatio: true}),
+                        }),
+                    ],
                 }),
                 // -- button panel
                 UxPanel.xspec({

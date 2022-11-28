@@ -2704,15 +2704,22 @@ let miniaAssets = [
 
     Sprite.xspec({tag: 'title.bg', img: new ImageRef({src: 'img/Title_320x240.png'})}), 
 
-    Sprite.xspec({tag: 'cog1', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 65, height: 65, x: 0, y: 0})}),
-    Sprite.xspec({tag: 'cog2', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 65, height: 65, x: 64, y: 0})}),
+    Sprite.xspec({tag: 'cog2', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 16*2, height: 16*2, x: 0, y: 16*2})}),
+    Sprite.xspec({tag: 'cog4', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 16*4, height: 16*4, x: 16*2, y: 16*0})}),
+    Sprite.xspec({tag: 'cog6', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 16*6, height: 16*6, x: 16*6, y: 16*0})}),
+    /*
+    Sprite.xspec({tag: 'cog2', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 49, height: 49, x: 64, y: 0})}),
     Sprite.xspec({tag: 'cog3', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 65, height: 65, x: 128, y: 0})}),
     Sprite.xspec({tag: 'cog4', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 17, height: 17, x: 0, y: 64})}),
     Sprite.xspec({tag: 'cog5', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 17, height: 17, x: 16, y: 64})}),
     Sprite.xspec({tag: 'cog6', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 32, height: 32, x: 32, y: 64})}),
     Sprite.xspec({tag: 'cog7', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 32, height: 32, x: 64, y: 64})}),
+
     Sprite.xspec({tag: 'cog8', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 32, height: 32, x: 0, y: 16*8})}),
     Sprite.xspec({tag: 'cog9', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 32, height: 32, x: 16*2, y: 16*8})}),
+    Sprite.xspec({tag: 'cog10', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 16*4, height: 16*4, x: 16*4, y: 16*6})}),
+    Sprite.xspec({tag: 'cog11', img: new SheetRef({src: 'img/menu-bg-cogwheels.png', width: 16*4, height: 16*4, x: 16*8, y: 16*6})}),
+    */
 
     StretchSprite.xspec({tag: 'menu.button', border: 30, img: new SheetRef({src: 'img/menu-button.png', width: 24, height: 24, scalex: 3, scaley: 3})}),
     Sprite.xspec({tag: 'menu.bg', img: new SheetRef({src: 'img/menu-layout.png', width: 16*11, height: 16*16, x: 16*13, y: 16*3})}),
