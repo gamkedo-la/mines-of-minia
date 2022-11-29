@@ -1,49 +1,8 @@
-# ux considerations
+i think at this point, try to get to the tangible suggestions as quickly as you can 
 
-- implement feedback for missed player attacks
+# suggestions
+- implement feedback for misses
 - implement indication that player can move/attack diagonally
-	- 3:40 
-
-going to leave some general notes up here. maybe i will also grab some exact time stamps when it becomes relevant. perhaps only if i intend to make a card
-
-- he noticed that the level will remain the same unless the page is reloaded
-	- "i can learn the level if i never reload"
-- he was curious about what fuel was, but eventually figures it out. understands that it is seperate from health
-
-time stamps are pretty rough.
-went by the time on the clock, and converted them after the fact. 
-sorry about that x_x
-
-gonna turn this into a rough transcription to start
-and then go back for exact quotes as needs
-unless noted like so
-
-> quote
-
-quote marks likely denote a paraphrased sentance 
-
-# 0:00
-
-"can i click to move?"
-"can i use the arrow keys?"
-
-# +1:00 (starting at 9:49pm)
-pat wonders about the TNT, if he can interact with it
-
-# 3:40 pat muses about the "diagonal advantage" the enemies have
-- at one point he says "the diagonal advantage is too strong"
-
-he strat for proceeding thus far has been to bait enemies to the door where he can square up with them one by one
-- is it too easy for the player to just camp in the doorway?
-
-# 5:23 "talents...i didn't look at this before"
-
-he wonders how to heal, but eventually notices the green pluses that pop up over the bot as it walks around. decides to "speed around a bit" after taking quite a beating
-
-# 6:12 - 6:27 the mushroom can shoot through walls and doors, feels cheap
-
-
-
 
 # bugs
 - shrooms don't fire @ close range (8:35 for clip)
@@ -89,110 +48,39 @@ he was confused about doors having key costs
 	- feedback that a key is being spent
 	- i think link's awakening just shows a key hover for <1s in front of a locked door to indicate you just spent a key
 
+# opacity
+- wasn't sure how to attack/move on the diagonal
+	- "[the enemies'] diagonal advantage is too strong"
+- he was curious about what fuel was
+	- eventually figures out that it is seperate from health but needs to be tended to "like stamina"
+- he wasn't sure what the TNT does (i'm not either)
+	- is that interactable?
+- it's not immediately clear that leveling up increases your points to spent on talents
 
-still hasn't figured out diagonal strike
-is it too easy to just camp in a doorway?
+# game balance
+- noticed he was struggling to find fuel
+	- "i really need fuel, idk where to find it"
+	- but when he found a vendor, the fuel was way too cheap
+- is it too easy to camp in a doorway?
+- i think certain items are supposed to come with curses as well, but he didn't seem to encounter anything with a negative effect
+	- "i'll just assume they're all good"
+- he collected < 100 gold from just wandering around, and sold old equipment for ~1000. was kinda taken aback by that.
+- was saving gems till he was "in trouble"
+	- the final fantasy elixer paradox
 
-10:19 clicking stat changes dmg red. 
-^ is it just bc of the gadget?
+# 9:49pm is the starting point - let's keep this here. 
 
-"i really need fuel, idk where to find it"
-"do i need to scan for fuel, or does scanning take fuel"
+[[to be scrubbed to...]]
 
-10:23 
-"door to a dead end"
-
-
-10:25
-re: charms
-"i'm just assume their all good
-
-"idk what the tnt is about
-"does it take more fuel to go through these vines?
-
-"do seem to not be taking dmg from the spiders
-^ is this armor very op
-
-10:27
-
-"then i have to click on the screen to get focused
-
-is he just missing?
-i think more feedback is needed
-
-sound, something anything
-"phew" - miss. 
-
-10:28 "i have 92 money
-
-meet with liz...ask her how to best process video and notes, etc 
-the heck do i know
-
-10:30
-i can throw things?
-"i'm gonna save the gems till i'm in trouble...idk what they do but i assume they're gonna help"
-
-1031 "is that a gun??
-discovers the quick slot
-"ah now i'm using the blue bar
-
-10:32 performance is taking a hit
-
-10:33 oh god it's really bad here 
-is this what he's selling?
-
-- woah...massive goal for sells
-^ it seems kinda imba...
-but that could be a valid thing idk
-
-why haven't i equipped this reactor?
-
-1035 the rector didn't look like an icon 
-
-10:36
-he's takin all the fuel
-fuel is v cheap...yeah there are balance issues here 
-
-switched over a bit to do some soundtrack
-i think he went upstairs
-i he thinks his health is bugged
-
-oh the level up seems to be upgrading the talents
-- he kinda forgot about it
-idk how much of this is usability problems v...
-it's an interface he needs to learn 
-
-shield is bugged too?
-
-he's very proactive. it's nice ^_^
-
-"this feels like a good stopping point"
-
-can slow it down by scanning spam 
-
-scan lag (@ end of second tape)
-
-attacking without a weapon breaks the game
-
-"the snappiness of the movement bothers me
-it doesn't feel linear"
-something about the camera 
-it's not a smooth stop a little jerky at the end
 
 i wish i knew what some of the items were doing more
 ^ tool tips
 
-i like the myster aspect of the items
-
-you discover it over time
-he's aware of what the items are generally
-and the mystery intention
-but "it would take few items"
-
-"couldn't figure out what they were doing after i equipement"
-
-"definitely fun"
-"i wanna know what all the things do"
-likes the movement as attack 
-
-"i do wonder how many levels there are...do take some time"
+# his comments at the end
+- wishes there were hoverable tool tips on the items
+- enjoyed the mystery aspect of the items
+- at points couldn't figure out what certain items did after he equipped them
+- "definitely fun"
+- "i wanna know what all the things do"
+- he enjoyed the movement as attack 
+- he wondered how many levels there were, figured it would take some amount of time to clear the game

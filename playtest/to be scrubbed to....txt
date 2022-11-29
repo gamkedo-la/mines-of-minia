@@ -1,0 +1,7 @@
+~30:00 (bug) clicking stat changes dmg red. 
+~38:00 - somewhere around here he stops taking damage
+~40:00 - discovers the quick slot
+~42:00 - performance takes a bad hit
+~45:00 - mistakes reactor for icon
+~ towards end of first tape: - sheild seems bugged, won't drop
+attacking without a weapon breaks the game
