@@ -570,7 +570,6 @@ class PlayState extends GameState {
         // build out options menu
         let options = new PlayOptions({
             doSave: this.doSave.bind(this),
-            xform: new XForm({border: .2}),
             xform: new XForm({left: 13/39, right: 13/39, top: 5/21, bottom: 6/21, width: 13, height: 10, lockRatio: true}),
         });
         options.evt.listen(options.constructor.evtDestroyed, () => {
@@ -629,7 +628,7 @@ class PlayState extends GameState {
         //console.log(`== doGameOver`);
         this.loadHandler('none');
         let popup = new GameOver({
-            xform: new XForm({border: .3}),
+            xform: new XForm({left: 12/39, right: 12/39, top: 5/21, bottom: 6/21, width: 15, height: 10, lockRatio: true}),
         });
         popup.evt.listen(popup.constructor.evtDestroyed, () => {
             Events.trigger(Game.evtStateChanged, {state: 'menu'});

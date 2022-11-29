@@ -14,7 +14,7 @@ import { XForm } from './base/xform.js';
 import { Resurrect64 } from './resurrect64.js';
 
 let titleColor = Resurrect64.colors[7];
-let textColor = Resurrect64.colors[11];
+let textColor = Resurrect64.colors[18];
 let buttonTextColor = Resurrect64.colors[1];
 let buttonTextHLColor = Resurrect64.colors[18];
 
@@ -38,20 +38,34 @@ class GameOver extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'game over', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({left: 1/15, right: 1/15, top: 1.5/10, bottom: 7.5/10}),
                 }),
                 new UxText({
                     text: new Text({text: 'lost contact with subject, reboot required', color: textColor}),
-                    xform: new XForm({ top: .45, bottom: .45}),
+                    xform: new XForm({left: 1.75/15, right: 3.75/15, top: 5/10, bottom: 3/10}),
+                }),
+                new UxPanel({
+                    sketch: Assets.get('gameover.crack', true),
+                    xform: new XForm({left: 7/15, right: 4/15, top: 4/10, bottom: 2/10}),
                 }),
 
-                button('   reboot   ', { tag: 'options.quit', xform: new XForm({top: .75, bottom: .05}) }),
+                //button('   reboot   ', { tag: 'options.quit', xform: new XForm({top: .75, bottom: .05}) }),
+
+                new UxButton({
+                    tag: 'gameover.back',
+                    unpressed: Assets.get('hud.cancel.unpressed', true),
+                    pressed: Assets.get('hud.cancel.pressed', true),
+                    highlight: Assets.get('hud.cancel.highlight', true),
+                    xform: new XForm({left: 12/15, right: 1/15, top: 3/10, bottom: 5/10}),
+                    text: Text.zero,
+                    mouseClickedSound: Assets.get('menu.click', true),
+                }),
 
             ],
         });
         this.adopt(panel);
         // -- ui elements
-        this.quitButton = Hierarchy.find(this, (v) => v.tag === 'options.quit');
+        this.quitButton = Hierarchy.find(this, (v) => v.tag === 'gameover.back');
         // -- bind event handlers
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onQuitClicked = this.onQuitClicked.bind(this);
