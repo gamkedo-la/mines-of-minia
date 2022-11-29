@@ -20,14 +20,14 @@ let text2Color = Resurrect64.colors[17];
 let buttonTextColor = Resurrect64.colors[1];
 let buttonTextHLColor = Resurrect64.colors[18];
 
-function button(text, spec) {
+function button(which, spec) {
+    let baseTag = (which === 'cancel') ? 'hud.cancel' : `help.${which}`;
     return new UxButton(Object.assign({}, {
         textXform: new XForm({offset: 25}),
-        highlight: Sketch.zero,
-        unpressed: Sketch.zero,
-        pressed: Sketch.zero,
-        text: new Text({text: text, color: buttonTextColor}),
-        hltext: new Text({text: text, color: buttonTextHLColor}),
+        unpressed: Assets.get(`${baseTag}.unpressed`, true),
+        pressed: Assets.get(`${baseTag}.pressed`, true),
+        highlight: Assets.get(`${baseTag}.highlight`, true),
+        text: Text.zero,
     }, spec));
 }
 
@@ -49,11 +49,11 @@ class Help extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'controls', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ top: 1.5/17, bottom: 14.5/17, left: 1/21, right: 3/21}),
                 }),
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({ top: .2, bottom: .2, left: .1, right: .1 }),
+                    xform: new XForm({ top: 4/17, bottom: 2/17, left: 2/21, right: 4/21 }),
                     children: [
                         new UxText({
                             text: new Text({text: 'qweasdzxc', color: textColor, align: 'left'}),
@@ -120,9 +120,9 @@ class Help extends UxView {
 
                     ],
                 }),
-                //button('   prev   ', { tag: 'help.prev', xform: new XForm({right: .67, top: .8, bottom: .025 }) }),
-                button('   back   ', { tag: 'help.back', xform: new XForm({left: .33, right: .33, top: .8, bottom: .025 }) }),
-                button('   next   ', { tag: 'help.next', xform: new XForm({left: .67, top: .8, bottom: .025 }) }),
+                button('next', { tag: 'help.next', xform: new XForm({left: 18/21, right: 1/21, top: 10/17, bottom: 5/17}) }),
+                //button('prev', { tag: 'help.prev', xform: new XForm({left: 18/21, right: 1/21, top: 12/17, bottom: 3/17}) }),
+                button('cancel', { tag: 'help.back', xform: new XForm({left: 18/21, right: 1/21, top: 14/17, bottom: 1/17}) }),
             ],
         });
         this.adopt(this.panel);
@@ -139,11 +139,11 @@ class Help extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'objectives', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ top: 1.5/17, bottom: 14.5/17, left: 1/21, right: 3/21}),
                 }),
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({ top: .2, bottom: .2, left: .1, right: .1 }),
+                    xform: new XForm({ top: 4/17, bottom: 2/17, left: 2/21, right: 4/21 }),
                     children: [
                         new UxText({
                             text: new Text({text: 'explore, discover, and gear up to defeat the overbearer and secure your freedom.  ' +
@@ -153,9 +153,9 @@ class Help extends UxView {
                         }),
                     ],
                 }),
-                button('   prev   ', { tag: 'help.prev', xform: new XForm({right: .67, top: .8, bottom: .025 }) }),
-                button('   back   ', { tag: 'help.back', xform: new XForm({left: .33, right: .33, top: .8, bottom: .025 }) }),
-                button('   next   ', { tag: 'help.next', xform: new XForm({left: .67, top: .8, bottom: .025 }) }),
+                button('next', { tag: 'help.next', xform: new XForm({left: 18/21, right: 1/21, top: 10/17, bottom: 5/17}) }),
+                button('prev', { tag: 'help.prev', xform: new XForm({left: 18/21, right: 1/21, top: 12/17, bottom: 3/17}) }),
+                button('cancel', { tag: 'help.back', xform: new XForm({left: 18/21, right: 1/21, top: 14/17, bottom: 1/17}) }),
             ],
         });
         this.adopt(this.panel);
@@ -174,11 +174,11 @@ class Help extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'tips', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ top: 1.5/17, bottom: 14.5/17, left: 1/21, right: 3/21}),
                 }),
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({ top: .2, bottom: .2, left: .1, right: .1 }),
+                    xform: new XForm({ top: 4/17, bottom: 2/17, left: 2/21, right: 4/21 }),
                     children: [
                         new UxText({
                             text: new Text({text: 'interact with the world by moving into objects.  '+
@@ -189,9 +189,9 @@ class Help extends UxView {
                         }),
                     ],
                 }),
-                button('   prev   ', { tag: 'help.prev', xform: new XForm({right: .67, top: .8, bottom: .025 }) }),
-                button('   back   ', { tag: 'help.back', xform: new XForm({left: .33, right: .33, top: .8, bottom: .025 }) }),
-                button('   next   ', { tag: 'help.next', xform: new XForm({left: .67, top: .8, bottom: .025 }) }),
+                button('next', { tag: 'help.next', xform: new XForm({left: 18/21, right: 1/21, top: 10/17, bottom: 5/17}) }),
+                button('prev', { tag: 'help.prev', xform: new XForm({left: 18/21, right: 1/21, top: 12/17, bottom: 3/17}) }),
+                button('cancel', { tag: 'help.back', xform: new XForm({left: 18/21, right: 1/21, top: 14/17, bottom: 1/17}) }),
             ],
         });
         this.adopt(this.panel);
@@ -210,11 +210,11 @@ class Help extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'discovery', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ top: 1.5/17, bottom: 14.5/17, left: 1/21, right: 3/21}),
                 }),
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({ top: .2, bottom: .2, left: .1, right: .1 }),
+                    xform: new XForm({ top: 4/17, bottom: 2/17, left: 2/21, right: 4/21 }),
                     children: [
                         new UxText({
                             text: new Text({text: 'gear is randomly generated so each play through will be a new experience. '+
@@ -227,9 +227,9 @@ class Help extends UxView {
                         }),
                     ],
                 }),
-                button('   prev   ', { tag: 'help.prev', xform: new XForm({right: .67, top: .8, bottom: .025 }) }),
-                button('   back   ', { tag: 'help.back', xform: new XForm({left: .33, right: .33, top: .8, bottom: .025 }) }),
-                button('   next   ', { tag: 'help.next', xform: new XForm({left: .67, top: .8, bottom: .025 }) }),
+                button('next', { tag: 'help.next', xform: new XForm({left: 18/21, right: 1/21, top: 10/17, bottom: 5/17}) }),
+                button('prev', { tag: 'help.prev', xform: new XForm({left: 18/21, right: 1/21, top: 12/17, bottom: 3/17}) }),
+                button('cancel', { tag: 'help.back', xform: new XForm({left: 18/21, right: 1/21, top: 14/17, bottom: 1/17}) }),
             ],
         });
         this.adopt(this.panel);
@@ -248,11 +248,11 @@ class Help extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'gear', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ top: 1.5/17, bottom: 14.5/17, left: 1/21, right: 3/21}),
                 }),
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({ top: .2, bottom: .2, left: .1, right: .1 }),
+                    xform: new XForm({ top: 4/17, bottom: 2/17, left: 2/21, right: 4/21 }),
                     children: [
                         new UxText({
                             text: new Text({text: 'tiers: all gear has one of three tiers, the higher the tier, usually the better the gear. '+
@@ -262,9 +262,9 @@ class Help extends UxView {
                         }),
                     ],
                 }),
-                button('   prev   ', { tag: 'help.prev', xform: new XForm({right: .67, top: .8, bottom: .025 }) }),
-                button('   back   ', { tag: 'help.back', xform: new XForm({left: .33, right: .33, top: .8, bottom: .025 }) }),
-                button('   next   ', { tag: 'help.next', xform: new XForm({left: .67, top: .8, bottom: .025 }) }),
+                button('next', { tag: 'help.next', xform: new XForm({left: 18/21, right: 1/21, top: 10/17, bottom: 5/17}) }),
+                button('prev', { tag: 'help.prev', xform: new XForm({left: 18/21, right: 1/21, top: 12/17, bottom: 3/17}) }),
+                button('cancel', { tag: 'help.back', xform: new XForm({left: 18/21, right: 1/21, top: 14/17, bottom: 1/17}) }),
             ],
         });
         this.adopt(this.panel);
@@ -283,11 +283,11 @@ class Help extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'charms & curses', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ top: 1.5/17, bottom: 14.5/17, left: 1/21, right: 3/21}),
                 }),
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({ top: .2, bottom: .2, left: .1, right: .1 }),
+                    xform: new XForm({ top: 4/17, bottom: 2/17, left: 2/21, right: 4/21 }),
                     children: [
                         new UxText({
                             text: new Text({text: 'most gear can have one or more charms or curses.  '+
@@ -300,9 +300,9 @@ class Help extends UxView {
                         }),
                     ],
                 }),
-                button('   prev   ', { tag: 'help.prev', xform: new XForm({right: .67, top: .8, bottom: .025 }) }),
-                button('   back   ', { tag: 'help.back', xform: new XForm({left: .33, right: .33, top: .8, bottom: .025 }) }),
-                button('   next   ', { tag: 'help.next', xform: new XForm({left: .67, top: .8, bottom: .025 }) }),
+                button('next', { tag: 'help.next', xform: new XForm({left: 18/21, right: 1/21, top: 10/17, bottom: 5/17}) }),
+                button('prev', { tag: 'help.prev', xform: new XForm({left: 18/21, right: 1/21, top: 12/17, bottom: 3/17}) }),
+                button('cancel', { tag: 'help.back', xform: new XForm({left: 18/21, right: 1/21, top: 14/17, bottom: 1/17}) }),
             ],
         });
         this.adopt(this.panel);
@@ -321,11 +321,11 @@ class Help extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'attacking', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ top: 1.5/17, bottom: 14.5/17, left: 1/21, right: 3/21}),
                 }),
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({ top: .2, bottom: .2, left: .1, right: .1 }),
+                    xform: new XForm({ top: 4/17, bottom: 2/17, left: 2/21, right: 4/21 }),
                     children: [
                         new UxText({
                             text: new Text({text: 
@@ -338,9 +338,9 @@ class Help extends UxView {
                         }),
                     ],
                 }),
-                button('   prev   ', { tag: 'help.prev', xform: new XForm({right: .67, top: .8, bottom: .025 }) }),
-                button('   back   ', { tag: 'help.back', xform: new XForm({left: .33, right: .33, top: .8, bottom: .025 }) }),
-                button('   next   ', { tag: 'help.next', xform: new XForm({left: .67, top: .8, bottom: .025 }) }),
+                button('next', { tag: 'help.next', xform: new XForm({left: 18/21, right: 1/21, top: 10/17, bottom: 5/17}) }),
+                button('prev', { tag: 'help.prev', xform: new XForm({left: 18/21, right: 1/21, top: 12/17, bottom: 3/17}) }),
+                button('cancel', { tag: 'help.back', xform: new XForm({left: 18/21, right: 1/21, top: 14/17, bottom: 1/17}) }),
             ],
         });
         this.adopt(this.panel);
@@ -359,11 +359,11 @@ class Help extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'ranged attacks & resistances', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ top: 1.5/17, bottom: 14.5/17, left: 1/21, right: 3/21}),
                 }),
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({ top: .2, bottom: .2, left: .1, right: .1 }),
+                    xform: new XForm({ top: 4/17, bottom: 2/17, left: 2/21, right: 4/21 }),
                     children: [
                         new UxText({
                             text: new Text({text: 
@@ -374,9 +374,9 @@ class Help extends UxView {
                         }),
                     ],
                 }),
-                button('   prev   ', { tag: 'help.prev', xform: new XForm({right: .67, top: .8, bottom: .025 }) }),
-                button('   back   ', { tag: 'help.back', xform: new XForm({left: .33, right: .33, top: .8, bottom: .025 }) }),
-                button('   next   ', { tag: 'help.next', xform: new XForm({left: .67, top: .8, bottom: .025 }) }),
+                button('next', { tag: 'help.next', xform: new XForm({left: 18/21, right: 1/21, top: 10/17, bottom: 5/17}) }),
+                button('prev', { tag: 'help.prev', xform: new XForm({left: 18/21, right: 1/21, top: 12/17, bottom: 3/17}) }),
+                button('cancel', { tag: 'help.back', xform: new XForm({left: 18/21, right: 1/21, top: 14/17, bottom: 1/17}) }),
             ],
         });
         this.adopt(this.panel);
@@ -395,11 +395,11 @@ class Help extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'health & power & fuel', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ top: 1.5/17, bottom: 14.5/17, left: 1/21, right: 3/21}),
                 }),
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({ top: .2, bottom: .2, left: .1, right: .1 }),
+                    xform: new XForm({ top: 4/17, bottom: 2/17, left: 2/21, right: 4/21 }),
                     children: [
                         new UxText({
                             text: new Text({text: 
@@ -415,9 +415,9 @@ class Help extends UxView {
                         }),
                     ],
                 }),
-                button('   prev   ', { tag: 'help.prev', xform: new XForm({right: .67, top: .8, bottom: .025 }) }),
-                button('   back   ', { tag: 'help.back', xform: new XForm({left: .33, right: .33, top: .8, bottom: .025 }) }),
-                button('   next   ', { tag: 'help.next', xform: new XForm({left: .67, top: .8, bottom: .025 }) }),
+                button('next', { tag: 'help.next', xform: new XForm({left: 18/21, right: 1/21, top: 10/17, bottom: 5/17}) }),
+                button('prev', { tag: 'help.prev', xform: new XForm({left: 18/21, right: 1/21, top: 12/17, bottom: 3/17}) }),
+                button('cancel', { tag: 'help.back', xform: new XForm({left: 18/21, right: 1/21, top: 14/17, bottom: 1/17}) }),
             ],
         });
         this.adopt(this.panel);
@@ -436,11 +436,11 @@ class Help extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'level up & talents', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ top: 1.5/17, bottom: 14.5/17, left: 1/21, right: 3/21}),
                 }),
                 new UxPanel({
                     sketch: Sketch.zero,
-                    xform: new XForm({ top: .2, bottom: .2, left: .1, right: .1 }),
+                    xform: new XForm({ top: 4/17, bottom: 2/17, left: 2/21, right: 4/21 }),
                     children: [
                         new UxText({
                             text: new Text({text: 
@@ -453,9 +453,9 @@ class Help extends UxView {
                         }),
                     ],
                 }),
-                button('   prev   ', { tag: 'help.prev', xform: new XForm({right: .67, top: .8, bottom: .025 }) }),
-                button('   back   ', { tag: 'help.back', xform: new XForm({left: .33, right: .33, top: .8, bottom: .025 }) }),
-                //button('   next   ', { tag: 'help.next', xform: new XForm({left: .67, top: .8, bottom: .025 }) }),
+                //button('next', { tag: 'help.next', xform: new XForm({left: 18/21, right: 1/21, top: 10/17, bottom: 5/17}) }),
+                button('prev', { tag: 'help.prev', xform: new XForm({left: 18/21, right: 1/21, top: 12/17, bottom: 3/17}) }),
+                button('cancel', { tag: 'help.back', xform: new XForm({left: 18/21, right: 1/21, top: 14/17, bottom: 1/17}) }),
             ],
         });
         this.adopt(this.panel);

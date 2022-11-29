@@ -1845,7 +1845,7 @@ let miniaAssets = [
 
     // -- menu
     Rect.xspec({tag: 'options.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
-    Rect.xspec({tag: 'help.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
+    //Rect.xspec({tag: 'help.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
     Rect.xspec({tag: 'credits.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
     Rect.xspec({tag: 'gameover.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
 
@@ -2727,5 +2727,13 @@ let miniaAssets = [
     Sprite.xspec({tag: 'tcog.blue', img: new SheetRef({src: 'img/menu-layout.png', width: 32, height: 32, x: 16*26, y: 16*3})}),
     Sprite.xspec({tag: 'tcog.orange', img: new SheetRef({src: 'img/menu-layout.png', width: 32, height: 32, x: 16*28, y: 16*3})}),
     Sprite.xspec({tag: 'tcog.green', img: new SheetRef({src: 'img/menu-layout.png', width: 32, height: 32, x: 16*30, y: 16*3})}),
+
+    Sprite.xspec({tag: 'help.bg', img: new SheetRef({src: 'img/help-layout.png', width: 16*21, height: 16*17, x: 16*10, y: 16*2})}),
+    Sprite.xspec({tag: 'help.next.unpressed', img: new SheetRef({src: 'img/help-layout.png', width: 32, height: 32, x: 16*0, y: 16*0})}),
+    Sprite.xspec({tag: 'help.next.pressed', img: new SheetRef({src: 'img/help-layout.png', width: 32, height: 32, x: 16*0, y: 16*2})}),
+    Sprite.xspec({tag: 'help.next.highlight', img: new SheetRef({src: 'img/help-layout.png', width: 32, height: 32, x: 16*0, y: 16*4})}),
+    Sprite.xspec({tag: 'help.prev.unpressed', img: new SheetRef({src: 'img/help-layout.png', width: 32, height: 32, x: 16*2, y: 16*0})}),
+    Sprite.xspec({tag: 'help.prev.pressed', img: new SheetRef({src: 'img/help-layout.png', width: 32, height: 32, x: 16*2, y: 16*2})}),
+    Sprite.xspec({tag: 'help.prev.highlight', img: new SheetRef({src: 'img/help-layout.png', width: 32, height: 32, x: 16*2, y: 16*4})}),
 
 ];

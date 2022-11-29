@@ -73,7 +73,7 @@ class MenuState extends GameState {
         // disable
         this.panel.active = false;
         let help = new Help({
-            xform: new XForm({border: .2}),
+            xform: new XForm({left: 9/39, right: 9/39, top: 2/21, bottom: 2/21, width: 21, height: 17, lockRatio: true}),
         });
         this.view.adopt(help);
         help.evt.listen(help.constructor.evtDestroyed, () => {
