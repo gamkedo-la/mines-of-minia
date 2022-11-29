@@ -2737,6 +2737,7 @@ let miniaAssets = [
     Sprite.xspec({tag: 'help.prev.highlight', img: new SheetRef({src: 'img/help-layout.png', width: 32, height: 32, x: 16*2, y: 16*4})}),
 
     Sprite.xspec({tag: 'options.bg', img: new SheetRef({src: 'img/options-layout.png', width: 16*13, height: 16*8, x: 16*14, y: 16*2})}),
+    Sprite.xspec({tag: 'options-play.bg', img: new SheetRef({src: 'img/options-layout.png', width: 16*13, height: 16*10, x: 16*14, y: 16*10})}),
     Sprite.xspec({tag: 'volume.knob', img: new SheetRef({src: 'img/options-layout.png', width: 8, height: 13, x: 4, y: 2})}),
 
 ];
