@@ -28,6 +28,7 @@ function button(which, spec) {
         pressed: Assets.get(`${baseTag}.pressed`, true),
         highlight: Assets.get(`${baseTag}.highlight`, true),
         text: Text.zero,
+        mouseClickedSound: Assets.get('menu.click', true),
     }, spec));
 }
 

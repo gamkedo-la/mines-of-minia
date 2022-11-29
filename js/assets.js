@@ -1844,7 +1844,7 @@ let miniaAssets = [
     }),
 
     // -- menu
-    Rect.xspec({tag: 'options.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
+    //Rect.xspec({tag: 'options.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
     //Rect.xspec({tag: 'help.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
     Rect.xspec({tag: 'credits.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
     Rect.xspec({tag: 'gameover.bg', width: 16, height: 16, color: Resurrect64.colors[0]}),
@@ -2735,5 +2735,8 @@ let miniaAssets = [
     Sprite.xspec({tag: 'help.prev.unpressed', img: new SheetRef({src: 'img/help-layout.png', width: 32, height: 32, x: 16*2, y: 16*0})}),
     Sprite.xspec({tag: 'help.prev.pressed', img: new SheetRef({src: 'img/help-layout.png', width: 32, height: 32, x: 16*2, y: 16*2})}),
     Sprite.xspec({tag: 'help.prev.highlight', img: new SheetRef({src: 'img/help-layout.png', width: 32, height: 32, x: 16*2, y: 16*4})}),
+
+    Sprite.xspec({tag: 'options.bg', img: new SheetRef({src: 'img/options-layout.png', width: 16*13, height: 16*8, x: 16*14, y: 16*2})}),
+    Sprite.xspec({tag: 'volume.knob', img: new SheetRef({src: 'img/options-layout.png', width: 8, height: 13, x: 4, y: 2})}),
 
 ];

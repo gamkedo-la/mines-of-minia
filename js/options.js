@@ -21,14 +21,15 @@ let textColor = Resurrect64.colors[11];
 let buttonTextColor = Resurrect64.colors[1];
 let buttonTextHLColor = Resurrect64.colors[18];
 
-function button(text, spec) {
+function button(which, spec) {
+    let baseTag = (which === 'cancel') ? 'hud.cancel' : `options.${which}`;
     return new UxButton(Object.assign({}, {
         textXform: new XForm({offset: 25}),
-        highlight: Sketch.zero,
-        unpressed: Sketch.zero,
-        pressed: Sketch.zero,
-        text: new Text({text: text, color: buttonTextColor}),
-        hltext: new Text({text: text, color: buttonTextHLColor}),
+        unpressed: Assets.get(`${baseTag}.unpressed`, true),
+        pressed: Assets.get(`${baseTag}.pressed`, true),
+        highlight: Assets.get(`${baseTag}.highlight`, true),
+        text: Text.zero,
+        mouseClickedSound: Assets.get('menu.click', true),
     }, spec));
 }
 
@@ -41,45 +42,41 @@ class Options extends UxView {
             children: [
                 new UxText({
                     text: new Text({text: 'options', color: titleColor}),
-                    xform: new XForm({ top: .05, bottom: .85}),
+                    xform: new XForm({ left: 2/13, right: 4/13, top: 1.5/8, bottom: 5.5/8}),
                 }),
 
-                new UxPanel({
-                    sketch: Sketch.zero, 
-                    xform: new XForm({ top: .2, bottom: .6}),
-                    children: [
-                        new UxText({
-                            text: new Text({text: 'music volume', color: textColor}),
-                            xform: new XForm({ top: .1, bottom: .1, left: .1, right: .6}),
-                        }),
-                        new UxSlider({
-                            tag: 'music.slider',
-                            value: AudioSystem.getVolume('music'),
-                            xform: new XForm({ top: .2, bottom: .2, left: .45, right: .1}),
-                        }),
-                    ],
+                new UxText({
+                    text: new Text({text: 'music volume', color: textColor}),
+                    xform: new XForm({ left: 1.6/13, right: 8.5/13, top: 3.5/8, bottom: 3.5/8}),
                 }),
 
-                new UxPanel({
-                    sketch: Sketch.zero, 
-                    xform: new XForm({ top: .4, bottom: .4}),
-                    children: [
-                        new UxText({
-                            text: new Text({text: '  sfx volume', color: textColor}),
-                            xform: new XForm({ top: .1, bottom: .1, left: .1, right: .6}),
-                        }),
-                        new UxSlider({
-                            tag: 'sfx.slider',
-                            value: AudioSystem.getVolume('sfx'),
-                            xform: new XForm({ top: .2, bottom: .2, left: .45, right: .1}),
-                        }),
-                    ],
+                new UxText({
+                    text: new Text({text: 'sfx volume', color: textColor}),
+                    xform: new XForm({ left: 1.6/13, right: 8.4/13, top: 5.5/8, bottom: 1.5/8}),
                 }),
 
-                button('   back   ', { tag: 'options.back', xform: new XForm({top: .7, bottom: .1}) }),
+                new UxSlider({
+                    tag: 'music.slider',
+                    value: AudioSystem.getVolume('music'),
+                    xform: new XForm({left: 5.75/13, right: 3.75/13, top: 3.25/8, bottom: 3.25/8}),
+                    knob: Assets.get('volume.knob', true, { lockRatio: true }),
+                    bar: Sketch.zero,
+                    knobWidthPct: .15,
+                }),
+
+                new UxSlider({
+                    tag: 'sfx.slider',
+                    value: AudioSystem.getVolume('sfx'),
+                    xform: new XForm({left: 5.75/13, right: 3.75/13, top: 5.25/8, bottom: 1.25/8}),
+                    knob: Assets.get('volume.knob', true, { lockRatio: true }),
+                    bar: Sketch.zero,
+                    knobWidthPct: .15,
+                }),
+
+                button('cancel', { tag: 'options.back', xform: new XForm({left: 10/13, right: 1/13, top: 5/8, bottom: 1/8}) }),
+
             ],
         });
-        console.log(`${this} before adopt`);
         this.adopt(this.panel);
         // -- bind event handlers
         this.onKeyDown = this.onKeyDown.bind(this);
