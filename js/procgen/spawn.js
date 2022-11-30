@@ -390,14 +390,25 @@ class Spawn {
                 for (const dir of Direction.cardinals) {
                     let oidx = plvlo.data.idxfromdir(eidx, dir);
                     //console.log(`oidx: ${oidx}`);
+                    // -- index not in room
                     if (!proom.idxs.includes(oidx)) continue;
+                    // -- index is not a floor
                     if (!plvl.entities.some((v) => v.idx === oidx && v.kind === 'floor')) continue;
+                    // -- index is along viable path
                     if (proom.viablePath.includes(oidx)) continue;
+                    // -- something else is at spawn index
                     if (!this.checkSpawnIdx(plvl, oidx)) continue;
+                    // -- adjacent to door
+                    if (Direction.cardinals.some((d) => {
+                        let aidx = plvlo.data.idxfromdir(oidx, d);
+                        //if (proom.exits.includes(aidx)) console.log(`skipping index: ${eidx}:${aidx} for machinery, next to door`);
+                        return proom.exits.includes(aidx);
+                    })) continue;
                     cidxs.push(oidx);
                 }
             }
             // pick from candidate indices
+            //if (!cidxs.length) console.log(`no candidate position for machinery`);
             if (!cidxs.length) return;
             // pick machine asset
             let machineTag = Prng.choose(x_spawn.machineTags);
