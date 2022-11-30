@@ -107,6 +107,31 @@ class Spawn {
                 })) {
                     facing = 'ns';
                 }
+                // validate door placement
+                if (facing === 'ew') {
+                    if ( [Direction.east, Direction.west].some((dir) => {
+                        let oidx = plvlo.data.idxfromdir(idx, dir);
+                        if (plvl.entities.some((v) => v.idx === oidx && v.cls === 'Tile' && v.kind !== 'floor')) return true;
+                        return false;
+                    } )) throw('door facing wall');
+                    if ( [Direction.north, Direction.south].some((dir) => {
+                        let oidx = plvlo.data.idxfromdir(idx, dir);
+                        if (plvl.entities.some((v) => v.idx === oidx && v.cls === 'Tile' && v.kind === 'floor')) return true;
+                        return false;
+                    } )) throw('door not aligned with wall');
+                } else {
+                    if ( [Direction.north, Direction.south].some((dir) => {
+                        let oidx = plvlo.data.idxfromdir(idx, dir);
+                        if (plvl.entities.some((v) => v.idx === oidx && v.cls === 'Tile' && v.kind !== 'floor')) return true;
+                        return false;
+                    } )) throw('door facing wall');
+                    if ( [Direction.east, Direction.west].some((dir) => {
+                        let oidx = plvlo.data.idxfromdir(idx, dir);
+                        if (plvl.entities.some((v) => v.idx === oidx && v.cls === 'Tile' && v.kind === 'floor')) return true;
+                        return false;
+                    } )) throw('door not aligned with wall');
+                }
+
                 // is this a boss door?
                 let otherRoom = phall.exitMap[idx];
                 let bossDoor = otherRoom && otherRoom.boss;

@@ -62,7 +62,8 @@ class ProcGen {
                 ok = true;
             } catch (error) {
                 console.log(`-- generator error: ${error}`);
-                if (resetSeed) template.seed=0;
+                //if (resetSeed) template.seed=0;
+                template.seed += 1;
             }
         }
         /*

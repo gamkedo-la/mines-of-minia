@@ -13,7 +13,7 @@ import { ProcTemplate } from './ptemplate.js';
 class MiniaTemplates {
 
     static bioLvl = new ProcTemplate({
-        //seed: 59894, // hanging door
+        seed: 59894, // hanging door
         //seed: 78683, // procgen crash (rock)
         //seed: 73560, // procgen crash (rock/8)
         //seed: 37699, // procgen crash (rock/8)
