@@ -2742,5 +2742,7 @@ let miniaAssets = [
     
     Sprite.xspec({tag: 'gameover.bg', img: new SheetRef({src: 'img/gameover-layout.png', width: 16*15, height: 16*10, x: 16*10, y: 16*2})}),
     Sprite.xspec({tag: 'gameover.crack', img: new SheetRef({src: 'img/gameover-layout.png', width: 16*4, height: 16*4, x: 0, y: 0})}),
+    
+    Sprite.xspec({tag: 'story.bg', img: new SheetRef({src: 'img/story-layout.png', width: 16*15, height: 16*10, x: 16*10, y: 16*2})}),
 
 ];

@@ -59,6 +59,7 @@ import { BurningSystem } from './systems/burningSystem.js';
 import { Timer } from './base/timer.js';
 import { UxVendor } from './uxVendor.js';
 import { UseAction } from './actions/use.js';
+import { Story } from './story.js';
 
 class PlayState extends GameState {
     async init(data={}) {
@@ -458,6 +459,11 @@ class PlayState extends GameState {
                 break;
             }
 
+            case '0': {
+                this.doStory();
+                break;
+            }
+
             /*
             case '9': {
                 Stats.enabled = !Stats.enabled;
@@ -632,6 +638,22 @@ class PlayState extends GameState {
         });
         popup.evt.listen(popup.constructor.evtDestroyed, () => {
             Events.trigger(Game.evtStateChanged, {state: 'menu'});
+        });
+        this.view.adopt(popup);
+    }
+
+    doStory() {
+        // disable level/hud
+        this.lvl.active = false;
+        this.hudroot.active = false;
+        this.loadHandler('none');
+        let popup = new Story({
+            xform: new XForm({left: 12/39, right: 12/39, top: 5/21, bottom: 6/21, width: 15, height: 10, lockRatio: true}),
+        });
+        popup.evt.listen(popup.constructor.evtDestroyed, () => {
+            this.lvl.active = true;
+            this.hudroot.active = true;
+            this.loadHandler('interact');
         });
         this.view.adopt(popup);
     }
