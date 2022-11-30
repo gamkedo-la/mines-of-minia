@@ -240,13 +240,17 @@ class PlayState extends GameState {
         } else {
             ProcGen.genDiscovery(Config.template);
             //console.log(`-- level new`)
-            this.doStory();
         }
         Events.trigger(LevelSystem.evtWanted, { level: lvl, load: data && data.load });
 
         // setup input handler
         this.handler;
         this.loadHandler('interact');
+
+        // handle start of story
+        if (!data || !data.load) {
+            this.doStory();
+        }
 
     }
 
