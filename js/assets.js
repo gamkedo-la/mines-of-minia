@@ -1626,13 +1626,18 @@ let miniaAssets = [
     }),
     Animation.xspec({tag: 'node.power', jitter: true, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 0, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*6, y: 0})}), ttl: 150 }),
     ]}),
     Animation.xspec({tag: 'node.health', jitter: true, x_cels: [
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16, y: 0})}), ttl: 150 }),
-        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*3, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*4, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*7, y: 0})}), ttl: 150 }),
+    ]}),
+    Animation.xspec({tag: 'node.fuel', jitter: true, x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*2, y: 0})}), ttl: 150 }),
         Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*5, y: 0})}), ttl: 150 }),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/gem-1.png', width: 16, height: 32, x: 16*8, y: 0})}), ttl: 150 }),
     ]}),
 
     Animation.xspec({tag: 'gem.red.carry', x_cels: [

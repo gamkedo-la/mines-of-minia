@@ -14,6 +14,7 @@ class Node extends Item {
     static kinds = [
         'health',
         'power',
+        'fuel',
     ];
 
     static xspec(spec={}) {
@@ -54,6 +55,15 @@ class Node extends Item {
                     UpdateSystem.eUpdate(actor, {power: power});
                 }
                 Events.trigger(OverlaySystem.evtNotify, {which: 'popup.white', actor: actor, msg: `+${this.count} pow`});
+                break;
+            }
+
+            case 'fuel': {
+                let fuel = Math.min(actor.fuelMax, actor.fuel+this.count);
+                if (fuel !== actor.fuel) {
+                    UpdateSystem.eUpdate(actor, {fuel: fuel});
+                }
+                Events.trigger(OverlaySystem.evtNotify, {which: 'popup.white', actor: actor, msg: `+${this.count} fuel`});
                 break;
             }
 
