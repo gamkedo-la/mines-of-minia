@@ -240,6 +240,7 @@ class PlayState extends GameState {
         } else {
             ProcGen.genDiscovery(Config.template);
             //console.log(`-- level new`)
+            this.doStory();
         }
         Events.trigger(LevelSystem.evtWanted, { level: lvl, load: data && data.load });
 
@@ -435,6 +436,7 @@ class PlayState extends GameState {
             }
             */
 
+            /*
             case '7': {
                 UpdateSystem.eUpdate(this.player, {
                     lvl: this.player.lvl+1,
@@ -464,7 +466,6 @@ class PlayState extends GameState {
                 break;
             }
 
-            /*
             case '9': {
                 Stats.enabled = !Stats.enabled;
                 break;
@@ -646,6 +647,7 @@ class PlayState extends GameState {
         // disable level/hud
         this.lvl.active = false;
         this.hudroot.active = false;
+        this.hudroot.visible = false;
         this.loadHandler('none');
         let popup = new Story({
             xform: new XForm({left: 12/39, right: 12/39, top: 5/21, bottom: 6/21, width: 15, height: 10, lockRatio: true}),
@@ -653,6 +655,7 @@ class PlayState extends GameState {
         popup.evt.listen(popup.constructor.evtDestroyed, () => {
             this.lvl.active = true;
             this.hudroot.active = true;
+            this.hudroot.visible = true;
             this.loadHandler('interact');
         });
         this.view.adopt(popup);
