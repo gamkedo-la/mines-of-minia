@@ -169,6 +169,7 @@ class Hud extends UxView {
         this.waitButton = Hierarchy.find(this, (v) => v.tag === 'hud.wait');
         this.scanButton = Hierarchy.find(this, (v) => v.tag === 'hud.scan');
         this.cancelButton = Hierarchy.find(this, (v) => v.tag === 'hud.cancel');
+        this.talentsIcon = Hierarchy.find(this, (v) => v.tag === 'hud.talents.icon');
 
         // bind event handlers
         this.onBeltChanged = this.onBeltChanged.bind(this);
@@ -219,13 +220,12 @@ class Hud extends UxView {
 
     onTalentUpdate(evt) {
         let unspent = (evt.update && evt.update.hasOwnProperty('unspent')) ? evt.update.unspent : 0;
-        let panel = Hierarchy.find(this, (v) => v.tag === 'hud.talents.icon');
-        console.log(`unspent: ${unspent} flash: ${this.flashTalents}`);
+        //console.log(`unspent: ${unspent} flash: ${this.flashTalents} panel: ${this.talentsIcon} this: ${this}`);
         if (unspent && !this.flashTalents) {
-            panel.sketch = Assets.get('hud.talents.flash', true);
+            this.talentsIcon.sketch = Assets.get('hud.talents.flash', true);
             this.flashTalents = true;
         } else if (!unspent && this.flashTalents) {
-            panel.sketch = Assets.get('hud.talents.panel', true);
+            this.talentsIcon.sketch = Assets.get('hud.talents.panel', true);
             this.flashTalents = false;
         }
     }

@@ -21,7 +21,10 @@ class Player extends Character {
     static dfltScanRange = 48;
     static dfltCritPct = .15;
     static xpReqsByLvl = {
+        /*
         1: 50,
+        */
+        1: 1,
         2: 120,
         3: 210,
         4: 340,

@@ -22,6 +22,7 @@ import { Resurrect64 } from './resurrect64.js';
 import { Serialization } from './serialization.js';
 import { Help } from './help.js';
 import { Assets } from './base/assets.js';
+import { Config } from './base/config.js';
 
 function button(text, spec) {
     return Object.assign({}, UxButton.xspec({
@@ -49,6 +50,7 @@ class MenuState extends GameState {
             this.view.adopt(prompt);
         } else {
             Serialization.reset();
+            Config.template.seed = 0;
             Events.trigger(Game.evtStateChanged, {state: 'play'});
         }
     }

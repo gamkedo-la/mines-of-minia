@@ -126,7 +126,7 @@ class PlayOptions extends UxView {
 
     onQuitClicked(evt) {
         let prompt = new Prompt({
-            xform: new XForm({ border: .3 }),
+            xform: new XForm({left: 12/39, right: 12/39, top: 6/21, bottom: 7/21, width: 15, height: 8, lockRatio: true}),
             title: 'confirm',
             prompt: `quit game? unsaved progress will be lost`,
             handleConfirm: () => {

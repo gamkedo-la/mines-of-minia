@@ -443,7 +443,6 @@ class PlayState extends GameState {
             }
             */
 
-            /*
             case '7': {
                 UpdateSystem.eUpdate(this.player, {
                     lvl: this.player.lvl+1,
@@ -451,6 +450,7 @@ class PlayState extends GameState {
                 console.log(`-- lvl up`);
                 break;
             }
+            /*
             case '8': {
                 UpdateSystem.eUpdate(this.player, {
                     health: Math.max(0, this.player.health - 5),

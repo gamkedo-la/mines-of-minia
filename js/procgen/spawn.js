@@ -85,7 +85,7 @@ class Spawn {
         // -- spawn vendor
         this.spawnVendor(template, pstate);
         // -- test objects
-        //this.spawnTest(template, pstate);
+        this.spawnTest(template, pstate);
         yield;
     }
 
@@ -1623,31 +1623,11 @@ class Spawn {
             //this.genGadget(template),
             //this.genShielding(template),
             //this.genRanged(template),
+            //Cog.xspec({ kind: 'identify', }),
 
-            Cog.xspec({ kind: 'identify', }),
+            //RangedWeapon.xspec({ name: 'shock.test', kind: 'shock', identifiable: 'true', }),
 
-            RangedWeapon.xspec({
-                name: 'shock.test',
-                kind: 'shock',
-                identifiable: 'true',
-            }),
-
-            RangedWeapon.xspec({
-                name: 'fire.test',
-                kind: 'fire',
-            }),
-
-            RangedWeapon.xspec({
-                name: 'dark.test',
-                kind: 'dark',
-            }),
-
-            RangedWeapon.xspec({
-                name: 'ice.test',
-                kind: 'ice',
-            }),
-
-            //Funguy.xspec({lvl: 2}),
+            Energy.xspec({lvl: 1, health: 1}),
 
 
         ];
