@@ -4,6 +4,7 @@ export { Inventory, InventoryData };
 import { DropAction } from './actions/drop.js';
 import { UseAction } from './actions/use.js';
 import { Assets } from './base/assets.js';
+import { Config } from './base/config.js';
 import { Events, EvtStream } from './base/event.js';
 import { Fmt } from './base/fmt.js';
 import { Hierarchy } from './base/hierarchy.js';
@@ -24,6 +25,7 @@ import { TurnSystem } from './systems/turnSystem.js';
 
 const invTextColor = Resurrect64.colors[18];
 const counterColor = Resurrect64.colors[11];
+const gizmoColor = Resurrect64.colors[0];
 
 class InventoryData {
     // STATIC VARIABLES ----------------------------------------------------
@@ -338,6 +340,11 @@ class Inventory extends UxView {
             sketch: Assets.get('equip.bg', true),
             xform: new XForm({right:11/33}),
             children: [
+
+                new UxText({
+                    text: new Text({text: `gizmo #${Config.template.seed}`, color: gizmoColor}),
+                    xform: new XForm({top: 1.5/19, bottom: 16.5/19, left: 2/22, right: 12/22}),
+                }),
 
                 new UxText({
                     text: new Text({text: 'equipment', color: invTextColor }),

@@ -218,6 +218,7 @@ class PlayState extends GameState {
         Events.listen(LevelSystem.evtLoaded, this.onLevelLoaded);
         Events.listen(TurnSystem.evtDone, this.onTurnDone)
         this.player.evt.listen(this.player.constructor.evtUpdated, this.onPlayerUpdate);
+        this.wantStory = false;
 
         // -- load level
         // what level?
@@ -240,6 +241,7 @@ class PlayState extends GameState {
         } else {
             ProcGen.genDiscovery(Config.template);
             //console.log(`-- level new`)
+            this.wantStory = true;
         }
         Events.trigger(LevelSystem.evtWanted, { level: lvl, load: data && data.load });
 
@@ -247,10 +249,6 @@ class PlayState extends GameState {
         this.handler;
         this.loadHandler('interact');
 
-        // handle start of story
-        if (!data || !data.load) {
-            this.doStory();
-        }
 
     }
 
@@ -284,6 +282,11 @@ class PlayState extends GameState {
         Systems.get('los').setLoS(this.player);
         // re-enable controls
         this.controlsActive = true;
+        // handle start of story
+        if (this.wantStory) {
+            this.wantStory = false;
+            this.doStory();
+        }
     }
 
     onLoSUpdate(evt) {
