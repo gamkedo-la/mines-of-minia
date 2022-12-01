@@ -74,6 +74,7 @@ class Item extends MiniaModel {
             x_charms: this.charms.map((v) => v.as_kv()),
             loot: this.loot,
             state: this.state,
+            cost: this.cost,
             identifiable: this.identifiable,
             purgeable: this.purgeable,
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },

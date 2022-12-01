@@ -22,4 +22,10 @@ class Vendor extends Character {
         this.inventory.actor = this;
     }
 
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            x_inventory: this.inventory.as_kv(),
+        });
+    }
+
 }

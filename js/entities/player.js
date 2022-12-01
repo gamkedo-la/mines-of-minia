@@ -128,7 +128,7 @@ class Player extends Character {
             xp: this.xp,
             hitbp: this.hitbp,
             blockRating: this.blockRating,
-            scanDistance: this.scanDistance,
+            scanRange: this.scanRange,
             x_inventory: this.inventory.as_kv(),
         });
     }

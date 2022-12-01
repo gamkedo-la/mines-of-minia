@@ -72,6 +72,7 @@ class Door extends MiniaModel {
         return Object.assign({}, super.as_kv(), {
             kind: this.kind,
             state: this.state,
+            boss: this.boss,
             hidden: this.hidden,
             locked: this.locked,
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },

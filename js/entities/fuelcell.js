@@ -13,6 +13,11 @@ class Fuelcell extends Item {
     static usable = true;
 
     // CONSTRUCTOR/DESTRUCTOR ----------------------------------------------
+    cpre(spec) {
+        super.cpre(spec);
+        let fuel = spec.fuel || this.constructor.dfltFuel;
+        if (!spec.hasOwnProperty('description')) spec.description = `a portable fuel source, restores *${fuel}* fuel when used`;
+    }
     cpost(spec) {
         super.cpost(spec);
         this.fuel = spec.fuel || this.constructor.dfltFuel;
@@ -21,7 +26,7 @@ class Fuelcell extends Item {
     // SERIALIZATION -------------------------------------------------------
     as_kv() {
         return Object.assign({}, super.as_kv(), {
-            description: `a portable fuel source, restores *25* fuel when used`,
+            description: this.description,
             fuel: this.fuel,
         });
     }

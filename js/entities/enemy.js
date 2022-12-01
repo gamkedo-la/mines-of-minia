@@ -68,6 +68,7 @@ class Enemy extends Character {
             attackKind: this.attackKind,
             baseDamageMin: this.baseDamageMin,
             baseDamageMax: this.baseDamageMax,
+            damageScale: this.damageScale,
         });
     }
 

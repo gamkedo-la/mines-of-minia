@@ -42,6 +42,18 @@ class Bomb extends Item {
         Events.ignore(TurnSystem.evtDone, this.onTurnDone);
     }
 
+    // SERIALIZATION -------------------------------------------------------
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            apTL: this.apTL,
+            blastRange: this.blastRange,
+            damageMin: this.damageMin,
+            damageMax: this.damageMax,
+            attackKind: this.attackKind,
+            elapsed: this.elapsed,
+        });
+    }
+
     // EVENT HANDLERS ------------------------------------------------------
     onLevelLoaded(evt) {
         this.elvl = evt.lvl;

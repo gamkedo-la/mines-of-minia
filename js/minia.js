@@ -86,6 +86,8 @@ import { StealthCharm } from "./charms/stealth.js";
 import { DrainCharm } from "./charms/drain.js";
 import { Vendor } from "./entities/vendor.js";
 import { Digger } from "./entities/digger.js";
+import { Item } from "./entities/item.js";
+import { MiniaModel } from "./entities/miniaModel.js";
 
 
 class Minia extends Game {
@@ -161,13 +163,15 @@ class Minia extends Game {
             Growth,
             HacketyCharm,
             Hud,
-            Key,
             Inventory,
             InventoryData,
             InvulnerabilityCharm,
+            Item,
+            Key,
             Level,
             Machinery,
             Magma,
+            MiniaModel,
             Node,
             Overbearer,
             Pillar,

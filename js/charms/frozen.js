@@ -30,7 +30,7 @@ class FrozenCharm extends Charm {
         return Object.assign({}, super.as_kv(), {
             apTl: this.apTl,
             elapsed: this.elapsed,
-            damage: this.damage,
+	    apDelta: this.apDelta,
         });
     }
 

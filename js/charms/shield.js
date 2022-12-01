@@ -21,7 +21,7 @@ class ShieldCharm extends Charm {
 
     as_kv() {
         return Object.assign({}, super.as_kv(), {
-            damage: this.damage,
+            amounts: this.amounts,
         });
     }
 

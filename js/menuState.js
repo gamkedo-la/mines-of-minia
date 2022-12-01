@@ -38,7 +38,7 @@ class MenuState extends GameState {
     onNewClicked(evt) {
         if (Serialization.hasSaveGame()) {
             let prompt = new Prompt({
-                xform: new XForm({ border: .3 }),
+                xform: new XForm({left: 12/39, right: 12/39, top: 7/21, bottom: 6/21, width: 15, height: 8, lockRatio: true}),
                 title: 'confirm',
                 prompt: `previous save game will be lost if new game started, proceed?`,
                 handleConfirm: () => {

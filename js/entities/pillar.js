@@ -58,6 +58,14 @@ class Pillar extends Item {
         Events.ignore('turn.done', this.onTurnDone);
     }
 
+    as_kv() {
+        return Object.assign({}, super.as_kv(), {
+            kind: this.kind,
+            linkRange: this.linkRange,
+            dormantAp: this.dormantAp,
+        });
+    }
+
     onLevelLoaded(evt) {
         this.elvl = evt.lvl;
         for (const idx of this.elvl.idxsInRange(this.idx, this.linkRange)) {

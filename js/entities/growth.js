@@ -24,7 +24,7 @@ class Growth extends Trap {
     }
     cpost(spec) {
         super.cpost(spec);
-        this.bgoZed = spec.bgoZed || Config.bgoZed;
+        this.bgoZed = spec.bgoZed || Config.template.bgoZed;
         // -- los state
         this.blocksLoS = (this.state === 'armed');
         // -- loot
@@ -34,10 +34,11 @@ class Growth extends Trap {
  
     // SERIALIZATION -------------------------------------------------------
     as_kv() {
-        return Object.assign({}, super.as_kv(), {
+        let kvs = Object.assign({}, super.as_kv(), {
             bgoZed: this.bgoZed,
             loot: this.loot,
         });
+        return kvs;
     }
 
     trigger(actor) {

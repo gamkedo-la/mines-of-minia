@@ -141,17 +141,19 @@ class Character extends MiniaModel {
     }
 
     as_kv() {
-        return Object.assign({}, super.as_kv(), {
+        let kvs = Object.assign({}, super.as_kv(), {
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
             maxSpeed: this.maxSpeed,
             healthMax: this.healthMax,
             health: this.health,
             deathTTL: this.deathTTL,
+            critPct: this.critPct,
             attackRolls: this.attackRolls,
             defenseRolls: this.defenseRolls,
             damageReduction: this._damageReduction,
             damageBonus: this.damageBonus,
             resistances: this.resistances,
+            attackRatingBonus: this.attackRatingBonus,
             losRange: this.losRange,
             aggroRange: this.aggroRange,
             aggroTag: this.aggroTag,
@@ -163,6 +165,11 @@ class Character extends MiniaModel {
             x_charms: this.charms.map((v) => v.as_kv()),
             loot: this.loot,
         });
+        if (this.moveSfx) kvs.x_moveSfx = { cls: 'AssetRef', tag: this.moveSfx.tag };
+        if (this.damagedSfx) kvs.x_damagedSfx = { cls: 'AssetRef', tag: this.damagedSfx.tag };
+        if (this.meleeHitSfx) kvs.x_meleeHitSfx = { cls: 'AssetRef', tag: this.meleeHitSfx.tag };
+        if (this.meleeMissSfx) kvs.x_meleeMissSfx = { cls: 'AssetRef', tag: this.meleeMissSfx.tag };
+        return kvs;
     }
 
     // PROPERTIES ----------------------------------------------------------
