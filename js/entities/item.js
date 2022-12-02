@@ -2,6 +2,7 @@ export { Item };
 
 import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
+import { Serializer } from '../base/serializer.js';
 import { MiniaModel } from './miniaModel.js';
 
 /**
@@ -72,7 +73,7 @@ class Item extends MiniaModel {
             description: this._description,
             count: this.count,
             x_charms: this.charms.map((v) => v.as_kv()),
-            loot: this.loot,
+            loot: Serializer.serializeLoot(this.loot),
             state: this.state,
             cost: this.cost,
             identifiable: this.identifiable,

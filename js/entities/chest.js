@@ -6,6 +6,7 @@ import { Assets } from '../base/assets.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
 import { Rect } from '../base/rect.js';
+import { Serializer } from '../base/serializer.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { MiniaModel } from './miniaModel.js';
@@ -78,7 +79,7 @@ class Chest extends MiniaModel {
             state: this.state,
             locked: this.locked,
             hidden: this.hidden,
-            loot: this.loot,
+            loot: Serializer.serializeLoot(this.loot),
             x_sketch: { cls: 'AssetRef', tag: this._sketch.tag },
         });
     }

@@ -4,6 +4,19 @@ import { Gizmo } from "./gizmo.js";
 
 class Serializer {
 
+    static serializeLoot(loot) {
+        let x_loot = [];
+        for (const l of loot) {
+            if (l.x_sketch) l.x_sketch = { cls: 'AssetRef', tag: l.x_sketch.tag };
+            if (l.sketch) {
+                l.x_sketch = { cls: 'AssetRef', tag: l.x_sketch.tag };
+                delete l.sketch;
+            }
+            x_loot.push(l);
+        }
+        return x_loot;
+    }
+
     static _xify(obj) {
         // falsy value
         if (!obj) return obj;

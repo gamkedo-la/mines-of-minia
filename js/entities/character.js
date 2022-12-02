@@ -7,6 +7,7 @@ import { Direction } from "../base/dir.js";
 import { Events } from "../base/event.js";
 import { Fmt } from "../base/fmt.js";
 import { Rect } from "../base/rect.js";
+import { Serializer } from "../base/serializer.js";
 import { ActionSystem } from "../base/systems/actionSystem.js";
 import { UpdateSystem } from "../base/systems/updateSystem.js";
 import { Util } from "../base/util.js";
@@ -163,7 +164,7 @@ class Character extends MiniaModel {
             state: this.state,
             animState: this.animState,
             x_charms: this.charms.map((v) => v.as_kv()),
-            loot: this.loot,
+            loot: Serializer.serializeLoot(this.loot),
         });
         if (this.moveSfx) kvs.x_moveSfx = { cls: 'AssetRef', tag: this.moveSfx.tag };
         if (this.damagedSfx) kvs.x_damagedSfx = { cls: 'AssetRef', tag: this.damagedSfx.tag };

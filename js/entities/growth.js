@@ -5,6 +5,7 @@ import { Assets } from '../base/assets.js';
 import { Config } from '../base/config.js';
 import { Events } from '../base/event.js';
 import { Fmt } from '../base/fmt.js';
+import { Serializer } from '../base/serializer.js';
 import { ActionSystem } from '../base/systems/actionSystem.js';
 import { UpdateSystem } from '../base/systems/updateSystem.js';
 import { Trap } from './trap.js';
@@ -36,7 +37,7 @@ class Growth extends Trap {
     as_kv() {
         let kvs = Object.assign({}, super.as_kv(), {
             bgoZed: this.bgoZed,
-            loot: this.loot,
+            loot: Serializer.serializeLoot(this.loot),
         });
         return kvs;
     }
