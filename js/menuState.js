@@ -44,6 +44,7 @@ class MenuState extends GameState {
                 prompt: `previous save game will be lost if new game started, proceed?`,
                 handleConfirm: () => {
                     Serialization.reset();
+                    Config.template.seed = 0;
                     Events.trigger(Game.evtStateChanged, {state: 'play'});
                 },
             });
