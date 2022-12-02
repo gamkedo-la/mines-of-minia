@@ -44,14 +44,14 @@ class MenuState extends GameState {
                 prompt: `previous save game will be lost if new game started, proceed?`,
                 handleConfirm: () => {
                     Serialization.reset();
-                    Config.template.seed = 0;
+                    Config.template.seed = Config.forcedSeed || 0;
                     Events.trigger(Game.evtStateChanged, {state: 'play'});
                 },
             });
             this.view.adopt(prompt);
         } else {
             Serialization.reset();
-            Config.template.seed = 0;
+            Config.template.seed = Config.forcedSeed || 0;
             Events.trigger(Game.evtStateChanged, {state: 'play'});
         }
     }

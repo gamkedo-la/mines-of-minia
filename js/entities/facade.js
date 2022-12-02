@@ -1,5 +1,6 @@
 export { Facade };
 
+    import { Fmt } from '../base/fmt.js';
 import { Tile } from './tile.js';
 
 /**
@@ -7,11 +8,12 @@ import { Tile } from './tile.js';
  */
 class Facade extends Tile {
     as_kv() {
-        return {
+        let kvs = {
             cls: this.cls,
             tag: this.tag,
             gid: this.gid,
             idx: this.idx,
+            kind: this.kind,
             z: this.z,
             blockedBy: this.blockedBy,
             blocks: this.blocks,
@@ -19,5 +21,6 @@ class Facade extends Tile {
             halfSize: this.halfSize,
             baseAssetTag: this.baseAssetTag,
         };
+        return kvs;
     }
 }
