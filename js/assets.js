@@ -1134,6 +1134,12 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'shoot.fire', audio: new SfxRef({src: 'snd/flame-weapon.mp3'}), volume: .3}),
     Sfx.xspec({ tag: 'shoot.shock', audio: new SfxRef({src: 'snd/shock_weapon_short.mp3'}), volume: .3}),
     Sfx.xspec({ tag: 'switch.toggle', audio: new SfxRef({src: 'snd/lever-clank.mp3'}), volume: .3}),
+    Sfx.xspec({ tag: 'bonk.hit', audio: new SfxRef({src: 'snd/bonk1.wav'}), volume: .3}),
+    Sfx.xspec({ tag: 'bonk.miss', audio: new SfxRef({src: 'snd/bonk0.wav'}), volume: .3}),
+    Sfx.xspec({ tag: 'hack.hit', audio: new SfxRef({src: 'snd/hack3.wav'}), volume: .3}),
+    Sfx.xspec({ tag: 'hack.miss', audio: new SfxRef({src: 'snd/hack1.wav'}), volume: .3}),
+    Sfx.xspec({ tag: 'poke.hit', audio: new SfxRef({src: 'snd/poke5.wav'}), volume: .3}),
+    Sfx.xspec({ tag: 'poke.miss', audio: new SfxRef({src: 'snd/poke1.wav'}), volume: .3}),
 
     // -- rock area
     ...Template.walls('img/rock-walls.png', 'rock.wall'),

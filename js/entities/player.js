@@ -149,18 +149,29 @@ class Player extends Character {
     }
 
     onEquipChanged(evt) {
-        if (evt.slot !== 'shielding') return;
-        // lookup player sketch for shielding tier
-        let tag;
-        if (!evt.target) {
-            tag = 'player';
-        } else {
-            tag = `player.s${evt.target.tier}`;
-        }
-        if (this.sketch.tag !== tag) {
-            let sketch = Assets.get(tag, true);
-            this.sketch = sketch;
-        }
+        if (evt.slot === 'shielding') {
+            // lookup player sketch for shielding tier
+            let tag;
+            if (!evt.target) {
+                tag = 'player';
+            } else {
+                tag = `player.s${evt.target.tier}`;
+            }
+            if (this.sketch.tag !== tag) {
+                let sketch = Assets.get(tag, true);
+                this.sketch = sketch;
+            }
+        } else if (evt.slot === 'weapon') {
+            //console.log(`equipped weapon: ${Fmt.ofmt(evt)}`);
+            // swap sfx based on weapon
+            if (evt.target) {
+                this.meleeHitSfx = Assets.get(`${evt.target.kind}.hit`, true);
+                this.meleeMissSfx = Assets.get(`${evt.target.kind}.miss`, true);
+            } else {
+                this.meleeHitSfx = null;
+                this.meleeMissSfx = null;
+            }
+        } 
     }
 
 
