@@ -78,11 +78,19 @@ class Options extends UxView {
             ],
         });
         this.adopt(this.panel);
+        // -- ui elements
+        this.musicSlider = Hierarchy.find(this, (v) => v.tag === 'music.slider');
+        this.sfxSlider = Hierarchy.find(this, (v) => v.tag === 'sfx.slider');
+        let optionsButton = Hierarchy.find(this.panel, (v) => v.tag === 'options.back');
         // -- bind event handlers
         this.onKeyDown = this.onKeyDown.bind(this);
+        this.onMusicVolumeUpdated = this.onMusicVolumeUpdated.bind(this);
+        this.onSfxVolumeUpdated = this.onSfxVolumeUpdated.bind(this);
+        // -- listen
         Events.listen(Keys.evtDown, this.onKeyDown);
-        let optionsButton = Hierarchy.find(this.panel, (v) => v.tag === 'options.back');
         if (optionsButton) optionsButton.evt.listen( optionsButton.constructor.evtMouseClicked, (evt) => this.destroy());
+        this.musicSlider.evt.listen(this.musicSlider.constructor.evtUpdated, this.onMusicVolumeUpdated);
+        this.sfxSlider.evt.listen(this.sfxSlider.constructor.evtUpdated, this.onSfxVolumeUpdated);
     }
 
     destroy() {
@@ -92,6 +100,18 @@ class Options extends UxView {
 
     onKeyDown(evt) {
         this.destroy();
+    }
+
+    onMusicVolumeUpdated(evt) {
+        if (evt.update && evt.update.hasOwnProperty('value')) {
+            AudioSystem.setVolume('music', evt.update.value);
+        }
+    }
+
+    onSfxVolumeUpdated(evt) {
+        if (evt.update && evt.update.hasOwnProperty('value')) {
+            AudioSystem.setVolume('sfx', evt.update.value);
+        }
     }
 
 }

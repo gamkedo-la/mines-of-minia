@@ -265,10 +265,13 @@ class MenuState extends GameState {
         this.helpButton.evt.listen(this.helpButton.constructor.evtMouseClicked, this.onHelpClicked);
         this.creditsButton.evt.listen(this.creditsButton.constructor.evtMouseClicked, this.onCreditsClicked);
         Events.listen('game.tock', this.onTock);
+        this.music = Assets.get('music.menu', true);
+        this.music.play();
         return Promise.resolve();
     }
 
     stop() {
+        this.music.stop();
         for (const child of Hierarchy.children(this.view)) {
             child.destroy();
         }

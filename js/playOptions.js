@@ -119,7 +119,6 @@ class PlayOptions extends UxView {
     }
 
     onSaveClicked(evt) {
-        console.log(`onSaveClicked`);
         if (this.doSave) this.doSave();
         this.destroy();
     }
@@ -138,14 +137,12 @@ class PlayOptions extends UxView {
 
     onMusicVolumeUpdated(evt) {
         if (evt.update && evt.update.hasOwnProperty('value')) {
-            console.log(`onMusicVolumeUpdated`);
             AudioSystem.setVolume('music', evt.update.value);
         }
     }
 
     onSfxVolumeUpdated(evt) {
         if (evt.update && evt.update.hasOwnProperty('value')) {
-            console.log(`onSfxVolumeUpdated`);
             AudioSystem.setVolume('sfx', evt.update.value);
         }
     }
