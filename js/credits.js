@@ -37,10 +37,20 @@ function button(which, spec) {
 
 class Credits extends UxView {
     static credits = [
-        ['Contributor 1', Text.rlorem],
-        ['Contributor 2', Text.rlorem],
-        ['Contributor 3', Text.rlorem],
-        ['Contributor 4', Text.rlorem],
+        ['Tylor Allison', 'Project lead, core gameplay, ap turn system, level procedural generation, story, combat, environment titles, enemies (art and AI) and boss, talents, charms, door functionality, pillar interactions, player sprites, inventory, fuel system, asset integration, title screen, UI, vfx, assorted bug fixes, help screens, vendor, menu cogs layout'],
+        ['Vince McKeown', 'Fuel cells, treasure chest art, keys, funguy sprite with animations, rock clutter, door animations, scarab, gem colors, digger bot, bonk weapon, mace and club, crystals, mine props'],
+        ['Patrick McKeown', 'Player armor sprite variations (including reactor green), gem sprite, sounds (gem break, item pickup, player step, motor whir, household devices, boss footstep, currency pickup, failed action, cog use, trap, open ches, door open, vendor transaction, beetle, thump bot, shock, menu action, poke, swing), darker bot variations'],
+        ['Roxcon', 'Bio floor, giant rat, Rou\'s sprite update, uthoring additional weapon names'],
+        ['Ashleigh M.', 'Playtesting organizer, translated test responses into action items, organized live testing'],
+        ['Jonathan Peterson', 'Stair picture, crash fix on using unusable item, new gizmo sprite, menu button art'],
+        ['Christer "McFunkypants" Kaitila', 'Sound effects (pokes, hacks, bonks, ice/dark/flame weapons, doors closing, assorted retro fantasy sounds), vine obstacle art'],
+        ['FightEXP', 'Title art, game over prompt concept'],
+        ['Gonzalo Delgado', 'Menu background cogs'],
+        ['Tor Andreas Johnsen', 'In-game options menu toggle, quick slot key hookups'],
+        ['Johan Östling', 'Brass cog sprite'],
+        ['H Trayford', 'Credits scene setup'],
+        ['Abhishek @akhmin_ak', 'Early song draft (adapted to a different game)'],
+        ['Jiho Yoo', 'Practice commit'],
     ]
 
 
