@@ -1141,6 +1141,7 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'poke.hit', audio: new SfxRef({src: 'snd/poke5.wav'}), volume: .3}),
     Sfx.xspec({ tag: 'poke.miss', audio: new SfxRef({src: 'snd/poke1.wav'}), volume: .3}),
     Sfx.xspec({ tag: 'music.menu', audio: new SfxRef({src: 'snd/Minia_menu_2.mp3'}), volume: .3, channel: 'music', loop: true}),
+    Sfx.xspec({ tag: 'music.play', audio: new SfxRef({src: 'snd/music/battleTheme.mp3'}), volume: .3, channel: 'music', loop: true}),
 
     // -- rock area
     ...Template.walls('img/rock-walls.png', 'rock.wall'),

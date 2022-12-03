@@ -249,6 +249,9 @@ class PlayState extends GameState {
         this.handler;
         this.loadHandler('interact');
 
+        this.music = Assets.get('music.play', true);
+        this.music.play();
+
 
     }
 
@@ -433,7 +436,6 @@ class PlayState extends GameState {
             //     break;
             // }
 
-            /*
             case '6': {
                 console.log(`-- next lvl`);
                 let whichLevel = LevelSystem.currentLevelIndex + 1;
@@ -441,7 +443,6 @@ class PlayState extends GameState {
                 Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
                 break;
             }
-            */
 
             case '7': {
                 UpdateSystem.eUpdate(this.player, {
@@ -488,6 +489,7 @@ class PlayState extends GameState {
     }
 
     stop() {
+        if (this.music) this.music.stop();
         for (const child of Hierarchy.children(this.view)) {
             child.destroy();
         }
@@ -500,7 +502,7 @@ class PlayState extends GameState {
         Events.ignore(LevelSystem.evtLoaded, this.onLevelLoaded);
         Events.ignore(TurnSystem.evtDone, this.onTurnDone)
         LevelSystem.currentLevelIndex = 0;
-    }
+e   }
 
     doInventory() {
         // disable level/hud
