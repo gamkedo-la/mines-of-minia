@@ -142,7 +142,7 @@ class MenuState extends GameState {
                         // -- cogs
                         UxPanel.xspec({
                             tag: 'cog0l',
-                            sketch: Assets.get('tcog.blue', true),
+                            sketch: Assets.get('cog22', true),
                             x_xform: XForm.xspec({left: -7.2/39, right: 22.2/39, top: 4/21, bottom: -5/21, width: 22, height: 22, lockRatio: true}),
                         }),
                         UxPanel.xspec({
