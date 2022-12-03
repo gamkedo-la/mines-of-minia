@@ -17,8 +17,8 @@ import { LvlVar } from '../lvlVar.js';
 import { Enemy } from './enemy.js';
 
 class Slimer extends Enemy{
-    static gHealth = new LvlVar({ baseMin: 1, baseMax: 5, perLvlMin: 1, perLvlMax: 2 } );
-    static gXp = new LvlVar({ base: 2, perLvl: 1 } );
+    static gHealth = new LvlVar({ baseMin: 12, baseMax: 18, perLvlMin: 4, perLvlMax: 6 } );
+    static gXp = new LvlVar({ base: 25, perLvl: 10 } );
     static dfltDeathTTL = 1000;
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
@@ -44,6 +44,7 @@ class Slimer extends Enemy{
         let charm = new PoisonCharm();
         this.addCharm(charm);
         if (spec.elvl) this.linkLevel(spec.elvl);
+        //console.log(`slimer -- lvl: ${this.lvl} health: ${this.healthMax} xp: ${this.xp}`);
     }
 
     // EVENT HANDLERS ------------------------------------------------------

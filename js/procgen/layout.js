@@ -179,8 +179,8 @@ class Layout {
         });
         for (let i=0; i<top; i++) {
             let proom = sorted[i];
-            let d = Mathf.distance(proom.x, proom.y, origx, origy);
-            console.log(`${proom} d: ${d}`);
+            //let d = Mathf.distance(proom.x, proom.y, origx, origy);
+            //console.log(`${proom} d: ${d}`);
             proom.primary = true;
         }
     }

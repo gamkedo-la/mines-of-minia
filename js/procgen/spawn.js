@@ -1508,8 +1508,11 @@ class Spawn {
             z: template.fgZed,
         }));
 
+        let lvl = 10;
         plvl.entities.push( Slimer.xspec({
-            healthMax: 20,
+            lvl: lvl,
+            healthMax: Slimer.gHealth.calculate(lvl),
+            xp: Slimer.gXp.calculate(lvl),
             tag: 'slimer.boss',
             idx: proom.cidx,
             z: template.fgZed,
@@ -1530,7 +1533,6 @@ class Spawn {
         //let plvlo = pstate.plvlo;
         let prooms = pstate.prooms || [];
         let phalls = pstate.phalls || [];
-        if (x_spawn.enemyList.length === 0) return;
 
         // iterate through rooms
         for (const proom of prooms) {
@@ -1539,6 +1541,7 @@ class Spawn {
             } else if (proom.boss === 'bio') {
                 this.spawnEnemiesForBioBossRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
             } else if (!template.boss) {
+                if (x_spawn.enemyList.length === 0) continue;
                 if (proom.cidx !== plvl.startIdx) {
                     this.spawnEnemiesForRoom(template, pstate, proom, x_spawn.enemyRoomOptions);
                 }
