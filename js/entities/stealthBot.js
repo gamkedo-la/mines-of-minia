@@ -23,8 +23,8 @@ import { Enemy } from './enemy.js';
  * -- after attacking or being attacked, will move to range and re-enter stealth
  */
 class StealthBot extends Enemy {
-    static gHealth = new LvlVar({ baseMin: 4, baseMax: 7, perLvlMin: 2, perLvlMax: 3 } );
-    static gXp = new LvlVar({ base: 4, perLvl: 2 } );
+    static gHealth = new LvlVar({ baseMin: 20, baseMax: 25, perLvlMin: 2, perLvlMax: 4 } );
+    static gXp = new LvlVar({ base: 30, perLvl: 8 } );
 
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {

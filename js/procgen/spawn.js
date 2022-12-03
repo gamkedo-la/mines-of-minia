@@ -1428,12 +1428,16 @@ class Spawn {
 
         plvl.entities.push( x_enemy );
 
+        let lvl = 20;
+
         // thumper gets spawned at bottom of the room
         let thumpidx = plvlo.data.idxfromij(ci, cj+5);
         x_enemy = ThumpBot.xspec({
             name: 'thumper',
             tag: 'boss.thump',
-            healthMax: 1,
+            lvl: lvl,
+            healthMax: ThumpBot.gHealth.calculate(lvl),
+            xp: ThumpBot.gXp.calculate(lvl),
             activateOnLoad: false,
             idx: thumpidx,
             z: template.fgZed,
@@ -1445,7 +1449,9 @@ class Spawn {
         x_enemy = StealthBot.xspec({
             name: 'sneaky',
             tag: 'boss.stealth',
-            healthMax: 1,
+            lvl: lvl,
+            healthMax: StealthBot.gHealth.calculate(lvl),
+            xp: StealthBot.gXp.calculate(lvl),
             activateOnLoad: false,
             idx: stealthidx,
             z: template.fgZed,
@@ -1457,7 +1463,9 @@ class Spawn {
         x_enemy = RagingBull.xspec({
             name: 'rager',
             tag: 'boss.bull',
-            healthMax: 1,
+            lvl: lvl,
+            healthMax: RagingBull.gHealth.calculate(lvl),
+            xp: RagingBull.gXp.calculate(lvl),
             activateOnLoad: false,
             idx: bullidx,
             z: template.fgZed,

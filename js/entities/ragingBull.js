@@ -24,8 +24,8 @@ import { LvlVar } from '../lvlVar.js';
  * -- if charge hits player, player will be dazed for X rounds (and bull will engage in melee)
  */
 class RagingBull extends Enemy{
-    static gHealth = new LvlVar({ baseMin: 4, baseMax: 7, perLvlMin: 2, perLvlMax: 3 } );
-    static gXp = new LvlVar({ base: 5, perLvl: 2 } );
+    static gHealth = new LvlVar({ baseMin: 20, baseMax: 25, perLvlMin: 2, perLvlMax: 5 } );
+    static gXp = new LvlVar({ base: 40, perLvl: 8 } );
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
         // final spec

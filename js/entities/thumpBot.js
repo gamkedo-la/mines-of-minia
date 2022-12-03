@@ -18,8 +18,8 @@ import { Enemy } from './enemy.js';
 class ThumpBot extends Enemy {
     static dfltAnimState = 'idle.west';
     static mobile = false;
-    static gHealth = new LvlVar({ baseMin: 5, baseMax: 8, perLvlMin: 2, perLvlMax: 3 } );
-    static gXp = new LvlVar({ base: 4, perLvl: 2 } );
+    static gHealth = new LvlVar({ baseMin: 40, baseMax: 50, perLvlMin: 3, perLvlMax: 6 } );
+    static gXp = new LvlVar({ base: 50, perLvl: 10 } );
     // STATIC METHODS ------------------------------------------------------
     static xspec(spec={}) {
         // final spec
