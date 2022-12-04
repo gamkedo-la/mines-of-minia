@@ -16,6 +16,7 @@ class ProcGen {
     static *initGenerator(template, pstate) {
         if (!template.seed) template.seed = Random.rangeInt(1,100000);
         let seed = template.seed + pstate.seedDelta;
+        //console.log(`-- prng init w/ ${seed}`);
         Prng.seed(seed);
         pstate.pnoise = new SimpleNoise({
             seed: seed,
@@ -34,7 +35,7 @@ class ProcGen {
             try {
                 // -- general initialization
                 yield *this.initGenerator(template, pstate);
-                console.log(`-- seed: ${template.seed}`);
+                //console.log(`-- seed: ${template.seed} delta: ${pstate.seedDelta}`);
                 let validLevel = true;
                 do {
                     // -- generate room layout
@@ -77,7 +78,7 @@ class ProcGen {
     }
 
     static genLvl(template, seedDelta=0) {
-        console.log(`genLevel: seed: ${template.seed} delta: ${seedDelta}`);
+        //console.log(`genLevel: seed: ${template.seed} delta: ${seedDelta}`);
         let pstate = {
             seedDelta: seedDelta,
         };

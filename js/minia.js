@@ -125,7 +125,7 @@ class Minia extends Game {
         tileSize: 16,
         scale: 4,
         maxLvl: 21,
-        //forcedSeed: 36665,
+        //forcedSeed: 25918,
 
         //template: MiniaTemplates.rockBoss,
         template: MiniaTemplates.bioLvl.copy(),

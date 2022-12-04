@@ -160,7 +160,6 @@ class PlayState extends GameState {
 
         // -- UI elements
         this.view = Generator.generate(x_view);
-        console.log(`view dim: ${this.view.width},${this.view.height}`);
         this.slider = Hierarchy.find(this.view, (v) => v.tag === 'slider');
         this.viewport = Hierarchy.find(this.view, (v) => v.tag === 'viewport');
         this.lvl = Hierarchy.find(this.view, (v) => v.tag === 'lvl');
@@ -276,8 +275,11 @@ class PlayState extends GameState {
         }
         // update player position
         let idx = this.player.idx;
+        //console.log(`evt: ${Fmt.ofmt(evt)} setPlayerIdx: ${this.setPlayerIdx}`)
         if (this.setPlayerIdx) {
             idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
+        } else {
+            this.setPlayerIdx = true;
         }
         //idx = (evt.goingUp) ? evt.plvl.startIdx : evt.plvl.exitIdx;
         let wantx = this.lvl.grid.xfromidx(idx, true);

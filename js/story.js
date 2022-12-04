@@ -71,7 +71,6 @@ class Story extends UxView {
     }
 
     doStory() {
-        console.log(`doStory`);
         //this.storyText.text = 'power surge detected... automated system reboot initiated';
         this.action = new StoryAction({panel: this.storyPanel});
         ActionSystem.assign(this, this.action);

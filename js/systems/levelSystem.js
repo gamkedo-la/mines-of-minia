@@ -79,7 +79,7 @@ class LevelSystem extends System {
     handleLevelRequest(index) {
         // save and clear current level
         if (this.constructor.currentLevelIndex) {
-            console.log(`saving level: ${this.constructor.currentLevelIndex}`);
+            //console.log(`saving level: ${this.constructor.currentLevelIndex}`);
             // save current level data
             Serialization.saveLevel(this.lvl);
             // clear level data
@@ -110,7 +110,7 @@ class LevelSystem extends System {
         let cachedLvl;
         let seedDelta = 0;
         if (this.loadLevel) {
-            console.log(`-- loading level: ${index}`);
+            //console.log(`-- loading level: ${index}`);
             // look up level by index
             cachedLvl = Serialization.loadLevel(index);
             seedDelta = cachedLvl.seedDelta;
@@ -120,6 +120,7 @@ class LevelSystem extends System {
 
         // generate level
         let plvl = ProcGen.genLvl(Config.template, seedDelta);
+        //console.log(`-- plvl start: ${plvl.startIdx} exit: ${plvl.exitIdx}`);
         // update level info w/ saved level data
         if (cachedLvl) {
             plvl.entities = plvl.entities.concat(cachedLvl.entities);
