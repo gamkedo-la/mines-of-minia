@@ -281,7 +281,7 @@ class MenuState extends GameState {
     }
 
     stop() {
-        this.music.stop();
+        if (this.music) this.music.stop();
         for (const child of Hierarchy.children(this.view)) {
             child.destroy();
         }

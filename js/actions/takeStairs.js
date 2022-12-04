@@ -23,7 +23,11 @@ class TakeStairsAction extends Action {
         let load = (whichLevel > LevelSystem.maxLevelIndex) ? false : true;
         console.log(`current: ${this.currentLevel} up: ${this.stairs.up} which: ${whichLevel}`)
         // trigger want level event
-        Events.trigger(this.evtLevelWanted, { level: whichLevel, load: load });
+        if (whichLevel < 13) {
+            Events.trigger(this.evtLevelWanted, { level: whichLevel, load: load });
+        } else {
+            Events.trigger('game.success');
+        }
     }
 
 }
