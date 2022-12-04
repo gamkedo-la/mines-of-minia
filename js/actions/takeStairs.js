@@ -1,6 +1,7 @@
 export { TakeStairsAction };
 
 import { Action } from '../base/actions/action.js';
+import { Assets } from '../base/assets.js';
 import { Events } from '../base/event.js';
 import { LevelSystem } from '../systems/levelSystem.js';
 
@@ -24,6 +25,8 @@ class TakeStairsAction extends Action {
         console.log(`current: ${this.currentLevel} up: ${this.stairs.up} which: ${whichLevel}`)
         // trigger want level event
         if (whichLevel < 13) {
+            let sfx = Assets.get((this.stairs.up) ? 'stairs.up' : 'stairs.down', true);
+            sfx.play();
             Events.trigger(this.evtLevelWanted, { level: whichLevel, load: load });
         } else {
             Events.trigger('game.success');
