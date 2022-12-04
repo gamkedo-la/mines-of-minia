@@ -106,17 +106,23 @@ class LevelSystem extends System {
         Config.template.index = index;
         Config.template.dospawn = !this.loadLevel;
 
-        // generate level
-        let plvl = ProcGen.genLvl(Config.template);
-        // update level info w/ saved level data
+        // load level
         let cachedLvl;
+        let seedDelta = 0;
         if (this.loadLevel) {
             console.log(`-- loading level: ${index}`);
             // look up level by index
             cachedLvl = Serialization.loadLevel(index);
-            if (cachedLvl) {
-                plvl.entities = plvl.entities.concat(cachedLvl.entities);
-            }
+            seedDelta = cachedLvl.seedDelta;
+        } else {
+            if (this.lvl) seedDelta = this.lvl.seedDelta + 1;
+        }
+
+        // generate level
+        let plvl = ProcGen.genLvl(Config.template, seedDelta);
+        // update level info w/ saved level data
+        if (cachedLvl) {
+            plvl.entities = plvl.entities.concat(cachedLvl.entities);
         }
 
         // instantiate level
@@ -126,6 +132,7 @@ class LevelSystem extends System {
         let goingUp = (plvl.index > this.constructor.currentLevelIndex);
         this.constructor.currentLevelIndex = plvl.index;
         this.lvl.index = plvl.index;
+        this.lvl.seedDelta = plvl.seedDelta;
         if (plvl.index > this.constructor.maxLevelIndex) {
             this.constructor.maxLevelIndex = plvl.index;
         }

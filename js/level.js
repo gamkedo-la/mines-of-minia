@@ -29,6 +29,7 @@ class Level extends UxGrid {
     cpost(spec) {
         super.cpost(spec);
         this.tileSize = spec.tileSize || this.constructor.dfltTileSize;
+        this.seedDelta = spec.seedDelta || 0;
         // -- fog-of-war indices (these are level indices the player has seen)
         this.fowIdxs = [];
         // -- fow masks (for indices at the edge of fog of war, identify what bits should be rendered)

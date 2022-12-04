@@ -14,6 +14,7 @@ class Serialization {
         let key = `lvl${lvl.index}`;
         let data = {
             index: lvl.index,
+            seedDelta: lvl.seedDelta,
             entities: [],
             fowIdxs: Array.from(lvl.fowIdxs),
             fowMasks: Object.assign({}, lvl.fowMasks),

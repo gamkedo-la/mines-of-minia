@@ -15,7 +15,7 @@ class ProcGen {
 
     static *initGenerator(template, pstate) {
         if (!template.seed) template.seed = Random.rangeInt(1,100000);
-        let seed = template.seed + template.index;
+        let seed = template.seed + pstate.seedDelta;
         Prng.seed(seed);
         pstate.pnoise = new SimpleNoise({
             seed: seed,
@@ -27,15 +27,8 @@ class ProcGen {
     }
 
     static *levelGenerator(template={}, pstate={}) {
-        /*
-        let xpt = 0;
-        let enemyt = 0;
-        template = MiniaTemplates.rockLvl.copy();
-        template.index = 11;
-        */
         let ok = false;
         let tries = 100;
-        let resetSeed = template.seed === 0;
         while (!ok && tries > 0) {
             tries--;
             try {
@@ -61,23 +54,10 @@ class ProcGen {
                 if (template.dospawn) yield *Spawn.generator(template, pstate);
                 ok = true;
             } catch (error) {
-                console.log(`-- generator error: ${error}`);
-                //if (resetSeed) template.seed=0;
-                template.seed += 1;
+                pstate.seedDelta += 1;
+                console.log(`-- generator error: ${error} -- new delta: ${pstate.seedDelta}`);
             }
         }
-        /*
-        let xp = pstate.plvl.entities.reduce((pv, cv) => (cv.xp) ? pv+cv.xp : pv, 0);
-        let enemies = pstate.plvl.entities.reduce((pv, cv) => (['Rous', 'Digger', 'Energy', 'Funguy', 'Golem', 'Magma', 'Scarab'].includes(cv.cls)) ? pv+1 : pv, 0);
-        console.log(`rooms: ${pstate.prooms.length} halls: ${pstate.phalls.length} `+
-            `enemies: ${enemies} `+
-            `xp: ${xp}`);
-        xpt += xp;
-        enemyt += enemies;
-        template.seed=0;
-        console.log(`-- xp avg ${Math.round(xpt/100)}`);
-        console.log(`-- enemy avg ${Math.round(enemyt/100)}`);
-        */
     }
 
     static dbgGenerateLevel(generator, pstate) {
@@ -96,9 +76,13 @@ class ProcGen {
         return stepv.done;
     }
 
-    static genLvl(template) {
-        let pstate = {};
+    static genLvl(template, seedDelta=0) {
+        console.log(`genLevel: seed: ${template.seed} delta: ${seedDelta}`);
+        let pstate = {
+            seedDelta: seedDelta,
+        };
         for (const step of this.levelGenerator(template, pstate));
+        pstate.plvl.seedDelta = pstate.seedDelta;
         return pstate.plvl;
     }
 
