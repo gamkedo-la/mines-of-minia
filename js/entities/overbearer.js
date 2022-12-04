@@ -80,31 +80,25 @@ class Overbearer extends Enemy{
                 yield null;
                 break;
             case 'powerup.bull':
-                /*
                 console.log(`state is: ${this.state}`);
                 yield new PowerupBullAction({
                     lvl: this.elvl,
                 });
                 UpdateSystem.eUpdate(this, {state: 'inactive'});
                 break;
-                */
             case 'powerup.stealth':
-                /*
                 console.log(`-- starting power up stealth`);
                 yield new PowerupStealthAction({
                     lvl: this.elvl,
                 });
                 UpdateSystem.eUpdate(this, {state: 'inactive'});
                 break;
-                */
             case 'powerup.thump':
-                /*
                 yield new PowerupThumpAction({
                     lvl: this.elvl,
                 });
                 UpdateSystem.eUpdate(this, {state: 'inactive'});
                 break;
-                */
             case 'finale':
                 yield new FinaleAction({
                     lvl: this.elvl,
