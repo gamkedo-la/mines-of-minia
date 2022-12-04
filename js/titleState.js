@@ -13,6 +13,11 @@ import { UxCanvas } from './base/uxCanvas.js';
 import { UxPanel } from './base/uxPanel.js';
 import { UxText } from './base/uxText.js';
 import { XForm } from './base/xform.js';
+import { Resurrect64 } from './resurrect64.js';
+
+let color1 = Resurrect64.colors[18];
+let color2 = Resurrect64.colors[0];
+let color3 = Resurrect64.colors[43];
 
 class TitleState extends GameState {
     onAdvance(evt) {
@@ -31,11 +36,11 @@ class TitleState extends GameState {
                     x_sketch: Assets.get('title.bg'),
                 }),
                 UxText.xspec({
-                    x_text: Text.xspec({text: 'Mines of Minia', color: 'blue'}),
+                    x_text: Text.xspec({text: 'Mines of Minia', color: color1, outlineColor: color2, outlineWidth: 5}),
                     x_xform: XForm.xspec({top: .2, bottom: .6, left: .1, right: .1}),
                 }),
                 UxText.xspec({
-                    x_text: Text.xspec({text: '-- Click or Press Any Key --', color: 'gray'}),
+                    x_text: Text.xspec({text: '-- Click or Press Any Key --', color: color3}),
                     x_xform: XForm.xspec({top: .4, bottom: .4, left: .3, right: .3}),
                 }),
             ]

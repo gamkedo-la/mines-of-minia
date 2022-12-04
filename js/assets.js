@@ -1141,7 +1141,7 @@ let miniaAssets = [
     Sfx.xspec({ tag: 'poke.hit', audio: new SfxRef({src: 'snd/poke5.wav'}), volume: .3}),
     Sfx.xspec({ tag: 'poke.miss', audio: new SfxRef({src: 'snd/poke1.wav'}), volume: .3}),
     Sfx.xspec({ tag: 'music.menu', audio: new SfxRef({src: 'snd/Minia_menu_2.mp3'}), volume: .3, channel: 'music', loop: true}),
-    Sfx.xspec({ tag: 'music.play', audio: new SfxRef({src: 'snd/music/battleTheme.mp3'}), volume: .3, channel: 'music', loop: true}),
+    Sfx.xspec({ tag: 'music.play', audio: new SfxRef({src: 'snd/music/battleTheme.mp3'}), volume: .1, channel: 'music', loop: true}),
     Sfx.xspec({ tag: 'stairs.up', audio: new SfxRef({src: 'snd/level-transition-2.mp3'}), volume: .3}),
     Sfx.xspec({ tag: 'stairs.down', audio: new SfxRef({src: 'snd/ghostly-cry.mp3'}), volume: .3}),
 
