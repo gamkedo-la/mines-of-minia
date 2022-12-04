@@ -502,7 +502,7 @@ class PlayState extends GameState {
         Events.ignore(LevelSystem.evtLoaded, this.onLevelLoaded);
         Events.ignore(TurnSystem.evtDone, this.onTurnDone)
         LevelSystem.currentLevelIndex = 0;
-e   }
+    }
 
     doInventory() {
         // disable level/hud

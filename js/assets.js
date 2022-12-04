@@ -2761,5 +2761,13 @@ let miniaAssets = [
     Sprite.xspec({tag: 'gameover.crack', img: new SheetRef({src: 'img/gameover-layout.png', width: 16*4, height: 16*4, x: 0, y: 0})}),
     
     Sprite.xspec({tag: 'story.bg', img: new SheetRef({src: 'img/story-layout.png', width: 16*15, height: 16*10, x: 16*10, y: 16*2})}),
+    Animation.xspec({tag: 'story.red', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/story-layout.png', width: 32, height: 32, x: 16*0, y: 16*2})}), ttl: 250}),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/story-layout.png', width: 32, height: 32, x: 16*0, y: 16*0})}), ttl: 250}),
+    ]}),
+    Animation.xspec({tag: 'story.green', x_cels: [
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/story-layout.png', width: 32, height: 32, x: 16*0, y: 16*4})}), ttl: 250}),
+        Cel.xspec({x_sketch: Sprite.xspec({img: new SheetRef({src: 'img/story-layout.png', width: 32, height: 32, x: 16*0, y: 16*6})}), ttl: 250}),
+    ]}),
 
 ];

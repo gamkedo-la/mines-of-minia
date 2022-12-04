@@ -52,6 +52,10 @@ class Story extends UxView {
                     tag: 'story.panel',
                     xform: new XForm({left: 1.75/15, right: 3.75/15, top: 4/10, bottom: 2/10}),
                 }),
+                new UxPanel({
+                    sketch: Assets.get('story.green', true),
+                    xform: new XForm({left: 12/15, right: 1/15, top: 3/10, bottom: 5/10}),
+                }),
                 button('cancel', { tag: 'story.cancel', xform: new XForm({left: 12/15, right: 1/15, top: 7/10, bottom: 1/10}) }),
             ],
         });

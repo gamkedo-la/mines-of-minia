@@ -213,6 +213,15 @@ class MenuState extends GameState {
                     sketch: Assets.get('menu.bg', true),
                     x_xform: XForm.xspec({left: 14/39, right: 14/39, top: 3/21, bottom: 2/21, left: .3, width: 11, height: 16, lockRatio: true}),
                     x_children: [
+                        // -- buttons
+                        UxPanel.xspec({
+                            sketch: Assets.get('story.green', true),
+                            x_xform: XForm.xspec({left: 8.5/11, right: .5/11, top: 11.5/16, bottom: 2.5/16}),
+                        }),
+                        UxPanel.xspec({
+                            sketch: Assets.get('story.red', true),
+                            x_xform: XForm.xspec({left: 8.5/11, right: .5/11, top: 13.5/16, bottom: .5/16}),
+                        }),
                         button('     new     ', { tag: 'menu.new', x_xform: XForm.xspec({left: 1/11, right: 3/11, top: 1/16, bottom: 13/16}), }),
                         button('     load     ', { tag: 'menu.load', x_xform: XForm.xspec({left: 1/11, right: 3/11, top: 4/16, bottom: 10/16}), }),
                         button('  options  ', { tag: 'menu.options', x_xform: XForm.xspec({left: 1/11, right: 3/11, top: 7/16, bottom: 7/16}), }),
