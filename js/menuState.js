@@ -128,7 +128,7 @@ class MenuState extends GameState {
 
     async ready() {
         const maybe_storage_warning = ()=>{
-            if(isLocalstorageAllowed){
+            if(!isLocalstorageAllowed){
                 return UxText.xspec({
                     x_text: Text.xspec({text: 'Warning: your browser is set to not allow local storage (cookies settings), game saves will not be persisted if you close the tab.', color: 'orange'}),
                     x_xform: XForm.xspec({left: 1/12, right: 3/11, top: -11/16, bottom: 1/16}),
