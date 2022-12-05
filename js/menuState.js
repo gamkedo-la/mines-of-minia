@@ -23,6 +23,7 @@ import { Serialization } from './serialization.js';
 import { Help } from './help.js';
 import { Assets } from './base/assets.js';
 import { Config } from './base/config.js';
+import { isLocalstorageAllowed } from './base/storage.js';
 
 function button(text, spec) {
     return Object.assign({}, UxButton.xspec({
@@ -126,6 +127,16 @@ class MenuState extends GameState {
     }
 
     async ready() {
+        const maybe_storage_warning = ()=>{
+            if(isLocalstorageAllowed){
+                return UxText.xspec({
+                    x_text: Text.xspec({text: 'Warning: your browser is set to not allow local storage (cookies settings), game saves will not be persisted if you close the tab.', color: 'orange'}),
+                    x_xform: XForm.xspec({left: 1/12, right: 3/11, top: -11/16, bottom: 1/16}),
+                });
+            }
+            else return null;
+        };
+
         let x_view = UxCanvas.xspec({
             cvsid: 'game.canvas',
             tag: 'cvs.0',
@@ -229,14 +240,10 @@ class MenuState extends GameState {
                         button('  credits  ', { tag: 'menu.credits', x_xform: XForm.xspec({left: 1/12, right: 3/11, top: 13/16, bottom: 1/16}), }),
                     ],
                 }),
-                /*
-                UxText.xspec({
-                    x_text: Text.xspec({text: 'Mines of Minia', color: 'blue'}),
-                    x_xform: XForm.xspec({top: .2, bottom: .6, left: .1, right: .1}),
-                }),
-                */
+                maybe_storage_warning(),                
             ]
         });
+
         this.view = Generator.generate(x_view);
         // -- ui elements
         this.panel = Hierarchy.find(this.view, (v) => v.tag === 'menu.panel');
