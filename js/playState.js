@@ -440,6 +440,7 @@ class PlayState extends GameState {
             //     break;
             // }
 
+            /*
             case '6': {
                 console.log(`-- next lvl`);
                 let whichLevel = LevelSystem.currentLevelIndex + 1;
@@ -447,7 +448,9 @@ class PlayState extends GameState {
                 Events.trigger(LevelSystem.evtWanted, { level: whichLevel, load: load });
                 break;
             }
+            */
 
+            /*
             case '7': {
                 UpdateSystem.eUpdate(this.player, {
                     lvl: this.player.lvl+1,
@@ -455,6 +458,7 @@ class PlayState extends GameState {
                 console.log(`-- lvl up`);
                 break;
             }
+            */
             /*
             case '8': {
                 UpdateSystem.eUpdate(this.player, {
@@ -474,10 +478,12 @@ class PlayState extends GameState {
             }
             */
 
+            /*
             case '0': {
                 this.doEndGame();
                 break;
             }
+            */
 
             /*
             case '9': {
