@@ -24,11 +24,11 @@ class LocalStorage {
 
 class TemporaryStorage {
 
-    storage = {};
+    static storage = {};
 
-    getItem(name){
+    static getItem(name){
         try{
-            const item_str = storage[name];
+            const item_str = TemporaryStorage.storage[name];
             if(typeof item_str === 'string'){
                 return JSON.parse(item_str);
             }
@@ -37,18 +37,18 @@ class TemporaryStorage {
         }
     }
 
-    setItem(name, item){
+    static setItem(name, item){
         try{
             const item_str = JSON.stringify(item);
-            storage[name] = item_str;
+            TemporaryStorage.storage[name] = item_str;
         } catch(error){
             console.warn(`failed to set value in storage: ${error}`);
         }
 
     }
 
-    removeItem(name){
-        delete storage[name];
+    static removeItem(name){
+        delete TemporaryStorage.storage[name];
     }
 
 };
@@ -64,5 +64,5 @@ function is_local_storage_available() {
 }
 
 export const isLocalstorageAllowed = is_local_storage_available();
-const Storage = isLocalstorageAllowed ? LocalStorage : TemporaryStorage;
+const Storage = /*isLocalstorageAllowed ? LocalStorage :*/ TemporaryStorage;
 export { Storage };
