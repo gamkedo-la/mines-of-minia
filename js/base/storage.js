@@ -64,5 +64,5 @@ function is_local_storage_available() {
 }
 
 export const isLocalstorageAllowed = is_local_storage_available();
-const Storage = /*isLocalstorageAllowed ? LocalStorage :*/ TemporaryStorage;
+const Storage = isLocalstorageAllowed ? LocalStorage : TemporaryStorage;
 export { Storage };
